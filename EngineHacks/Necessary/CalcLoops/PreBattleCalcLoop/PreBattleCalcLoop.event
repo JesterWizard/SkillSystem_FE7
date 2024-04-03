@@ -1,0 +1,154 @@
+
+#include "BattleCalcDefinitions.event"
+
+	/* Pre-battle calculation loop */
+
+PUSH
+ORG 0x289b0 //FE7 -> FE8 0x2a95c
+jumpToHack(BtlLoopParent)
+
+//ORG 0x290AA //not sure if this is FE7 0x2AFFE //make 0xc = cannot double
+//SHORT 0x280C 0xD005
+POP
+
+ALIGN 4
+BtlLoopParent:
+#incbin "FE7_battle_calc_loop.dmp"
+POIN BtlLoopList
+
+//CritUpSkill seems to be affecting Lyn even when it isn't applied to her.
+//Maybe something to do with her being a mymridon lord? It isn't always consistent either.
+
+ALIGN 4
+BtlLoopList:
+POIN BC_DefRes BC_Power BC_ASpd BC_Hit BC_Avo BC_Crit /*CritUpSkill*/ BC_Dodge BC_Support BC_WRank BC_Status //these are the existing battle calculation routines
+POIN FaireCheck
+POIN BreakerCheck MageSlayer
+POIN BlowCheck
+POIN DefendingCheck
+POIN ElementBoostCheck
+POIN Wrath
+POIN LuckySeven OddRhythm EvenRhythm QuickBurn SlowBurn
+POIN Loyalty
+POIN DancingBlade
+POIN ElbowRoom NaturalCover FieryBlood LifeAndDeath WindDisciple Perfectionist Puissance EyesOfHawk LightWeight Trample Opportunist BattleVeteran SilentPride Thunderstorm HeavyStrikes Charge Vanity KnightAspirant Outrider AssassinateDamageBonus ArcaneBlade
+POIN Prescience
+POIN Insight Vigilance DefiantAvo DefiantCrit TowerShield ShortShield IndoorFighter OutdoorFighter Deadeye Fortune ChaosStyle StunningSmile HeavyBlade
+POIN BlueFlame DoubleLion Thighdeology Thotslayer ForeignPrincess /* ChargePlus */
+POIN Frenzy
+POIN KeenFighter
+POIN TowerShieldPlus
+POIN Dragonskin
+POIN AxeFaith
+POIN StancesASM
+POIN AirRaidSkillCheck
+POIN CriticalCheck
+POIN LethalitySkill NonGBALethalitySkill 
+//#ifdef CANNOT_CRIT
+//	POIN NegateCritWeapons //This goes last, so that crit will always be set to 0 if set and never modified from there
+//#endif // CANNOT_CRIT
+POIN TraceSkill
+POIN 0
+
+/*
+//POIN InitializePreBattleLoop
+//POIN Lull //This is effectively a stat modifier routine, so it has to go first
+POIN FaireCheck HolyAura
+POIN BreakerCheck MageSlayer
+POIN BlowCheck
+POIN DefendingCheck
+#ifdef LEADERSHIP_STARS
+  POIN LeadershipHook
+#endif //LEADERSHIP_STARS
+#ifdef BIORHYTHM
+  POIN BiorhythmFunc
+#endif //BIORHYTHM
+//POIN Wrath SpurStr SpurMag SpurSpd SpurDef SpurRes
+//POIN DriveStr DriveMag DriveSpd DriveDef DriveRes
+POIN LuckySeven OddRhythm EvenRhythm QuickBurn SlowBurn
+POIN Demoiselle Gentilhomme MaleficAura Intimidate Tantivy Focus Inspiration DivinelyInspiring Charm Solidarity VoiceOfPeace Anathema LilysPoise Charisma Hex Loyalty Infiltrator
+POIN ElbowRoom NaturalCover Gamble FieryBlood LifeAndDeath WindDisciple Perfectionist Puissance Hawkeye LightWeight Trample Opportunist BattleVeteran SilentPride Thunderstorm Outrider HeavyStrikes Charge Vanity KnightAspirant AssassinateDamageBonus ArcaneBlade
+POIN Daunt BloodTide WhitePool NightTide Insight Prescience Vigilance DefiantAvo DefiantCrit TowerShield ShortShield IndoorFighter OutdoorFighter Deadeye Fortune ChaosStyle StunningSmile HeavyBlade
+POIN BlueFlame BlueFlameAura DoubleLion Cultured Thighdeology Thotslayer KeepUp Armorboost Horseguard Skyguard ForeignPrincess /* ChargePlus */
+POIN Frenzy // This was moved here because Str/Mag Split conflict, and... I'm not sure why it wouldn't be here in the first place.
+POIN UpWithArch
+POIN AxefaithHit
+POIN StancesASM
+POIN AirRaidSkillCheck
+#ifdef ENABLE_GBA_LETHALITY
+POIN LethalitySkill 
+#else
+POIN LethalitySkill NonGBALethalitySkill 
+#endif
+
+#ifdef MODULAR_PRE_BATTLE_SKILLS
+	POIN ModularPreBattleSkill 
+#endif // MODULAR_PRE_BATTLE_SKILLS
+//add any new ones before here
+
+POIN KeenFighter SteadyBrawler // % Damage reduction if doubling goes near end 
+//tower shield plus needs to go after every other skill that may affect defender's attack
+POIN TowerShieldPlus
+// Dragonskin goes after anything effecting atk or def
+POIN Dragonskin
+// Because of how killing machine works, critical check should always be done last
+POIN CriticalCheck
+#ifdef CANNOT_CRIT
+	POIN NegateCritWeapons //This goes last, so that crit will always be set to 0 if set and never modified from there
+#endif // CANNOT_CRIT
+POIN 0
+
+*/
+
+
+#define AuraSkillEntry(skillID) "PUSH; ORG AuraSkillTable + skillID; BYTE 0x1; POP"
+
+ALIGN 4
+AuraSkillTable:
+FILL 0
+/*
+AuraSkillEntry(CantoID)
+AuraSkillEntry(CantoPlusID)
+AuraSkillEntry(CharmID)
+AuraSkillEntry(DemoiselleID)
+AuraSkillEntry(GentilhommeID)
+AuraSkillEntry(InspirationID)
+AuraSkillEntry(DivinelyInspiringID)
+AuraSkillEntry(LilysPoiseID)
+AuraSkillEntry(SpurStrID)
+AuraSkillEntry(SpurMagID)
+AuraSkillEntry(SpurSpdID)
+AuraSkillEntry(SpurDefID)
+AuraSkillEntry(SpurResID)
+AuraSkillEntry(NiceThighsID)
+AuraSkillEntry(DauntID)
+AuraSkillEntry(MaleficAuraID)
+AuraSkillEntry(IntimidateID)
+AuraSkillEntry(SolidarityID)
+AuraSkillEntry(VoiceOfPeaceID)
+AuraSkillEntry(AnathemaID)
+AuraSkillEntry(LilysPoiseID)
+AuraSkillEntry(CharismaID)
+AuraSkillEntry(HexID)
+AuraSkillEntry(BlueFlameID)
+AuraSkillEntry(DriveStrID)
+AuraSkillEntry(DriveMagID)
+AuraSkillEntry(DriveSpdID)
+AuraSkillEntry(DriveDefID)
+AuraSkillEntry(DriveResID)
+AuraSkillEntry(BloodTideID)
+AuraSkillEntry(WhitePoolID)
+AuraSkillEntry(NightTideID)
+*/
+
+PUSH
+ORG 0x28484 //FE7 -> FE8 0x2a3f8
+//rewrite range map
+jumpToHack(rewriteRangeMap)
+POP
+
+ALIGN 4
+rewriteRangeMap:
+#incbin "rewriteRangeMap.dmp"
+
+PROTECT 0x2A95C 0x2A968

@@ -1,0 +1,143 @@
+#ifndef HAX_ICON_REWORK_INTERNAL
+#define HAX_ICON_REWORK_INTERNAL
+
+#ifndef _FE7_
+	ERROR this is for FE7 etc
+#endif
+
+#include "Extensions/Hack Installation.txt"
+#include "EAstdlib.event"
+
+#ifndef FreeSpace
+	#define FreeSpace 0xD00000
+	ORG FreeSpace
+#endif
+
+// You can define this beforehand if you really *need* to have more than 16 icon sheets (do you really tho?)
+#ifndef ICON_SHEET_COUNT
+	#define ICON_SHEET_COUNT 0x10
+#endif
+
+{
+PUSH
+	//FE8 -> ORG 0x003650
+	//Crashes the game when icons show up?
+	// ORG 0x004DBC
+	// 	replaceWithHack(prGetIconTileIndex)
+	
+	//FE8 -> ORG 0x003584
+	ORG 0x004CF4
+		replaceWithHack(prClearIcons)
+	
+	//FE8 -> ORG 0x00370C
+	ORG 0x004E78
+		replaceWithHack(prClearSingleIcon)
+	
+	//FE8 -> ORG 0x00372C
+	ORG 0x004E98
+		replaceWithHack(prLoadIconObjGfx)
+
+	//FE8 -> ORG $8779C
+	ORG $80374
+		jumpToHack(NewWrankIconGetter)
+	
+	//FE8 -> ORG $1EA10
+	//This is returning jumbled graphics for the weapon icons in the weapon level section
+	ORG $1E288
+		jumpToHack(AttackWrankDraw)		
+		
+	//FE8 ORG $9278C
+	ORG $8B194
+		jumpToHack(UnitAffinityDraw)
+	
+	//FE8 -> ORG $921FC
+	ORG $8ABF4
+		jumpToHack(UnitWrankDraw)
+
+	//FE8 -> ORG $902B0
+	ORG $88D20
+		jumpToHack(UnitSortWrankDraw)
+	
+	//FE8 -> ORG $34AF8	
+	ORG $31954
+		jumpToHack(RescueMountTypeDraw)
+		
+	//FE8 -> ORG $A1D9C
+	ORG $9C764
+		jumpToHack(SupportAffinityDraw)
+	
+	//FE8 -> ORG $87708
+	ORG $802E0
+		jumpToHack(SupportSSAffinityDraw)
+
+	//FE8 -> ORG $286C6
+	ORG $26B2C
+		SHORT 0x3801 //set affinity index
+	
+	//FE8 -> ORG $18AFE
+	ORG $18584
+		SHORT 0x2000 //set horse icon index to 0
+	
+	//FE8 -> ORG $18B0C
+	ORG $18592
+		SHORT 0x2001 //set peg icon index to 1
+	
+	//FE8 -> ORG $18B20
+	ORG $185A6
+		SHORT 0x2002 //set dragon icon index to 2		
+	
+POP
+
+
+ALIGN 4
+prGetIconTileIndex:
+	#incbin "asm/GetIconTileIndex.dmp"
+	POIN praIconGfxGetters
+
+ALIGN 4
+prClearIcons:
+	#incbin "asm/ClearIcons.dmp"
+
+ALIGN 4
+prClearSingleIcon:
+	#incbin "asm/ClearIconGfx.dmp"
+
+ALIGN 4
+prLoadIconObjGfx:
+	#incbin "asm/LoadIconObjGfx.dmp"
+	POIN praIconGfxGetters
+
+#include "asm/NewWrankDraw.lyn.event"
+
+}
+
+ALIGN 4
+prGetItemIconGfx:
+	#incbin "asm/GetSheetIconGfx.dmp"
+	WORD 0 // Will default to item icon sheet
+	
+ALIGN 4
+praIconGfxGetters:
+	POIN (prGetItemIconGfx+1)
+	ORG (praIconGfxGetters + (4 * ICON_SHEET_COUNT))
+
+#define InjectIconGfxGetter(aSheetIndex, aprGfxGetter) "PUSH; ORG (praIconGfxGetters + (4*(aSheetIndex))); POIN (aprGfxGetter); POP"
+
+ORG (currentOffset+256)
+
+ALIGN 4
+AffinityIcons:
+// #incext Png2Dmp "bin/AffinityIcons.png"
+#incbin "bin/AffinityIcons.dmp"
+
+ALIGN 4
+MountTypeIcons:
+// #incext Png2Dmp "bin/MountTypeIcons.png"
+#incbin "bin/MountTypeIcons.dmp"
+
+ALIGN 4
+WRankIcons:
+// #incext Png2Dmp "bin/WRankIcons.png"
+#incbin "bin/WRankIcons.dmp"
+
+#endif // HAX_ICON_REWORK_INTERNAL

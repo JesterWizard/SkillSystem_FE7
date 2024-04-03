@@ -1,0 +1,126 @@
+//Converted from repointbuffer.ups using CUPS
+//Repoint the buffer 
+#define NewBattleBufferLocation 0x203aac0 //was 203a5ec
+#define BattleBufferWidth 8
+#define maxAtks 31
+#define BattleBufferAnimsOn1 (NewBattleBufferLocation+(maxAtks*8)) //was 203e12a
+#define BattleBufferAnimsOn2 (BattleBufferAnimsOn1+(maxAtks*4)) //was 203e156
+
+PUSH
+ORG 0x28F90 //FE8 -> 0x2aea0
+BYTE maxAtks*4 //max number of attacks
+
+ORG $28FA0 //FE8 -> $2aeae //clear out more buffer
+SHORT 0x8050 //strh r0, [r2,2]
+SHORT 0x6054 //str r0, [r2,4]
+
+ORG 0x52CC4 //FE8 -> 0x58212
+BYTE maxAtks*4 //max number of attacks
+ORG 0x52CDC //FE8 -> 0x5822a
+BYTE maxAtks*4  //max number of attacks - NEED TO REPOINT 203e156
+
+ORG 0x52D08 //FE8 -> 0x58258
+WORD BattleBufferAnimsOn2
+ORG 0x52DDC //FE8 -> 0x58350
+WORD BattleBufferAnimsOn2
+ORG 0x52FE0 //FE8 -> 0x5856c
+WORD BattleBufferAnimsOn2
+ORG 0x53020 //FE8 -> 0x585ac
+WORD BattleBufferAnimsOn2
+ORG 0x530A0 //FE8 -> 0x5862c
+WORD BattleBufferAnimsOn2
+ORG 0x53108 //FE8 -> 0x58698
+WORD BattleBufferAnimsOn2
+ORG 0x53188 //FE8 -> 0x58768
+WORD BattleBufferAnimsOn2
+ORG 0x52858 //FE8 -> 0x58844
+WORD BattleBufferAnimsOn2
+ORG 0x53350 //FE8 -> 0x58a6c
+WORD BattleBufferAnimsOn2
+ORG 0x5336C //FE8 -> 0x58a84
+WORD BattleBufferAnimsOn2
+
+ORG $52CF8 //FE8 -> $58248
+WORD BattleBufferAnimsOn1
+ORG $52FD8 //FE8 -> $58564
+WORD BattleBufferAnimsOn1
+ORG $53308 //FE8 -> $58a28
+WORD BattleBufferAnimsOn1
+ORG $53334 //FE8 -> $58a54
+WORD BattleBufferAnimsOn1
+ORG $53418 //FE8 -> $58b50
+WORD BattleBufferAnimsOn1
+
+ORG $29548 //FE8 -> $2b90a
+BYTE BattleBufferWidth
+//ORG $2b91c I replaced this part with a hack that doesn't increment gpRoundsData when a certain flag is set. -Snek
+//BYTE BattleBufferWidth
+ORG $28F98 //FE8 -> $2aeb2
+BYTE BattleBufferWidth
+ORG $531E6 //FE8 -> $5881c
+BYTE BattleBufferWidth
+ORG $6E57E //FE8 -> $7a886
+BYTE BattleBufferWidth
+ORG $2AB94 //FE8 -> $2d2b8
+BYTE BattleBufferWidth
+ORG $2d2c8
+BYTE BattleBufferWidth
+ORG $2ABA4 //FE8 -> $2cc5c
+BYTE BattleBufferWidth
+ORG $2cf6c //JESTER - I have no idea what to do here, the function doesn't match for FE7 so I haven't changed it. It starts at $2A8BE
+SHORT ($3400+(BattleBufferWidth-4)) $0CD0
+ORG $2A976 //FE8 -> $2d098
+SHORT (0x6808 + BattleBufferWidth*16) 0x0200 0x0ec0 (0x3100 + BattleBufferWidth) 0x6031
+
+ORG 0x28FA8 //FE7? //FE8 -> 0x2aec4
+WORD NewBattleBufferLocation
+ORG 0x29E70 //FE8 -> 0x2c44c
+WORD NewBattleBufferLocation
+ORG 0x2A01C //FE8 -> 0x2c660
+WORD NewBattleBufferLocation
+ORG 0x2A4B0 //FE8 -> 0x2cb0c
+WORD NewBattleBufferLocation
+ORG 0x2A810 //FE8 -> 0x2ce98
+WORD NewBattleBufferLocation
+ORG 0x2A8F8 //FE8 -> 0x2cfa8
+WORD NewBattleBufferLocation
+ORG 0x2CC60 //FE8 -> 0x2f658
+WORD NewBattleBufferLocation
+ORG 0x2CD1C //FE8 -> 0x2f730
+WORD NewBattleBufferLocation
+ORG 0x2CEC0 //FE8 -> 0x2f7fc
+WORD NewBattleBufferLocation
+ORG 0x52CF4 //FE8 -> 0x58244
+WORD NewBattleBufferLocation
+ORG 0x53224 //FE8 -> 0x58930
+WORD NewBattleBufferLocation
+ORG 0x67DD4 //FE8 -> 0x72564
+WORD NewBattleBufferLocation
+ORG 0x7b4cc
+WORD NewBattleBufferLocation
+ORG 0x7b574
+WORD NewBattleBufferLocation
+ORG 0x7b628
+WORD NewBattleBufferLocation
+ORG 0x7b680
+WORD NewBattleBufferLocation
+ORG 0x7b6d8
+WORD NewBattleBufferLocation
+ORG 0x7b738
+WORD NewBattleBufferLocation
+ORG 0x7b790
+WORD NewBattleBufferLocation
+ORG 0x7b7e8
+WORD NewBattleBufferLocation
+ORG 0x7b84c
+WORD NewBattleBufferLocation
+ORG 0x7b8b8
+WORD NewBattleBufferLocation
+ORG 0x7b9b0
+WORD NewBattleBufferLocation
+ORG 0x6E390 //This is a guess for FE7, the surrounding function isn't a match //FE8 -> 0x7c920
+WORD NewBattleBufferLocation
+ORG 0xa6d18
+WORD NewBattleBufferLocation
+
+POP

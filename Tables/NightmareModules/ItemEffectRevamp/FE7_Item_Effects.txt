@@ -1,0 +1,53 @@
+Default/ No Effect
+Heal
+Mend
+Recover
+Physic
+Fortify
+Restore Staff 
+Silence Staff
+Sleep Staff
+Berserk Staff
+Warp Staff 
+Rescue Staff 
+Torch Staff 
+Hammerne Staff 
+Unlock Staff 
+Barrier Staff 
+Angelic robe
+Energy ring
+Secret book
+Speedwing
+Goddess Icon
+Dragonshield
+Talisman
+Boots
+Body Ring
+Hero's Crest
+Knight's Crest
+Orion's Bolt
+Elysian Whip
+Guiding Ring
+Chest Key
+Door key
+Lockpick
+Vulnerary
+Elixir
+Pure Water
+Antitoxin
+Torch
+Chest Key(5)
+Mine
+Light Rune
+Iron Rune
+Fila's Might
+Ninis' Grace
+Thor's Ire
+Set's Litany
+Earth Seal
+Afa's Drops
+Heaven Seal
+Fell Contract
+Ocean Seal
+
+

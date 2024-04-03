@@ -1,0 +1,7 @@
+04/03/2024
+
+Necessary/ModularStatScreen/Background/Background.event
+A few offsets I wasn't sure about. These have been documented inside the file
+
+Necessary/ModularStatScreen/Background/C/main.lyn.event
+I will probably need to manually edit the offsets here at a later date, for now it causes no issues on compilation and playing

@@ -1,0 +1,9 @@
+ALIGN 4
+BreakerCheck: //added to fe7_calc_loop.event
+#incbin "BreakerCheck.dmp"
+POIN SkillTester
+POIN BreakerIDList
+
+ALIGN 4
+BreakerIDList:
+BYTE SwordbreakerID LancebreakerID AxebreakerID BowbreakerID StaffbreakerID AnimabreakerID DarkbreakerID LightbreakerID
