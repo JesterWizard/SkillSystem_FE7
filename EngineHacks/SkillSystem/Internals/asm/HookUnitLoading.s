@@ -11,7 +11,7 @@
 @	lGetSkills        = EALiterals+0x04
 @	lChargeupTable    = EALiterals+0x08
 
-	BWLTable = 0x0203E884
+	BWLTable = 0x0203E7A0 //FE7 -> FE8 0x0203E884
 
 	.macro blh to, reg=r3
 		ldr \reg, =\to
@@ -51,13 +51,13 @@ HookUnitLoading:
 no_skills:
 	@ avoid skill forgetting issues after loading units that learn more than 4 skills
 	mov  r0, #0
-	ldr  r1, =0x0202BCDE
+	ldr  r1, =0x202BBE6 @ fe7 -> FE8 0x0202BCDE
 	strh r0,[r1]
 
 	@ original
 	mov r0, r5
-	blh 0x080281C8
-	ldr r6, =0x08017EFD
+	blh 0x08026628// Following the function of FE8 gives me 26628 for FE7, but apparently 0x0802BCBC is right?  //FE8 -> 0x080281C8
+	ldr r6, =0x080179F8 //FE8 0x08017EFD
 	bx  r6
 
 BXR3:

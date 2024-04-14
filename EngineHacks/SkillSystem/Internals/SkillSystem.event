@@ -1,9 +1,9 @@
 //Skill System replacing favouritism stat
-//#include repointbuffer.event
+// #include "repointbuffer.event"
 // #include "FE8-Weapon Rank on Levelup/FE8-Weapon Rank on Levelup EA.txt"
 
 
-// PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
+PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 
 // //This was done through trial and error.... 
 
@@ -30,80 +30,89 @@
 // jumpToHack(SkillProcDisplayMap)           // Display procced skill icon during map battle.
 
 
-/*
-ORG $a44c8 //bwl
-BYTE $70 $47
-ORG $a4534 //bwl
-BYTE $70 $47
+/*** These all just freeze the game on startup ***/
+// ORG $9FD30 //FE8 -> $a44c8 //bwl
+// BYTE $70 $47
+// ORG $9FD9C //FE8 -> $a4534 //bwl
+// BYTE $70 $47
 
-ORG $a41c8 //seems to be saving/loading
-BYTE $70 $47
-ORG $a421c //same here
-BYTE $70 $47 */
-/*
-ORG $a474c
-BYTE $70 $47
-ORG $a478c
-BYTE $70 $47
-ORG $a4a34
-BYTE $70 $47
+// ORG $9FA50 //FE8 -> $a41c8 //seems to be saving/loading
+// BYTE $70 $47
+// ORG $9FAA4 //FE8 -> $a421c //same here
+// BYTE $70 $47 
+
+// ORG $9FF6C //FE8 -> $a474c
+// BYTE $70 $47
+// ORG $9FFAC //FE8 -> $a478c
+// BYTE $70 $47
+// ORG $A0248 //FE8 -> $a4a34
+// BYTE $70 $47
 // ORG $a4cfc //breaks at credits
 // BYTE $70 $47
 
-ORG $a464c //only save 1 byte when dying (as opposed to 3)
-BYTE 1
+/*** These both crash the game on startup. Probably need the rest of this event file ***/
+// ORG $9FEB6 //FE8 -> $a464c //only save 1 byte when dying (as opposed to 3)
+// BYTE 1
+// ORG $9F9CA //FE8 -> $a4140
+// SHORT 0 //nop the 0x200000
 
-ORG $a4140
-SHORT 0 //nop the 0x200000
-
+/*
 // now managed via InitLevelUpSkillPopup (see SkillPopups.event, Engine Hacks/Popups.event and Engine Hacks/PopupRework) -Stan
 // ORG $76018
 // jumpToHack(SkillLearner)
-
-// now managed by Icon Rework (see Engine Hacks/IconRework) -Stan
-// ORG $3730
+*/
+//now managed by Icon Rework (see Engine Hacks/IconRework) -Stan
+// ORG $4E98 //FE8 -> $3730
 // jumpToHack(AlternateIconPopup)
 
+/*
 // now managed by Popup Rework (see Engine Hacks/Popups.event and Engine Hacks/PopupRework) -Stan
 // ORG $75d64
 // jumpToHack(AnimsOnPopupHack)
+*/
 
-ORG $17ef4
-jumpToHack(HookUnitLoading)
+//Last I checked, enabling this produced a protected write error from icon_internal.event at line 141 from the protect in ROMBuildFile.event
+// ORG $179F0 //FE8 -> $17ef4
+// jumpToHack(HookUnitLoading)
 
-ORG $2B3EC
-jumpToHack(Rerun_Battle_Calcs)
+//Crashes on water drop intro
+// ORG $29264 //FE8 -> $2B3EC
+// jumpToHack(Rerun_Battle_Calcs)
 
+/*
 ORG $22862
 BL(Unset_Attack_Flag) //this is in masterhackinstaller
+*/
 
-ORG $18680
-jumpToHack(Unset_Attack_Flag_2)
+// ORG $18110 //FE8 -> $18680
+// jumpToHack(Unset_Attack_Flag_2)
 
-ORG $2B918
-jumpToHack(RemoveRoundHack)
+/*** This breaks just before the intro animation displays ***/
+// ORG $29558 //FE8 -> $2B918
+// jumpToHack(RemoveRoundHack)
 
-ORG $1D0A8F
+
+ORG $3C55E4 //FE8 -> $1D0A8F
 jumpToHack(MenuResetSkillBuffer)
 POP
 
 #include "MenuResetSkillBuffer.lyn.event"
 
-ALIGN 4
-KeepProcSkillIcon:
-#include "KeepProcSkillIcon.lyn.event"
-ALIGN 4
-SkillActivationAnims:
-#include "activationanims.lyn.event"
-ALIGN 4
-SkillProcDisplayMap:
-#include "SkillProcDisplayMap.lyn.event"
-ALIGN 4
-#include "C/SkillProcDisplay.lyn.event"
-ALIGN 4
-SPD_ProcDisplayTiles:
-#incbin "Graphics/ProcDisplayTiles.dmp"    // Uncompressed image.
-*/
+// ALIGN 4
+// KeepProcSkillIcon:
+// #include "KeepProcSkillIcon.lyn.event"
+// ALIGN 4
+// SkillActivationAnims:
+// #include "activationanims.lyn.event"
+// ALIGN 4
+// SkillProcDisplayMap:
+// #include "SkillProcDisplayMap.lyn.event"
+// ALIGN 4
+// #include "C/SkillProcDisplay.lyn.event"
+// ALIGN 4
+// SPD_ProcDisplayTiles:
+// #incbin "Graphics/ProcDisplayTiles.dmp"    // Uncompressed image.
+
 
 ALIGN 4
 Skill_Getter: // gets a list of skills
@@ -322,6 +331,7 @@ NegatedSkillEntry(EnrageID)
 NegatedSkillEntry(DeadeyeID)
 NegatedSkillEntry(DragonFangID)
 NegatedSkillEntry(FortuneID)
+*/
 
 /*
 //NOT WORKING (or they should not be affected by nihil)
@@ -340,26 +350,25 @@ BYTE RightfulArchID RightfulKingID RightfulGodID//Rightful skills shouldn't real
 BYTE SaviorID//works, but changes are not displayed in the pre-battle numbers (they ARE updated when the combat begins tho)
 BYTE ForeignPrincessID
 */
-*/
-BYTE 0x00//terminator
+BYTE 0x00 //terminator
 
-//ALIGN 4
-//SkillAdder: //given chardata in r0, skill in r1, add skill if possible
-//#incbin addSkill.dmp
+ALIGN 4
+SkillAdder: //given chardata in r0, skill in r1, add skill if possible
+#incbin "addSkill.dmp"
 
-//ALIGN 4
-//HookUnitLoading:
-//	#incbin "asm/HookUnitLoading.dmp"
-//	POIN (AutoloadSkills|1)
-	// POIN (Skill_Getter|1)
-	// POIN ChargeupTable
+ALIGN 4
+HookUnitLoading:
+	#incbin "asm/HookUnitLoading.dmp"
+	POIN (AutoloadSkills|1)
+	POIN (Skill_Getter|1)
+	POIN ChargeupTable
 
-//ALIGN 4
-//AutoloadSkills:
-//	// TODO: maybe merge with HookUnitLoading?
-//	#incbin "asm/AutoloadSkills.dmp"
-//	POIN (GetInitialSkillList|1)
-//	POIN (SkillAdder|1)
+ALIGN 4
+AutoloadSkills:
+	// TODO: maybe merge with HookUnitLoading?
+	#incbin "asm/AutoloadSkills.dmp"
+	POIN (GetInitialSkillList|1)
+	POIN (SkillAdder|1)
 
 ALIGN 4
 GetInitialSkillList:
@@ -380,15 +389,13 @@ RTextLoop:
 #incbin "rtextloop.dmp"
 POIN Skill_Getter
 
-/*
 Rerun_Battle_Calcs:
 #incbin "Rerun_Battle_Calcs.dmp"
 
-#include "RemoveRound.lyn.event" // This hack makes bit 5 of rounds attributes cause the round not to occur. -Snek
-gBattleBufferWidth:
-BYTE BattleBufferWidth
+// Right now causes battles to crash
+// #include "RemoveRound.lyn.event" // This hack makes bit 5 of rounds attributes cause the round not to occur. -Snek
+// gBattleBufferWidth:
+// BYTE BattleBufferWidth
 
-#include "SkillPopups.event"
-#include "HPHealing.event"
-
-*/
+// #include "SkillPopups.event"
+// #include "HPHealing.event"

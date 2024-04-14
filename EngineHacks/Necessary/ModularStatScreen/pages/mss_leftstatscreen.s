@@ -13,6 +13,8 @@ leftpage_start
 draw_character_name_at 3,10
 draw_class_name_at 1,13
 
+//Right now it seems the first icon from the page you're on is the one it draws on the left side
+//It's a glitchy mess at first, and then it displays on a repeat
 draw_left_affinity_icon_at 10,10
 
 draw_lv_icon_at 1, 15

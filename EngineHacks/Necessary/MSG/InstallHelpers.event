@@ -4,9 +4,9 @@
 #include "EAstdlib.event"
 #include "Extensions/Hack Installation.txt"
 
-#ifndef _FE8_
-	ERROR _file_ should be assembled for FE8
-#endif // _FE8_
+#ifndef _FE7_
+	ERROR _file_ should be assembled for FE7
+#endif // _FE7_
 
 #include "HelperDefinitions.event"
 

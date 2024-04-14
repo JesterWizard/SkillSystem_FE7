@@ -128,7 +128,7 @@ draw_textID_at 13, 17, textID=0x4f7 @con
 draw_con_bar_with_getter_at 16, 17
 
 draw_textID_at 21, 3, textID=0x4f8 @aid
-draw_number_at 25, 3, 0x80189B8, 2 @aid getter
+draw_number_at 25, 3, 0x8018450, 2 @aid getter // FE8 -> 0x80189B8
 draw_aid_icon_at 26, 3
 
 draw_trv_text_at 21, 5

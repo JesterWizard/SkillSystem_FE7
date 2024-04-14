@@ -8,7 +8,7 @@
 
 push {r4-r7,lr}
 mov r4,r0
-ldr r5, =0x2003bfc
+ldr r5, =0x200310C //FE8 -> 0x2003bfc
 ldr r0, [r5, #0xc]
 ldr r1, SkillGetter
 mov lr,r1
@@ -19,7 +19,7 @@ ldrb r2, [r0] @first skill
 cmp r2, #0
 bne HasSkills
 mov r0, r4
-blh      0x80893B4  @change to next one left
+blh      0x8081EE4 //FE8 -> 0x80893B4  @change to next one left
 cmp r0, #1 @can it loop again?
 beq End
 
@@ -47,12 +47,12 @@ bne     GoLeft                @ 08088B76 D105
 
 GoUp:
 mov r0,r4
-blh      #0x8089354    @change to next one up           @ 08088B7A F000FBEB 
+blh     #0x8081E84 //FE8 -> #0x8089354    @change to next one up           @ 08088B7A F000FBEB 
 b       End                @ 08088B7E E006     
 
 GoLeft:     
 mov     r0,r4                @ 08088B78 1C20     
-blh 0x80893b4 @goes left
+blh 0x8081EE4 //FE8 -> 0x80893b4 @goes left
 b End
 
 @ loc_0x8088B84:

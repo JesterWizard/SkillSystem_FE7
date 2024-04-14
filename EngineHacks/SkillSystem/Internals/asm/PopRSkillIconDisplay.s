@@ -1,9 +1,9 @@
 
 	.thumb
 
-	LoadIconPalette = 0x080035D4|1
+	LoadIconPalette =  0x08004D44|1 //FE8 -> 0x080035D4|1
 
-	gPopupItem = 0x030005F4
+	gPopupItem = 0x03000108 //FE8 -> 0x030005F4
 
 PopRSkillIconDisplay:
 	@ args: r0 = PopR proc, r1 = PopR text, r2 = popup component argument

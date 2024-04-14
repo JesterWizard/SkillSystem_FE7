@@ -1,7 +1,7 @@
 
 .thumb
 
-.equ gpCurrentRound, 0x203A608
+.equ gpCurrentRound,  0x203A50C //FE8 -> 0x203A608
 
 .global RemoveRoundHack
 .type RemoveRoundHack, %function

@@ -58,14 +58,14 @@ bx		r4
 
 .align
 BattleCalcs1:
-.long 0x0802A95C
+.long 0x080289B0 //FE8 -> 0x0802A95C
 BattleCalcs2:
-.long 0x0802A9A8
+.long 0x080289FC //FE8 -> 0x0802A9A8
 BattleInfoBufferFunc:
-.long 0x0802B1C4
+.long 0x08029234 //FE8 -> 0x0802B1C4
 GoBackAddr:
-.long 0x0802B3FA+1
+.long 0x08029268+1 //The original was part of a multi skill function, this doesn't exist in FE7 so this is the closest I can get //FE8 -> 0x0802B3FA+1
 BattleDisplayData:
-.long 0x0203A4D4
+.long 0x203A3D8 //FE8 -> 0x0203A4D4
 @ Item_Checker:
 @

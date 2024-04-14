@@ -4,8 +4,8 @@
 #define FreeSpaceEnd 0xE00000 //unchanged
 #define FreeSpaceBLRange 0x100000 //FE7
 
-#define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0x8b0890 + (148* chapter) + 4; SHORT object; BYTE palette config; POP"
-#define ChapterTileAnims(chapter, anim1, anim2) "PUSH; ORG 0x8b0890 + (148* chapter) + 9; BYTE anim1 anim2; POP"
+#define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0xC9A200 + (148* chapter) + 4; SHORT object; BYTE palette config; POP"
+#define ChapterTileAnims(chapter, anim1, anim2) "PUSH; ORG 0xC9A200 + (148* chapter) + 9; BYTE anim1 anim2; POP"
 
 #ifndef ItemTable
   #define ItemTable 0x8BE222C //FE7

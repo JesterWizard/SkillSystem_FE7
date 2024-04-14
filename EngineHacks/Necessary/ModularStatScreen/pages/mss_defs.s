@@ -1016,7 +1016,7 @@
     mov     r2, #Grey
   SS_DrawItemName:
   lsl     r0, r4, #0x3
-  ldr     r1, =#0x80184DC // FE7? #0x200319C //FE8 -> #0x2003C8C
+  ldr     r1, =#0x200319C //FE8 -> #0x2003C8C
   add     r0, r0, r1
   ldr     r3, =#0x200323E //FE8 -> #0x2003D2E    @ypos?
   add     r3, r6, r3

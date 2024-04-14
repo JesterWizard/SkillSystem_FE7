@@ -1,9 +1,9 @@
 #ifndef MSG_EXT_SKILLSYSTEM_EVENT
 #define MSG_EXT_SKILLSYSTEM_EVENT
 
-#ifndef _FE8_
-	ERROR _file_ should be assembled for FE8
-#endif // _FE8_
+#ifndef _FE7_
+	ERROR _file_ should be assembled for FE7
+#endif // _FE7_
 
 #ifndef SKILLSYSTEM_SKILL_TESTER
 	#define SKILLSYSTEM_SKILL_TESTER SkillTester

@@ -1,9 +1,9 @@
 #ifndef MSG_EXT_PASSIVEITEMSTATBONUSES_EVENT
 #define MSG_EXT_PASSIVEITEMSTATBONUSES_EVENT
 
-#ifndef _FE8_
-	ERROR _file_ should be assembled for FE8
-#endif // _FE8_
+#ifndef _FE7_
+	ERROR _file_ should be assembled for FE7
+#endif // _FE7_
 
 /*
 	This File Defines the following macros:

@@ -39,4 +39,4 @@ POP
 //#include "WTASkills/WTASkills.event"
 #include "GrowthSkills/GrowthSkills.event"
 
-//#include "charge_table.event"
+#include "charge_table.event"

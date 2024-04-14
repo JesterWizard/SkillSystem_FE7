@@ -1,0 +1,14 @@
+ElementMaster: Grants additional effects to anima magic based on weather
+
+Rain: 
+Fire Anima - -3 damage
+Thunder Anima - +1 range
+Fimbulveltur Anima - +20 accuracy
+
+Snow:
+Fimbulveltur - +3 damage
+Aircalibur - +10 avoid
+
+Snowstorm:
+Fimbulveltur - +6 damage
+Aircalibur - +20 avoid

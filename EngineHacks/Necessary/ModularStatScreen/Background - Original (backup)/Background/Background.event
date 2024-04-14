@@ -1,0 +1,94 @@
+// For ScrollingStatScreen. Prefix SSS.
+// #ifndef SCROLLING_STATSCREEN_BACKGROUND
+//   ALIGN 4; SSS_Flag:                    // This flag indicates to mss_defs.s and mss_threepageconditional.s
+//   WORD 0x0                              // Which behaviour to use.
+
+//   ALIGN 4; SSS_PageTSATable:            // These labels are used in mss_defs.s and mss_threepageconditional.s
+//   WORD 0x0                              // and therefore still need to exist, or EA won't find them.
+
+//   ALIGN 4; SSS_StatsBoxTSA:             // ^
+//   WORD 0x0
+// #else
+  ALIGN 4; SSS_Flag:
+  WORD 0x1
+
+  // Customizeable parameters.
+  // Moves the location of the portrait during StatScreen.
+  #define SSS_portraitOffsetX 2
+  #define SSS_portraitOffsetY 1
+
+  // Other.
+  #include "C/main.lyn.event"
+  #include "Graphics/Graphics.event"
+  
+  PUSH
+    
+    // Place portrait.
+    ORG 0x811FC //FE8 -> 0x886D0
+    WORD (0x2023C60 + ((SSS_portraitOffsetX + (SSS_portraitOffsetY * 32)) * 2)) //FE8 -> 0x2023CA8
+    
+    // Let GlowyProc immediately end which frees up BG1.
+    //ORG 0xCC3BDC //FE8 -> 0xA00844  Not sure if this is correct for FE7
+    //BYTE 0x0
+    
+    // Don't disable BG1 when transitioning between units.
+    ORG 0x87C18
+    SHORT 0x46C0
+    
+    // //Start scrolling background.- Background scrolls by default in FE7
+    // ORG 0x810CA //FE8 -> 0x8856E
+    //                       ldr r0, =SSS_mainProc
+    // SHORT 0x4649          // mov r1, r9     @ r9: Main statscreen proc
+    // WORD 0xFB84F77A       // bl ProcStart
+    // SHORT 0xE021          // b 0x80885BA    @ Skip other vanilla BG init stuff.
+    // ORG 0x81160 //FE8 -> 0x88620
+    // POIN SSS_mainProc
+    
+    // // Clear BG1 tiles when horizontally flipping pages.
+    // // Far left of portrait is cut off when flipping pages for some reason
+    // ORG 0x805E8 //FE8 -> 0x879EC
+    // callHack_r0(SSS_clearBG1Tiles)
+    
+    // // Update BG1 tiles when horizontally flipping pages.
+    // // Crashes when flipping pages
+    // ORG 0x80682 //FE8 -> 0x87A76
+    // SHORT 0x1C28 0x1C21 0x1C3A
+    // callHack_r3(SSS_updateBG1Tiles)
+    
+    // // Don't disable BG1 when we exit StatScreen.
+    // ORG 0x8129A //FE8 -> 0x8875A
+    // SHORT 0x2102 0x4308 0x46C0
+    
+    // // Scroll BG1 when vertically scrolling.
+    // // This currently just crashes the ROM when trying to view the stat screen
+    // ORG 0x8146A //FE8 -> 0x88932
+    // SHORT 0x1C20          // mov r0, r4  @ r0: vOffs
+    // callHack_r3(SSS_scrollBG1)
+    // SHORT 0x46C0          // nop
+    
+    // // Set alphablend parameters for Bottom-left (MovingMapSpriteBox).
+    // // Something about a bad offset at 0x6000000 causes a crash when trying to view the stat screen
+    // ORG 0x809D4 //FE8 -> 0x87E60
+    // callHack_r0(SSS_blendMMSBox)
+    
+    // // Bottom-left (MovingMapSpriteBox), draw plateau + box.
+    // This isn't a 4 aligned offset and using ALIGN4 doesn't fix it
+    // The plateau displays but the borders of the portrait get screwed up.
+    // ORG 0x80F26 //FE8 -> 0x88368
+    // SHORT 0x2000
+    ORG 0x80F3C //FE8 ->  0x8837C
+    POIN SSS_MMSBoxOAM
+    
+    // //There aren't any branches in the equivalent function in FE7 where this would happen
+    // //so I can only assume it doesn't exist. If it did, it would be arond 0x812B4
+    // // Don't reset BLDCNT upon exiting StatScreen.
+    // ORG 0x88776 
+    // SHORT 0x46C0 0x46C0
+    
+    // // Repoint Equipment-stats box tiles.
+    ORG 0x81184 //FE8 -> 0x88658
+    POIN SSS_StatsBoxGfx
+    
+  POP
+
+// //#endif // SCROLLING_STATSCREEN_BACKGROUND

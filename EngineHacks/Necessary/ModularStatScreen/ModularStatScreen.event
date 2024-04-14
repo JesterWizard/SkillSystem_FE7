@@ -31,9 +31,8 @@
   #include "Background/Background.event"
  
   PUSH
-    //Currently breaks whe viewing a unit's stat screen but this should be the right offset for FE7
-    ORG 0x205b24 //FE7 0x404B60 //Still pretty sure it should be 0x404B60 but 0x404B58 at least loads something 
-        //FE8 -> 0x205b24
+    //Currently breaks on 01337490 when viewing a unit's stat screen but this should be the right offset for FE7 0x404B60
+    ORG 0x404B54  //FE8 -> 0x205b24
       POIN MSS_page1|1 MSS_page2|1 MSS_page3|1 //MSS_page4|1
 
     ORG $811BC //FE8 -> $88690
@@ -62,6 +61,8 @@
     ORG $80FC8 //FE8 -> $883F6
       BYTE Trv_Icon_X 0x21 Trv_Icon_Y
 
+    // Jester- Blackscreens when viewing the stat
+    // Only the DMP exists for some reason, someone forgot to include the source file
     // ORG $80F84 //FE8 -> $883B4
     //  jumpToHack(Rescue_Arrows)
 
@@ -91,20 +92,21 @@
 		
 	#endif // ENABLE_PERSONAL_INFO
 
-  // ORG $7FA8C //FE8 -> $86E44
-  // jumpToHack(MSS_leftpage)
+  ORG $7FA8C //FE8 -> $86E44
+  jumpToHack(MSS_leftpage)
 
-  // ORG $07FDF0 //FE8 -> $087184
+  ORG $07FDF0 //FE8 -> $087184
 
-      // This is Vanilla Stat Screen Page
-      // This is now free (because unused) space
-      // We'll use this for stuff that needs to
-      // be in BL range
-    // ALIGN 4
-    // RText_Page4_ladder:
-    //   // page 4 helptext hook
-    //   #incbin "asm/rtext_page4.dmp"
-    //   POIN RText_Page4
+  // This is Vanilla Stat Screen Page
+  // This is now free (because unused) space
+  // We'll use this for stuff that needs to
+  // be in BL range
+
+  // ALIGN 4
+  // RText_Page4_ladder:
+  //   // page 4 helptext hook
+  //   #incbin "asm/rtext_page4.dmp"
+  //   POIN RText_Page4
 
   POP
   
@@ -129,7 +131,8 @@
   //   #ifdef BIORHYTHM
 	//   #include "pages/mss_page1_skills_biorhythm.lyn.event"
 	// #else // BIORHYTHM
-	#include "pages/mss_page1_skills.lyn.event"
+  // #include "pages/mss_page1_original.lyn.event"
+	 #include "pages/mss_page1_skills.lyn.event"
 	// #endif // BIORHYTHM
   // #endif // LEADERSHIP_STARS
   
@@ -163,18 +166,18 @@
   
   // #endif  // ONLY_SHOW_USED_RANKS
   
-  // #ifdef ENABLE_PERSONAL_INFO
+  #ifdef ENABLE_PERSONAL_INFO
   
-  //     #include "pages/mss_page4_runa.lyn.event"
+      #include "pages/mss_page4_runa.lyn.event"
 	  
-	// ALIGN 4
-  //   PageNumberCheck:
-  //     #include "asm/mss_threepageconditional.lyn.event"
-	//   POIN PersonalDataTable
+	ALIGN 4
+    PageNumberCheck:
+      #include "asm/mss_threepageconditional.lyn.event"
+	  POIN PersonalDataTable
   
-  // #else // ENABLE_PERSONAL_INFO
+  #else // ENABLE_PERSONAL_INFO
   
-  //       #include "pages/mss_page4.lyn.event"
+        //#include "pages/mss_page4.lyn.event"
 		
   //   ALIGN 4
   //   TxtData0x0D4B:
@@ -253,7 +256,7 @@
   New_Palettes:
     #include "DisplayGrowthsOptions/NewPalette.event"
 
-  // #include "RText.event"
+  #include "RText.event"
 
 #else // _FE7_
   ERROR Modular Stat Screen hack is for FE7

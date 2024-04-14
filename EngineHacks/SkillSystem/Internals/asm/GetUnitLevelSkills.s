@@ -1,7 +1,7 @@
 
 	.thumb
 
-	.equ ChapterData, 0x202BCF0
+	.equ ChapterData, 0x202BBF8 //FE8 -> 0x202BCF0
 
 	lClassLevelUpTable = EALiterals+0x00
 	lCharLevelUpTable  = EALiterals+0x04
@@ -23,6 +23,8 @@ GetUnitLevelSkills:
 
 	@ This is an improvement over the skill system before march 2019, where each cases were handled separately
 	@ As it makes it easier to hack in (or out) methods of defining level-up skills.
+
+	//Jester - r0 is starting at 66778999 for some reason
 
 	push {r3, r4-r7} @ save r3 for returning it later
 

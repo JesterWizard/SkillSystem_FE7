@@ -1,6 +1,6 @@
 //Converted from repointbuffer.ups using CUPS
 //Repoint the buffer 
-#define NewBattleBufferLocation 0x203aac0 //was 203a5ec
+#define NewBattleBufferLocation 0x203AAC0 //was 203a5ec
 #define BattleBufferWidth 8
 #define maxAtks 31
 #define BattleBufferAnimsOn1 (NewBattleBufferLocation+(maxAtks*8)) //was 203e12a

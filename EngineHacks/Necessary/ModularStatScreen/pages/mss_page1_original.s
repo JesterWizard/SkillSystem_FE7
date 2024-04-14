@@ -61,7 +61,7 @@ draw_con_bar_at 24, 5
 
 
 draw_textID_at 21, 7, 0x4f8 @aid
-draw_number_at 25, 7, 0x80189B8, 1 @aid getter
+draw_number_at 25, 3, 0x80189B8, 2 @aid getter
 draw_aid_icon_at 26, 7
 
 draw_trv_text_at 21, 9

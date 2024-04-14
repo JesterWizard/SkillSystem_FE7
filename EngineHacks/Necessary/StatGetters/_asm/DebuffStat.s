@@ -20,7 +20,7 @@ NoCapHere:
 bx lr 
 .ltorg 
 
-.equ NextRN_N, 0x08000C80
+.equ NextRN_N, 0x08000E30 //FE8 -> 0x08000C80
 GetDebuffAmount: 
 push {r4, lr} 
 mov r4, r2 @ bit offset 

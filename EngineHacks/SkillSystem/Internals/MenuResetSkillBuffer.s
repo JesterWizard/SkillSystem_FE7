@@ -1,6 +1,6 @@
 .thumb
 
-.equ ReturnAddress, 0x801D0B0|1
+.equ ReturnAddress, 0x801CA64|1 //FE8 -> 0x801D0B0|1
 
 .global MenuResetSkillBuffer
 .type MenuResetSkillBuffer, %function

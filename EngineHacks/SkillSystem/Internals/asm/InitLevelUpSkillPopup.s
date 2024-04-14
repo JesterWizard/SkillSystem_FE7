@@ -1,11 +1,11 @@
 
 	.thumb
 
-	gBattleActor  = 0x0203A4EC
-	gBattleTarget = 0x0203A56C
-	gPopupItem    = 0x030005F4
+	gBattleActor  = 0x0203A3F0 //FE8 -> 0x0203A4EC
+	gBattleTarget = 0x0203A470 //FE8 -> 0x0203A56C
+	gPopupItem    = 0x03000108 //FE8 -> 0x030005F4
 
-	GetSpellAssocCharCount = 0x8078249
+	GetSpellAssocCharCount = 0x806B9ED //FE8 -> 0x8078249
 
 	lGetUnitLevelSkills = EALiterals+0x00
 	lAddSkill           = EALiterals+0x04

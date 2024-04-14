@@ -43,22 +43,22 @@
   #define SupportsConditional 0x81739 //FE8 -> 0x88C15
  
 
-//   #ifdef QOL_STAT_SCREEN_BALLISTA
+  #ifdef QOL_STAT_SCREEN_BALLISTA
     
-//     PUSH
+    PUSH
         
-//         ORG 0x81554 //FE8 -> 0x88A00
-//         replaceWithHack(ItemMenuRtextGetter)
+        ORG 0x81554 //FE8 -> 0x88A00
+        replaceWithHack(ItemMenuRtextGetter)
         
-//         ORG 0x81668 //FE8 -> 0x88B40
-//         replaceWithHack(ItemMenuRtextLooper)
+        ORG 0x81668 //FE8 -> 0x88B40
+        replaceWithHack(ItemMenuRtextLooper)
         
-//     POP
+    POP
     
-//     ALIGN 4
-//     #include "asm/ItemMenuRtext_BallistaFix.lyn.event"
+    ALIGN 4
+    #include "asm/ItemMenuRtext_BallistaFix.lyn.event"
 
-// #endif  // QOL_STAT_SCREEN_BALLISTA
+#endif  // QOL_STAT_SCREEN_BALLISTA
 
 
   PUSH
@@ -73,9 +73,9 @@
 	ORG 0x81524 //FE8 -> $889d0
       SHORT $e010 //Temporary r-text fix to prevent freezing
 
-//     // ORG $81546 //FE8 -> $889f2  
-//     //   SHORT $BD30
-//     //   BL(RText_Page4_ladder) //this has to be in bl range somewhere
+  // ORG $81546 //FE8 -> $889f2  
+  //   SHORT $BD30
+  //   BL(RText_Page4_ladder) //this has to be in bl range somewhere
 	  
 	
 	
@@ -86,7 +86,7 @@
 // /*  === PAGE 1 ===  */
 
 
-//   #ifndef USE_STRMAG_SPLIT
+#ifndef USE_STRMAG_SPLIT
 
   ALIGN 4
   RText_Page1:
@@ -185,116 +185,112 @@
     RMenu(ST_Skill3,0,ST_Skill5,0,0xd6,0x88,5,RTextLoop,SkillDescGetter+20)
   
 
-// #else // USE_STRMAG_SPLIT
+#else // USE_STRMAG_SPLIT
   
   
-//   ALIGN 4
-//   RText_Page1:
+  ALIGN 4
+  RText_Page1:
 
-//  #ifdef PRESS_SELECT_TO_VIEW_GROWTHS
-//     PersonalDataRText:
-//     RMenu(0,ST_Str,0,0,0x76,0x4,PersonalDataDesc1)
-//   #else
-//     PersonalDataRText:
-//     RMenu(0,ST_Str,0,0,0x76,0x4,PersonalDataDesc2)
-//   #endif
-
-
-//   ST_Name:
-//     RMenu(0,ST_Class,0,ST_Luck,0x18,0x50,0x0,NameDescGetter)
-
-//   ST_Class:
-//     RMenu(ST_Name,ST_Level,0,ST_Def,0x6,0x68,0x6E8,ClassDescGetter)
-
-//   ST_Level:
-//     RMenu(ST_Class,ST_HP,0,ST_Exp,0x6,0x78,0x542)
-
-//   ST_Exp:
-//     RMenu(ST_Class,ST_HP,ST_Level,ST_Res,0x26,0x78,0x543)
-
-//   ST_HP:
-//     RMenu(ST_Level,0,0,ST_Mov,0x6,0x88,0x544)
+ #ifdef PRESS_SELECT_TO_VIEW_GROWTHS
+    PersonalDataRText:
+    RMenu(0,ST_Str,0,0,0x76,0x4,PersonalDataDesc1)
+  #else
+    PersonalDataRText:
+    RMenu(0,ST_Str,0,0,0x76,0x4,PersonalDataDesc2)
+  #endif
 
 
+  ST_Name:
+    RMenu(0,ST_Class,0,ST_Luck,0x18,0x50,0x0,NameDescGetter)
 
-//   ST_Str:
-//     RMenu(PersonalDataRText,ST_Mag,ST_Name,ST_Con,0x66,0x18,0x546)
+  ST_Class:
+    RMenu(ST_Name,ST_Level,0,ST_Def,0x6,0x68,0x6E8,ClassDescGetter)
 
-//   ST_Mag:
-//     RMenu(ST_Str,ST_Skl,ST_Name,ST_Aid,0x66,0x28,0x547)
+  ST_Level:
+    RMenu(ST_Class,ST_HP,0,ST_Exp,0x6,0x78,0x542)
 
-//   ST_Skl:
-//     RMenu(ST_Mag,ST_Spd,ST_Name,ST_Cond,0x66,0x38,0x548)
+  ST_Exp:
+    RMenu(ST_Class,ST_HP,ST_Level,ST_Res,0x26,0x78,0x543)
 
-//   ST_Spd:
-//     RMenu(ST_Skl,ST_Luck,ST_Name,ST_Affin,0x66,0x48,0x549)
+  ST_HP:
+    RMenu(ST_Level,0,0,ST_Mov,0x6,0x88,0x544)
 
-//   ST_Luck:
-//     RMenu(ST_Spd,ST_Def,ST_Name,ST_Talk,0x66,0x58,0x54a)
+  ST_Str:
+    RMenu(PersonalDataRText,ST_Mag,ST_Name,ST_Con,0x66,0x18,0x546)
 
-//   ST_Def:
-//     RMenu(ST_Luck,ST_Res,ST_Class,ST_Skills,0x66,0x68,0x54b)
+  ST_Mag:
+    RMenu(ST_Str,ST_Skl,ST_Name,ST_Aid,0x66,0x28,0x547)
 
-//   ST_Res:
-//     RMenu(ST_Def,ST_Mov,ST_Exp,ST_Skill1,0x66,0x78,0x54c)
+  ST_Skl:
+    RMenu(ST_Mag,ST_Spd,ST_Name,ST_Cond,0x66,0x38,0x548)
 
-//   ST_Mov:
-//     RMenu(ST_Res,ST_Con,ST_Exp,ST_Skill1,0x66,0x88,0x54d,MovHPDescGetter)
+  ST_Spd:
+    RMenu(ST_Skl,ST_Luck,ST_Name,ST_Affin,0x66,0x48,0x549)
 
-//   ST_Con:
-//     RMenu(PersonalDataRText,ST_Aid,ST_Str,0,0xA6,0x18,0x54e)
+  ST_Luck:
+    RMenu(ST_Spd,ST_Def,ST_Name,ST_Talk,0x66,0x58,0x54a)
 
-//   ST_Aid:
-//     RMenu(ST_Con,ST_Cond,ST_Mag,0,0xa6,0x28,0x54F)
+  ST_Def:
+    RMenu(ST_Luck,ST_Res,ST_Class,ST_Skills,0x66,0x68,0x54b)
 
-//   ST_Cond:
-//     RMenu(ST_Aid,ST_Affin,ST_Skl,0,0xa6,0x38,0x552,ConditionGetter)
+  ST_Res:
+    RMenu(ST_Def,ST_Mov,ST_Exp,ST_Skill1,0x66,0x78,0x54c)
 
-//   ST_Affin:
-//     #ifdef LEADERSHIP_STARS
-//       RMenu(ST_Cond,ST_Talk,ST_Spd,0,0xa6,0x48,LeadRText)
-//     #else
-//       RMenu(ST_Cond,ST_Talk,ST_Spd,ST_AffinDesc,0xa6,0x48,0x551)
-//     #endif
+  ST_Mov:
+    RMenu(ST_Res,ST_Con,ST_Exp,ST_Skill1,0x66,0x88,0x54d,MovHPDescGetter)
 
-//   ST_AffinDesc:
-//     RMenu(ST_Cond,ST_Talk,ST_Spd,0,0xbe,0x48,AffinityDescLooper,AffinityDescGetter)
+  ST_Con:
+    RMenu(PersonalDataRText,ST_Aid,ST_Str,0,0xA6,0x18,0x54e)
 
-//   ST_Cond:
-//     RMenu(ST_Affin,ST_Talk,ST_Spd,0,0xA6,0x48,0x552,ConditionGetter)
+  ST_Aid:
+    RMenu(ST_Con,ST_Cond,ST_Mag,0,0xa6,0x28,0x54F)
 
-//   ST_Talk:
-//     RMenu(ST_Affin,ST_Skills,ST_Luck,0,0xA6,0x58,SS_TalkRText)
+  ST_Cond:
+    RMenu(ST_Aid,ST_Affin,ST_Skl,0,0xa6,0x38,0x552,ConditionGetter)
 
-//   ST_Skills:
-//     RMenu(ST_Talk,ST_Skill1,ST_Def,0,0xA6,0x68,SS_SkillsRText)
+  ST_Affin:
+    #ifdef LEADERSHIP_STARS
+      RMenu(ST_Cond,ST_Talk,ST_Spd,0,0xa6,0x48,LeadRText)
+    #else
+      RMenu(ST_Cond,ST_Talk,ST_Spd,ST_AffinDesc,0xa6,0x48,0x551)
+    #endif
 
-//   ST_Skill1:
-//     RMenu(ST_Skills,ST_Skill4,ST_Res,ST_Skill2,0xa6,0x78,0,RTextLoop,SkillDescGetter)
+  ST_AffinDesc:
+    RMenu(ST_Cond,ST_Talk,ST_Spd,0,0xbe,0x48,AffinityDescLooper,AffinityDescGetter)
 
-//   ST_Skill2:
-//     RMenu(ST_Skills,ST_Skill5,ST_Skill1,ST_Skill3,0xbe,0x78,1,RTextLoop,SkillDescGetter+4)
+  ST_Cond:
+    RMenu(ST_Affin,ST_Talk,ST_Spd,0,0xA6,0x48,0x552,ConditionGetter)
 
-//   ST_Skill3:
-//     RMenu(ST_Skills,ST_Skill6,ST_Skill2,0,0xd6,0x78,2,RTextLoop,SkillDescGetter+8)
+  ST_Talk:
+    RMenu(ST_Affin,ST_Skills,ST_Luck,0,0xA6,0x58,SS_TalkRText)
 
-//   ST_Skill4:
-//     RMenu(ST_Skill1,0,ST_Mov,ST_Skill5,0xa6,0x88,3,RTextLoop,SkillDescGetter+12)
+  ST_Skills:
+    RMenu(ST_Talk,ST_Skill1,ST_Def,0,0xA6,0x68,SS_SkillsRText)
 
-//   ST_Skill5:
-//     RMenu(ST_Skill2,0,ST_Skill4,ST_Skill6,0xbe,0x88,4,RTextLoop,SkillDescGetter+16)
+  ST_Skill1:
+    RMenu(ST_Skills,ST_Skill4,ST_Res,ST_Skill2,0xa6,0x78,0,RTextLoop,SkillDescGetter)
 
-//   ST_Skill6:
-//     RMenu(ST_Skill3,0,ST_Skill5,0,0xd6,0x88,5,RTextLoop,SkillDescGetter+20)
+  ST_Skill2:
+    RMenu(ST_Skills,ST_Skill5,ST_Skill1,ST_Skill3,0xbe,0x78,1,RTextLoop,SkillDescGetter+4)
 
- 
+  ST_Skill3:
+    RMenu(ST_Skills,ST_Skill6,ST_Skill2,0,0xd6,0x78,2,RTextLoop,SkillDescGetter+8)
+
+  ST_Skill4:
+    RMenu(ST_Skill1,0,ST_Mov,ST_Skill5,0xa6,0x88,3,RTextLoop,SkillDescGetter+12)
+
+  ST_Skill5:
+    RMenu(ST_Skill2,0,ST_Skill4,ST_Skill6,0xbe,0x88,4,RTextLoop,SkillDescGetter+16)
+
+  ST_Skill6:
+    RMenu(ST_Skill3,0,ST_Skill5,0,0xd6,0x88,5,RTextLoop,SkillDescGetter+20)
+
   
-// #endif // USE_STRMAG_SPLIT
+#endif // USE_STRMAG_SPLIT
 
 
 
-// /*  === PAGE 2 ===  */
-
+/*  === PAGE 2 ===  */
 
   ALIGN 4
   RText_Page2:
@@ -404,100 +400,99 @@
   RMenu(ST_Level3,0,0,ST_Supports,0x6,0x88,0x544)
 
 
-// // /*  === PAGE 4 ===  */
+/*  === PAGE 4 ===  */
 
+// #ifdef ENABLE_PERSONAL_INFO
 
-// // #ifdef ENABLE_PERSONAL_INFO
-
-// //   ALIGN 4
-// //   RText_Page4:
+//   ALIGN 4
+//   RText_Page4:
   
-// //   ST_Name4:
-// //     RMenu(0,ST_Class4,0,ST_Dislikes,0x18,0x50,0x0,NameDescGetter)
+//   ST_Name4:
+//     RMenu(0,ST_Class4,0,ST_Dislikes,0x18,0x50,0x0,NameDescGetter)
 
-// //   ST_Class4:
-// // 	#ifdef GAIDEN_MAGIC
-// // 	  RMenu(ST_Name4,ST_Level4,0,ST_Spell1,0x6,0x68,0x6E8,ClassDescGetter)
-// // 	#else
-// // 	  RMenu(ST_Name4,ST_Level4,0,0,0x6,0x68,0x6E8,ClassDescGetter)
-// // 	#endif
+//   ST_Class4:
+// 	#ifdef GAIDEN_MAGIC
+// 	  RMenu(ST_Name4,ST_Level4,0,ST_Spell1,0x6,0x68,0x6E8,ClassDescGetter)
+// 	#else
+// 	  RMenu(ST_Name4,ST_Level4,0,0,0x6,0x68,0x6E8,ClassDescGetter)
+// 	#endif
 
-// //   ST_Level4:
-// //     RMenu(ST_Class4,ST_HP4,0,ST_Exp4,0x6,0x78,0x542)
+//   ST_Level4:
+//     RMenu(ST_Class4,ST_HP4,0,ST_Exp4,0x6,0x78,0x542)
 
-// //   ST_Exp4:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Spell3,0x26,0x78,0x543)
-// //     #else
-// // 	  RMenu(ST_Class4,ST_HP4,0,0,0x26,0x78,0x543)
-// // 	#endif
+//   ST_Exp4:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Spell3,0x26,0x78,0x543)
+//     #else
+// 	  RMenu(ST_Class4,ST_HP4,0,0,0x26,0x78,0x543)
+// 	#endif
 
-// //   ST_HP4:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(ST_Level4,0,0,ST_Spell5,0x6,0x88,0x544)
-// // 	#else
-// // 	  RMenu(ST_Level4,0,0,0,0x6,0x88,0x544)
-// // 	#endif
+//   ST_HP4:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(ST_Level4,0,0,ST_Spell5,0x6,0x88,0x544)
+// 	#else
+// 	  RMenu(ST_Level4,0,0,0,0x6,0x88,0x544)
+// 	#endif
 
-// //   ST_Likes:
-// //     RMenu(0,ST_Dislikes,ST_Name4,ST_Height,0x66,0x18,LikesDesc)
+//   ST_Likes:
+//     RMenu(0,ST_Dislikes,ST_Name4,ST_Height,0x66,0x18,LikesDesc)
 	
-// //   ST_Dislikes:
-// //     RMenu(ST_Likes,ST_Age,ST_Name4,ST_Height,0x66,0x38,DislikesDesc)
+//   ST_Dislikes:
+//     RMenu(ST_Likes,ST_Age,ST_Name4,ST_Height,0x66,0x38,DislikesDesc)
 	
-// //   ST_Age:
-// // 	#ifdef GAIDEN_MAGIC
-// // 	  RMenu(ST_Dislikes,ST_Spell1,ST_Class4,ST_Height,0x66,0x58,AgeDesc)
-// // 	#else
-// // 	  RMenu(ST_Dislikes,0,ST_Class4,ST_Height,0x66,0x58,AgeDesc)
-// // 	#endif
+//   ST_Age:
+// 	#ifdef GAIDEN_MAGIC
+// 	  RMenu(ST_Dislikes,ST_Spell1,ST_Class4,ST_Height,0x66,0x58,AgeDesc)
+// 	#else
+// 	  RMenu(ST_Dislikes,0,ST_Class4,ST_Height,0x66,0x58,AgeDesc)
+// 	#endif
 	
-// //   ST_Height:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(ST_Dislikes,ST_Spell2,ST_Age,0,0xa6,0x58,HeightDesc)
-// //     #else
-// // 	  RMenu(ST_Dislikes,0,ST_Age,0,0xa6,0x58,HeightDesc)
-// // 	#endif
+//   ST_Height:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(ST_Dislikes,ST_Spell2,ST_Age,0,0xa6,0x58,HeightDesc)
+//     #else
+// 	  RMenu(ST_Dislikes,0,ST_Age,0,0xa6,0x58,HeightDesc)
+// 	#endif
 
-// // #else // ENABLE_PERSONAL_INFO
+// #else // ENABLE_PERSONAL_INFO
 
-// //   RText_Page4:
+//   RText_Page4:
 
-// //   ST_Name4:
-// //     RMenu(0,ST_Class4,0,ST_Donate,0x18,0x50,0x0,NameDescGetter)
+//   ST_Name4:
+//     RMenu(0,ST_Class4,0,ST_Donate,0x18,0x50,0x0,NameDescGetter)
     
-// //   ST_Class4:
-// // 	#ifdef GAIDEN_MAGIC
-// // 	  RMenu(ST_Name4,ST_Level4,0,ST_Spell1,0x6,0x68,0x6E8,ClassDescGetter)
-// // 	#else
-// // 	  RMenu(ST_Name4,ST_Level4,0,ST_Donate,0x6,0x68,0x6E8,ClassDescGetter)
-// // 	#endif
+//   ST_Class4:
+// 	#ifdef GAIDEN_MAGIC
+// 	  RMenu(ST_Name4,ST_Level4,0,ST_Spell1,0x6,0x68,0x6E8,ClassDescGetter)
+// 	#else
+// 	  RMenu(ST_Name4,ST_Level4,0,ST_Donate,0x6,0x68,0x6E8,ClassDescGetter)
+// 	#endif
 
-// //   ST_Level4:
-// //     RMenu(ST_Class4,ST_HP4,0,ST_Exp4,0x6,0x78,0x542)
+//   ST_Level4:
+//     RMenu(ST_Class4,ST_HP4,0,ST_Exp4,0x6,0x78,0x542)
 
-// //   ST_Exp4:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Spell3,0x26,0x78,0x543)
-// //     #else
-// // 	  RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Donate,0x26,0x78,0x543)
-// // 	#endif
+//   ST_Exp4:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Spell3,0x26,0x78,0x543)
+//     #else
+// 	  RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Donate,0x26,0x78,0x543)
+// 	#endif
 
-// //   ST_HP4:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(ST_Level4,0,0,ST_Spell5,0x6,0x88,0x544)
-// // 	#else
-// // 	  RMenu(ST_Level4,0,0,ST_Donate,0x6,0x88,0x544)
-// // 	#endif
+//   ST_HP4:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(ST_Level4,0,0,ST_Spell5,0x6,0x88,0x544)
+// 	#else
+// 	  RMenu(ST_Level4,0,0,ST_Donate,0x6,0x88,0x544)
+// 	#endif
     
-// //   ST_Donate:
-// // 	#ifdef GAIDEN_MAGIC
-// //       RMenu(0,ST_Spell1,ST_Name4,0,0x86,0x48,DonateURL)
-// // 	#else
-// // 	  RMenu(0,0,ST_Name4,0,0x86,0x48,DonateURL)
-// // 	#endif
+//   ST_Donate:
+// 	#ifdef GAIDEN_MAGIC
+//       RMenu(0,ST_Spell1,ST_Name4,0,0x86,0x48,DonateURL)
+// 	#else
+// 	  RMenu(0,0,ST_Name4,0,0x86,0x48,DonateURL)
+// 	#endif
 	
-// // #endif // ENABLE_PERSONAL_INFO
+// #endif // ENABLE_PERSONAL_INFO
 
 // #ifdef GAIDEN_MAGIC
 //   #ifdef ENABLE_PERSONAL_INFO
