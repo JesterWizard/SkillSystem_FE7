@@ -1,7 +1,7 @@
 .thumb
 .org 0x0
 .equ PassID, SkillTester+4
-@Bx'd to from 3003D28
+@Bx'd to from 30034F4 (IWRAM copy of ROM $7DC)
 @This function sets the Z flag if the moving unit can cross the other unit's tile, either because they're either both allied/npcs or enemies, or because the mover has Pass
 push  {r0-r6,r14}   @actually necessary to push the scratch registers in this case
 ldrb  r4,[r3,#0xA]  @allegiance byte of current unit
@@ -29,7 +29,7 @@ bx    r4
 GetCharData:
 .long 0x08018D0C //FE8 -> 0x08019430
 GoBackAddress:
-.long 0x0300C03C //Not sure about FE7 offset //FE8 -> 0x03003D34    @note that we need to switch back to arm
+.long 0x03003500 // IWRAM($7DC)+0xC; FE8 -> 0x03003D34    @note that we need to switch back to arm
 SkillTester:
 @POIN SkillTester
 @WORD PassID

@@ -1,28 +1,20 @@
 PUSH
 
+// Disabled until FE7 movement-fill is stable. These run during chapter
+// start MOVE/fill: Pass patches ARM occupancy, Acrobat hooks StoreMovCostTable.
+// A bad SkillTester call from that path leaves the map drawn with no events.
+
 //Acrobat
-ORG $19CE0 //FE8 -> $1A4CC
-jumpToHack(AcrobatCheck)
+//ORG $19CE0 //FE8 -> $1A4CC
+//jumpToHack(AcrobatCheck)
 
-//// Acrobat needs a rewrite and this is a suspect way to fix some invalid skill tester calls 
-//// Instead of rewriting, I'm just putting the unit in r3 in a few places 
-//ORG  $7A65C // put the unit in r3 
-//SHORT $7C61 $6862 $6B92 $1C23 
-//ORG $7a6bC //FE8 -> $7a6bC 
-//SHORT $7C61 $6862 $6B92 $1C23 
-
-ORG $19C84 //FE8 -> $1A440 
-callHack_r0(MapRangeFillMovementHook) 
-
-// Might need to do these in the future - Vesly 
-// These need to hook instead of fixing inline 
-//ORG $7A514
-//ORG $3bE42 
+//ORG $19C84 //FE8 -> $1A440
+//callHack_r0(MapRangeFillMovementHook)
 
 //Pass
-ORG $7DC //FE8 -> $800 //modifies movement ARM code
-WORD 0xE59FC000 0xE12FFF1C //ldr r12,Pass; bx r12
-POIN PassCheck|1
+//ORG $7DC //FE8 -> $800
+//WORD 0xE59FC000 0xE12FFF1C
+//POIN PassCheck|1
 
 POP
 

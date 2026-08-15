@@ -1,7 +1,7 @@
 // #define FreeSpace 0xb2a610
 // #define FreeSpaceEnd 0xC00000
-#define FreeSpace 0xD00000 //FE7
-#define FreeSpaceEnd 0xE00000 //unchanged
+#define FreeSpace 0x1000000 // first byte after a 16MB ROM
+#define FreeSpaceEnd 0x2000000 // 32MB ceiling
 #define FreeSpaceBLRange 0x100000 //FE7
 
 #define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0xC9A200 + (148* chapter) + 4; SHORT object; BYTE palette config; POP"

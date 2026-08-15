@@ -9,7 +9,7 @@
 #include "EAstdlib.event"
 
 #ifndef FreeSpace
-	#define FreeSpace 0xD00000
+	#define FreeSpace 0x1000000
 	ORG FreeSpace
 #endif
 

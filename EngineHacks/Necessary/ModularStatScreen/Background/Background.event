@@ -32,8 +32,11 @@
     //BYTE 0x0
     
     // Don't disable BG1 when transitioning between units.
-    ORG 0x87C18
-    SHORT 0x46C0
+    // FE8 0x87C18 is a 2-byte `and` in EndGlowBlendCtrl. FE7 0x87C18 is a
+    // 4-byte `bl Find6C` in the dialogue-start routine used after the
+    // tactician screen. Nopping 2 bytes here blackscreens the tent scene.
+    // ORG 0x87C18
+    // SHORT 0x46C0
     
     // //Start scrolling background.- Background scrolls by default in FE7
     // ORG 0x810CA //FE8 -> 0x8856E

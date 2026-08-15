@@ -92,7 +92,7 @@ BL(Unset_Attack_Flag) //this is in masterhackinstaller
 // jumpToHack(RemoveRoundHack)
 
 
-ORG $3C55E4 //FE8 -> $1D0A8F
+ORG $1CA5C //FE8 -> $1D0A8
 jumpToHack(MenuResetSkillBuffer)
 POP
 

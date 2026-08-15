@@ -27,6 +27,7 @@ Proc_Finish:
 PUSH
 ORG $29264 //FE8 -> $2b3ec
 jumpToHack(ProcLoopParent)
+POP
 
 /*
 

@@ -62,6 +62,7 @@ echo Assembling
 
 cd "%base_dir%EventAssembler"
 ColorzCore A FE7 "-output:%target_rom%" "-input:%main_event%" --nocash-sym
+set "assemble_error=%ERRORLEVEL%"
 
 if /I not [%1]==[quick] (
 
@@ -80,7 +81,13 @@ if /I not [%1]==[quick] (
 
 @rem echo: | ( "%symcombo%" "%target_sym%" "%target_sym%" "%base_dir%\Tools\sym\VanillaOffsets.sym" )
 
-@rem echo:
-@rem echo Done!
+if not "%assemble_error%"=="0" (
+  echo Assemble failed.
+  pause
+  exit /b %assemble_error%
+)
+
+echo Launching NO$GBA
+start "" "%base_dir%..\no$gba\NO$GBA.EXE" "%target_rom%"
 
 pause
