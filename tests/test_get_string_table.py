@@ -46,6 +46,14 @@ PAGE2_LYN = (
     / "pages"
     / "mss_page2_original.lyn.event"
 )
+PAGE3_LYN = (
+    ROOT
+    / "EngineHacks"
+    / "Necessary"
+    / "ModularStatScreen"
+    / "pages"
+    / "mss_page3_original.lyn.event"
+)
 
 TID_STR = 0x10F8
 TID_SKILLS = 0xF45
@@ -185,6 +193,11 @@ class GetStringTableTests(unittest.TestCase):
         """Vanilla 083FD62C at 0x6004E00 is the tileset with the baked-in Equipment label."""
         text = read_event_text(PAGE2_LYN)
         self.assertIn("$83FD62C", text)
+
+    def test_weapon_page_uses_vanilla_wep_support_tsa(self):
+        """FE6 WepSupport TSA draws a divider with the wrong tileset under the 2x2 ranks."""
+        text = read_event_text(PAGE3_LYN)
+        self.assertIn("$83FCB30", text)
 
     def test_items_page_range_text_uses_fe7_handle(self):
         """FE8 0x2003CB4 is page BG2 on FE7. Vanilla writes Rng into StatScreenStruct+0xB8."""
