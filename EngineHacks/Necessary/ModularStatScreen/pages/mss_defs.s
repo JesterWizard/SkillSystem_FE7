@@ -36,8 +36,8 @@
 .equ CurHPGetter, 0x08018A70 //FE8 -> 0x08019150
 .equ MaxHPGetter, 0x08018AB0 //FE8 -> 0x08019190       
 .equ StrGetter, 0x08018AD0 //FE8 -> 0x080191b0
-.equ MagGetter, 0x08018AD8 //FE8 -> 0x080191b8
-.equ SklGetter, 0x08018578 //FE8 -> 0x080191d0
+.equ MagGetter, 0x08018AD0 //FE8 -> 0x080191b8 (vanilla FE7 has no mag getter)
+.equ SklGetter, 0x08018AF0 //FE8 -> 0x080191d0
 .equ SpdGetter, 0x08018B30 //FE8 -> 0x08019210
 .equ LuckGetter, 0x08018BB8 //FE8 -> 0x08019298
 .equ DefGetter, 0x08018B70 //FE8 -> 0x08019250
@@ -92,6 +92,22 @@
 .equ Blue, 2
 .equ Grey, 1
 .equ White, 0
+
+@ FE7 stat-screen labels. FE8 0x4Ex/0x4Fx IDs are character names in FE7.
+.equ TID_HP,    0x10F4
+.equ TID_Str,   0x10F8
+.equ TID_Mag,   0x10F9
+.equ TID_Skl,   0x10FB
+.equ TID_Spd,   0x10FC
+.equ TID_Luck,  0x10FD
+.equ TID_Def,   0x10FE
+.equ TID_Res,   0x10FF
+.equ TID_Affin, 0x1100
+.equ TID_Move,  0x1106
+.equ TID_Con,   0x1107
+.equ TID_Aid,   0x1108
+.equ TID_Trv,   0x1109
+.equ TID_Cond,  0x110A
 
 @Hardcoded classIDs (Gorgon Eggs)
 .equ Deny_Statscreen_Class_Lo, 0x34
@@ -313,22 +329,14 @@
 .endm
 
 .macro draw_mag_bar_at, bar_x, bar_y
+  @ Vanilla FE7 has no mag byte; MagDisplayGetter returns Pow for magic ranks, else 0.
   mov     r0, r8
-  blh     MagGetter
-  mov     r1, r8  
-  mov     r3, #0x3A
-  ldsb    r3, [r1, r3]     
-  str     r0, [sp]     
-  ldr     r0, [r1, #0x4]  @class
-  ldrb    r0, [r0, #0x4]  @class id
-  lsl     r0, #0x2
-  ldr     r1, =MagClassTable
-  add     r0, r1
-  ldrb    r0, [r0, #0x2]
-  lsl     r0, r0, #0x18    
-  asr     r0, r0, #0x18
-  str     r0, [sp, #0x4]    
-  mov     r0, #0x1  
+  blh     MagDisplayGetter
+  mov     r3, r0
+  str     r0, [sp]
+  mov     r0, #0x1e
+  str     r0, [sp, #0x4]
+  mov     r0, #0x1
   mov     r1, #(\bar_x-11)
   mov     r2, #(\bar_y-2)
   blh     DrawBar, r4
@@ -624,7 +632,7 @@
 .endm
 
 .macro draw_trv_text_at, tile_x, tile_y, colour=Blue
-  draw_textID_at \tile_x, \tile_y, 0x4f9, width=9 @trv
+  draw_textID_at \tile_x, \tile_y, TID_Trv, width=9 @trv
   mov     r4, r7
   sub     r4, #8 @un-advance the buffer
   mov     r0, r8
@@ -683,7 +691,7 @@
 .endm
 
 .macro draw_status_text_at, tile_x, tile_y, colour=Blue  
-  draw_textID_at \tile_x, \tile_y, 0x4fa, width=9 @cond
+  draw_textID_at \tile_x, \tile_y, TID_Cond, width=9 @cond
   mov     r4, r7
   sub     r4, #8
   mov     r1, r8  

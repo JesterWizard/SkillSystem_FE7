@@ -8,31 +8,21 @@
 
 #ifdef _FE7_
 
-  #ifndef USE_STRMAG_SPLIT
-	//normal positions
-    #define Skl_Arrow_X 0x78
-    #define Skl_Arrow_Y 0x28
-    #define Spd_Arrow_X 0x78
-    #define Spd_Arrow_Y 0x38
-    #define Trv_Icon_X 0xB8
-    #define Trv_Icon_Y 0x2E
-  #else // USE_STRMAG_SPLIT
-	//strmag positions
-	#define Skl_Arrow_X 0x78
-    #define Skl_Arrow_Y 0x38
-    #define Spd_Arrow_X 0x78
-    #define Spd_Arrow_Y 0x48
-    #define Trv_Icon_X 0xB8
-    #define Trv_Icon_Y 0x2E 
-  #endif // USE_STRMAG_SPLIT
+  // Page 1 uses the Skill System Str/Mag layout (8 left-column rows).
+  #define Skl_Arrow_X 0x78
+  #define Skl_Arrow_Y 0x38
+  #define Spd_Arrow_X 0x78
+  #define Spd_Arrow_Y 0x48
+  #define Trv_Icon_X 0xB8
+  #define Trv_Icon_Y 0x2E
   
   #include "DisplayGrowthsOptions/DisplayGrowthsOptions.event"
   #include "WeaponRankStatScreen/WeaponRankStatScreen.event"
   #include "Background/Background.event"
  
   PUSH
-    //Currently breaks on 01337490 when viewing a unit's stat screen but this should be the right offset for FE7 0x404B60
-    ORG 0x404B54  //FE8 -> 0x205b24
+    // FE7 loads page routines from 08404B60 (see 080804D0).
+    ORG 0x404B60  //FE8 -> 0x205b24
       POIN MSS_page1|1 MSS_page2|1 MSS_page3|1 //MSS_page4|1
 
     ORG $811BC //FE8 -> $88690

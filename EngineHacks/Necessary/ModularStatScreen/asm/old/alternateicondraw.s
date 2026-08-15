@@ -92,4 +92,4 @@ bx r1
 
 .ltorg
 IconGraphic:
-@POIN IconGraphic
+.word SkillIcons
