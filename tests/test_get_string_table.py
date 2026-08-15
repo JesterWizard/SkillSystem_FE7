@@ -1,0 +1,182 @@
+"""
+Regression checks for FE7 GetStringFromIndex.
+
+Title-start black screens happen when the live text table is FE8's
+(or too short, or the function's literal pool is clobbered). These
+tests read the built ROM the same way the game does.
+"""
+import struct
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CLEAN_ROM = ROOT / "FE7_clean.gba"
+HACK_ROM = ROOT / "FE7_Hack.gba"
+
+VANILLA_TABLE_FILE_OFF = 0xB808AC
+GET_STRING_TABLE_LITERAL = 0x12C88
+GET_STRING_LAST_ID_LITERAL = 0x12C84
+GET_STRING_BUFFER_LITERAL = 0x12C8C
+HELPER_TABLE_LITERAL = 0x12CB8
+LEFT_PAGE_HOOK = 0x7FA8C
+AFFINITY_GETTER = 0x08026B24
+GET_SKILLS_DMP = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.dmp"
+PAGE1_LYN = (
+    ROOT
+    / "EngineHacks"
+    / "Necessary"
+    / "ModularStatScreen"
+    / "pages"
+    / "mss_page1_skills.lyn.event"
+)
+LEFT_LYN = (
+    ROOT
+    / "EngineHacks"
+    / "Necessary"
+    / "ModularStatScreen"
+    / "pages"
+    / "mss_leftstatscreen.lyn.event"
+)
+
+TID_STR = 0x10F8
+TID_SKILLS = 0xF45
+TID_AFFIN = 0xF64
+STRING_EXPANDER = 0x4364
+
+GBA_ROM_BASE = 0x08000000
+
+
+def u32(data: bytes, off: int) -> int:
+    return struct.unpack_from("<I", data, off)[0]
+
+
+def gba_to_file(ptr: int) -> int:
+    return ptr & 0x01FFFFFF
+
+
+def is_rom_ptr(ptr: int) -> bool:
+    body = ptr & 0x7FFFFFFF
+    return 0x08000000 <= body < 0x0A000000
+
+
+def read_event_text(path: Path) -> str:
+    raw = path.read_bytes()
+    if raw.startswith(b"\xff\xfe") or raw[:2] == b"A\x00":
+        return raw.decode("utf-16-le")
+    if raw.startswith(b"\xfe\xff"):
+        return raw.decode("utf-16-be")
+    return raw.decode("utf-8")
+
+
+class GetStringTableTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not CLEAN_ROM.is_file():
+            raise unittest.SkipTest(f"missing {CLEAN_ROM.name}")
+        if not HACK_ROM.is_file():
+            raise unittest.SkipTest(f"missing {HACK_ROM.name}")
+        cls.clean = CLEAN_ROM.read_bytes()
+        cls.hack = HACK_ROM.read_bytes()
+
+    def live_table_off(self) -> int:
+        ptr = u32(self.hack, GET_STRING_TABLE_LITERAL)
+        self.assertTrue(is_rom_ptr(ptr), f"12C88 is not a ROM pointer: {ptr:08X}")
+        off = gba_to_file(ptr)
+        self.assertLess(off + 4, len(self.hack), "text table pointer is past the ROM")
+        return off
+
+    def table_entry(self, rom: bytes, table_off: int, text_id: int) -> int:
+        return u32(rom, table_off + 4 * text_id)
+
+    def test_vanilla_text_id_0_matches_clean_fe7(self):
+        """Chapter boot reads low text IDs; FE8 table pointers Huffman-decode as garbage and hang."""
+        live = self.table_entry(self.hack, self.live_table_off(), 0)
+        vanilla = self.table_entry(self.clean, VANILLA_TABLE_FILE_OFF, 0)
+        self.assertEqual(
+            live & 0x7FFFFFFF,
+            vanilla & 0x7FFFFFFF,
+            f"text ID 0 is {live:08X}, clean FE7 is {vanilla:08X}",
+        )
+
+    def test_str_label_matches_clean_fe7(self):
+        """Stat-screen Str (0x10F8) is past FE8's table length; the FE7 table must be that long."""
+        live = self.table_entry(self.hack, self.live_table_off(), TID_STR)
+        vanilla = self.table_entry(self.clean, VANILLA_TABLE_FILE_OFF, TID_STR)
+        self.assertTrue(is_rom_ptr(live), f"Str text pointer {live:08X} is not in ROM")
+        self.assertEqual(live & 0x7FFFFFFF, vanilla & 0x7FFFFFFF)
+
+    def test_skills_string_is_anti_huffman_skills(self):
+        live = self.table_entry(self.hack, self.live_table_off(), TID_SKILLS)
+        self.assertEqual(live & 0x80000000, 0x80000000, "Skills must be anti-Huffman")
+        off = gba_to_file(live)
+        self.assertLess(off + 7, len(self.hack))
+        self.assertEqual(self.hack[off:off + 7], b"Skills\x00")
+
+    def test_affin_label_is_affin(self):
+        """FE7 0x1100 is 'Div', not Affin. Personal data must use a dedicated string."""
+        live = self.table_entry(self.hack, self.live_table_off(), TID_AFFIN)
+        self.assertEqual(live & 0x80000000, 0x80000000, "Affin must be anti-Huffman")
+        off = gba_to_file(live)
+        self.assertEqual(self.hack[off:off + 6], b"Affin\x00")
+
+    def test_string_expander_accepts_anti_huffman(self):
+        """Talk/Skills use setText's 0x80000000 bit. Vanilla 08004364 only Huffman-decodes; that hangs before the stat page is copied to the screen."""
+        self.assertNotEqual(
+            self.hack[STRING_EXPANDER:STRING_EXPANDER + 8],
+            self.clean[STRING_EXPANDER:STRING_EXPANDER + 8],
+            "08004364 is still the vanilla Huffman trampoline",
+        )
+
+    def test_get_string_from_index_literal_pool_intact(self):
+        """Overwriting 12C88 must not smash the adjacent last-id / buffer literals."""
+        self.assertEqual(u32(self.hack, GET_STRING_LAST_ID_LITERAL), 0x0202B5B4)
+        self.assertEqual(u32(self.hack, GET_STRING_BUFFER_LITERAL), 0x0202A5B4)
+        self.assertEqual(u32(self.hack, HELPER_TABLE_LITERAL), u32(self.hack, GET_STRING_TABLE_LITERAL))
+
+    def test_left_panel_does_not_draw_affinity_icon(self):
+        """Affinity belongs on the personal-data page, not beside the unit name."""
+        hook = self.hack[LEFT_PAGE_HOOK:LEFT_PAGE_HOOK + 8]
+        self.assertEqual(hook[:4], bytes([0x00, 0x4B, 0x18, 0x47]))
+        left = u32(self.hack, LEFT_PAGE_HOOK + 4) & 0x01FFFFFE
+        blob = self.hack[left:left + 0x400]
+        self.assertNotIn(
+            AFFINITY_GETTER.to_bytes(4, "little"),
+            blob,
+            "left panel still calls AffinityGetter (icon next to the name)",
+        )
+
+    def test_page1_affinity_does_not_use_icon_sheet_2(self):
+        """IconRework is off. Sheet 2 ORed onto AffinityGetter makes DrawIcon index 0x02xx and garbles VRAM."""
+        text = read_event_text(PAGE1_LYN)
+        self.assertIn("$8026B24", text)
+        self.assertNotIn(
+            "$2092102",
+            text,
+            "page 1 still does mov r1,#2; lsl r1,#8 before DrawIcon (IconRework sheet 2)",
+        )
+
+    def test_left_panel_does_not_apply_fe6_portrait_box(self):
+        """The FE6 12x13 box overwrites vanilla LV/EXP window tiles with the wrong tileset."""
+        text = read_event_text(LEFT_LYN)
+        self.assertNotIn("SSS_PortraitBoxTSA", text)
+        self.assertNotIn("RestoreStatScreenPortraitBox", text)
+
+    def test_left_panel_reapplies_vanilla_window_tsa(self):
+        """Vanilla 083FC9FC is the left-window TSA that sits behind LV/E/HP."""
+        text = read_event_text(LEFT_LYN)
+        self.assertIn("$83FC9FC", text)
+
+    def test_get_skills_skips_invalid_id_0xff(self):
+        """Lyn Lord's class skill is 0xFF (none). Listing it draws a bogus weapon icon."""
+        dmp = GET_SKILLS_DMP.read_bytes()
+        self.assertIn(
+            bytes([0xFF, 0x2A]),
+            dmp,
+            "GetSkills must cmp r2, #0xFF so placeholder class skills are not listed",
+        )
+
+
+if __name__ == "__main__":
+    result = unittest.main(verbosity=2, exit=False).result
+    sys.exit(0 if result.wasSuccessful() else 1)

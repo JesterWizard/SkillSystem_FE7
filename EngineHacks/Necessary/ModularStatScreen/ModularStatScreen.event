@@ -107,6 +107,9 @@
   SkillsTextIDLink:
   SHORT SS_SkillsText
   ALIGN 4
+  AffinTextIDLink:
+  SHORT SS_AffinText
+  ALIGN 4
   Display_Growth_Options_Link:
   WORD Growth_Options
   ALIGN 4

@@ -58,6 +58,10 @@ if /I not [%1]==[quick] (
 )
 
 echo:
+echo Dumping FE7 text table
+python "%base_dir%Tools\dump_fe7_text_table.py" --rom "%source_rom%" --out "%base_dir%Text\NewTextTable.dmp"
+
+echo:
 echo Assembling
 
 cd "%base_dir%EventAssembler"
@@ -85,6 +89,15 @@ if not "%assemble_error%"=="0" (
   echo Assemble failed.
   pause
   exit /b %assemble_error%
+)
+
+echo:
+echo Running ROM tests
+python "%base_dir%tests\test_get_string_table.py"
+if errorlevel 1 (
+  echo ROM tests failed.
+  pause
+  exit /b 1
 )
 
 echo Launching NO$GBA

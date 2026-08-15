@@ -52,7 +52,6 @@ add r5,r1,r0
 ldrb r0, [r5,#1]
 cmp r0, #0
 b loc_3670
-@ beq loc_3670
 ldrb r0, [r5]
 cmp r0, #0xfe
 bhi loc_36a4
@@ -64,25 +63,25 @@ loc_3670:
 add r0, #1
 strb r0, [r5]
 mov r0, r4
-blh 0x8004D90 //FE8 -> 0x8003624
+blh 0x8004D90 @ GetIconGfxIndex
 add r0, #1
 strb r0, [r5,#1]
 lsl r4, #7
 ldr r0, IconGraphic
 add r4, r0
 ldrb r0, [r5,#1]
-blh 0x8004D7C //FE8 -> 0x8003610
+blh 0x8004D7C @ GetIconGfxTileIndex
 mov r1,r0
 lsl r1, #0x10
 lsr r1, #0xb
 mov r2, #0xc0
 lsl r2, #0x13
-ldr r0, =0x1ffe0 //FE7 maybe 1F78A? There doesn't seem to be a 1-1 function
+ldr r0, =0x1ffe0
 and r1, r0
 add r1, r2
 mov r0, r4
 mov r2, #0x80
-blh 0x800486c //FE8 -> 0x8002014
+blh 0x8003078 @ TileTransferInfoAdd (FE8 CpuFastSet was 0x8002014)
 loc_36a4:
 ldrb r0, [r5, #1]
 blh 0x8004D7C //FE8 -> 0x8003610

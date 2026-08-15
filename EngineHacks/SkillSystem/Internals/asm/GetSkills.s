@@ -55,6 +55,8 @@ make_buffer:
 
 	cmp r2, #0
 	beq no_personal
+	cmp r2, #0xFF
+	beq no_personal
 
 	strb r2, [r5]
 	add  r5, #1
@@ -69,6 +71,8 @@ no_personal:
 	ldrb r2, [r2, r0] @ skill byte
 
 	cmp r2, #0
+	beq no_class
+	cmp r2, #0xFF
 	beq no_class
 
 	strb r2, [r5]
@@ -89,6 +93,8 @@ lop:
 	ldrb r1, [r0, r2]
 
 	cmp  r1, #0
+	beq  continue
+	cmp  r1, #0xFF
 	beq  continue
 
 	strb r1, [r5]

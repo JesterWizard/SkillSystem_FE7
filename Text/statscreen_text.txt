@@ -117,3 +117,6 @@ Unit's essence radiates light.[N]
 Unit's essence emanates animus.[N]
 +0.5 Atk, 0.5 Def, 2.5 Avo, and[N]
 2.5 Crit Avo per support rank.[X]
+
+## SS_AffinText
+Affin[X]

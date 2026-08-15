@@ -2,7 +2,7 @@
 // Include this in *before* text (and *before* Tool Helpers)
 
 #define TextTable NewTextTable // define to not conflict with Tool Helpers
-#define MaxTextEntries 0x1000
+#define MaxTextEntries 0x1800 // FE7 labels go past 0x10F8; FE8's 0x1000 is too short
 
 ALIGN 4
 TextTable:
@@ -15,7 +15,23 @@ PUSH
 //  ORG 0xa26c
 //    POIN TextTable
 
+  // GetStringFromIndex (08012C60) loads the table from 08012C88.
+  // 08012CB8 is only the helper at 08012C9C. Both must point at NewTextTable
+  // or custom IDs (Talk/Skills) resolve as ???.
+  ORG 0x12C88
+    POIN TextTable
+
   ORG 0x12CB8 //FE8 -> 0xa2a0
     POIN TextTable
 
+  // setText marks custom strings with bit 31. Vanilla 08004364 only Huffman-decodes;
+  // Talk/Skills on the stat page hang before the page buffer is copied.
+  ORG 0x4364
+    BYTE 0x00 0x4B 0x18 0x47
+    POIN AntiHuffmanFE7|1
+
 POP
+
+ALIGN 4
+AntiHuffmanFE7:
+  #incbin "Text/AntiHuffmanFE7.dmp"

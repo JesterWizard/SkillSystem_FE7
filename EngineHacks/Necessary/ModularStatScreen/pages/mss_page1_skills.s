@@ -104,7 +104,9 @@ draw_aid_icon_at 26, 5
 
 draw_status_text_at 21, 7
 
-draw_textID_at 21, 9, textID=TID_Affin @affin
+ldr r0,=AffinTextIDLink
+ldrh r0,[r0]
+draw_textID_at 21, 9, width=8 @affin
 
 draw_affinity_icon_at 24, 9
 
@@ -115,7 +117,7 @@ draw_talk_text_at 21, 11
 
 ldr r0,=SkillsTextIDLink
 ldrh r0, [r0]
-draw_textID_at 21, 13, colour=White @skills
+draw_textID_at 21, 13, width=8, colour=White @skills
 
 Nexty:
 
