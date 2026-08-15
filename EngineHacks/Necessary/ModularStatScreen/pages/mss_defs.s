@@ -152,6 +152,9 @@
     ldr     r1, =gGenericBuffer
     mov     r2, #0x0
     blh     BgMap_ApplyTsa          @ Apply right page tsa.
+    ldr     r0, =SSS_StatsBoxGfx    @ Restore FE6 box tiles after the items page overwrites them.
+    ldr     r1, =#0x6004E00
+    blh     Decompress
   PageStartEnd:
 .endm
 
@@ -741,25 +744,34 @@
 .endm
 
 .macro draw_stats_box showBallista=0
-  ldr     r0, =SSS_Flag
-  ldr     r0, [r0]
-  cmp     r0, #0x0
-  beq     DefaultBox
-    ldr     r0, =SSS_StatsBoxTSA
-    b       DecompressBoxTSA
-  DefaultBox:
-    ldr     r0, =#0x83FCAC0 //FE8 -> #0x8A02204   @box TSA
-  DecompressBoxTSA:
+  @ Vanilla items page (080800BA): 083FCAC0 onto page BG1 with overlay 0x1000.
+  @ SSS_StatsBoxTSA is the FE6 equipment box and does not cover item-name rows.
+  @ "Equipment" is baked into 083FD62C at 0x6004E00. SSS_StatsBoxGfx replaces that.
+  ldr     r0, =#0x83FD62C
+  ldr     r1, =#0x6004E00
+  blh     Decompress
+  ldr     r0, =#0x83FCAC0
   ldr     r4, =gGenericBuffer
   mov     r1, r4
   blh     Decompress
-  ldr     r0, =#0x200373C //FE8 -> #0x20049EE     @somewhere on the bgmap
-  mov     r2, #0xC1
-  lsl     r2, r2, #0x6
+  ldr     r0, =#0x200373C
+  mov     r2, #0x80
+  lsl     r2, r2, #0x5
+  mov     r1, r4
+  blh     BgMap_ApplyTsa
+  ldr     r0, =#0x83FCE2C
+  ldr     r4, =gGenericBuffer
+  mov     r1, r4
+  blh     Decompress
+  ldr     r0, =#0x2003EFE
+  ldr     r2, =#0x7060
   mov     r1, r4
   blh     BgMap_ApplyTsa
   ldr     r0, =#0x8404A60 //FE8 -> #0x8205A24     @map of text labels and positions
   blh     DrawStatscreenTextMap
+  b       SS_AfterStatsBoxTsa
+  .ltorg
+  SS_AfterStatsBoxTsa:
   ldr     r6, =StatScreenStruct
   ldr     r0, [r6, #0xC]
   ldr     r0, [r0, #0x4]
@@ -808,15 +820,14 @@
   ldr     r1, =#0x200325C //FE8 -> #0x2003D4C
   add     r0, r0, r1
   mov     r1, #0x0
-  mov     r2, #0x35            @the equip 'E'
+  mov     r2, #0x1F
   blh     DrawSpecialUiChar
   add     r0, r4, #2
   lsl     r0, r0, #0x6
-  ldr     r1, =#0x2003C3E //FE8 -> #0x200472E
+  ldr     r1, =#0x2003C3E
   add     r0, r0, r1
-  ldr     r1, =#0x83FCE68 //FE8 -> #0x8A02250     @TSA for highlight bar
-  mov     r2, #0xC1
-  lsl     r2, r2, #0x6
+  ldr     r1, =#0x83FCE68
+  ldr     r2, =#0x7060
   blh     BgMap_ApplyTsa
   
   cmp     r5, #0x0
@@ -903,26 +914,24 @@
   mov     r0, r5
   blh     GetItemRangeString
   mov     r5, r0
-  ldr     r4, =#0x2003CB4 //FE7? #0x20031C4 //FE8 -> #0x2003CB4 Not sure if this is right for FE7 and in all likelihood it isn't but without a deep search on no$gba it's the closest approximation I can manage
+  ldr     r4, =#0x20031C4
   blh     Text_GetStringTextWidth
-  mov     r1, #0x37
+  mov     r1, #0x2F
   sub     r1, r1, r0
   mov     r0, r4
   mov     r2, #0x2
   mov     r3, r5
   blh     Text_InsertString, r4
   mov     r4, #0x0
-  ldr     r0, =gpStatScreenPageBg0Map
-  ldr     r3, =#0x7060
-  mov     r5, r3
-  ldr     r6, =#0x2C2
-  add     r2, r0, r6
-  ldr     r1, =#0x7068
+  ldr     r0, =#0x5278
+  mov     r5, r0
+  ldr     r2, =#0x200358C
+  sub     r2, #0x8C
+  ldr     r1, =#0x5270
   mov     r3, r1
-  add     r6, #0x40
-  add     r1, r0, r6
+  ldr     r1, =#0x200358C
+  sub     r1, #0x4C
   
-  @i think this loop just clears a gfx buffer
   loc_0x8087660:
   add     r0, r4, r5
   strh    r0, [r2]

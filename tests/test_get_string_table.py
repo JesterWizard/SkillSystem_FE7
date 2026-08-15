@@ -38,6 +38,14 @@ LEFT_LYN = (
     / "pages"
     / "mss_leftstatscreen.lyn.event"
 )
+PAGE2_LYN = (
+    ROOT
+    / "EngineHacks"
+    / "Necessary"
+    / "ModularStatScreen"
+    / "pages"
+    / "mss_page2_original.lyn.event"
+)
 
 TID_STR = 0x10F8
 TID_SKILLS = 0xF45
@@ -166,6 +174,23 @@ class GetStringTableTests(unittest.TestCase):
         """Vanilla 083FC9FC is the left-window TSA that sits behind LV/E/HP."""
         text = read_event_text(LEFT_LYN)
         self.assertIn("$83FC9FC", text)
+
+    def test_items_page_uses_vanilla_item_box_tsa(self):
+        """SSS_StatsBoxTSA is the FE6 equipment box. FE7 item names sit on 083FCAC0."""
+        text = read_event_text(PAGE2_LYN)
+        self.assertIn("$83FCAC0", text)
+        self.assertNotIn("SSS_StatsBoxTSA", text)
+
+    def test_items_page_loads_vanilla_equipment_label_gfx(self):
+        """Vanilla 083FD62C at 0x6004E00 is the tileset with the baked-in Equipment label."""
+        text = read_event_text(PAGE2_LYN)
+        self.assertIn("$83FD62C", text)
+
+    def test_items_page_range_text_uses_fe7_handle(self):
+        """FE8 0x2003CB4 is page BG2 on FE7. Vanilla writes Rng into StatScreenStruct+0xB8."""
+        text = read_event_text(PAGE2_LYN)
+        self.assertNotIn("$2003CB4", text)
+        self.assertIn("$20031C4", text)
 
     def test_get_skills_skips_invalid_id_0xff(self):
         """Lyn Lord's class skill is 0xFF (none). Listing it draws a bogus weapon icon."""
