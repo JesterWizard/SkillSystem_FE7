@@ -35,10 +35,10 @@ orr r1, r2 @ Hide SMS @
 str r1, [r5, #0x0C] 
 	@アニメーションを表示するので、一時的にマップ上の該当ユニットを消す
 	mov  r0, r5	 @ arg r0 = Unit
-	blh  0x0802810c   @HideUnitSMS	{U}
+	blh  0x08026574   @HideUnitSMS	{U}
 	@blh  0x080280A0   @HideUnitSMS	{J}
 
-	ldr  r1, =0x0203A958	@ActionData	{U}
+	ldr  r1, =0x0203A868	@ActionData	{U}
 	@ldr r1, =0x0203A954	@ActionData	{J}
 	mov  r0, #0xa
 	strb r0, [r1, #0x15]	@ActionData@gActionData.trapType
@@ -63,7 +63,7 @@ Exec:
 	@アニメーションが終わるまでイベントを待機させる
 	ldr r0, WaitForMotionEndProc
 	mov r1 ,r4
-	blh  0x08002ce0	@NewBlocking6C	@{U}
+	blh  0x080044f8	@NewBlocking6C	@{U}
 	@blh  0x08002C30	@NewBlocking6C	@{J}
 
 	ldr r1, =0x089A3288	@SelfDamageMapAnim	{U}
@@ -71,14 +71,14 @@ Exec:
 	str	r1, [r0, #0x2c]
 
 
-ldr r0, =0x202E4D8 @ Unit map	{U}
+ldr r0, =0x202E3DC @ Unit map	{U}
 ldr r0, [r0] 
 mov r1, #0
-blh 0x080197E4 @ FillMap 
-blh 0x08019FA0   @UpdateUnitMapAndVision
-blh 0x0801A1A0   @UpdateTrapHiddenStates
-blh  0x080271a0   @SMS_UpdateFromGameData
-blh  0x08019c3c   @UpdateGameTilesGraphics
+blh 0x080190AC @ FillMap 
+blh 0x08019868   @UpdateUnitMapAndVision
+blh 0x08019A68   @UpdateTrapHiddenStates
+blh  0x08025724   @SMS_UpdateFromGameData
+blh  0x08019504   @UpdateGameTilesGraphics
 
 
 

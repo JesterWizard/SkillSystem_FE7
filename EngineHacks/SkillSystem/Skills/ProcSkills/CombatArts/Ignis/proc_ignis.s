@@ -5,7 +5,7 @@
   .short 0xf800
 .endm
 .equ IgnisID, SkillTester+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker
@@ -41,7 +41,7 @@ bne End
 @bne End
 
 @make sure this is the actual attacker kthx
-ldr r0,=#0x203A4EC
+ldr r0,=#0x203A3F0
 cmp r0,r4
 bne End
 
@@ -62,10 +62,10 @@ strb  r0, [r6,#4]
 
 @add def/2 and res/2 to damage dealt
 mov r0, r4
-blh 0x8019250 @def getter
+blh 0x8018b70 @def getter
 lsr r5, r0, #1 @save def/2
 mov r0, r4
-blh 0x8019270 @res getter
+blh 0x8018b90 @res getter
 lsr r0, #1 @res/2
 add r0, r5 @averaged defenses in r0
 

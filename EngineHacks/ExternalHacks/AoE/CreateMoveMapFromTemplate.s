@@ -33,13 +33,13 @@
 
 
 
-.equ FE8U_Memcopy,       0x080D1C0C	@{U}
+.equ FE8U_Memcopy,       0x080BFF98	@{U}
 @.equ FE8U_Memcopy,       0x080D6908	@{J}
 
-.equ FE8U_MapSizeStruct, 0x0202E4D4	@{U}
+.equ FE8U_MapSizeStruct, 0x0202E3D8	@{U}
 @.equ FE8U_MapSizeStruct, 0x0202E4D0	@{J}
-.equ FE8U_MoveMapRows,  0x0202E4E0	@{U}
-@.equ FE8U_MoveMapRows,  0x0202E4DC	@{J}
+.equ FE8U_MoveMapRows,  0x0202E3E4	@{U}
+@.equ FE8U_MoveMapRows,  0x0202E3E0	@{J}
 
 @ Ok so, definition time:
 @ Header:

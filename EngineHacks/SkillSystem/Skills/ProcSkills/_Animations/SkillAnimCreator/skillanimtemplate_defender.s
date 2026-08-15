@@ -70,21 +70,21 @@ BX r3
 SkillAnimStruct:
 .long 0x85d93f0
 BattleBuffer:
-.long 0x203e120
+.long 0x203e02c
 const1:
 .long 0x2000000
 InitializeStruct:
-.long 0x8002c7c|1
+.long 0x8004494|1
 routine1:
 .long 0x80551b0|1
 routine2:
 .long 0x805a16c|1 @ takes halfword at [r0,#0xc] and returns if bit 0x200 is set
 routine3:
-.long 0x800148c|1
+.long 0x8001d8c|1
 LeftOrRight:
 .long 0x805a2b4|1
 routine5:
-.long 0x80729a4|1
+.long 0x8084edc|1
 TimingList:
 @POIN to table of frames and durations: XXXX YYYY where x is frame and y is duration (in this case labeled BG only)
 @POIN TSAList

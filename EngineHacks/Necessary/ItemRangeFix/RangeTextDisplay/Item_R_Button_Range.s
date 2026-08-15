@@ -1,6 +1,6 @@
 .thumb
-.set ActiveUnit,                   0x03004E50
-.equ StatScreenStruct,             0x02003BFC
+.set ActiveUnit,                   0x03004690
+.equ StatScreenStruct,             0x0200310C
 
 .macro _blh to, reg=r3
 	ldr \reg, =\to
@@ -13,8 +13,8 @@ ldr 	\reg, =\to
 bl 	Jumpr3
 .endm
 
-.set Item_GetMaxRange, 0x8017684
-.set Item_GetMinRange, 0x801766C
+.set Item_GetMaxRange, 0x8017384
+.set Item_GetMinRange, 0x801736C
 .equ GetRangeText, OffsetList + 0x0
 .equ RangeText, OffsetList + 0x4
 
@@ -32,7 +32,7 @@ mov 	r1, r4
 bl 	RangeTextGetter
 cmp 	r0, #0x0
 beq RangeInNumbers
-_blh 	#0x800A240
+_blh 	#0x8012C60
 b End
 RangeInNumbers:
 mov 	r0, r5

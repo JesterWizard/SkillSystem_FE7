@@ -1,8 +1,8 @@
 .thumb
-.equ DrawIcon, 				0x80036BC
-.equ DrawNumberOrDashes,	0x8004b94
+.equ DrawIcon, 				0x8004E28
+.equ DrawNumberOrDashes,	0x80061e4
 .equ ReturnPoint,			0x808E4E3
-.equ LoadIconPalette,		0x80035D4
+.equ LoadIconPalette,		0x8004D44
 .macro blh to, reg=r3
   ldr \reg, =\to
   mov lr, \reg

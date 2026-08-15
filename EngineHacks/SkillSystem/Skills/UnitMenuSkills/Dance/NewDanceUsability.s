@@ -4,7 +4,7 @@
 .equ DanceID,SkillTester+4
 .equ AlsoUseVanillaCheck,DanceID+4
 
-.equ gActiveUnit,0x3004E50
+.equ gActiveUnit,0x3004690
 .equ gGameState,0x202BCB0
 .equ GetDancerTargetResult,0x80230F1
 

@@ -27,4 +27,4 @@ bx        r2
 Is_Capture_Set:
 @
 @Get_Range_Bitfield:
-@.long 0x080171E8
+@.long 0x08016EBC

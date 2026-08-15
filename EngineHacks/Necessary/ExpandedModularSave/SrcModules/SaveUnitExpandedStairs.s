@@ -58,15 +58,15 @@
 
 	OtherSuspendSaveUnit.size = 0x38
 
-	GetUnit          = 0x08019430+1
-	ClearUnit        = 0x080177F4+1
-	GetCharacterData = 0x08019464+1
-	GetClassData     = 0x08019444+1
-	SetUnitHp        = 0x08019368+1
-	GetUnitMaxHp     = 0x08019190+1
+	GetUnit          = 0x08018d0c+1
+	ClearUnit        = 0x08017508+1
+	GetCharacterData = 0x08018d38+1
+	GetClassData     = 0x08018d20+1
+	SetUnitHp        = 0x08018c40+1
+	GetUnitMaxHp     = 0x08018ab0+1
 
-	WriteAndVerifySramFast = 0x080D184C+1
-	ReadSramFastAddr       = 0x030067A0   @ pointer to the actual ReadSramFast function
+	WriteAndVerifySramFast = 0x080BFBD8+1
+	ReadSramFastAddr       = 0x03005E70   @ pointer to the actual ReadSramFast function
 
 PackGameSaveUnit.clear_unit:
 	@ clear unit if it's character is null

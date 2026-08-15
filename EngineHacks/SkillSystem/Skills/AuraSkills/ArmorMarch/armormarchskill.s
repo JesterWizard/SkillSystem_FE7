@@ -3,8 +3,8 @@
 .equ ArmorMarchList, SkillTester+4
 .thumb
 
-.set gChapterData,                 0x0202BCF0
-.set GetUnit,                      0x08019430
+.set gChapterData,                 0x0202BBF8
+.set GetUnit,                      0x08018d0c
 	@ arguments:
 		@r0 = unit deployment id
 	@returns:

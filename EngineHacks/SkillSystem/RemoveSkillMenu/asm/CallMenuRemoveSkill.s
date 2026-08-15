@@ -3,10 +3,10 @@
 
 	.include "Definitions.inc"
 
-	prNewMenu_DefaultChild = 0x0804EBC8|1
-	@ .set prNewMenu_Default,    (0x0804EBE4|1)
-	prClearIconGfx         = 0x08003584|1
-	prLoadIconPalettes     = 0x080035BC|1
+	prNewMenu_DefaultChild = 0x0804A254|1
+	@ .set prNewMenu_Default,    (0x0804A212|1)
+	prClearIconGfx         = 0x08004cf4|1
+	prLoadIconPalettes     = 0x08004D2C|1
 
 	pExtraItemOrSkill      = 0x0202BCDE
 

@@ -7,7 +7,7 @@
     mov lr, \reg
     .short 0xF800
 .endm
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 
 ModularPreBattleSkill:
 push {r4-r7, lr}
@@ -181,7 +181,7 @@ Fraction:
 ldrb r1,[r2,r6]		@000000XY
 	       @mov r1, #000000XY
 
-@#0x080D18FC uses r0-r3 to divide?
+@#0x080BFC88 uses r0-r3 to divide?
 @i'm using r2 as my table row and r3,r6-r7 as single byte counters
 @rearrange/condense registers
 lsl r7, r7, #8		@0000r700
@@ -200,7 +200,7 @@ lsr r1, r1, #28		@0000000Y // Divisor
 @mov r0, #45		@eg. dmg
 @mov r1, #5		@divisor
 mul r0, r0, r3		@Multiply first
-blh #0x080D18FC, r2 	@Then divide. puts new value into r0
+blh #0x080BFC88, r2 	@Then divide. puts new value into r0
 
 
 @fix registers afterwards

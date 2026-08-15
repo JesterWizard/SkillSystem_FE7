@@ -1,7 +1,7 @@
 .thumb
 push	{r0-r3}
 
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 
@@ -24,7 +24,7 @@ strb	r0,[r1]
 pop	{r0-r3}
 
 mov	r6,r0
-ldr	r3,=#0x804EB68
+ldr	r3,=#0x804A210
 mov	lr,r3
 .short	0xF800
 

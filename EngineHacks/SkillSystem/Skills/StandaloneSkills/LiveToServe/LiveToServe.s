@@ -4,8 +4,8 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ MaxHpGetter, 0x8019190
-.equ CurrHPGetter, 0x8019150
+.equ MaxHpGetter, 0x8018ab0
+.equ CurrHPGetter, 0x8018a70
 .equ LiveToServeID, SkillTester+4
 
 @hook at 802ebd4
@@ -21,13 +21,13 @@ strh r5, [r2, #0x6]
 
 @calculate amount healed:
 ldrb	r0,[r4, #0xd]	@target number
-blh	0x8019430	@get target data
+blh	0x8018d0c	@get target data
 blh	CurrHPGetter
 mov	r1,r0
 
 push	{r1}
 ldrb	r0,[r4, #0xd]	@target number
-blh	0x8019430	@get target data
+blh	0x8018d0c	@get target data
 blh	MaxHpGetter
 mov	r2,r0
 pop	{r1}
@@ -39,20 +39,20 @@ mov	r1,r2
 NoCap:
 push	{r1}
 ldrb	r0,[r4, #0xd]	@target number
-blh	0x8019430	@get target data
+blh	0x8018d0c	@get target data
 blh	CurrHPGetter
 mov	r2,r0
 pop	{r1}
 sub	r1,r2		@final hp - current = healed ammount
 mov	r5,r1
 ldrb	r0,[r4,#0xd]	@target number
-blh	0x8019430	@get target data
+blh	0x8018d0c	@get target data
 mov	r1,r5
-blh	0x80193a4	@heal ally
+blh	0x8018c7c	@heal ally
 
 @now check for the skill
 ldrb	r0,[r4,#0xc]
-blh	0x8019430
+blh	0x8018d0c
 ldr	r1,LiveToServeID
 ldr	r3,SkillTester
 mov	lr,r3
@@ -62,31 +62,31 @@ beq	NoSkill
 
 @now heal self
 ldrb	r0,[r4,#0xc]
-blh	0x8019430
+blh	0x8018d0c
 mov	r1,r5
-blh	0x80193a4
+blh	0x8018c7c
 
 @now cap off hp of self (healer).
 @and write amount to heal to healer.
 ldrb	r0,[r4,#0xc]
-blh	0x8019430
-blh	0x8019150
+blh	0x8018d0c
+blh	0x8018a70
 ldr	r2,=0x802ec18
 ldr	r2,[r2]		@203a608 - battle buffer pointer
 ldr	r2,[r2]
-ldr	r1,=0x203a4ec @attacker
+ldr	r1,=0x203a3f0 @attacker
 ldrb  r1, [r1, #0x13]
 sub   r1, r0, r1  @post-battle hp - current hp.
 strb	r1, [r2,#5]
 
 @and again for the ally, and fetch currhp
 ldrb	r0,[r4,#0xd]
-blh	0x8019430
-blh	0x8019150
+blh	0x8018d0c
+blh	0x8018a70
 ldr	r2,=0x802ec18
 ldr	r2,[r2]		@203a608 - battle buffer pointer
 ldr	r2,[r2]
-ldr	r5,=0x203a56c
+ldr	r5,=0x203a470
 ldrb	r1,[r5,#0x13]
 sub	r1,r0		@current hp - post-battle hp. This one needs to be negative.
 strb	r1,[r2,#3]
@@ -104,13 +104,13 @@ orr     r0,r1                @ 0802B438 4308
 str     r0,[r2]
 @finish up by updating the attacker/defender
 ldrb	r0,[r4, #0xd]
-blh	0x8019430
-blh	0x8019150
+blh	0x8018d0c
+blh	0x8018a70
 strb	r0,[r5,#0x13]
-ldr	r5,=0x203a4ec @attacker
+ldr	r5,=0x203a3f0 @attacker
 ldrb	r0,[r4,#0xc]
-blh	0x8019430
-blh	0x8019150
+blh	0x8018d0c
+blh	0x8018a70
 strb	r0,[r5,#0x13]
 
 ldr r0, =0x802ec03

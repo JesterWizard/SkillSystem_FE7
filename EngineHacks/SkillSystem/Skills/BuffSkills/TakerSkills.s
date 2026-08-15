@@ -6,7 +6,7 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ ActionStruct, 0x203A958 
+.equ ActionStruct, 0x203A868 
 .equ EventEngine, 0x800D07C
 .equ MemorySlot,0x30004B8
 .equ StrAnim, 0x01 

@@ -56,8 +56,8 @@ no_skills:
 
 	@ original
 	mov r0, r5
-	blh 0x08026628// Following the function of FE8 gives me 26628 for FE7, but apparently 0x0802BCBC is right?  //FE8 -> 0x080281C8
-	ldr r6, =0x080179F8 //FE8 0x08017EFD
+	blh 0x08024c98// Following the function of FE8 gives me 26628 for FE7, but apparently 0x0802BCBC is right?  //FE8 -> 0x080281C8
+	ldr r6, =0x080176F8 //FE8 0x08017EFD
 	bx  r6
 
 BXR3:

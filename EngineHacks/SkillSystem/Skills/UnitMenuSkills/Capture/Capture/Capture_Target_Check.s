@@ -55,12 +55,12 @@ bx		r0
 
 .align
 TargetQueuePtr:
-.long 0x02033F3C
+.long 0x02033E40
 Comp_Allegiance_Func:
-.long 0x08024D8C
+.long 0x080238B0
 Can_Rescue_Check:
-.long 0x0801831C
+.long 0x08017DB4
 Fill_Target_Queue:
-.long 0x0804F8BC
+.long 0x0804ACFC
 SkillTester:
 @

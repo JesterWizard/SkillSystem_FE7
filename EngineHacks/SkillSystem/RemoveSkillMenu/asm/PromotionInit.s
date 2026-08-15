@@ -10,7 +10,7 @@ PromotionInit:
 	mov  r2, #0x31
 	ldrb r1, [r1, r2] @ r1 = promotion context id
 
-	ldr r3, =0x08002F24|1
+	ldr r3, =0x08004720|1
 	bx  r3
 
 	.pool

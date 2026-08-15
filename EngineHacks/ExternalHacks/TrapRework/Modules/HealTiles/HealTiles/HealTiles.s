@@ -12,7 +12,7 @@ push {r4-r6,r14}
 mov r4,r0 @r4 = unit
 mov r5,r1 @r5 = heal %
 
-ldr r0, =#0x0202BCF0
+ldr r0, =#0x0202BBF8
 ldrb r0, [ r0, #0x0E ]
 @blh GetChapterEvents, r1
 ldr r1, =#0x080346B0

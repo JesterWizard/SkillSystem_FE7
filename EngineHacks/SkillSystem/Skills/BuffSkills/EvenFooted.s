@@ -76,7 +76,7 @@ push {lr}
 push {r4-r7}
 
 @check if turn is Even
-ldr	r0,=#0x202BCF0
+ldr	r0,=#0x202BBF8
 ldrh	r0, [r0,#0x10]
 mov	r1, #0x01
 and	r0, r1

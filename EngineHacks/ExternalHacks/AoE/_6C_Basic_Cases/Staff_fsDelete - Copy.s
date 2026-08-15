@@ -1,7 +1,7 @@
 .thumb
 .include "_Definitions.h.s"
 
-.set PurgeVRAM, 0x8003D20
+.set PurgeVRAM, 0x8005438
 
 push {r4,r14}
 mov 	r4, r0

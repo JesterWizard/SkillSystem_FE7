@@ -6,7 +6,7 @@
 .equ FullMetalBodyID, ItemTableLocation+4
 
 mov r1,r5
-ldr r3, =0x802c1ec @UpdateUnitFromBattleUnit
+ldr r3, =0x8029c24 @UpdateUnitFromBattleUnit
 mov lr, r3
 .short 0xf800
 cmp r6, #0
@@ -14,7 +14,7 @@ beq loc_2c0a4
 
 mov r0, r6
 mov r1, r4
-ldr r3, =0x802c1ec @UpdateUnitFromBattleUnit
+ldr r3, =0x8029c24 @UpdateUnitFromBattleUnit
 mov lr, r3
 .short 0xf800
 b ApplySeals

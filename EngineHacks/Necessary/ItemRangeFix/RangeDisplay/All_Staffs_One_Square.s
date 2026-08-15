@@ -30,5 +30,5 @@ bx		r0
 
 .align
 StaffCheck:
-.long 0x08028870+1
+.long 0x08026cd0+1
 ReturnRangeBitfield:

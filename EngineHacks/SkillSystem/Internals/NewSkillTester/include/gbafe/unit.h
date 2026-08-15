@@ -375,7 +375,7 @@ extern const struct CharacterData gCharacterData[];
 extern const struct ClassData gClassData[];
 
 extern struct Unit gUnitArrayBlue[]; //! FE8U = 0x202BE4C
-extern struct Unit* gActiveUnit; //! FE8U = 0x3004E50
+extern struct Unit* gActiveUnit; //! FE8U = 0x3004690
 extern struct Unit* const gUnitLookup[]; //! FE8U = 0x859A5D0
 
 extern u8 gActiveUnitId; //! FE8U = 0x202BE44

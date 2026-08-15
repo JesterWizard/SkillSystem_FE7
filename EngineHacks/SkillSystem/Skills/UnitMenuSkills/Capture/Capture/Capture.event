@@ -164,7 +164,7 @@
 
 	ALIGN 4
 	give_drop_exp_proc:
-	PROC_CALL_ROUTINE(0x8015360|1) // LockGameLogic	//{U}
+	PROC_CALL_ROUTINE(0x8015308|1) // LockGameLogic	//{U}
 	PROC_SLEEP(5)
 	PROC_JUMP(0x89A35B0) // gProc_MapAnimEnd	//{U}
 	PROC_END

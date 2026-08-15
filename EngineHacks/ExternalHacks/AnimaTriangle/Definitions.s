@@ -5,4 +5,4 @@
     .set    \name, \value
 .endm
 
-SET_FUNC AnimaTriangle, (0x0802C834+1)
+SET_FUNC AnimaTriangle, (0x0802A1E0+1)

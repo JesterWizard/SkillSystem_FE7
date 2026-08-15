@@ -18,13 +18,13 @@ cmp		r5,#0
 beq		GoBack
 mov		r0,r4
 mov		r1,r6
-ldr		r3,=#0x8017054
+ldr		r3,=#0x8016d36
 mov		r14,r3
 .short	0xF800		@is item stealable
 cmp		r0,#0
 beq		NextItem
 mov		r0,r5
-ldr		r3,=#0x801763C	@GetItemCost
+ldr		r3,=#0x8017340	@GetItemCost
 mov		r14,r3
 .short	0xF800
 cmp		r0,r7

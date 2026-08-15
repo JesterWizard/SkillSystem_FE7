@@ -40,7 +40,7 @@ Select an area to Attack. Press L/R to Rotate.[X]
 Select an area to Heal. Press L/R to Rotate.[X]
 */
 
-#define HideMoveRangeGraphicsWrapper 0x8022C98	//{U}
+#define HideMoveRangeGraphicsWrapper 0x8021B9C	//{U}
 //#define HideMoveRangeGraphicsWrapper 0x8022C60	//{J}
 
 	#define MenuCommandID(name,description,colour,ID,usability,effect, unknown1, unknown2) "WORD $80d7d94; SHORT name description; BYTE colour ID; SHORT 0; POIN usability|1; WORD 0; POIN effect|1; POIN 0 unknown1|1 unknown2|1"	//{U}

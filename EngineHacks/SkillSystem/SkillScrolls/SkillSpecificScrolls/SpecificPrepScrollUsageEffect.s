@@ -1,7 +1,7 @@
 .thumb
 .align
 
-.equ BG2Buffer, 0x02023CA8
+.equ BG2Buffer, 0x02023C60
 .equ FillBgMap, 0x08001221
 .equ EnableBgSyncByIndex, 0x08001FBD
 .equ UnitDecreaseItemUse, 0x08018995

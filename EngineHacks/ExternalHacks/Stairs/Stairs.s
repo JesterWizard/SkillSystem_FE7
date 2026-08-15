@@ -15,7 +15,7 @@ StairsUsability:
 push { r4 - r7, lr }
 sub sp, #0x08
 @ First, I want to prevent someone using multiple stairs in one turn.
-ldr r0, =#0x03004E50
+ldr r0, =#0x03004690
 ldr r4, [ r0 ] @ Keep character struct in r4 for the time being.
 ldr r1, =CharacterStructStairByte
 ldrb r1, [ r1 ]
@@ -29,13 +29,13 @@ mov r1, #0x50 @ isRescuing||isCantoing.
 tst r0, r1
 bne EndFalseNoPop
 
-ldr r0, =#0x0202BCF0 @ Chapter data struct
+ldr r0, =#0x0202BBF8 @ Chapter data struct
 ldrb r0, [ r0, #0x0E ] @ Chapter ID
 blh #0x080346B0, r1 @ Pointer to chapter events in r0
 ldr r7, [ r0, #0x08 ] @ Pointer to location events in r7
 sub r7, #12
 
-ldr r0, =#0x0203A958
+ldr r0, =#0x0203A868
 ldrb r5, [ r0, #0x0E ] @ X coordinate moving to in r5
 ldrb r6, [ r0, #0x0F ] @ Y coordinate moving to in r6
 
@@ -92,7 +92,7 @@ add r6, r6, #0x01
 cmp r6, #0xC0
 bge EndTrue @ No units found at these coordinates. Return usabile.
 mov r0, r6
-blh 0x08019430, r1 @ GetUnit. r0 = character struct to check.
+blh 0x08018d0c, r1 @ GetUnit. r0 = character struct to check.
 cmp r0, #0x00
 beq StartGreyLoop @ No character here.
 ldrb r1, [ r0, #0x10 ]
@@ -144,18 +144,18 @@ bne EffectCheck
 ldr r1, =StairErrorTextLocation
 ldrh r1, [ r1 ]
 mov r0, r5
-blh #0x0804F580, r2 @ Sets that text ID for the error text
+blh #0x0804AA34, r2 @ Sets that text ID for the error text
 mov r0, #0x08
 b EndEffect
 
 EffectCheck:
-ldr r0, =#0x0202BCF0 @ Chapter data struct
+ldr r0, =#0x0202BBF8 @ Chapter data struct
 ldrb r0, [ r0, #0x0E ] @ Chapter ID
 blh #0x080346B0, r1 @ Pointer to chapter events in r0
 ldr r7, [ r0, #0x08 ] @ Pointer to location events in r7
 sub r7, #12
 
-ldr r0, =#0x0203A958
+ldr r0, =#0x0203A868
 ldrb r5, [ r0, #0x0E ] @ X coordinate moving to in r5
 ldrb r6, [ r0, #0x0F ] @ Y coordinate moving to in r6
 
@@ -199,9 +199,9 @@ cmp r1, r6
 beq BeginCheck3
 
 Skip:
-ldr r4, =#0x03004E50
+ldr r4, =#0x03004690
 ldr r4, [ r4 ]
-ldr r2, =#0x0203A958
+ldr r2, =#0x0203A868
 strb r0, [ r2, #0x0E ]
 strb r1, [ r2, #0x0F ] @ Sets new coordinates in the action struct
 mov r3, #0x01
@@ -273,7 +273,7 @@ strb r2, [ r0, r3 ]
 
 EndWaitFix2:
 ldr r0, [ r6 ]
-blh #0x0801849C, r1
+blh #0x08017F28, r1
 pop { r4 - r6 }
 pop { r0 }
 bx r0
@@ -315,7 +315,7 @@ StairsMoveDebuff: @ Incorporated into MSG
 push { r4 - r6, lr }
 mov r6, r0
 mov r4, #0x01
-ldr r5, =#0x03004E50
+ldr r5, =#0x03004690
 ldr r0, [ r5 ]
 ldr r1, [ r0, #0x04 ]
 ldrb r1, [ r1, #0x12 ]
@@ -332,7 +332,7 @@ cmp r2, #0x7F @ 0x7F because the top bit has been unset?
 beq ItsZero
 sub r1, r2
 ItsZero:
-ldr r2, =#0x0203A958
+ldr r2, =#0x0203A868
 ldr r3, =#0x0801CB85
 bx r3
 */
@@ -369,7 +369,7 @@ bne BeginEndTurnLoop
 @ If I'm here, I've run out of character entries.
 
 ldr r0, =#0x0859AAD8 @ From vanilla
-blh #0x08003078, r1
+blh #0x0800486c, r1
 mov r0, #0x17
 pop { r1 }
 bx r1
@@ -377,7 +377,7 @@ bx r1
 .global UnsetMoveDebuff
 .type UnsetMoveDebuff, %function
 UnsetMoveDebuff:
-ldr r1, =#0x03004E50
+ldr r1, =#0x03004690
 ldr r1, [ r1 ]
 ldr r3, =CharacterStructStairByte
 ldrb r3, [ r3 ]

@@ -61,8 +61,8 @@ extern u8 SelectedSpell; // 0x0203F080.
 extern u8 UsingSpellMenu; // 0x0203F082. What type of gaiden magic we're using. 0 if not.
 extern u8 DidSelectSpell; // 0x0203F084. Boolean for whether we've selected something from the spell menu.
 extern u16 gPopupItem; // 0x030005F4.
-extern u16 StatScreenBufferMap[32][32]; // 0x02003C94.
-extern u16 gBG0MapBuffer[32][32]; // 0x02022CA8.
+extern u16 StatScreenBufferMap[32][32]; // 0x020031A4.
+extern u16 gBG0MapBuffer[32][32]; // 0x02022C60.
 extern Unit* gpStatScreenUnit; // 0x02003BC08.
 
 extern u16 gGaidenMagicHPCostText;
@@ -78,23 +78,23 @@ extern void(*gWrite_Range)(int x, int y, long long mask);
 extern void(*gGetItemRangeM)(int item);
 extern void(*gHealStaff_RangeSetup)(BattleUnit* unit, int empty, int item);
 
-extern void MakeTargetListForWeapon(Unit* unit, int item); // 0x080251B4.
+extern void MakeTargetListForWeapon(Unit* unit, int item); // 0x08023C58.
 extern void SetFaceBlinkControlById(int faceId, int idk2); // 0x088006458. faceId is a guess.
 extern void ForceMenuItemPanel(MenuProc* menu, Unit* unit, int x, int y); // 0x0801E684. idk about the x and y parameters. Just a guess.
-extern u32 GetUnitRangeMask(Unit* unit, u8 val); // 0x80171E8.
-extern u32 GetWeaponRangeMask(int item); // 0x080170D4.
+extern u32 GetUnitRangeMask(Unit* unit, u8 val); // 0x8016EBC.
+extern u32 GetWeaponRangeMask(int item); // 0x08016DB4.
 extern MenuProc* StartMenu_AndDoSomethingCommands(const MenuDefinition*, int xScreen, int xLeft, int xRight); // 0x804F64C.
-extern void DrawItemMenuCommand(TextHandle* text, u16 item, int canUse, u16* buffer); // 0x08016848.
-extern int AttackUMEffect(MenuProc* proc, MenuCommandProc* commandProc); // 0x08022B30.
+extern void DrawItemMenuCommand(TextHandle* text, u16 item, int canUse, u16* buffer); // 0x08016470.
+extern int AttackUMEffect(MenuProc* proc, MenuCommandProc* commandProc); // 0x08021A3C.
 extern void UpdateMenuItemPanel(MenuProc* proc); // 0x0801E748.
-extern void BattleGenerateUiStats(Unit* unit, int slot); // 0x802A400.
+extern void BattleGenerateUiStats(Unit* unit, int slot); // 0x802848C.
 extern void DrawItemRText(int xTile, int yTile, int item); // 0x08088E60.
 extern void RTextUp(RTextProc* proc); // 0x08089354.
 extern void RTextDown(RTextProc* proc); // 0x08089384.
 extern void RTextLeft(RTextProc* proc); // 0x080893B4.
 extern void RTextRight(RTextProc* proc); // 0x080893E4.
-extern int CanUnitUseItem(Unit* unit, int item); // 0x08028870.
-extern void ItemEffect_Call(Unit* unit, int item); // 0x08028E60.
+extern int CanUnitUseItem(Unit* unit, int item); // 0x08026cd0.
+extern void ItemEffect_Call(Unit* unit, int item); // 0x080270FC.
 
 extern MenuDefinition gMenu_UnitMenu; // 0x0859D1F0.
 extern TargetSelectionDefinition SpellTargetSelection; // 0x0859D3F8.

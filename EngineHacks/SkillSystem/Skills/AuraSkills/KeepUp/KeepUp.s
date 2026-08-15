@@ -13,7 +13,7 @@
 .equ CantoID, NatureRushID+4
 .equ CantoPlusID, CantoID+4
 
-.equ TerrainMap,0x202E4DC
+.equ TerrainMap,0x202E3E0
 
 @the bit is being unset by armor march already
 @we just want to set it if the skills here check true

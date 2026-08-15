@@ -1,9 +1,9 @@
 .thumb
 .global ItemRangeGetter
 .type ItemRangeGetter, %function
-.set Item_MinRange, 0x0801766C
-.set Item_MaxRange, 0x08017684
-@.set HalfMagRange, 0x8018A1C
+.set Item_MinRange, 0x0801736C
+.set Item_MaxRange, 0x08017384
+@.set HalfMagRange, 0x80184B4
 
 .equ SpecialRanges, OffsetList + 0x0
 .equ RangeModSkills, OffsetList + 0x4

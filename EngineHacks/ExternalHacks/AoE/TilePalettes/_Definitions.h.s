@@ -25,16 +25,16 @@
 SET_FUNC GetGameClock, 0x8000D29	@{U}
 @SET_FUNC GetGameClock, 0x08000CD9	@{J}
 
-SET_DATA gPalBlueRangeSquare, 0x8A02F34	@{U
+SET_DATA gPalBlueRangeSquare, 0x83FDD1C	@{U
 @SET_DATA gPalBlueRangeSquare, 0x08A74FEC	@{J}
 
 SET_FUNC CopyToPaletteBuffer, 0x8000DB9	@{U}
 @SET_FUNC CopyToPaletteBuffer, 0x08000D69	@{J}
 
-SET_DATA gPalRedRangeSquare, 0x8A02F94	@{U}
+SET_DATA gPalRedRangeSquare, 0x83FDD7C	@{U}
 @SET_DATA gPalRedRangeSquare, 0x08A7504C	@{J}
 
-SET_DATA gPalGreenRangeSquare, 0x8A02FF4	@{U}
+SET_DATA gPalGreenRangeSquare, 0x83FDDDC	@{U}
 @SET_DATA gPalGreenRangeSquare, 0x08A750AC	@{J}
 
 

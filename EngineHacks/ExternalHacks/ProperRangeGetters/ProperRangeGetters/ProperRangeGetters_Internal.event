@@ -12,7 +12,7 @@
 
 {
 PUSH
-	ORG 0x016B8C
+	ORG 0x0167C6
 	_prIsCoveingRangeProxy: // Replacing original routine
 		SHORT 0xB570 // push {r4-r6, lr}
 		SHORT 0x1C04 // mov r4, r0
@@ -75,17 +75,17 @@ PUSH
 	ORG 0x03ACC2
 		BL(_prMaxFromR5)
 	
-	ORG 0x03B558
+	ORG 0x036650
 	// free space: 0x9C
 	// routine size: 0x34
 		SHORT 0xB5F0 // push {r4-r7, lr}
 		SHORT 0x1C04 // mov r4, r0
 		SHORT 0x1C0D // mov r5, r1
-		BL(0x01A38C) // bl FillMovMapForUnit
+		BL(0x019BA0) // bl FillMovMapForUnit
 		SHORT 0x480C // ldr r0, ppMapRangeRows
 		SHORT 0x6800 // ldr r0, [r0]
 		SHORT 0x2100 // mov r1, #0
-		BL(0x0197E4) // bl ClearMap
+		BL(0x0190AC) // bl ClearMap
 		SHORT 0x480B // ldr r0, ppMapSize
 		SHORT 0x8847 // ldrh r7, [r0, #2]
 		SHORT 0x3F01 // sub r7, #1
@@ -109,9 +109,9 @@ PUSH
 		SHORT 0x3E01 // sub r7, #1 @ YLoopContinue
 		SHORT 0xDAEF // bge YLoopStart
 		SHORT 0xBDF0 // pop {r4-r7, pc} @ End
-		WORD  0x0202E4E4 // @ ppMapRangeRows
-		WORD  0x0202E4E0 // @ ppMapMovCostRows
-		WORD  0x0202E4D4 // @ ppMapSize
+		WORD  0x0202E3E8 // @ ppMapRangeRows
+		WORD  0x0202E3E4 // @ ppMapMovCostRows
+		WORD  0x0202E3D8 // @ ppMapSize
 	
 	// free space: 0x68
 	// routine size: 0x2C in size
@@ -132,7 +132,7 @@ PUSH
 		SHORT 0x1C30 // mov r0, r6
 		SHORT 0x1C39 // mov r1, r7
 		SHORT 0x1C22 // mov r2, r4
-		BL(0x01B9A4) // bl FillRangeMap
+		BL(0x01B19C) // bl FillRangeMap
 		SHORT 0xBDF0 // pop {r4-r7, pc}
 		SHORT 0x46C0 // nop
 	
@@ -151,7 +151,7 @@ PUSH
 		BL(_prMaxRangeGetterProxy) // bl Item_GetMaxRange
 		SHORT 0xBD00
 		
-		WORD 0x03004E50
+		WORD 0x03004690
 	
 	_prMinFromSubjectUnit:
 		SHORT 0xB500
@@ -167,7 +167,7 @@ PUSH
 		BL(_prMaxRangeGetterProxy) // bl Item_GetMaxRange
 		SHORT 0xBD00
 		
-		WORD 0x02033F3C
+		WORD 0x02033E40
 
 	
 	ORG 0x03B6CE // I have no idea tbh but it's probably the active unit
@@ -192,7 +192,7 @@ PUSH
 		SHORT 0x480B // ldr r0, ppRangeMapRows
 		SHORT 0x6800 // ldr r0, [r0]
 		SHORT 0x2100 // mov r1, #0
-		BL(0x0197E4) // bl ClearMap
+		BL(0x0190AC) // bl ClearMap
 		SHORT 0x7C26 // ldrb r6, [r4, #0x10]
 		SHORT 0x7C67 // ldrb r7, [r4, #0x11]
 		SHORT 0x1C28 // mov r0, r5
@@ -206,9 +206,9 @@ PUSH
 		SHORT 0x1C30 // mov r0, r6
 		SHORT 0x1C39 // mov r1, r7
 		SHORT 0x1C22 // mov r2, r4
-		BL(0x01B9A4) // bl FillRangeMap
+		BL(0x01B19C) // bl FillRangeMap
 		SHORT 0xBDF0 // pop {r4-r7, pc}
-		WORD  0x0202E4E4 // @ ppRangeMapRows
+		WORD  0x0202E3E8 // @ ppRangeMapRows
 
 	ORG 0x03D950
 		BL(_prMinFromActiveUnit)
@@ -229,7 +229,7 @@ PUSH
 		SHORT 0x1A0A // sub r2, r1, r0
 		SHORT 0x189D // add r5, r3, r2 @ ABSBranchY
 		SHORT 0x1C20 // mov r0, r4
-		BL(0x016B28) // bl Unit_GetEquippedWeapon
+		BL(0x016764) // bl Unit_GetEquippedWeapon
 		SHORT 0x1C06 // mov r6, r0
 		SHORT 0xD00C // beq Return0
 		SHORT 0x1C21 // mov r1, r4
@@ -301,7 +301,7 @@ PUSH
 		SHORT 0xB530 // push {r4-r5, lr}
 		SHORT 0x1C0C // mov r4, r1
 		SHORT 0x1C20 // mov r0, r4
-		BL(0x016B28) // bl Unit_GetEquippedWeapon
+		BL(0x016764) // bl Unit_GetEquippedWeapon
 		SHORT 0x1C05 // mov r5, r0
 		SHORT 0xD00A // beq Return1
 		SHORT 0x1C21 // mov r1, r4
@@ -337,7 +337,7 @@ PUSH
 	// Range Display Fix Stuff
 	// =======================
 	
-	ORG 0x01ACBC
+	ORG 0x01A4D4
 	// Make Range Map For Unit Reach (Used during movement select/display/etc)
 		SHORT 0xB5F0 0x1C04 0x2101 0x4249 0x4B22 0x469E 0xF800 0x1C05 0x2600 0x2700 0x4820 0x8846 0x3E01 0x481F 0x8807 0x3F01 0x00B2 0x481E 0x6800 0x5880 0x5DC0 0x2878 0xD826 0x481C 0x6800 0x5880 0x5DC0 0x2800 0xD120 0x481A 0x6800 0x5880 0x5DC0 0x2800 0xD11A 0x6820 0x6861 0x6A80 0x6A89 0x4308 0x2180 0x4208 0xD00C 0x1C38 0x1C31 0x4B13 0x469E 0xF800 0x2800 0xD005
 		
@@ -404,7 +404,7 @@ PUSH
 		SHORT 0x7810 // ldrb r0, [r2]
 		SHORT 0x1840 // add  r0, r1
 		SHORT 0x7800 // ldrb r0, [r0]
-		BL(0x019430) // bl Unit_GetStruct
+		BL(0x018d0c) // bl Unit_GetStruct
 		SHORT 0x1C01 // mov r1, r0
 		SHORT 0x1C20 // mov r0, r4
 		BL(_prMinRangeGetterProxy) // bl Item_GetMinRange
@@ -418,7 +418,7 @@ PUSH
 		SHORT 0x7810 // ldrb r0, [r2]
 		SHORT 0x1840 // add  r0, r1
 		SHORT 0x7800 // ldrb r0, [r0]
-		BL(0x019430) // bl Unit_GetStruct
+		BL(0x018d0c) // bl Unit_GetStruct
 		SHORT 0x1C01 // mov r1, r0
 		SHORT 0x1C20 // mov r0, r4
 		BL(_prMaxRangeGetterProxy) // bl Item_GetMaxRange
@@ -433,7 +433,7 @@ PUSH
 	_prMaxRangeGetterProxy:
 		jumpToHack(prMaxRangeGetter)
 	
-	ORG 0x0170D4
+	ORG 0x016DB4
 	_prMaskGetterProxy:
 	// Get Item Range Mask
 		SHORT 0xB570 // push {r4-r6, lr}
@@ -453,7 +453,7 @@ PUSH
 		SHORT 0x4070 // eor r0, r6
 		SHORT 0xBD70 // pop {r4-r6, pc}
 
-	ORG 0x01B460
+	ORG 0x01AC60
 	// Make Range Map By Unit & Mask (Used in unit menu selection and others (?))
 		SHORT 0xB500 0x1C0A 0x7C41 0x7C00 0x4B02 0x469E 0xF800 0xBC01 0x4700 0x46C0
 		POIN (_prFillRangeByMask+1)
@@ -461,7 +461,7 @@ PUSH
 	_prFillRangeByMask:
 		SHORT 0xB5F0 0x0403 0x040C 0x0C1B 0x431C 0x1C15 0x261F 0x2700 0x1C28 0x40F0 0x2101 0x4008 0x42B8 0xD00B 0x1C07 0x4B08 0x469E 0x0420 0x1400 0x1421 0x1C32 0x2301 0x2F00 0xD100 0x425B 0xF800 0x3E01 0xDAEB 0xBCF0 0xBC01 0x4700 0x0000 0xAABC 0x0801
 
-	ORG 0x01723C
+	ORG 0x016F10
 		replaceWithHack((_prGetUnitStaffRangeMask+1))
 POP
 }

@@ -52,7 +52,7 @@ Draw_SetupMemorySlots:
 push {lr}
 
 
-@ldr r3, =0x203a608 @gpCurrentRound	{U}
+@ldr r3, =0x203a50c @gpCurrentRound	{U}
 @ldr r0, [r3] 
 @ldr r1, [r0] 
 @mov r11, r11 
@@ -77,7 +77,7 @@ add r2, #0x5E
 ldrb r2, [r2]
 cmp r2, #1 
 bgt VanillaBehaviour
-ldr r2, =0x203A56C @ dfdr 
+ldr r2, =0x203A470 @ dfdr 
 b LoadTargetCoords
 
 VanillaBehaviour: 
@@ -110,7 +110,7 @@ strh r1, [r3, #2]
 pop {r1}
 bx r1 
 
-	.equ BreakProcLoop, 0x08002E94	@{U}
+	.equ BreakProcLoop, 0x080046A0	@{U}
 @	.equ BreakProcLoop, 0x08002DE4	@{J}
 .align 
 .ltorg
@@ -163,7 +163,7 @@ blh CopyToPaletteBuffer @Arguments: r0 = source pointer, r1 = destination offset
 
 
 @ AoE test 
-@ldr r0, =0x202E4E0 @ Movement map	{U}
+@ldr r0, =0x202E3E4 @ Movement map	{U}
 @ldr r0, [r0] 
 @mov r1, #0xFF
 @blh FillMap
@@ -214,11 +214,11 @@ bx r0
 .align 4
 .ltorg
 
-.equ CopyToPaletteBuffer, 0x8000DB8	@{U}
+.equ CopyToPaletteBuffer, 0x8001084	@{U}
 @.equ CopyToPaletteBuffer, 0x8000D68	@{J}
 .equ PushToSecondaryOAM, 0x08002BB8	@{U}
 @.equ PushToSecondaryOAM, 0x08002B08	@{J}
-.equ GetGameClock, 0x08000D28	@{U}
+.equ GetGameClock, 0x08000F14	@{U}
 @.equ GetGameClock, 0x08000CD8	@{J}
 
 
@@ -244,25 +244,25 @@ bx r0
 .ltorg 
 .align 
 
-.equ FillMap,                    0x080197E4	@{U}
-@.equ FillMap,                    0x080194BC	@{J}
-.equ pr6C_NewBlocking,           0x08002CE0	@{U}
+.equ FillMap,                    0x080190AC	@{U}
+@.equ FillMap,                    0x08018D88	@{J}
+.equ pr6C_NewBlocking,           0x080044F8	@{U}
 @.equ pr6C_NewBlocking,           0x08002C30	@{J}
-.equ pr6C_New,                   0x08002C7C	@{U}
+.equ pr6C_New,                   0x08004494	@{U}
 @.equ pr6C_New,                   0x08002BCC	@{J}
 .equ Proc_CreateBlockingChild,   0x080031c4	@{U}
 @.equ Proc_CreateBlockingChild,   0x08003110	@{J}
-.equ BreakProcLoop,              0x08002E94	@{U}
+.equ BreakProcLoop,              0x080046A0	@{U}
 @.equ BreakProcLoop,              0x08002DE4	@{J}
-.equ ProcFind,                   0x08002E9C	@{U}
+.equ ProcFind,                   0x080046A8	@{U}
 @.equ ProcFind,                   0x08002DEC	@{J}
-.equ EnsureCameraOntoPosition,   0x08015e0c	@{U}
+.equ EnsureCameraOntoPosition,   0x08015ce0	@{U}
 @.equ EnsureCameraOntoPosition,   0x08015E18	@{J}
 .equ CheckEventId,               0x08083da8	@{U}
 @.equ CheckEventId,               0x080860D0	@{J}
 .equ MemorySlot,                 0x030004B8	@{U}
 @.equ MemorySlot,                 0x030004B0	@{J}
-.equ CurrentUnit,                0x03004E50	@{U}
+.equ CurrentUnit,                0x03004690	@{U}
 @.equ CurrentUnit,                0x03004DF0	@{J}
 .equ EventEngine,                0x0800D07C	@{U}
 @.equ EventEngine,                0x0800D340	@{J}
@@ -283,7 +283,7 @@ ldrh r1, [r3, #2]
 
 @ given coordinates to move the camera to, decide whether the camera needs to be moved or not 
 @ r0 = XX, r1 = YY 
-blh 0x8015e9c @ ShouldCameraMovePos?	@{U}
+blh 0x8015d70 @ ShouldCameraMovePos?	@{U}
 @blh 0x8015EA8 @ ShouldCameraMovePos?	@{J}
 cmp r0, #0 
 beq ContinueDraw_Wait
@@ -375,7 +375,7 @@ add r2, #0x5E
 ldrb r2, [r2]
 cmp r2, #1 
 bgt VanillaBehaviour2
-ldr r2, =0x203A56C @ dfdr 
+ldr r2, =0x203A470 @ dfdr 
 b LoadTargetCoords2
 
 VanillaBehaviour2: 
@@ -407,9 +407,9 @@ push {r4, lr}
 bl Draw_GetActiveCoords @ I guess this returns the target's coords? 
 
 
-ldr r3, =0x203A4EC @ Atkr	@{U}
+ldr r3, =0x203A3F0 @ Atkr	@{U}
 @ldr r3, =0x0203A4E8 @ Atkr	@{J}
-ldr r4, =0x203A56C @ Dfdr	@{U}
+ldr r4, =0x203A470 @ Dfdr	@{U}
 @ldr r4, =0x0203A568 @ Dfdr	@{J}
 
 ldrb r2, [r3, #0x10]
@@ -422,9 +422,9 @@ b ExitDraw_GetActiveAttackerOrDefender
 
 
 TryDfdr:
-ldr r3, =0x203A56C @ Dfdr	@{U}
+ldr r3, =0x203A470 @ Dfdr	@{U}
 @ldr r3, =0x0203A568 @ Dfdr	@{J}
-ldr r4, =0x203A4EC @ Atkr	@{U}
+ldr r4, =0x203A3F0 @ Atkr	@{U}
 @ldr r4, =0x0203A4E8 @ Atkr	@{J}
 
 ldrb r2, [r3, #0x10]
@@ -483,7 +483,7 @@ ldrb r0, [r3, #1] @ Animation ID
 b ExitDraw_GetAnimationIDByWeapon @ We found an animation for that specific weapon 
 
 BreakAnimationBySpecificWeapon_Loop:
-blh 0x8017548 @GetItemWType	{U}
+blh 0x801725c @GetItemWType	{U}
 @blh 0x80172F0 @GetItemWType	{J}
 
 mov r2, #0 @ Counter 
@@ -596,10 +596,10 @@ cmp r0, #0
 beq NoSound
 
 @ Only play sound on the exact frame 
-blh 0x080D01FC   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX 	{U}
+blh 0x080BE594   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX 	{U}
 @blh 0x080D4EF4   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX	{J}
 
-@blh 0x08014B28   @ //PlaySpacialSoundMaybe, r0=BGM index, r1 = Unknown //	{U}
+@blh 0x08014D80   @ //PlaySpacialSoundMaybe, r0=BGM index, r1 = Unknown //	{U}
 @blh 0x080024D4  @ //Switch BGM void r0=BGM Number:MUSIC r1=Unknown //	{U}
 NoSound: 
 
@@ -616,7 +616,7 @@ blh CopyToPaletteBuffer @Arguments: r0 = source pointer, r1 = destination offset
 
 @ palette must be updated 
 ldr	r0,=0x300000E @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{U}
-@ldr	r0,=0x300000D @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{J}
+@ldr	r0,=0x300000C @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{J}
 
 mov	r1,#1
 strb r1,[r0]
@@ -703,12 +703,12 @@ mov r10, r5
 
 
 mov r8, r2 @ VRAM address 
-ldr r4, =0x202E4E0 @ Movement Map	@{U}
-@ldr r4, =0x202E4DC @ Movement Map	@{J}
+ldr r4, =0x202E3E4 @ Movement Map	@{U}
+@ldr r4, =0x202E3E0 @ Movement Map	@{J}
 ldr r4, [r4] @ movement map [0,0] 
 mov r9, r4 @ movement map 
 
-ldr r3, =0x202E4D4 @ Map Size	@{U}
+ldr r3, =0x202E3D8 @ Map Size	@{U}
 @ldr r3, =0x202E4D0 @ Map Size	@{J}
 ldrh r6, [r3] @ XX Boundary size 
 ldrh r7, [r3, #2] @ YY Boundary size 
@@ -856,11 +856,11 @@ bx r0
 
 
 
-.equ    UnLZ77Decompress, 0x08012F50	@{U}
+.equ    UnLZ77Decompress, 0x08013168	@{U}
 @.equ    UnLZ77Decompress, 0x08013008	@{J}
-.equ    CpuFastSet, 0x080D1674	@{U}
+.equ    CpuFastSet, 0x080BFA0C	@{U}
 @.equ    CpuFastSet, 0x080D636C	@{J}
-.equ    gGenericBuffer, 0x02020188 @ #10016 bytes, I think 	@{U}	@{J}
+.equ    gGenericBuffer, 0x02020140 @ #10016 bytes, I think 	@{U}	@{J}
 
 .type Draw_UpdateVRAM, %function 
 Draw_UpdateVRAM:
@@ -1229,16 +1229,16 @@ pop {r0}
 bx r0 
 .ltorg 
 
-.equ New6C, 0x8002c7c 
+.equ New6C, 0x8004494 
 @.equ gProcMapAnimBattle, 0x89A3508 // master 
-.equ gProcMapAnimBattle_Vulnerary, 0x89A49FC // also forts etc. 
-.equ gProcMapAnimBattle_Elixir,    0x89A49A4
-.equ gProcMapAnimBattle_HealStaff, 0x89A4A54 
-.equ gProcMapAnimBattle_Mend,      0x89A4ABC 
-.equ gProcMapAnimBattle_Recover,   0x89A4B24
-.equ gProcMapAnimBattle_Physic,    0x89A4B8C
+.equ gProcMapAnimBattle_Vulnerary, 0x8C9E14C // also forts etc. 
+.equ gProcMapAnimBattle_Elixir,    0x8C9E104
+.equ gProcMapAnimBattle_HealStaff, 0x8C9E264 
+.equ gProcMapAnimBattle_Mend,      0x8C9E2CC 
+.equ gProcMapAnimBattle_Recover,   0x8C9E334
+.equ gProcMapAnimBattle_Physic,    0x8C9E044
 
-.equ ProcGoto, 0x8002F24 
+.equ ProcGoto, 0x8004720 
 .equ gMapAnimData, 0x203E1F0
 
 @ gate works, vuln works, elixir works
@@ -1425,7 +1425,7 @@ GetDisplayDamage:
 .ltorg
 .align 4
 
-.equ SpriteData8x8,			0x08590F44	@{U}
+.equ SpriteData8x8,			0x08B905B0	@{U}
 @.equ SpriteData8x8,			0x085B8CDC	@{J}
 
 .type Draw_NumberOAM, %function 
@@ -1593,7 +1593,7 @@ blh 0x8021668 @ Redraw map at end of event effect	@{U}
 
 @ palette must be updated 
 ldr	r0,=0x300000E @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{U}
-@ldr	r0,=0x300000D @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{J}
+@ldr	r0,=0x300000C @ this is a byte (bool) that tells the game whether the palette RAM needs to be updated	@{J}
 mov	r1,#0
 strb r1,[r0]
 
@@ -1637,7 +1637,7 @@ mov	r2,#0x20
 blh CopyToPaletteBuffer @Arguments: r0 = source pointer, r1 = destination offset, r2 = size (0x20 per full palette)
 
 @Restore WeatherLava's firestorm palette
-ldr r0, =0x0202BCF0	@gChapterData	{U}
+ldr r0, =0x0202BBF8	@gChapterData	{U}
 @ldr r0, =0x0202BCEC	@gChapterData	{J}
 ldrb r0, [r0, #0x15]
 cmp r0, #0x5	@check Weather Lava(0x5)

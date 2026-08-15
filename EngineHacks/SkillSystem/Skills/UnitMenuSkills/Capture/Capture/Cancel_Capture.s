@@ -23,4 +23,4 @@ bx		r14
 
 .align
 CurrentCharPtr:
-.long 0x03004E50
+.long 0x03004690

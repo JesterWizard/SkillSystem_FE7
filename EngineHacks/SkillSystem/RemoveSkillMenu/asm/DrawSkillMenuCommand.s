@@ -3,10 +3,10 @@
 
 	.include "Definitions.inc"
 
-	prGetStringInStdBuffer = 0x0800A240|1
-	prGenTextTiles         = 0x08004004|1
-	prDrawText             = 0x08003E70|1
-	prDrawIcon             = 0x080036BC|1 @ Arguments: r0 = Where, r1 = Icon Index, r2 = ?
+	prGetStringInStdBuffer = 0x08012C60|1
+	prGenTextTiles         = 0x08005718|1
+	prDrawText             = 0x08005590|1
+	prDrawIcon             = 0x08004E28|1 @ Arguments: r0 = Where, r1 = Icon Index, r2 = ?
 
 	lpaSkillDescTable      = EALiterals+0x00
 

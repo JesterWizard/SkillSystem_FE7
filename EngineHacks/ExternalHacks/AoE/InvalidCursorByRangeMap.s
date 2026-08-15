@@ -1,5 +1,5 @@
-.equ ppRangeMapRows, 0x0202E4E4	@{U}
-@.equ ppRangeMapRows, 0x0202E4E0	@{J}
+.equ ppRangeMapRows, 0x0202E3E8	@{U}
+@.equ ppRangeMapRows, 0x0202E3E4	@{J}
 
 .thumb
 

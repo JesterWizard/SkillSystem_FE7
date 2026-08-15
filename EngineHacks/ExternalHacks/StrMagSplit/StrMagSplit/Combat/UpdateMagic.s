@@ -25,6 +25,6 @@ bx		r1
 
 .align
 Luk_Getter:
-.long 0x08019298
+.long 0x08018bb8
 Mag_Getter:
 @

@@ -41,7 +41,7 @@ u8* SpellsGetterForLevel(Unit* unit, int level, int type)  // Same as SpellsGett
 		If defending, check if there is a usable weapon in inventory we can counter with.
 			If so, vanilla. If not, return the first gaiden spell whether it's usable or not.
 */
-int NewGetUnitEquippedWeapon(Unit* unit) // Autohook to 0x08016B28.
+int NewGetUnitEquippedWeapon(Unit* unit) // Autohook to 0x08016764.
 {
 	int vanillaEquipped = GetVanillaEquipped(unit);
 	if ( gChapterData.currentPhase == ( unit->index & 0xC0 ) )
@@ -81,7 +81,7 @@ I'm adding some clarity comments here because the intended behavior here is a li
 		If they can NOT retaliate with that weapon (or if there isn't one), return their first attack gaiden spell (so not a staff lol).
 			If the defender has insufficient HP, the battle rounds will naturally not occur for them.
 */
-int NewGetUnitEquippedWeaponSlot(Unit* unit) // Autohook to 0x08016B58.
+int NewGetUnitEquippedWeaponSlot(Unit* unit) // Autohook to 0x08016794.
 {
 	 // If we're using the spell menu (AND THIS UNIT IS THE ACTOR, adding this check fixes an edge case bug on retaliation), return using Gaiden magic.
 	if ( UsingSpellMenu && unit->index == gBattleActor.unit.index && CanUnitUseWeapon(unit,SelectedSpell) ) { return 9; }
@@ -116,7 +116,7 @@ int NewGetUnitEquippedWeaponSlot(Unit* unit) // Autohook to 0x08016B58.
 }
 
 // On return, bit 1 set has weapon use, bit 2 set has staff use. I know this is used for deciding what squares to display in range display.
-u32 NewGetUnitUseFlags(Unit* unit) // Autohook to 0x08018B28.
+u32 NewGetUnitUseFlags(Unit* unit) // Autohook to 0x080185AC.
 {
 	u32 ret = 0;
 	for ( int i = 0 ; i < 5 && unit->items[i] ; i++ )

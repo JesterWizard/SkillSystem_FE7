@@ -29,7 +29,7 @@ SimpleBallistaCheck:
 	ldsb r0, [r4, r0]
 	mov  r1, #0x11
 	ldsb r1, [r4, r1]
-	blh  #0x803798C 		@GetBallistaItemAt
+	blh  #0x80346C8 		@GetBallistaItemAt
 	cmp  r0, #0x0
 	beq  NotInBallista
 	

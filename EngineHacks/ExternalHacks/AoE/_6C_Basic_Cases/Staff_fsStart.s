@@ -27,13 +27,13 @@ mov 	r0, r5
 @ldr 	r0, TargetTextID
 cmp 	r0, #0x0
 beq 	NoHelpText
-ldr 	r3, =0x800A240 @GetInTextBuffer	@{U}
+ldr 	r3, =0x8012C60 @GetInTextBuffer	@{U}
 @ldr 	r3, =0x8009FA8 @GetInTextBuffer	@{J}
 mov 	r14, r3
 .short 0xF800
 mov 	r1, r0
 mov 	r0, r4
-ldr 	r3, =0x8035708 @display help text at bottom of screen	@{U}
+ldr 	r3, =0x8032560 @display help text at bottom of screen	@{U}
 @ldr 	r3, =0x8035610 @display help text at bottom of screen	@{J}
 mov 	r14, r3
 .short 0xF800
@@ -41,7 +41,7 @@ NoHelpText:
 
 SoundCheck:
 @check if sounds are turned off?
-ldr 	r0, =0x202BCF0 	@chapter data in ram	@{U}
+ldr 	r0, =0x202BBF8 	@chapter data in ram	@{U}
 @ldr 	r0, =0x202BCEC 	@chapter data in ram	@{J}
 add 	r0, #0x41
 ldrb	r0, [r0]

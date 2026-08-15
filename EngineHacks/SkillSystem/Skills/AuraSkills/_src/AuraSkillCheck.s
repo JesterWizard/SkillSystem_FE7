@@ -18,17 +18,17 @@ mov r5, r1 @skill num
 mov r6, r2 @allegiance
 mov r7, r3 @maxrange
 
-ldr r2, =0x2033f3c
+ldr r2, =0x2033e40
 str r4, [r2] @save unit data in RAM
 
-ldr r0, =0x3004e50 @active unit
+ldr r0, =0x3004690 @active unit
 ldr r0, [r0]
 ldrb r0, [r0, #0xb] @deployment number
 ldrb r1, [r4, #0xb]
 cmp r1, r0
 bne RangeZeroer
 @write the unit to the unit map ONLY IF ACTIVE UNIT
-@ ldr r0, =0x3004e50
+@ ldr r0, =0x3004690
 @ ldr r0, [r0]
 
 cmp r4, r0
@@ -37,7 +37,7 @@ ldrsb r0, [r4,r0] @unit x
 mov r1, #0x11
 ldrsb r1, [r4,r1] @unit y
 ldrb r2, [r4, #0xb] @deployment number
-ldr r3, =0x202e4d8 @unit map
+ldr r3, =0x202e3dc @unit map
 ldr r3, [r3]
 lsl r1, #2
 add r1, r3
@@ -49,14 +49,14 @@ strb r2, [r1, r0] @write unit to map
 @ ldrsb r0, [r4,r0] @unit x
 @ mov r1, #0x11
 @ ldrsb r1, [r4,r1] @unit y
-@ blh 0x804f8a4
+@ blh 0x804ace4
 RangeZeroer:
-ldr r0, =0x202e4e4 @range map
+ldr r0, =0x202e3e8 @range map
 ldr r0, [r0]
 mov r1, #0
-blh 0x80197e4 @zero out the range map
+blh 0x80190ac @zero out the range map
 
-ldr r0, =0x801b9a4
+ldr r0, =0x801b19c
 mov lr, r0
 mov r0, #0x10
 ldrsb r0, [r4,r0] @unit x
@@ -95,14 +95,14 @@ mov r9, r2 @allegiance
 mov r12, r3 @deployment no to ignore
 ldr r2, =0x202b256 @buffer to store deployment numbers of units with the skill
 mov r10, r2
-ldr r0, =0x202e4d4 @unit map
+ldr r0, =0x202e3d8 @unit map
 mov r1, #2
 ldsh r0, [r0,r1]
 sub r1, r0, #1
 cmp r1, #0
 blt Return
 loop_start:
-ldr r0, =0x202e4d4 @unit map
+ldr r0, =0x202e3d8 @unit map
 mov r2, #0
 ldsh r0, [r0,r2]
 sub r4, r0, #1
@@ -111,7 +111,7 @@ cmp r4, #0
 blt loc_24efe
 lsl r5, r1, #2
 loc_24ecc:
-ldr r0, =0x202e4e4
+ldr r0, =0x202e3e8
 ldr r0, [r0]
 add r0, r5
 ldr r0, [r0]
@@ -121,7 +121,7 @@ lsl r0, #0x18
 asr r0, #0x18
 cmp r0, #0
 beq loc_24ef8
-ldr r0, =0x202e4d8
+ldr r0, =0x202e3dc
 ldr r0, [r0]
 add r0, r5
 ldr r0, [r0]
@@ -129,7 +129,7 @@ add r1, r0, r4
 ldrb r0, [r1]
 cmp r0, #0
 beq loc_24ef8
-    blh 0x8019430 @found a unit in range
+    blh 0x8018d0c @found a unit in range
     mov r1, r8 @skill to check
     mov r2, r9 @allegiance
     bl goto_r7

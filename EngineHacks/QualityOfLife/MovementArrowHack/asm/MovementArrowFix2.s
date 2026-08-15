@@ -36,7 +36,7 @@ bx r3
 RangeTable:
 .long 0x3000fd0
 UnitMap:
-.long 0x202e4d8
+.long 0x202e3dc
 Move:
 .long 0x801ce31
 NoMove:

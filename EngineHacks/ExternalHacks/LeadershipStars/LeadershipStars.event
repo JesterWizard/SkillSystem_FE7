@@ -6,7 +6,7 @@
 // Leadership Stars FE8. Hack by Zeta/Gilgamesh
 // Free to use/modify
 #ifndef IconTable
-	#define IconTable $5926F4
+	#define IconTable $0C5EA4
 #endif
 #define SetIcon(ID) "ORG IconTable + ID * 128"
 

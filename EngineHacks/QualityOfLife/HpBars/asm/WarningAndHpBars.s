@@ -56,15 +56,15 @@
 	.equ OptionByte2, 			0x0202BD31
 	.equ CameraStuff, 			0x0202BCB0
 	.equ WRAMDisplay, 			0x08002BB8
-	.equ CurrentCharPtr,		0x03004E50
-	.equ Can_Equip_Item, 		0x08016574
-	.equ Get_Unit_Max_Hp,		0x08019190
-	.equ Get_Unit_Cur_HP,		0x08019150
-	.equ Get_Item_Crit, 		0x08017624
-	.equ Check_Effectiveness, 	0x08016BEC
+	.equ CurrentCharPtr,		0x03004690
+	.equ Can_Equip_Item, 		0x080161a4
+	.equ Get_Unit_Max_Hp,		0x08018ab0
+	.equ Get_Unit_Cur_HP,		0x08018a70
+	.equ Get_Item_Crit, 		0x08017328
+	.equ Check_Effectiveness, 	0x08016820
 	.equ Slayer_Check, 			0x08016C88
 	.equ Talk_Check, 			0x08083F68
-	.equ Support_Check, 		0x08028310
+	.equ Support_Check, 		0x08026778
 	.equ return_addr, 			0x080276BE+1
 	.equ x_coord, 				0x10
 	.equ y_coord, 				0x11

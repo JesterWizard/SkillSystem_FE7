@@ -32,7 +32,7 @@ bgt		End
 
 ldrb	r0,[r5,#0xB]	@myself
 ldrb	r1,[r4,#0xB]	@target
-blh 0x08024D8C   @AreUnitsAllied
+blh 0x080238B0   @AreUnitsAllied
 cmp		r0, #0x1
 beq		End
 

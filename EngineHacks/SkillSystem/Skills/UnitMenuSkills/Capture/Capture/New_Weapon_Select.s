@@ -34,8 +34,8 @@ bx		r0
 
 .align
 Func_4E884:
-.long 0x0804E884
+.long 0x0804A040
 RegularAttackMap:
-.long 0x080251B4
+.long 0x08023C58
 Is_Capture_Set:
 @Fill_Capture_Range_Map

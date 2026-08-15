@@ -1,5 +1,5 @@
 .thumb
-	CpuSet           = 0x080D1678|1
+	CpuSet           = 0x080BFA10|1
 
 .global ClearAllDebuffs 
 .type ClearAllDebuffs, %function 

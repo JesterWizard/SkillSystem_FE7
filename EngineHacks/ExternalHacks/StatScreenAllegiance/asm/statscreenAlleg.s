@@ -40,7 +40,7 @@ bx r3
 
 GetUnitFromCoords:
 @gets deployment number, given r0=x and r1=y
-ldr r2,=0x202e4d8 @pointer to unit map
+ldr r2,=0x202e3dc @pointer to unit map
 ldr r2,[r2]
 lsl r1,#2 @y*4
 add r1,r2 @row address

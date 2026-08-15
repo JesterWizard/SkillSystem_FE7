@@ -32,7 +32,7 @@ pop	{r1}
 b	End2
 
 GetRandom:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 GetMug:

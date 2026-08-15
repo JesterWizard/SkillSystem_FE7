@@ -37,15 +37,15 @@
   .short 0xf800
 .endm
 
-.equ AddTrap,0x802E2B8
+.equ AddTrap,0x802BACC
 .equ GetChapterDefinition,0x8034618
-.equ gChapterData,0x202BCF0
-.equ gMapSize,0x202E4D4
-.equ gMapTerrain,0x202E4DC
-.equ GetTrap,0x802EB8C
-.equ AddTarget,0x804F8BC
-.equ gMapRange,0x202E4E4
-.equ GetCharacterData,0x8019464
+.equ gChapterData,0x202BBF8
+.equ gMapSize,0x202E3D8
+.equ gMapTerrain,0x202E3E0
+.equ GetTrap,0x802C318
+.equ AddTarget,0x804ACFC
+.equ gMapRange,0x202E3E8
+.equ GetCharacterData,0x8018d38
 .equ ReturnPoint_BreakAnim1,0x8081793
 .equ ReturnPoint_BreakAnim2,0x80817CB
 .equ ReturnPoint_HideMapSprite1,0x807B37F @do hide

@@ -12,9 +12,9 @@
 .equ MemorySlot7,0x30004D4
 .equ IsThereClosedChestAt,0x80831AD
 .equ GetChapterEventDataPointer,0x80346B1
-.equ gChapterData,0x202BCF0
+.equ gChapterData,0x202BBF8
 .equ CheckEventDefinition,0x8082ec5
-.equ gActionData,0x203A958 
+.equ gActionData,0x203A868 
 
 .macro blh to,reg=r3
 	push {\reg}

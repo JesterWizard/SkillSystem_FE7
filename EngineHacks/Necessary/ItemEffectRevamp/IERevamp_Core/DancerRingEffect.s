@@ -44,7 +44,7 @@ bl 	InflictStatusOnUnit
 @str	r1,[r0,#0xC]
 
 
-ldr 	r1, =#0x203A4D4
+ldr 	r1, =#0x203A3D8
 mov 	r0, #0x80
 lsl 	r0, r0, #0x2
 strh 	r0,[r1]

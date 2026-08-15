@@ -1,7 +1,7 @@
 #ifndef MSG_BALLISTAE_GETTERS
 #define MSG_BALLISTAE_GETTERS
 
-#define prGetBallistaItemAt  0x0803798C
+#define prGetBallistaItemAt  0x080346C8
 	
 #define rCallForUnitPosition(aprRoutine) "SHORT $B510 $2301 $4C06 $405C $469E $44FE $4720 $4B05 $2201 $4053 $4696 $44FE $4718 $BC10 $BC02 $4708; POIN prGetUnitPosition aprRoutine"
 

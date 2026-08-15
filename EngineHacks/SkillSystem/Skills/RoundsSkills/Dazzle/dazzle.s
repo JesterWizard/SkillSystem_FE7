@@ -4,7 +4,7 @@
 @jumptohack at 802c864
 
 .thumb
-ldr r4, =0x203a4ec
+ldr r4, =0x203a3f0
 push {r4-r7}
 @original stuff
 mov r5, r12

@@ -21,5 +21,5 @@ bx		r0
 .align
 .ltorg
 BG1MapBuffer:
-.long 0x020234A8
+.long 0x02023460
 NewTSA:

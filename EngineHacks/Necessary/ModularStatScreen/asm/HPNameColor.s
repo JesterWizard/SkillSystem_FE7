@@ -60,13 +60,13 @@ bx		r0
 
 .align
 Write_Palette_Func:
-//FE8 -> .long 0x08000DB8
+//FE8 -> .long 0x08001084
 .long 0x08001084
 ProcessHP:
-//FE8 -> .long 0x08004D5C
+//FE8 -> .long 0x080063AC
 .long 0x080063AC
 Const_2028D70:
-//FE8 -> .long 0x02028E70
+//FE8 -> .long 0x02028D70
 .long 0x02028D70
 New_Palettes:
 @

@@ -6,9 +6,9 @@
     mov lr, \reg
     .short 0xF800
 .endm
-.equ ActiveChar,0x3004E50
-.equ RemoveUnitBlankItems,0x8017984
-.equ BG2Buffer, 0x02023CA8
+.equ ActiveChar,0x3004690
+.equ RemoveUnitBlankItems,0x8017688
+.equ BG2Buffer, 0x02023C60
 .equ FillBgMap, 0x08001221
 .equ EnableBgSyncByIndex, 0x08001FBD
 .equ UnitDecreaseItemUse, 0x08018995
@@ -155,9 +155,9 @@ bx        r0
 .align
 
 Get_Char_Data:
-.long 0x08019430
+.long 0x08018d0c
 Battle_Struct_For_Items:
-.long 0x0802CB24
+.long 0x0802A4B4
 GoBackLoc:
 .long 0x0802FF76+1
 

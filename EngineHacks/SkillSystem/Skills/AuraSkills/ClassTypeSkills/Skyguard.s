@@ -46,7 +46,7 @@ LoopStart:
 ldrb	r0,[r6]
 cmp	r0,#0
 beq	GoBack
-ldr	r1,=#0x8019430	@get char data
+ldr	r1,=#0x8018d0c	@get char data
 mov	lr,r1
 .short	0xf800		@r0 = pointer to unit in ram
 mov	r3,r0

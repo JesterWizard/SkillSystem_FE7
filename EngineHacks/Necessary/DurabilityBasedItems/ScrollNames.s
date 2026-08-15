@@ -26,7 +26,7 @@
 .endm
 .equ ReturnPoint1,0x8017507
 .equ String_GetFromIndex,0x800A241
-.equ gCurrentTextString,0x202A6AC
+.equ gCurrentTextString,0x202A5B4
 .equ ReturnPoint2,0x801750B
 
 GetItemNameString: @hook at 174F8

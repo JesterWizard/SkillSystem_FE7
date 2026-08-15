@@ -10,7 +10,7 @@ mov r5, r1 @ target
 
 
 
-ldr r3, =0x203A56C
+ldr r3, =0x203A470
 ldrb r0, [r5, #0x13] @ hp 
 cmp r0, #0 
 bne Exit 
@@ -21,7 +21,7 @@ strb r1, [r3, #0x0B]
 lsr r1, #6
 cmp r1, #0 
 beq Exit 
-ldr r3, =0x203A56C
+ldr r3, =0x203A470
 
 mov r1, #0x38 @ leader 
 ldrb r2, [r5, r1] 

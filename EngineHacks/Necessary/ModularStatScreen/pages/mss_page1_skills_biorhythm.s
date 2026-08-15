@@ -263,7 +263,7 @@ cmp		r1,#0
 beq		RestoreDone
 cmp		r0,#0
 beq		RestoreDone
-ldr		r1,=#0x02028E70
+ldr		r1,=#0x02028D70
 ldr		r1,[r1]
 strh	r0,[r1,#0x10]
 RestoreDone:

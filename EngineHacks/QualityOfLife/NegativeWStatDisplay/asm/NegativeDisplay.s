@@ -6,13 +6,13 @@
 
 	@ Vanilla functions definitions
 
-	Text_SetParams = 0x08003E68+1
-	Text_DrawCharacter = 0x08004180+1
+	Text_SetParams = 0x08005588+1
+	Text_DrawCharacter = 0x08005814+1
 
-	GetItemMight = 0x080175DC+1
-	GetItemHit = 0x080175F4+1
-	GetItemWeight = 0x0801760C+1
-	GetItemCrit = 0x08017624+1
+	GetItemMight = 0x080172E0+1
+	GetItemHit = 0x080172F8+1
+	GetItemWeight = 0x08017310+1
+	GetItemCrit = 0x08017328+1
 
 	.global DrawHelpBoxWeaponStats_Hook
 	.type   DrawHelpBoxWeaponStats_Hook, function

@@ -42,13 +42,13 @@ bx		r0
 
 .align
 Func1:
-//FE8 -> .long 0x08002F24
+//FE8 -> .long 0x08004720
 .long 0x08004720
 Func2:
 //FE8 -> .long 0x080878CC
 .long 0x080804C8
 StatScreenStruct:
-//FE8 -> .long 0x02003BFC
+//FE8 -> .long 0x0200310C
 .long 0x0200310C
 ReturnRButton:
 //FE8 -> .long 0x080888A0+1

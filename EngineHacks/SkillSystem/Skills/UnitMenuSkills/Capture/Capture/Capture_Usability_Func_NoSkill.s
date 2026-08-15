@@ -32,7 +32,7 @@ mov		r1,r4
 cmp		r0,#0x0
 beq		NextWeapon
 mov		r0,r4
-ldr		r1,=#0x801766C		@get min range
+ldr		r1,=#0x801736C		@get min range
 mov		r14,r1
 .short	0xF800
 cmp		r0,#0x1
@@ -60,11 +60,11 @@ bx		r1
 
 .ltorg
 CurrentCharPtr:
-.long 0x03004E50
+.long 0x03004690
 Weapon_Wield_Check:
-.long 0x08016750
+.long 0x08016380
 TargetQueueCounter:
-.long 0x0203E0EC
+.long 0x0203DFF8
 Fill_Capture_Range_Map:
 @SkillTester
 @CaptureID

@@ -63,12 +63,12 @@ goto_r4:
 
 .align
 RangeMapPtr:
-.long 0x0202E4F0
+.long 0x0202E3F4
 Pointer1:
-.long 0x0203A958
+.long 0x0203A868
 
 ClearRangeMap:
-.long 0x080197E4+1
+.long 0x080190AC+1
 GetCharData:
-.long 0x08019430+1
+.long 0x08018d0c+1
 ReturnRangeBitfield:

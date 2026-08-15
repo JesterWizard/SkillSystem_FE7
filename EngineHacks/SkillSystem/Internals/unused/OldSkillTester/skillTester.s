@@ -6,7 +6,7 @@
 
 .thumb
 
-.set GetUnitEquippedItem, 0x8016B28
+.set GetUnitEquippedItem, 0x8016764
 .set ItemTable, SkillGetter+0x04
 
 .macro _blh to, reg=r3

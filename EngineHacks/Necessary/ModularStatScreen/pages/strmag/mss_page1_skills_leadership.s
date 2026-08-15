@@ -100,7 +100,7 @@ draw_con_bar_with_getter_at 24, 3
 
 
 draw_textID_at 21, 5, textID=0x4f8 @aid
-draw_number_at 25, 5, 0x80189B8, 2 @aid getter
+draw_number_at 25, 5, 0x8018450, 2 @aid getter
 draw_aid_icon_at 26, 5
 
 draw_status_text_at 21, 7
@@ -244,7 +244,7 @@ bx		r14
 
 .align
 Const2_2028E70:
-.long 0x02028E70
+.long 0x02028D70
 
 .include "GetTalkee.s"
 

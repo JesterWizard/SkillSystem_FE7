@@ -29,8 +29,8 @@ bx		r0
 
 .align
 GetCharStruct:
-.long 0x08019430
+.long 0x08018d0c
 MagSaveTable:
-.long 0x0203E894
+.long 0x0203E7A0
 SaveFunction:
-.long 0x080D184C
+.long 0x080BFBD8

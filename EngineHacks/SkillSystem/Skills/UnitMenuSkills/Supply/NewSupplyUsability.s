@@ -10,7 +10,7 @@
 
 .equ SupplyID,SkillTester+4
 .equ AlsoUseVanillaCheck,SupplyID+4
-.equ gActiveUnit,0x3004E50
+.equ gActiveUnit,0x3004690
 
 .macro blh to, reg=r3
 	ldr \reg, =\to
@@ -117,7 +117,7 @@ add r2 ,r7, r2
 mov r0, #0x1
 ldsb r0, [r4, r0]
 add r0 ,r6, r0
-ldr r1, =0x0202E4D8 @(gMapUnit )
+ldr r1, =0x0202E3DC @(gMapUnit )
 ldr r1, [r1, #0x0]
 
 lsl r0 ,r0 ,#0x2    @gMapUnit[x]
@@ -131,7 +131,7 @@ and r0 ,r1
 cmp r0, #0x0
 bne IsAdjacent_Next
 	mov r0 ,r1
-	blh 0x08019430   @GetUnitStruct RET=RAM Unit:@UNIT
+	blh 0x08018d0c   @GetUnitStruct RET=RAM Unit:@UNIT
 	cmp r0, #0x0
 	beq IsAdjacent_Next
 

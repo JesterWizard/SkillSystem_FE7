@@ -4,16 +4,16 @@
 	@ build using lyn
 	@ requires MapAuraFx functions to be visible
 
-	LockGame   = 0x08015360|1
-	UnlockGame = 0x08015370|1
+	LockGame   = 0x08015308|1
+	UnlockGame = 0x08015318|1
 
-	StartProc = 0x08002C7C|1
-	BreakProcLoop = 0x08002E94|1
+	StartProc = 0x08004494|1
+	BreakProcLoop = 0x080046A0|1
 
-	m4aSongNumStart = 0x080D01FC|1
+	m4aSongNumStart = 0x080BE594|1
 
-	gChapterData = 0x0202BCF0
-	gActiveUnit = 0x03004E50
+	gChapterData = 0x0202BBF8
+	gActiveUnit = 0x03004690
 
 	.type   StartRallyFx, function
 	.global StartRallyFx

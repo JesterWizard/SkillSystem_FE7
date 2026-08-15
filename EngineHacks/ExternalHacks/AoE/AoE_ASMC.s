@@ -1,6 +1,6 @@
-.equ pActionStruct, 0x0203A958	@{U}
+.equ pActionStruct, 0x0203A868	@{U}
 @.equ pActionStruct, 0x0203A954	@{J}
-.equ ActiveUnit,    0x03004E50 	@{U}
+.equ ActiveUnit,    0x03004690 	@{U}
 @.equ ActiveUnit,    0x03004DF0	@{J}
 .equ MemorySlot,    0x30004B8	@{U}
 @.equ MemorySlot,    0x30004B0	@{J}
@@ -112,15 +112,15 @@ mov r7, r2 @ rotation byte
 bl AoE_GetTableEntryPointer
 mov r6, r0 
 
-ldr r0, =0x202E4E0 @ Movement map	@{U}
-@ldr r0, =0x202E4DC @ Movement map 	@{J}
+ldr r0, =0x202E3E4 @ Movement map	@{U}
+@ldr r0, =0x202E3E0 @ Movement map 	@{J}
 
 ldr r0, [r0] 
 mov r1, #0xFF
 blh FillMap
 
-ldr r0, =0x202E4F0 @ Backup Movement map	@{U}
-@ldr r0, =0x202E4EC @ Backup Movement map	@{J}
+ldr r0, =0x202E3F4 @ Backup Movement map	@{U}
+@ldr r0, =0x202E3F0 @ Backup Movement map	@{J}
 ldr r0, [r0] 
 mov r1, #0xFF
 blh FillMap

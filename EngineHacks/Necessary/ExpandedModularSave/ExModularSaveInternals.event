@@ -28,7 +28,7 @@ PUSH
 		LynJump(MS_SaveSizeHook)
 
 	// Replace GetSaveTargetAddress
-	ORG $0A3064
+	ORG $09E870
 		LynJump(MS_GetSaveAddressBySlot)
 
 	// Replace CopySaveGame
@@ -36,15 +36,15 @@ PUSH
 		LynJump(MS_CopyGameSave)
 
 	// Replace SaveGame
-	ORG $0A5010
+	ORG $0A0810
 		LynJump(MS_SaveGame)
 
 	// Replace LoadGame
-	ORG $0A5128
+	ORG $0A08EE
 		LynJump(MS_LoadGame)
 
 	// Replace SaveSuspendedGame
-	ORG $0A5A48
+	ORG $0A1100
 		LynJump(MS_SaveSuspend)
 
 	// Replace LoadSuspendedGame
@@ -91,7 +91,7 @@ PUSH
 	ORG $0A4F92
 		SHORT $E01B // b later; don't save other stuff just yet
 	ORG $0A4FCE
-		BL($0A5010) // now you can save the game! And do it by calling the save function
+		BL($0A0810) // now you can save the game! And do it by calling the save function
 POP
 
 #endif // EXPANDED_MODULAR_SAVE_INTERNALS

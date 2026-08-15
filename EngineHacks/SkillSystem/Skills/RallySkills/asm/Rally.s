@@ -39,13 +39,13 @@ bx r0
 
 .equ MemorySlot, 0x30004B8
 .equ GetUnitByEventParameter, 0x0800BC50
-	GetUnit = 0x08019430|1
-	StartProc = 0x08002C7C|1
-	FindProc = 0x08002E9C|1
-	EndProc = 0x08002D6C|1
+	GetUnit = 0x08018d0c|1
+	StartProc = 0x08004494|1
+	FindProc = 0x080046A8|1
+	EndProc = 0x08004584|1
 
-	gActiveUnit = 0x03004E50
-	gActionData = 0x0203A958
+	gActiveUnit = 0x03004690
+	gActionData = 0x0203A868
 
 	.type   RallyCommandUsability, function
 	.global RallyCommandUsability
@@ -169,7 +169,7 @@ RallyCommandEffect:
 	pop {r1}
 	bx r1
 	
-.equ ProcFind, 0x8002E9C
+.equ ProcFind, 0x80046A8
 .ltorg 
 .global RallyCommandEffect_NoneActive
 .type RallyCommandEffect_NoneActive, %function 

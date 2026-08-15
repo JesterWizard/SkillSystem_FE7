@@ -22,7 +22,7 @@ beq NoSkillLearned
   strh r0, [r4, #0x2e]
 NoSkillLearned:
 mov r0, r4
-blh 0x8002e94
+blh 0x80046a0
 pop {r4}
 pop {r0}
 bx r0

@@ -6,24 +6,24 @@
 .endm
 
 .equ BufferSize, 12 
-.equ EnsureCameraOntoPosition, 0x08015e0c
-.equ ProcFind, 0x8002E9C
-.equ ProcGoto, 0x8002F24 
+.equ EnsureCameraOntoPosition, 0x08015ce0
+.equ ProcFind, 0x80046A8
+.equ ProcGoto, 0x8004720 
 .equ gAttackerSkillBuffer, 0x02026BB0
 .equ gDefenderSkillBuffer, 0x02026C00
 .equ gTemSkillBuffer, 0x02026B90
 .equ gAuraSkillBuffer, 0x02027200
 .equ gUnitRangeBuffer, 0x0202764C
-.equ GetUnit, 0x8019430
-.equ ChapterData, 0x202BCF0 
-.equ Delete6C, 0x8002D6C 
+.equ GetUnit, 0x8018d0c
+.equ ChapterData, 0x202BBF8 
+.equ Delete6C, 0x8004584 
 .equ AiData, 0x203AA04
-.equ ProcStartBlocking, 0x8002CE0 
-.equ ProcStart, 0x8002C7C
-.equ ProcBreakLoop, 0x8002E94 
-.equ GetPhaseAbleUnitCount, 0x8024CEC 
+.equ ProcStartBlocking, 0x80044F8 
+.equ ProcStart, 0x8004494
+.equ ProcBreakLoop, 0x80046A0 
+.equ GetPhaseAbleUnitCount, 0x8023810 
 .equ gCameraProc, 0x859A548 
-.equ ShouldMoveCamPos, 0x8015E9C 
+.equ ShouldMoveCamPos, 0x8015D70 
 .equ ConvoyPointer, 0x80315b4 
 
 .equ DeployByte, 			0  @ 0x2c 

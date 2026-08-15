@@ -11,8 +11,8 @@
 	.short 0xF800
 .endm
 
-.set BattleActingUnit, 0x0203A4EC @attacker
-.set BattleTargetUnit, 0x0203A56C @defender
+.set BattleActingUnit, 0x0203A3F0 @attacker
+.set BattleTargetUnit, 0x0203A470 @defender
 
 .equ SkillTesterOriginal2, OffsetList + 0x0
 .equ NegatedSkills, OffsetList + 0x4
@@ -30,7 +30,7 @@ push 	{r4-r5,lr}
 mov 	r4,r0		@really need to save these for the skill tester routine
 mov 	r5,r1
 
-ldr 	r3,=#0x203A4D4	@pre-battle data pointer, gonna check if a target has been selected or the fight has started (0x02 if targeting someone, 0x01 if battle started)
+ldr 	r3,=#0x203A3D8	@pre-battle data pointer, gonna check if a target has been selected or the fight has started (0x02 if targeting someone, 0x01 if battle started)
 ldrb 	r3,[r3]
 cmp 	r3, #0x1
 blo End	@if 0, not in combat, Nihil does nothing
@@ -49,11 +49,11 @@ beq IsDefender
 b End		@if neither, skill is never negated, I think this last condition is met when checking for nearby auras and such
 
 IsAttacker:
-ldr 	r0,=#0x203A56C	@prepare to get defender skills
+ldr 	r0,=#0x203A470	@prepare to get defender skills
 b GetSkills
 
 IsDefender:
-ldr 	r0,=#0x203A4EC	@prepare to get attacker skills
+ldr 	r0,=#0x203A3F0	@prepare to get attacker skills
 
 GetSkills:
 ldr 	r1,NihilID

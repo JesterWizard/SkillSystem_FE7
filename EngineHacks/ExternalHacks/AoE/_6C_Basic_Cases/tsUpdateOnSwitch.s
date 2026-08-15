@@ -10,7 +10,7 @@ mov 	r0, #0x0
 ldsb 	r0, [r4, r0]
 mov 	r1, #0x1
 ldsb 	r1, [r4, r1]
-_blh 	0x801F50C	@{U}
+_blh 	0x801EC10	@{U}
 @_blh 	0x801F164	@{J}
 mov 	r0, #0x2
 ldsb 	r0, [r4, r0]

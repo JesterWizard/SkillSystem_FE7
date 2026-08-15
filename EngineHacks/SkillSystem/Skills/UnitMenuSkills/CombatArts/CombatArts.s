@@ -43,7 +43,7 @@ bx r1
 
 
 
-.equ StartMenuAdjusted,0x804EB98
+.equ StartMenuAdjusted,0x804A224
 
 CombatArtsEffect:
 push {r14}

@@ -4,7 +4,7 @@
 @hook at 802b758 with manual jumptohack using r0
 @ byte 00 48 00 47 POIN offset|1
 
-ldr r0, =0x203a4d4 @battle data
+ldr r0, =0x203a3d8 @battle data
 ldrb r1, [r0, #4] @damage dealt
 mov r2, #5
 ldsb r2, [r3, r2] @signed hp delta

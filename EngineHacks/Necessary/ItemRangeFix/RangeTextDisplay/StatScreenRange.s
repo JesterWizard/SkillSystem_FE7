@@ -6,7 +6,7 @@
 	.short 0xF800
 .endm
 
-.equ StatScreenStruct,             0x02003BFC
+.equ StatScreenStruct,             0x0200310C
 
 .equ ItemRange, OffsetList + 0x0
 .equ RangeText, OffsetList + 0x4

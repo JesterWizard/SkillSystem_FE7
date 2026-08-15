@@ -3,20 +3,20 @@
 
 	@ build using lyn
 
-	Text_GetStringTextWidth = 0x08003EDC|1
-	Text_DrawString         = 0x08004004|1
+	Text_GetStringTextWidth = 0x080055FC|1
+	Text_DrawString         = 0x08005718|1
 
-	GetWRankSpecialChar = 0x08016DF8|1
-	GetBattleUnitUpdatedWeaponExp = 0x0802C0B4|1
+	GetWRankSpecialChar = 0x080169E0|1
+	GetBattleUnitUpdatedWeaponExp = 0x08029AFC|1
 	BattleUnit_ShouldDisplayWRankUp = 0x0807A7D8|1
 
-	gpCurrentFont = 0x02028E70
+	gpCurrentFont = 0x02028D70
 
 	gPopupItem    = 0x030005F4
 	gPopupNumber  = 0x030005F8
 
-	gBattleActor  = 0x0203A4EC
-	gBattleTarget = 0x0203A56C
+	gBattleActor  = 0x0203A3F0
+	gBattleTarget = 0x0203A470
 
 	.type   PopRWeaponLevelComponent, object
 	.global PopRWeaponLevelComponent

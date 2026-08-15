@@ -1,5 +1,5 @@
 .thumb
-.equ gBattleData, 0x203A4D4
+.equ gBattleData, 0x203A3D8
 
 push 	{r4, lr}
 @make sure we're in combat (or combat prep)

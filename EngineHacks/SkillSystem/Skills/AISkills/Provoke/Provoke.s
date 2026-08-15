@@ -27,7 +27,7 @@ bx    r1
 
 .align
 DefenderStruct:
-.long 0x0203A56C
+.long 0x0203A470
 SkillTester:
 @ POIN SkillTester
 @ WORD ProvokeID

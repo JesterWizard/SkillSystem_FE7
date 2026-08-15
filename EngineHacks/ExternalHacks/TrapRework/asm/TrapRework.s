@@ -35,17 +35,17 @@
 .equ CheckEventId,0x8083da8
 .equ gTrapArray,0x203a614 	@location of traps in memory
 .equ GetTrapAt,0x802e1f0 	@r0 = x coord, r1 = y coord
-.equ AddTrap,0x802e2b8 		@r0 = x coord, r1 = y coord, r2 = trap ID
-.equ RemoveTrap,0x802e2fc 	@r0 = pointer to trap data
+.equ AddTrap,0x802bacc 		@r0 = x coord, r1 = y coord, r2 = trap ID
+.equ RemoveTrap,0x802bb0c 	@r0 = pointer to trap data
 .equ MemorySlot1,0x30004BC	@contains trap ID paramters
 .equ MemorySlotB,0x30004E4	@contains coordinate parameters, formatted 0xYYYYXXXX
 .equ MemorySlotC,0x30004E8	@contains returned values
-.equ SpawnTrap,0x802E2B8 @r0 = x coord, r1 = y coord, r2 = trap ID
+.equ SpawnTrap,0x802BACC @r0 = x coord, r1 = y coord, r2 = trap ID
 .equ Init_ReturnPoint,0x8037901
-.equ GetTrap,0x802EB8C
-.equ MapAddInRange,0x801AABC
+.equ GetTrap,0x802C318
+.equ MapAddInRange,0x801A2D4
 .equ gTrapArray,0x203A614
-.equ gMapTerrain,0x202E4DC
+.equ gMapTerrain,0x202E3E0
 
 
 

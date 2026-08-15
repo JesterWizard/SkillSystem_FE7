@@ -1,7 +1,7 @@
 .thumb
 
 .equ GetMaxDurabilityFromItemID, 0x8016540
-.equ HandleNewItemGetFromDrop, 0x801E098
+.equ HandleNewItemGetFromDrop, 0x801D8B0
 
 .macro blh to, reg = r3
     ldr \reg, =\to

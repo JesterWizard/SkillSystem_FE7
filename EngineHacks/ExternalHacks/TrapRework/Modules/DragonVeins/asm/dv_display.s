@@ -66,7 +66,7 @@ bx lr
 
 .set MMBStructType, 0x08A018AC
 .set BoxControlTable, 0x08A01820
-.set WindowPosCheck, 0x0808BBCC
+.set WindowPosCheck, 0x08084730
 .set MiscRamData, 0x0202bcb0
 @@ This returns 0-3 based on cursor position
 @@ Uses the same misc. RAM data
@@ -82,13 +82,13 @@ bx lr
 @@ Used when determining where to draw terrain,
 @@ goal, and minimug windows.
 
-.set StructFinder, 0x08002E9C
+.set StructFinder, 0x080046A8
 @@ This routine finds 0x6C structs based on
 @@ a pointer given in r0. If it can't find the struct, 
 @@ it returns 0 in r0. If it can, it returns the
 @@ offset of the struct in r0.
 
-.set ERAMBGBuffer, 0x02003D2C
+.set ERAMBGBuffer, 0x0200323C
 
 @@ This is the BG buffer dedicated to window 
 @@ tilemaps, such as the tilemaps for the terrain
@@ -153,7 +153,7 @@ mov     r0, r4              @@ 0808CD4E 1C20        @@ 0x6C struct
 mov     r1, r6              @@ 0808CD50 1C31        @@ Unit's RAM data
 bl      DVMMBBuilder @custom routine
 mov     r0, r4              @@ 0808CD56 1C20        @@ \
-blh      0x8002E94            @@ 0808CD58 F776F89C    @@ Clears a long in a 0x6C struct
+blh      0x80046A0            @@ 0808CD58 F776F89C    @@ Clears a long in a 0x6C struct
 
 MMBSetupEnd:
 
@@ -162,9 +162,9 @@ pop     {r0}                @@ 0808CD5E BC01        @@ Cleanup
 bx      r0                  @@ 0808CD60 4700        @@ /
 
 
-    .set TextBufferWriter, 0x0800A240
+    .set TextBufferWriter, 0x08012C60
     @@ This routine writes text from text ID
-    @@ in r0 to a buffer at 0x0202A6AC
+    @@ in r0 to a buffer at 0x0202A5B4
     
     .set TextBufferID, 0x0202B6AC
     @@ This is where the text ID of the text currently in the buffer goes
@@ -174,14 +174,14 @@ bx      r0                  @@ 0808CD60 4700        @@ /
     @@ It contains pointers to most pieces of text
     @@ in the game.
     
-    .set TextBufferOffset, 0x0202A6AC
+    .set TextBufferOffset, 0x0202A5B4
     @@ This is the buffer text is written to.
 
-    .set NameCenterer, 0x08003F90
+    .set NameCenterer, 0x080056A8
     @@ This routine puts the name in 
     @@ the center of the same alotted
     @@ for it.
-    .set NameVRAMClearer, 0x08003DC8
+    .set NameVRAMClearer, 0x080054E0
 
 DVMMBBuilder: @copied from 8c5d0
     push    {r4-r7, lr}         @@ 0808C5D0 B5F0     @@ \
@@ -206,7 +206,7 @@ DVMMBBuilder: @copied from 8c5d0
     mov r0, sp
     add r0, #0x20 @@ ugly... grabs the r7 that was pushed.
     ldrh r0, [r0]
-    blh      TextBufferWriter    @@ 0808C5F8 F77DFE22 @@ Writes name to 0x0202A6AC buffer
+    blh      TextBufferWriter    @@ 0808C5F8 F77DFE22 @@ Writes name to 0x0202A5B4 buffer
     mov     r6, r0              @@ 0808C5FC 1C06     @@ \
 
     DrawLine:
@@ -227,13 +227,13 @@ DVMMBBuilder: @copied from 8c5d0
     strb    r2, [r0, #0x03]
     mov     r0, r4              @@ 0808C61C 1C20     @@ \
     mov     r1, r6              @@ 0808C61E 1C31     @@ Writes name to VRAM using info
-    blh     0x8004004
+    blh     0x8005718
     mov     r1,r9               @@ 0808C624 4649     @@ \
 
     add     r1,#0x42              @@ 0808C626 314A     @@ Write name tilemap to ERAM buffer (was 4A, moved it left)
     
     mov     r0,r4               @@ 0808C628 1C20     @@ the 0x4A is where in the buffer to write name
-    blh      0x8003E70            @@ 0808C62A F777FC21 @@ /
+    blh      0x8005590            @@ 0808C62A F777FC21 @@ /
 
     @@@@@@@@@@@@@@@ SECOND ROW OF TEXT
     TextBufferLoop:
@@ -251,7 +251,7 @@ DVMMBBuilder: @copied from 8c5d0
     DVMMBBuilderEnd:
     mov r0, #0
     mov r1, #3
-    blh 0x808c2cc
+    blh 0x8084e28
     add     sp, #8               @@ 0808C6F4 B002     @@ \
     pop     {r3-r5}               @@ 0808C6F6 BC38     @@ Wrap up
     mov     r8,r3               @@ 0808C6F8 4698     @@ 

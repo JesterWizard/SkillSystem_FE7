@@ -14,5 +14,5 @@ bx		r3
 
 .align
 StaffCheck:
-.long 0x080167A4+1
+.long 0x080163D2+1
 WriteAllSquares:

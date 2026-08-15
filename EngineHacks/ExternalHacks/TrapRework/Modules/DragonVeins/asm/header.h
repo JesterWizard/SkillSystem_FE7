@@ -1,6 +1,6 @@
-.set ActiveUnitPtr, 0x3004e50
-.set AddToTargetList, 0x804f8bc
-.set GetCharData, 0x8019430
+.set ActiveUnitPtr, 0x3004690
+.set AddToTargetList, 0x804acfc
+.set GetCharData, 0x8018d0c
 
 .macro blh to, reg=r3
   ldr \reg, =\to

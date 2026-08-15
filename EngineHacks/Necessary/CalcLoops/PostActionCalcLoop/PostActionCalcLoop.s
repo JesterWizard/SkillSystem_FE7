@@ -35,7 +35,7 @@ EndLoop:
 pop { r4 }
 End:
 ldr r0, [ r6 ]
-blh #0x0801849C, r1
+blh #0x08017F28, r1
 pop { r4 - r6 }
 pop { r0 }
 bx r0

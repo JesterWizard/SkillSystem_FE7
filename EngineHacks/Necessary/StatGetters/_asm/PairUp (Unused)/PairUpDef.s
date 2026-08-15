@@ -20,7 +20,7 @@ ldr r6, EALiterals @pair up bonus table, 8 bytes per
 
 @get the rescuee's class
 ldrb r0, [r5 ,#0x1B]     @Deployment number of rescuee
-ldr r1, =0x8019430
+ldr r1, =0x8018d0c
 mov lr, r1
 .short 0xf800
 ldr r0, [r0, #4] @class

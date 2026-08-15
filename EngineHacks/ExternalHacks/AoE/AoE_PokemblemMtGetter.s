@@ -14,7 +14,7 @@ lsl r2, #8
 orr r6, r2  
 
 mov r0, r6 
-blh 0x80175DC @ GetItemMight 
+blh 0x80172E0 @ GetItemMight 
 add r4, r0 @ lower bound with mt 
 add r5, r0 @ upper bound with mt 
 

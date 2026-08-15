@@ -33,7 +33,7 @@ bx		r3
 .ltorg
 .align
 @Fog:
-@.long 0x0202BCF0
+@.long 0x0202BBF8
 @GoBackPtr:
 @.long 0x08028C06+1
 OffsetList:

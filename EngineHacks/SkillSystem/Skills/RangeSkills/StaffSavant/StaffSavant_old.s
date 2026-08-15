@@ -2,8 +2,8 @@
 @adds 1 to mag/2 range
 .thumb
 
-.equ GetItemMaxRange, 0x8017684
-.equ GetUnitPower, 0x80191B0
+.equ GetItemMaxRange, 0x8017384
+.equ GetUnitPower, 0x8018AD0
 
 .equ SkillChecker, EALiterals
 .equ SkillId, EALiterals+0x04

@@ -28,7 +28,7 @@ cmp	r0,#0x0
 beq	End2
 
 GetRandom2:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 
@@ -50,7 +50,7 @@ ldrb	r0,[r2,r0]
 b	End
 
 GetRandom:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 GetMug:

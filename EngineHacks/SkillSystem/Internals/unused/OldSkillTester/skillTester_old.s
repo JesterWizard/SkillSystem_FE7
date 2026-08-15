@@ -1,7 +1,7 @@
 @SkillTester - given ram data in r0 and skill number in r1, returns 1 for true or 0 for false
 .thumb
 
-.set SkillsBuffer, 0x202a6ac
+.set SkillsBuffer, 0x202a5b4
 .set ClassSkillTable, PersonalSkillTable+4
 .set LevelUpSkillTable, ClassSkillTable+4
 .set BWLTable, 0x203e884

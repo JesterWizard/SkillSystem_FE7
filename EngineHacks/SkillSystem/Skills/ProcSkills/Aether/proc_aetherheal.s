@@ -6,7 +6,7 @@
 .endm
 .equ AetherID, SkillTester+4
 .equ LiquidOozeID, AetherID+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 .equ recurse_round, 0x802b83c
 
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data

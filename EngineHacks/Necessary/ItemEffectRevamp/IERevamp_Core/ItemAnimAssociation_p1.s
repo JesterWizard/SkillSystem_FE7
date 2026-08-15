@@ -7,7 +7,7 @@
 @returns
 	@r0 = pointer to anim table entry
 
-.equ ActionStruct, 0x203A958
+.equ ActionStruct, 0x203A868
 .equ EffectAnimTable, OffsetList + 0x0
 .equ WeaponAnimTable, OffsetList + 0x4
 

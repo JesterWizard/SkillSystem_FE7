@@ -11,7 +11,7 @@ ldr		r0,[r5,#0x4]
 cmp		r0,#0
 beq		RetFalse
 mov		r0,r4
-ldr		r3,=#0x80176D0		@get effectiveness pointer
+ldr		r3,=#0x80173D0		@get effectiveness pointer
 mov		r14,r3
 .short	0xF800
 cmp		r0,#0
@@ -72,7 +72,7 @@ cmp		r0,#0
 beq		EffectiveWeaponLoop
 mov		r1,#0xFF
 and		r0,r1
-ldr		r3,=#0x80177B0		@get_item_data
+ldr		r3,=#0x80174AC		@get_item_data
 mov		r14,r3
 .short	0xF800
 ldr		r1,[r0,#0x8]		@weapon abilities

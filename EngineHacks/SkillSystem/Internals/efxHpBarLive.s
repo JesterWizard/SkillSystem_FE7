@@ -12,7 +12,7 @@ mov     r5,r0                @ 080523EE 1C05
 
 @fix heal 0 hp
 @check if staff
-ldr	r0,=#0x203A958
+ldr	r0,=#0x203A868
 mov	r6,#0x11
 ldrb	r0,[r0,r6]
 cmp	r0,#3
@@ -181,7 +181,7 @@ bne     loc_0x80524F0                @ 08052452 D14D
     strh    r4,[r0]                @ 0805247A 8004 
  @removed a huge chunk here 
     mov     r0,r5                @ 080524E4 1C28     
-    blh      0x8002E94                @ 080524E6 F7B0FCD5 
+    blh      0x80046A0                @ 080524E6 F7B0FCD5 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     ldr     r0,[r5,#0x5c]                @ 08052368 6E30     
     ldrh    r0, [r0, #0xE]            @ Next round index
@@ -215,7 +215,7 @@ bne     loc_0x80524F0                @ 08052452 D14D
     add     r0,r0,r1                @ 08052478 1840     
     strh    r4,[r0]                @ 0805247A 8004       
     mov     r0,r5                @ 080524E4 1C28     
-    blh      0x8002E94                @ 080524E6 F7B0FCD5 
+    blh      0x80046A0                @ 080524E6 F7B0FCD5 
     b       End                @ 080524EA E007     
     .ltorg
 loc_0x80524F0:    

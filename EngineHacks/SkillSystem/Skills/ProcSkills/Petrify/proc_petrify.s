@@ -7,8 +7,8 @@
 .endm
 
 .equ PetrifyID, SkillTester+4
-.equ d100Result, 0x802a52c
-.equ NextRN_100, 0x8000C64
+.equ d100Result, 0x802857c
+.equ NextRN_100, 0x8000E04
 
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 

@@ -9,7 +9,7 @@
 .endm
 .thumb 
 
-	.equ ProcFind, 0x08002E9C	@{U}
+	.equ ProcFind, 0x080046A8	@{U}
 @	.equ ProcFind, 0x08002DEC	@{J}
 
 push {r4-r5, lr} @ will pop when returned to vanilla function 

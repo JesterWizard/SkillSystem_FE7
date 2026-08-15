@@ -301,7 +301,7 @@
 	SHORT 0x1C01 0x4803 0x6800 0x0
 	SHORT 0x4B00 0x4718
 	POIN GetItemRangeM|1
-	WORD 0x3004E50
+	WORD 0x3004690
 	
 	ORG $23A14 //Ballista range display
 	SHORT 0x6820 0x1C29 	//get unit pointer and item id

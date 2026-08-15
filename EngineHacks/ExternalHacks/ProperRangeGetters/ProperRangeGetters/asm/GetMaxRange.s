@@ -11,7 +11,7 @@ GetMaxRange:
 	mov r4, r0
 	mov r5, r1
 	
-	ldr r3, =#0x08017684 @ Vanilla Max Range Getter (for Item only)
+	ldr r3, =#0x08017384 @ Vanilla Max Range Getter (for Item only)
 	
 	mov lr, r3
 	.short 0xF800
@@ -23,7 +23,7 @@ GetMaxRange:
 	
 	mov r0, r4
 	
-	ldr r3, =#0x08017548 @ Get Item WType
+	ldr r3, =#0x0801725c @ Get Item WType
 	
 	mov lr, r3
 	.short 0xF800

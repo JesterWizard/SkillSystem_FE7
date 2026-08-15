@@ -80,7 +80,7 @@ bx r0
 Something:
 .long 0x0202BCB0
 Something_2:
-.long 0x0202E4D8
+.long 0x0202E3DC
 Start_cont:
 .long 0x0801CAF7
 Back:

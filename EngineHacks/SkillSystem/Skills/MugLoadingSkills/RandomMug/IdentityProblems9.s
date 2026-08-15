@@ -16,7 +16,7 @@ cmp	r0,#0
 beq	Original
 
 GetRandom:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 

@@ -119,7 +119,7 @@ bx lr
 .align 4
 
 BattleStats:
-.word 0x203A4D4
+.word 0x203A3D8
 ReturnPoint:
 .word 0x802A8B9
 DefReturnPoint:

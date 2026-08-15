@@ -1,6 +1,6 @@
 .thumb 
 
-	.equ Check_Effectiveness, 	0x08016BEC
+	.equ Check_Effectiveness, 	0x08016820
 
 push {r4-r6, lr}
 mov r4, r0 @ damage to deal 

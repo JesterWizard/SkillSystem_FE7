@@ -10,8 +10,8 @@
 
 	@ NOTE: this requires DebuffTablePointer to refer to a pointer *in rom* to the debuff table
 
-	WriteAndVerifySramFast = 0x080D184C+1
-	ReadSramFastAddr       = 0x030067A0   @ pointer to the actual ReadSramFast function
+	WriteAndVerifySramFast = 0x080BFBD8+1
+	ReadSramFastAddr       = 0x03005E70   @ pointer to the actual ReadSramFast function
 
 	.global SUD_SaveDebuffs
 	.type   SUD_SaveDebuffs, function

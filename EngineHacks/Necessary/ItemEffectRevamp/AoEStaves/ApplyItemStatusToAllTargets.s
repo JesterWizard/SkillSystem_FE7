@@ -11,15 +11,15 @@
 	.short 0xF800
 .endm
 
-.set gActionData,                 0x0203A958
+.set gActionData,                 0x0203A868
 
-.set Roll1RN,                     0x8000CA0
+.set Roll1RN,                     0x8000E60
 .set SetUnitNewStatus,            0x80178D8
-.set SetUnitStatus,               0x80178F4
-.set GetUnit,                     0x08019430
-.set GetTargetListSize,           0x0804FD28
-.set GetTarget,                   0x0804FD34
-.set GetStaffAccuracy,            0x0802CCDC
+.set SetUnitStatus,               0x8017600
+.set GetUnit,                     0x08018d0c
+.set GetTargetListSize,           0x0804B174
+.set GetTarget,                   0x0804B180
+.set GetStaffAccuracy,            0x0802A66C
 
 .set NightmareTargetCondition, 0x8025EFC
 

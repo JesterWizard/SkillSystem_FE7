@@ -7,9 +7,9 @@
     .short 0xF800
 .endm
 
-.equ InitBattleUnitFromUnit, 0x0802A584
+.equ InitBattleUnitFromUnit, 0x080285D4
 .equ ClearRounds, 0x0802AE90
-.equ gpCurrentRound, 0x0203A608
+.equ gpCurrentRound, 0x0203A50C
 .equ StartEFXHpBar, 0x8052304
 .equ StartEFXHpBarLive, 0x08052a0c
 .equ StartEFXStatusChange, 0x08055518
@@ -19,7 +19,7 @@
 
 .global SetUpBattleWeaponDataHack
 .type SetUpBattleWeaponDataHack, %function
-SetUpBattleWeaponDataHack: @ Autohook to 0x0802A730. Creates case 9 for the switch (using a Gaiden Spell).
+SetUpBattleWeaponDataHack: @ Autohook to 0x0802877C. Creates case 9 for the switch (using a Gaiden Spell).
 push { r4 - r7, lr }
 mov r7, r9
 mov r6, r8
@@ -111,7 +111,7 @@ bx r1
 
 .global GaidenActionStaffDoorChestUseItemHack
 .type GaidenActionStaffDoorChestUseItemHack, %function
-GaidenActionStaffDoorChestUseItemHack: @ Autohook to 0x0802FC48.
+GaidenActionStaffDoorChestUseItemHack: @ Autohook to 0x0802D00C.
 push { r4 - r7, lr }
 mov r7, r8
 push { r7 }
@@ -164,7 +164,7 @@ bx r0
 .ltorg
 .global GaidenSetupBattleUnitForStaffHack
 .type GaidenSetupBattleUnitForStaffHack, %function
-GaidenSetupBattleUnitForStaffHack: @ Autohook to 0x0802CB24.
+GaidenSetupBattleUnitForStaffHack: @ Autohook to 0x0802A4B4.
 push { r4 - r7, lr } @ r0 = unit, r1 = [gActionData+0x12] = inventory slot.
 mov r7, r1
 mov r1, r0

@@ -85,7 +85,7 @@
 .set GetUnit,                  0x08018D0C //FE8 -> 0x08019430 @ arguments: r0 = Unit Allegience Index; returns: r0 = Unit Struct pointer (0 if not found)
 .set Unit_ApplyMovement,       0x08017F28 //FE8 -> 0x0801849C @ arguments: r0 = Unit Struct pointer
 .set Unit_CanCrossTerrain,     0x08018D68 //FE8 -> 0x0801949C @ arguments: r0 = Unit Struct pointer, r1 = Terrain Index; returns: r0 = 0 if Unit cannot cross/stand on terrain
-.set Unit_GetEquippedWeapon,   0x08016B28 @ arguments: r0 = Unit Struct pointer; returns: r0 = Item Short
+.set Unit_GetEquippedWeapon,   0x08016764 @ arguments: r0 = Unit Struct pointer; returns: r0 = Item Short
 .set Unit_GetItemCount,        0x080176DA //FE8 -> 0x080179D8 @ arguments: r0 = Unit Struct pointer; returns: r0 = Item Count
 .set Unit_CanUseAsStaff,       0x080163D2 //FE8 -> 0x080167A4 @ arguments: r0 = Unit Struct pointer, r1 = Item Short; returns: r0 = 0 if cannot use
 .set Unit_GetMagOn2Range,      0x080184B4 //FE8 -> 0x08018A1C @ arguments: r0 = Unit Struct pointer
@@ -186,18 +186,18 @@
 .set BG_EnableSyncByMask,      0x08001FAC @ arguments: r0 = BG Mask
 .set BG_EnableSync,            0x08001FBC @ arguments: r0 = BG index
 .set EnablePaletteSync,        0x08001F94 @ none
-.set BGMap_Fill,               0x08001220 @ arguments: r0 = BG Map Pointer, r1 = Value
+.set BGMap_Fill,               0x08001810 @ arguments: r0 = BG Map Pointer, r1 = Value
 .set BG1_Clear,                0x08050018 //FE8 -> 0x08055188 @ none
-.set HandlePPCursorMovement,   0x0801C8AC @ none?
-.set Call_Future,              0x080148E4 @ arguments: r0 = routine to call, r1 = passed argument, r2 = time in frames to wait before call
-.set SaveData_GetSRAMLocation, 0x080A3064 @ arguments: r0 = Save Slot Index (0-2 for standard save, 3-4 for suspends, 5-6 unknown); returns: SRAM Location
-.set SaveData_SaveToSRAM,      0x080D184C @ arguments: r0 = Input Data Ptr, r1 = Output SRAM pointer, r2 = Size (bytes)
+.set HandlePPCursorMovement,   0x0801C194 @ none?
+.set Call_Future,              0x08014B50 @ arguments: r0 = routine to call, r1 = passed argument, r2 = time in frames to wait before call
+.set SaveData_GetSRAMLocation, 0x0809E870 @ arguments: r0 = Save Slot Index (0-2 for standard save, 3-4 for suspends, 5-6 unknown); returns: SRAM Location
+.set SaveData_SaveToSRAM,      0x080BFBD8 @ arguments: r0 = Input Data Ptr, r1 = Output SRAM pointer, r2 = Size (bytes)
 .set DebugPrint,               0x080039D0 @ arguments: r0 = String
 .set DebugPrintHex,            0x080039B4 @ arguments: r0 = Number, r1 = Digits
 .set DebugFlushOnBG2_VScroll,  0x08003ABC @ arguments: r0 = current presses, r1 = new presses
-.set DebugPrintOBJ,            0x08003BB0 @ arguments: r0 = x, r1 = y, r2 = String
+.set DebugPrintOBJ,            0x0800530C @ arguments: r0 = x, r1 = y, r2 = String
 .set SetupDebugBGFont,         0x0800378C @ arguments: r0 = bg id, r1 = tile offset
-.set SMS_GetGraphicsIndex,     0x080267FC @ arguments: r0 = SMS Index; returns: r0 = Tile Index within buffer
+.set SMS_GetGraphicsIndex,     0x08024DEC @ arguments: r0 = SMS Index; returns: r0 = Tile Index within buffer
 @ Those 2 are using the GmapUnit variants of the routines (not the MOVEUNIT ones)
 .set MMS_GetROMTCS,            0x080BAC30 @ arguments: r0 = MMS (class) Index; returns: r0 = pointer to MMS ROMTCS
 .set MMS_GetGfx,               0x080BAC1C @ arguments: r0 = MMS (class) Index; returns: r0 = pointer to MMS gfx
@@ -212,7 +212,7 @@
 .set pBattleUnitTarget,        0x0203A470 //FE8 -> 0x0203A56C
 
 .set pBattleRoundArray,        0x0203A50C //FE8 -> 0x0203A5EC
-.set ppBattleCurrentRound,     0x0203A608
+.set ppBattleCurrentRound,     0x0203A50C
 
 .set pKeyStatusBuffer,         0x02024C78 //FE8 -> 0x02024CC0
 .set pGameDataStruct,          0x0202BCB0
@@ -233,9 +233,9 @@
 .set ppOtherMoveMapRows,       0x0202E3F4 //FE8 -> 0x0202E4F0
 
 .set pBG0TileMap,              0x02022C60 //FE8 -> 0x02022CA8
-.set pBG1TileMap,              0x020234A8
-.set pBG2TileMap,              0x02023CA8
-.set pBG3TileMap,              0x020244A8
+.set pBG1TileMap,              0x02023460
+.set pBG2TileMap,              0x02023C60
+.set pBG3TileMap,              0x02024460
 
 .set pPaletteBuffer,           0x02022860 //FE8 -> 0x020228A8
 .set pLCDControlBuffer,        0x03002870 //FE8 -> 0x03003080

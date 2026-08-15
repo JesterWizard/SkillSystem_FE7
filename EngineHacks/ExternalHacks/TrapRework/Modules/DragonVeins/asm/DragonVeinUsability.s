@@ -56,7 +56,7 @@ b       end
 
 .align
 CurrentUnit:
-    .long 0x03004E50
+    .long 0x03004690
 GetTrap:
     .long 0x0802E1F1
 

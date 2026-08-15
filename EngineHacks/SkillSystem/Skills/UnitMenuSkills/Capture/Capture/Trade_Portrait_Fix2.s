@@ -23,4 +23,4 @@ bx		r2
 
 .align
 PortraitGetter:
-.long 0x080192B8
+.long 0x08018BD8

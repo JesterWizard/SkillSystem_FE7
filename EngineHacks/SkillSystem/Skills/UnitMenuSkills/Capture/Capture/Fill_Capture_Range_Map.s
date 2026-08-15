@@ -28,12 +28,12 @@ bx		r0
 
 .align
 Const1:
-.long 0x02033F3C
+.long 0x02033E40
 Clear_Map_Func:
-.long 0x080197E4
+.long 0x080190AC
 RangeMap:
-.long 0x0202E4E4
+.long 0x0202E3E8
 Fill_One_Range_Map:
-.long 0x08024F70
+.long 0x08023A74
 Capture_Target_Check:
-@.long 0x0802517C+1
+@.long 0x08023C20+1

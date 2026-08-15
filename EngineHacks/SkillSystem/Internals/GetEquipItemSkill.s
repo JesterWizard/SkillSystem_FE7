@@ -25,10 +25,10 @@
 
 .equ RefreshEquip, 0xFF
 
-.set BattleActingUnit, 0x0203A4EC @attacker
-.set BattleTargetUnit, 0x0203A56C @defender
+.set BattleActingUnit, 0x0203A3F0 @attacker
+.set BattleTargetUnit, 0x0203A470 @defender
 
-.set GetEquippedItem, 0x08016B28
+.set GetEquippedItem, 0x08016764
 
 .equ GetItemSkillList, OffsetList + 0x0
 .equ IsItemSkillPassive, OffsetList + 0x4

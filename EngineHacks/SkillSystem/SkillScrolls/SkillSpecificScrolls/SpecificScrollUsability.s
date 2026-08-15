@@ -1,7 +1,7 @@
 .thumb
 .align 4
 
-.equ ActiveChar,0x3004E50
+.equ ActiveChar,0x3004690
 .equ SkillID,SkillTester+4
 
 @push {r14}

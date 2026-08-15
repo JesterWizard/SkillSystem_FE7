@@ -54,7 +54,7 @@ bx		r1
 
 .align
 Const1_2028E70:
-//FE8 -> .long 0x02028E70
+//FE8 -> .long 0x02028D70
 .long 0x02028D70
 Growth_Colors_Table:
 @

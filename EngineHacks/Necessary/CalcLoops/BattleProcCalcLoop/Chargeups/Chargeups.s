@@ -4,7 +4,7 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 
@@ -21,7 +21,7 @@ sub r5,#0x1
 strb r5,[r0,r4]
 mov r7, r0 @char data
 ldrb r0, [r7, #0xb] @char number
-ldr r6, =0x8019430
+ldr r6, =0x8018d0c
 mov lr, r6
 .short 0xf800
 strb r5, [r0, r4]
@@ -35,7 +35,7 @@ sub r5,#0x1
 strb r5,[r1,r4]
 mov r7, r1 @char data
 ldrb r0, [r7, #0xb] @char number
-ldr r6, =0x8019430
+ldr r6, =0x8018d0c
 mov lr, r6
 .short 0xf800
 strb r5, [r0, r4]

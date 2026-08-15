@@ -50,7 +50,7 @@ ldrb    r0,[r7,#0x04]
 cmp	r0,r5
 blt End
 
-ldr	r0,=#0x8018AF0 //FE8 -> #0x80191D0	@call skill getter
+ldr	r0,=#0x8018578 //FE8 -> #0x80191D0	@call skill getter
 mov	r14,r0
 mov	r0,r4
 .short	0xF800

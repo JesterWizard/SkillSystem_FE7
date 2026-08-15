@@ -63,8 +63,8 @@ bx	r0
 
 .align
 DrawSymbol:
-.long 0x8004b0c
+.long 0x800615c
 DrawNumber:
-.long 0x8004be4
+.long 0x8006234
 Const_2028E70:
-.long 0x02028E70
+.long 0x02028D70

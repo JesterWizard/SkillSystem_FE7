@@ -11,11 +11,11 @@
 	.short 0xF800
 .endm
 
-.set gActionData,                  0x0203A958
-.set gActiveBattleUnit,            0x0203A4EC @attacker
-.set gTargetBattleUnit,            0x0203A56C @defender
+.set gActionData,                  0x0203A868
+.set gActiveBattleUnit,            0x0203A3F0 @attacker
+.set gTargetBattleUnit,            0x0203A470 @defender
 
-.set GetUnit,                      0x08019430
+.set GetUnit,                      0x08018d0c
 .set GetItemUseEffect,             0x0801773C
 
 @get the status effect from the target unit struct

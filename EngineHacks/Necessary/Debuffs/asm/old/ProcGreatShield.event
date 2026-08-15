@@ -3,7 +3,7 @@
 0802B2EC B480     push    {r7}
 0802B2EE 1C05     mov     r5,r0             @r0 = attacker
 0802B2F0 1C0E     mov     r6,r1             @r1 = defender
-0802B2F2 4C24     ldr     r4,=#0x203A608    @&Battle buffer?
+0802B2F2 4C24     ldr     r4,=#0x203A50C    @&Battle buffer?
 0802B2F4 6820     ldr     r0,[r4]
 0802B2F6 6800     ldr     r0,[r0]
 0802B2F8 0340     lsl     r0,r0,#0xD        @Clear higher bits?
@@ -32,7 +32,7 @@
 0802B326 1C28     mov     r0,r5
 0802B328 3048     add     r0,#0x48          @Equipped item after battle
 0802B32A 8800     ldrh    r0,[r0]
-0802B32C F7ECF9FA bl      #0x8017724        @Get weapon effect
+0802B32C F7ECF9FA bl      #0x8017424        @Get weapon effect
 0802B330 2801     cmp     r0,#0x1           @Poison
 0802B332 D021     beq     #0x802B378        @end
 0802B334 6820     ldr     r0,[r4]           @Reload battle buffer
@@ -53,7 +53,7 @@
 0802B352 0400     lsl     r0,r0,#0x10
 0802B354 0C00     lsr     r0,r0,#0x10       @unsigned short
 0802B356 2100     mov     r1,#0x0
-0802B358 F7FFF8E8 bl      #0x802A52C        @Somethin. Proc?
+0802B358 F7FFF8E8 bl      #0x802857C        @Somethin. Proc?
 0802B35C 0600     lsl     r0,r0,#0x18
 0802B35E 1600     asr     r0,r0,#0x18
 0802B360 2801     cmp     r0,#0x1

@@ -48,21 +48,21 @@ ldrb	r0, [r6,r5]
 cmp	r0, #0x00
 beq	StoreMight
 @testing
-ldr	r3,=#0x8019430	@gets character ram pointer
+ldr	r3,=#0x8018d0c	@gets character ram pointer
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x80191B0	@gets character power
+ldr	r3,=#0x8018AD0	@gets character power
 mov	lr, r3
 .short	0xf800
 add	r7, r0		@add character power to total
 ldrb	r0, [r6,r5]
-ldr	r3,=#0x8019430	@gets character ram pointer
+ldr	r3,=#0x8018d0c	@gets character ram pointer
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x8016B28	@gets character weapon id and uses
+ldr	r3,=#0x8016764	@gets character weapon id and uses
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x80175DC	@gets weapon might from weapon short
+ldr	r3,=#0x80172E0	@gets weapon might from weapon short
 mov	lr, r3
 .short	0xf800
 add	r7, r0		@add to total

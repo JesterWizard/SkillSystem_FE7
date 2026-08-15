@@ -10,7 +10,7 @@ mov r4, r1
 ldr     r2, =0x202bcb0         @@ 0808CCCC 4A25        @@ Grabs character in RAM
 mov     r1, #0x16           @@ 0808CCCE 2116        @@ at location
 ldsh    r0, [r2, r1]        @@ 0808CCD0 5E50        @@ 
-ldr     r1, =0x0202E4D8      @@ 0808CCD2 4925        @@ 
+ldr     r1, =0x0202E3DC      @@ 0808CCD2 4925        @@ 
 ldr     r1, [r1]            @@ 0808CCD4 6809        @@ 
 lsl     r0, r0, #0x02       @@ 0808CCD6 0080        @@ 
 add     r0, r0, r1          @@ 0808CCD8 1840        @@ 

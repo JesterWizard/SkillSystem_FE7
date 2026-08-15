@@ -4,7 +4,7 @@ push {lr}
 ldr r2, LungeMarker
 mov r3, #3
 strb r3, [r2]
-ldr r2, =0x8022b30
+ldr r2, =0x8021a3c
 mov lr, r2
 .short 0xf800
 pop {r1}

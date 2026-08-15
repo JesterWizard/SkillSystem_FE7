@@ -1,88 +1,88 @@
 @graphics and text
-.equ CopyToPaletteBuffer, 0x08000DB8
-.equ _ResetIconGraphics, 0x08003578
-.equ DrawIcon, 0x080036BC
-.equ Text_InitFont, 0x08003C94
-.equ Text_GetColorID, 0x08003E64
-.equ Text_Display, 0x08003E70
-.equ Text_GetStringTextWidth, 0x08003EDC
-.equ Text_GetStringTextCenteredPos, 0x08003F90
-.equ Text_DrawString, 0x08004004
-.equ DrawTextInline, 0x0800443C
-.equ Text_InsertString, 0x08004480
-.equ DrawSpecialUiChar, 0x08004B0C
-.equ DrawDecNumber, 0x08004B94
-.equ DrawUiSmallNumber, 0x08004BE4
-.equ DrawStatScreenBonusNumber, 0x08004BF0
-.equ DrawLargeFont, 0x08004D5C
-.equ String_GetFromIndex, 0x0800A240
-.equ String_ExpandTactName, 0x0800A3B8
+.equ CopyToPaletteBuffer, 0x08001084
+.equ _ResetIconGraphics, 0x08004ce8
+.equ DrawIcon, 0x08004E28
+.equ Text_InitFont, 0x080053B0
+.equ Text_GetColorID, 0x08005584
+.equ Text_Display, 0x08005590
+.equ Text_GetStringTextWidth, 0x080055FC
+.equ Text_GetStringTextCenteredPos, 0x080056A8
+.equ Text_DrawString, 0x08005718
+.equ DrawTextInline, 0x08005AD4
+.equ Text_InsertString, 0x08005b18
+.equ DrawSpecialUiChar, 0x0800615C
+.equ DrawDecNumber, 0x080061E4
+.equ DrawUiSmallNumber, 0x08006234
+.equ DrawStatScreenBonusNumber, 0x08006240
+.equ DrawLargeFont, 0x080063AC
+.equ String_GetFromIndex, 0x08012C60
+.equ String_ExpandTactName, 0x08012CBC
 
 @Menus and boxes
-.equ FillBgMap, 0x08001220
-.equ Decompress, 0x08012F50
-.equ LoadNewUIPal, 0x0804E0A8
-.equ MakeUIWindowTileMap_BG0BG1, 0x0804E368
-.equ MovingMapSprite_CreateForUI, 0x080784F4
-.equ MovingMapSprite_EndAll, 0x080790A4
-.equ BgMap_ApplyTsa, 0x080D74A0
-.equ BgMapFillRect, 0x080D74B8
+.equ FillBgMap, 0x08001810
+.equ Decompress, 0x08013168
+.equ LoadNewUIPal, 0x08049A94
+.equ MakeUIWindowTileMap_BG0BG1, 0x08049CE4
+.equ MovingMapSprite_CreateForUI, 0x0806BA88
+.equ MovingMapSprite_EndAll, 0x0806CCB8
+.equ BgMap_ApplyTsa, 0x080C57B4
+.equ BgMapFillRect, 0x080C57CC
 
 @getters
-.equ UnitHasMagicRank, 0x08018A58
-.equ MountedIconHelper, 0x08018AF0
-.equ MagCheck, 0x8018A58
-.equ AidCheck, 0x080189B8
-.equ CurHPGetter, 0x08019150
-.equ MaxHPGetter, 0x08019190       
-.equ StrGetter, 0x080191b0
-.equ MagGetter, 0x080191b8
-.equ SklGetter, 0x080191d0
-.equ SpdGetter, 0x08019210
-.equ LuckGetter, 0x08019298
-.equ DefGetter, 0x08019250
-.equ ResGetter, 0x08019270
-.equ MagConGetter, 0x08019284 @defined in the modularstatgetter
-.equ MovGetter, 0x08019224 @defined in the modularstatgetter
-.equ AffinityGetter, 0x080286BC
-.equ EquippedWeaponGetter, 0x08016B28
-.equ EquippedItemSlotGetter, 0x08016B58
-.equ GetItemRangeString, 0x08016CC0
-.equ IsItemUsable, 0x08016EE4
-.equ ItemWeightGetter, 0x0801760C
-.equ GetUnitItemCount, 0x080179D8
-.equ SetupBattleStructFromUnitAndWeapon, 0x0802A400
-.equ GetBallistaItemAt, 0x0803798C
-.equ CheckGameLinkArenaBit, 0x08042E98
+.equ UnitHasMagicRank, 0x080184DC
+.equ MountedIconHelper, 0x08018578
+.equ MagCheck, 0x80184DC
+.equ AidCheck, 0x08018450
+.equ CurHPGetter, 0x08018a70
+.equ MaxHPGetter, 0x08018ab0       
+.equ StrGetter, 0x08018ad0
+.equ MagGetter, 0x08018ad8
+.equ SklGetter, 0x08018af0
+.equ SpdGetter, 0x08018b30
+.equ LuckGetter, 0x08018bb8
+.equ DefGetter, 0x08018b70
+.equ ResGetter, 0x08018b90
+.equ MagConGetter, 0x08018ba4 @defined in the modularstatgetter
+.equ MovGetter, 0x08018b44 @defined in the modularstatgetter
+.equ AffinityGetter, 0x08026B24
+.equ EquippedWeaponGetter, 0x08016764
+.equ EquippedItemSlotGetter, 0x08016794
+.equ GetItemRangeString, 0x080168AC
+.equ IsItemUsable, 0x08016AB0
+.equ ItemWeightGetter, 0x08017310
+.equ GetUnitItemCount, 0x080176DA
+.equ SetupBattleStructFromUnitAndWeapon, 0x0802848C
+.equ GetBallistaItemAt, 0x080346C8
+.equ CheckGameLinkArenaBit, 0x0803DA14
 
 @Statscreen-specific stuff
-.equ DrawItemOnStatscreen, 0x08016A2C
-.equ WriteTrvText, 0x080193E8
-.equ WriteStatusText, 0x08019414
-.equ Statscreen_ClearBuffer, 0x08086DF0 @clears 2003c00 region
-.equ DrawStatscreenTextMap, 0x08086E00
-.equ Statscreen_StartLeftPanel, 0x08086E44
-.equ DrawBWLNumbers, 0x08086FAC
-.equ DrawBar, 0x080870BC
-.equ DrawSupports, 0x08087698
-.equ DrawWeaponRank, 0x08087788
+.equ DrawItemOnStatscreen, 0x08016668
+.equ WriteTrvText, 0x08018CC0
+.equ WriteStatusText, 0x08018cf0
+.equ Statscreen_ClearBuffer, 0x0807FA38 @clears 2003c00 region
+.equ DrawStatscreenTextMap, 0x0807FA48
+.equ Statscreen_StartLeftPanel, 0x0807FA8C
+.equ DrawBWLNumbers, 0x0807FBF0
+.equ DrawBar, 0x0807FD28
+.equ DrawSupports, 0x08080270
+.equ DrawWeaponRank, 0x08080360
 
 @RAM
-.equ gActiveBattleUnit, 0x203A4EC
-.equ StatScreenStruct, 0x2003BFC
-.equ BgBitfield, 0x300000D
-.equ TileBufferBase, 0x2003C2C
-.equ tile_origin, 0x2003C94
-.equ gpStatScreenPageBg0Map, 0x2003D2C
-.equ gpStatScreenPageBg1Map, 0x200422C
-.equ gpStatScreenPageBg2Map, 0x200472C
-.equ gGenericBuffer, 0x2020188
-.equ gBg0MapBuffer, 0x2022CA8
-.equ gCurrentTextString, 0x202A6AC 
-.equ Const_2022D40, 0x2022D40
-.equ Const_2023D40, 0x2023D40
-.equ Const_2003D2C, 0x2003D2C
-.equ Const_200472C, 0x200472C
+.equ gActiveBattleUnit, 0x203A3F0
+.equ StatScreenStruct, 0x200310C
+.equ BgBitfield, 0x300000C
+.equ TileBufferBase, 0x200313C
+.equ tile_origin, 0x20031A4
+.equ gpStatScreenPageBg0Map, 0x200323C
+.equ gpStatScreenPageBg1Map, 0x200373C
+.equ gpStatScreenPageBg2Map, 0x2003C3C
+.equ gGenericBuffer, 0x2020140
+.equ gBg0MapBuffer, 0x2022C60
+.equ gCurrentTextString, 0x202A5B4 
+.equ Const_2022D40, 0x2022CF8
+.equ Const_2023D40, 0x20234F8
+.equ Const_2003D2C, 0x200323C
+.equ Const_200472C, 0x2003C3C
 
 @With this in mind, any unlabeled RAM addresses beginning with 0x200 can reasonably be assumed to be offsets within the tilemap
 

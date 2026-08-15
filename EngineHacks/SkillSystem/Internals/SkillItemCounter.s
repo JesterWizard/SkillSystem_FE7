@@ -13,9 +13,9 @@
 	.short 0xF800
 .endm
 
-.set Item_GetData, 0x80177B0
-.set Item_GetID, 0x80174EC
-.set Item_GetAbilities, 0x801756C
+.set Item_GetData, 0x80174AC
+.set Item_GetID, 0x80171B4
+.set Item_GetAbilities, 0x801727C
 
 @checks for passive item skills
 @arguments:

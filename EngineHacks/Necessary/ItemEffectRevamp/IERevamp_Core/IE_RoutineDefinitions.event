@@ -136,35 +136,35 @@
 		#endif
 		
 		#ifndef ChapterDataStruct 0x0202BCB0
-			#define ChapterDataStruct 0x0202BCF0
+			#define ChapterDataStruct 0x0202BBF8
 		#endif
 		
 		#ifndef ActionStruct
-			#define ActionStruct 0x0203A958
+			#define ActionStruct 0x0203A868
 		#endif
 		
 		#ifndef SelectedUnit
-			#define SelectedUnit 0x02033F3C
+			#define SelectedUnit 0x02033E40
 		#endif
 		
 		#ifndef ActiveUnit
-			#define ActiveUnit 0x03004E50
+			#define ActiveUnit 0x03004690
 		#endif
 		
 		#ifndef BattleActingUnit
-			#define BattleActingUnit 0x0203A4EC
+			#define BattleActingUnit 0x0203A3F0
 		#endif
 		
 		#ifndef BattleTargetUnit
-			#define BattleTargetUnit 0x0203A56C
+			#define BattleTargetUnit 0x0203A470
 		#endif
 		
 		#ifndef pBattleRoundArray
-			#define pBattleRoundArray 0x0203A5EC
+			#define pBattleRoundArray 0x0203A50C
 		#endif
 		
 		#ifndef ppBattleCurrentRound
-			#define ppBattleCurrentRound 0x0203A608
+			#define ppBattleCurrentRound 0x0203A50C
 		#endif
 		*/
 		

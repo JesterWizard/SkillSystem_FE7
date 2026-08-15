@@ -4,11 +4,11 @@
   .short 0xf800
 .endm
 .thumb 
-.equ GetUnit, 0x8019430
-.equ ProcStartBlocking, 0x8002CE0 
-.equ ProcGoto, 0x8002F24 
-.equ ChapterData, 0x202BCF0 
-.equ NextRN_N, 0x8000C80 
+.equ GetUnit, 0x8018d0c
+.equ ProcStartBlocking, 0x80044F8 
+.equ ProcGoto, 0x8004720 
+.equ ChapterData, 0x202BBF8 
+.equ NextRN_N, 0x8000E30 
 
 .global IsRallyApplicable
 .type IsRallyApplicable, %function 

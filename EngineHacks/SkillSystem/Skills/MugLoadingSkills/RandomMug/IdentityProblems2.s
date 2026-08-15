@@ -2,7 +2,7 @@
 .equ IdentityProblemsID, SkillTester+4
 .equ IdentityRamByte, IdentityProblemsID+4
 .thumb
-ldr	r7,=#0x2003BFC
+ldr	r7,=#0x200310C
 ldr	r0,[r7,#0xC]
 
 @skill check

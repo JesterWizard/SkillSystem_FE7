@@ -201,8 +201,8 @@ bx r1
 .align 4
 
 ActiveUnitPointer:
-.word 0x3004E50
+.word 0x3004690
 ChapterData:
-.word 0x202BCF0
+.word 0x202BBF8
 BiorhythmGetter:
 @POIN BiorhythmGetter

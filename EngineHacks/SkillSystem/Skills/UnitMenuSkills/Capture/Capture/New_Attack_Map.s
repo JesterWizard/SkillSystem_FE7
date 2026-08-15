@@ -17,7 +17,7 @@ b		CheckResults
 
 CaptureWeapons:
 mov		r0,r4
-ldr		r1,=#0x801766C		@get min range
+ldr		r1,=#0x801736C		@get min range
 mov		r14,r1
 .short	0xF800
 mov		r1,#0x3
@@ -44,8 +44,8 @@ bx		r1
 
 .ltorg
 Fill_Attack_Range_Map:
-.long 0x080251B4
+.long 0x08023C58
 Is_Target_Queue_Empty:
-.long 0x0804FD28
+.long 0x0804B174
 Is_Capture_Set:
 @Fill_Capture_Range_Map

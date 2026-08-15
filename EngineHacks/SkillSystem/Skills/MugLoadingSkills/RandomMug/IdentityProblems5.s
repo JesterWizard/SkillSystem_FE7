@@ -18,12 +18,12 @@ ldrb	r0,[r1]
 lsl	r0,#1
 ldr	r1,IdentityProblemsNames
 ldrh	r0,[r1,r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 mov	r1,r0
 mov	r0,#0x38
-ldr	r3,=#0x8003F90
+ldr	r3,=#0x80056A8
 mov	lr,r3
 .short	0xF800
 mov	r6,r0
@@ -32,7 +32,7 @@ ldrb	r0,[r1]
 lsl	r0,#1
 ldr	r1,IdentityProblemsNames
 ldrh	r0,[r1,r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 b	End
@@ -40,18 +40,18 @@ b	End
 Original:
 ldr	r0,[r5]
 ldrh	r0,[r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 mov	r1,r0
 mov	r0,#0x38
-ldr	r3,=#0x8003F90
+ldr	r3,=#0x80056A8
 mov	lr,r3
 .short	0xF800
 mov	r6,r0
 ldr	r0,[r5]
 ldrh	r0,[r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 

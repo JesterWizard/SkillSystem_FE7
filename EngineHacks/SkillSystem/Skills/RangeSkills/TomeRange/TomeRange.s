@@ -12,7 +12,7 @@
 	@r2: min max range word
 @retuns
 	@r0: updated min max range word
-.set GetWeaponType, 0x8017548
+.set GetWeaponType, 0x801725c
 .set BonusWeaponType1, 0x5 @Anima
 .set BonusWeaponType2, 0x6 @Light
 .set BonusWeaponType3, 0x7 @Dark

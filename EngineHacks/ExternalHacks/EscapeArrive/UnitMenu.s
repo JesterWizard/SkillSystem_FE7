@@ -23,7 +23,7 @@ ArriveCommandUsability:
 push {r4,r14}
 
 @Check for Cantoing
-ldr r4,=0x03004E50 							@active unit ptr
+ldr r4,=0x03004690 							@active unit ptr
 ldr r2,[r4] 								@unit struct ptr
 ldr r0,[r2,#0x0C]							@unit status bitfield
 mov r1,#0x40								@cantoing bit
@@ -35,7 +35,7 @@ bne ArriveCommandUsability_ReturnFalse		@if set, return false
 ldr r1,[r4]									@unit struct ptr
 ldrb r0,[r1,#0x10]							@load X coord
 ldrb r1,[r1,#0x11]							@load Y coord
-ldr r3,=#0x8084078							@function that gets the ID of the thing we're on
+ldr r3,=#0x8078bd0							@function that gets the ID of the thing we're on
 mov r14,r3									@
 .short 0xF800								@blh
 mov r1,#0x03								@
@@ -77,7 +77,7 @@ EscapeCommandUsability:
 push {r4,r14}
 
 @Check for Cantoing
-ldr r4,=0x03004E50
+ldr r4,=0x03004690
 ldr r2,[r4]
 ldr r0,[r2,#0x0C]
 mov r1,#0x40
@@ -93,7 +93,7 @@ ldsb r0,[r1,r0]
 ldrb r1,[r1,#0x11]
 lsl r1,r1,#0x18
 asr r1,r1,#0x18
-ldr r3,=#0x8084078
+ldr r3,=#0x8078bd0
 mov r14,r3
 .short 0xF800
 mov r1,#0x03
@@ -211,7 +211,7 @@ cmp r0,#1
 beq EscapeCommandEffect_ActualEscapeEffect
 
 @Check for being lord
-ldr r4,=#0x3004E50
+ldr r4,=#0x3004690
 ldr r0,[r4]
 ldr r0,[r0]
 ldr r0,[r0,#40]
@@ -253,7 +253,7 @@ EscapeCommandEffect_SayNO:
 ldr r1, =LordMustEscapeLastTextIDLink
 ldrh r1, [r1]
 mov r0, r5
-ldr r2,=#0x0804F580 @ Sets that text ID for the error text
+ldr r2,=#0x0804AA34 @ Sets that text ID for the error text
 mov r14,r2
 .short 0xF800
 mov r0, #0x08
@@ -264,7 +264,7 @@ b RealGoBack
 
 EscapeCommandEffect_ActualEscapeEffect:
 
-@ldr r0, =#0x03004E50 @ Location of current character's struct
+@ldr r0, =#0x03004690 @ Location of current character's struct
 @ldr r0, [ r0 ] @ Pointer to character struct in r0
 @mov r1, r0
 @add r1, #0x10
@@ -272,7 +272,7 @@ EscapeCommandEffect_ActualEscapeEffect:
 @ldrb r1, [ r1 ] @ X coordinate in r1
 @ldrb r2, [ r0 ] @ Y coordinate in r2
 
-@ldr r0, =#0x0202BCF0
+@ldr r0, =#0x0202BBF8
 @add r0, #0x0E
 @ldrb r0, [ r0 ] @ Chapter ID in r0
 
@@ -331,7 +331,7 @@ mov	r1, #0x01			@0x01 = wait for events
 .short	0xF800
 
 @grab action struct 
-ldr r0,=#0x203A958
+ldr r0,=#0x203A868
 
 @set last used command to Wait
 mov r1,#1
@@ -344,7 +344,7 @@ mov r2,#0x4
 orr r1,r2
 strb r1,[r0]
 
-ldr r3,=#0x3004E50
+ldr r3,=#0x3004690
 ldr r3,[r3]
 
 ldr	r1,[r3,#0xC]
@@ -355,7 +355,7 @@ orr r1,r2
 str	r1,[r3,#0xC]
 
 @see if we're rescuing anyone
-	ldr r0,=#0x3004E50 @active unit
+	ldr r0,=#0x3004690 @active unit
 	ldr r0,[r0]
 	ldrb r0,[r0,#0x1B]
 	cmp r0,#0
@@ -376,7 +376,7 @@ str	r1,[r3,#0xC]
 	str	r1,[r3,#0xC]
 	
 	@see if we're rescuing anyone
-	ldr r0,=#0x3004E50 @active unit
+	ldr r0,=#0x3004690 @active unit
 	ldr r0,[r0]
 	ldrb r0,[r0,#0x1B]
 	cmp r0,#0
@@ -449,11 +449,11 @@ NonRescueeEndingChecks:
 
 NonRescueeLordCheck:
 @are we a lord?
-ldr r0,=#0x3004E50 @active unit
+ldr r0,=#0x3004690 @active unit
 ldr r0,[r0]
 ldr r0,[r0]
 ldr r0,[r0,#0x28]
-ldr r1,=#0x3004E50 @active unit
+ldr r1,=#0x3004690 @active unit
 ldr r1,[r1]
 ldr r1,[r1,#4]
 ldr r1,[r1,#0x28]

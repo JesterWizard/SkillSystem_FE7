@@ -58,7 +58,7 @@ ldrb 	r1, [r6,#0x10]	@squares moved this turn
 cmp	r0,r1
 beq	End
 
-ldr	r1,=#0x801865C //FE8 -> #0x8018BD8	@check if can move again
+ldr	r1,=#0x80180EC //FE8 -> #0x8018BD8	@check if can move again
 mov	lr, r1
 .short	0xF800
 lsl	r0, #0x18

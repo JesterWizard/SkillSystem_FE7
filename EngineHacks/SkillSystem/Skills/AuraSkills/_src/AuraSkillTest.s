@@ -23,10 +23,10 @@ bgt ret_false
 mov r0, #1
 tst r2, r0
 beq TradeCheck @1 bit not set = can/cannot_trade
-ldr r3, =0x8024d8c @return 1 if allies/npcs
+ldr r3, =0x80238b0 @return 1 if allies/npcs
 b GotAllegRoutine
 TradeCheck:
-ldr r3, =0x8024da4 @return 1 if same team
+ldr r3, =0x80238c2 @return 1 if same team
 b GotAllegRoutine
 
 AllCheck:
@@ -34,7 +34,7 @@ ldr r3, =0x802c0b0 @always return 1
 
 GotAllegRoutine:
 mov lr, r3
-ldr r0, =0x2033f3c
+ldr r0, =0x2033e40
 ldr r0, [r0]
 ldrb r0, [r0, #0xb] @deployment number of main unit
 lsl r0, #0x18

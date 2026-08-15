@@ -37,72 +37,72 @@
 	@0x8	forcibly end target selection loop
 
 @Relevant Ram Offsets
-.set gActionData,                 0x0203A958
+.set gActionData,                 0x0203A868
 .set gAIData,                     0x0203AA04 	@
 .set gAIActionData,               0x0203AA94 	@
-.set gActiveUnit,                 0x03004E50 	@
+.set gActiveUnit,                 0x03004690 	@
 .set gActiveUnitID,               0x0202BE44 	
 
-.set gMapSize,                    0x0202E4D4 	
-.set gMapUnit,                    0x0202E4D8 	
-.set gMapTerrain,                 0x0202E4DC 	
-.set gMapMovement,                0x0202E4E0 	
-.set gMapRange,                   0x0202E4E4 	
-.set gMapFog,                     0x0202E4E8 	
-.set gMapHidden,                  0x0202E4EC 	
-.set gMapMovement2,               0x0202E4F0 	
+.set gMapSize,                    0x0202E3D8 	
+.set gMapUnit,                    0x0202E3DC 	
+.set gMapTerrain,                 0x0202E3E0 	
+.set gMapMovement,                0x0202E3E4 	
+.set gMapRange,                   0x0202E3E8 	
+.set gMapFog,                     0x0202E3EC 	
+.set gMapHidden,                  0x0202E3F0 	
+.set gMapMovement2,               0x0202E3F4 	
 
 @Routines
 @character info routines
-	.set GetUnit,                      0x08019430
+	.set GetUnit,                      0x08018d0c
 		@ arguments:
 			@r0 = unit deployment id
 		@returns:
 			@r0 = unit pointer
-	.set GetUnitEquippedItem,          0x08016B28
+	.set GetUnitEquippedItem,          0x08016764
 		@ arguments: r0 = Unit Struct pointer;
 		@ returns: r0 = Item Short
 	
-	.set GetUnitAid,                   0x080189B8
-	.set GetUnitMagBy2Range,           0x08018A1C
-	.set GetUnitCurrentHP,             0x08019150
-	.set GetUnitMaxHP,                 0x08019190
-	.set GetUnitStr,                   0x080191B0
-	.set GetUnitMag,                   0x080191B0
-	.set GetUnitPower,                 0x080191B0
-	.set GetUnitSkill,                 0x080191D0
-	.set GetUnitSpeed,                 0x08019210
-	.set GetUnitDefense,               0x08019250
-	.set GetUnitResistance,            0x08019270
-	.set GetUnitLuck,                  0x08019298
+	.set GetUnitAid,                   0x08018450
+	.set GetUnitMagBy2Range,           0x080184B4
+	.set GetUnitCurrentHP,             0x08018a70
+	.set GetUnitMaxHP,                 0x08018ab0
+	.set GetUnitStr,                   0x08018AD0
+	.set GetUnitMag,                   0x08018AD0
+	.set GetUnitPower,                 0x08018AD0
+	.set GetUnitSkill,                 0x08018AF0
+	.set GetUnitSpeed,                 0x08018b30
+	.set GetUnitDefense,               0x08018b70
+	.set GetUnitResistance,            0x08018b90
+	.set GetUnitLuck,                  0x08018bb8
 	
-	.set CanUnitCrossTerrain,          0x0801949C
+	.set CanUnitCrossTerrain,          0x08018D68
 		@ arguments: r0 = Unit Struct pointer, r1 = Terrain Index;
 		@ returns: r0 = 0 if Unit cannot cross/stand on terrain
 	
-	.set AreAllegiancesAllied,         0x08024D8C
-	.set IsUnitEnemyWithActiveUnit,    0x0803C818
+	.set AreAllegiancesAllied,         0x080238B0
+	.set IsUnitEnemyWithActiveUnit,    0x08037914
 	
 	.set DoesUnitHaveUsableStaff,      0x0803C44C
 	.set HasUsableStaffOrWeapon,       0x080402A8
 	
 @Trap Related Routines
 	.set GetTrapAt,                    0x0802E1F0
-	.set GetSpecificTrapAt,            0x0802E24C
-	.set AddTrap,                      0x0802E2B8
-	.set AddTrapExt,                   0x0802E2E0
-	.set RemoveTrap,                   0x0802E2FC
-	.set AddLightRune,                 0x0802EA58
+	.set GetSpecificTrapAt,            0x0802BA94
+	.set AddTrap,                      0x0802BACC
+	.set AddTrapExt,                   0x0802BAF4
+	.set RemoveTrap,                   0x0802BB0C
+	.set AddLightRune,                 0x0802C1E8
 	.set RemoveLightRune,              0x0802EA90
-	.set GetBallistaItemAt,            0x0803798C
+	.set GetBallistaItemAt,            0x080346C8
 		@ arguments: r0 = x, r1 = y;
 		@ returns: ballista item at (x, y) (0 if none)
-	.set AddBallista,                  0x08037A04
+	.set AddBallista,                  0x08034740
 	.set IsBallista,                   0x08037AA8
 	
 @Range and Move Cost Maps Routines
-	.set SetupMapRowPointers,          0x080197E4
-	.set MapAddInRange,                0x0801AABC
+	.set SetupMapRowPointers,          0x080190AC
+	.set MapAddInRange,                0x0801A2D4
 	.set MapSetInMagicSealedRange,     0x0801B950
 		@arguments: r0= unit pointer
 	.set AiFillMovementMapForUnit,     0x0803C490
@@ -131,9 +131,9 @@
 		@arguments:
 			@r0= target unit pointer
 @Other Routines
-	.set Div,                          0x080D167C
-	.set GetCurrentPhase,              0x08024DBC
-	.set GetStaffAccuracy,             0x0802CCDC
+	.set Div,                          0x080BFA14
+	.set GetCurrentPhase,              0x080238D8
+	.set GetStaffAccuracy,             0x0802A66C
 		@arguments:
 			@r0 = unit pointer to acting unit
 			@r1 = unit pointer to target unit

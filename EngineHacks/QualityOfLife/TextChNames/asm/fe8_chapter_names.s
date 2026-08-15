@@ -42,8 +42,8 @@ mov     r1,r8               @@ 08082342 4641
 swi #0xC
 
 ldr     r0, Font_Graphic_Ptr                @@ 08082348 4805  @font graphic - compressed 
-ldr     r1,=0x2020188               @@ 0808234A 4906  @unknown - buffer , was 2020140
-blh      0x8012f50                @@ 0808234C F790FF0C @decompress image to buffer
+ldr     r1,=0x2020140               @@ 0808234A 4906  @unknown - buffer , was 2020140
+blh      0x8013168                @@ 0808234C F790FF0C @decompress image to buffer
 b       loc_80823C6               @@ 08082350 E039     
   .ltorg
  
@@ -80,7 +80,7 @@ b       loc_80823A2               @@ 0808239A E002
 loc_80823A0:    
 mov     r6,r5               @@ 080823A0 1C2E   
 loc_80823A2:  
-ldr     r0,=0x2020188               @@ 080823A2 480E      @buffer again, changed from 140
+ldr     r0,=0x2020140               @@ 080823A2 480E      @buffer again, changed from 140
 mov     r1,r8               @@ 080823A4 4641     
 mov     r3,r6               @@ 080823A6 1C33     
 bl      sub_8082168               @@ 080823A8 F7FFFEDE 
@@ -134,17 +134,17 @@ b       chapter_text                @@ 080822C0 E012
 
 nodata_text:   
 ldr     r0,=0xCC  @NO DATA              @@ 080822C2 4802      @@text ID --NO DATA--: 0x5d2
-blh     0x800a240    @0x8012C60               @@ 080822C4 F790FCCC  @text ID 
+blh     0x8012c60    @0x8012C60               @@ 080822C4 F790FCCC  @text ID 
 b       end_80822a4               @@ 080822C8 E01B     
 
 epilogue_text:    
 ldr     r0,=0x7cf @Epilogue (song name)             @@ 080822D0 4801     @@text ID --EPILOGUE--: 0x5d3
-blh     0x800a240    @0x8012C60               @@ 080822D2 F790FCC5 
+blh     0x8012c60    @0x8012C60               @@ 080822D2 F790FCC5 
 b       end_80822a4               @@ 080822D6 E014     
 
 postgame_text:   
 ldr     r0,=0x7D0 @????             @@ 080822DC 4801     @@text ID --TRIAL--: 0x5d4
-blh      0x800a240                @@ 080822DE F790FCBF 
+blh      0x8012c60                @@ 080822DE F790FCBF 
 b       end_80822a4               @@ 080822E2 E00E     
 .ltorg
 
@@ -171,7 +171,7 @@ ldrh	r0,[r1,r0]
 @at this point we should expect to have the chapter title text ID (160 fe8, 58c fe7) 
 @(sort of, 160 is the short title for the credits, at 55c in fe7)
 CopyTitleText:
-blh     0x800a240      @0x8012C60               @@ 080822FE F790FCAF
+blh     0x8012c60      @0x8012C60               @@ 080822FE F790FCAF
 end_80822a4: 
 pop     {r4}                @@ 08082302 BC10     
 pop     {r1}                @@ 08082304 BC02     

@@ -7,9 +7,9 @@
 
 .equ UnlockChest, 0x080831c8
 .equ GetItemIndex, 0x80174ED
-.equ gMapTerrain, 0x0202E4DC
-.equ gActionData, 0x0203A958
-.equ gBattleActor, 0x0203A4EC
+.equ gMapTerrain, 0x0202E3E0
+.equ gActionData, 0x0203A868
+.equ gBattleActor, 0x0203A3F0
 .equ ChestTerrainType, 0x21
 
 .equ UsingSpellMenu, UnlockStaffID+4
@@ -73,14 +73,14 @@ bne EndFunc
 	mov r1, r3
 	blh UnlockChest
 	@and probably play sound effect too i guess
-	ldr r0, =0x0202bcf0
+	ldr r0, =0x0202bbf8
 	add r0, #0x41
 	ldrb r0, [r0]
 	lsl r0, r0, #0x1e
 	cmp r0, #0x0
 	blt EndFunc
 		mov r0, #0xB1
-		blh 0x080d01fc @PlaySound
+		blh 0x080be594 @PlaySound
 
 EndFunc:
 pop {r4}

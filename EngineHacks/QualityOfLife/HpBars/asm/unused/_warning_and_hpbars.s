@@ -257,15 +257,15 @@ WRAMDisplay:
 Return_to:
 .long 0x80276be+1
 ActiveUnit:
-.long 0x3004e50
+.long 0x3004690
 SlayerCheck:
 .long 0x8016c88
 CheckEffectiveness:
-.long 0x8016bec
+.long 0x8016820
 CanEquip:
-.long 0x8016574
+.long 0x80161a4
 GetItemData:
-.long 0x80177B0
+.long 0x80174AC
 TalkCheck:
 .long 0x8083f68
 WS_FrameData: @should be the OAM data

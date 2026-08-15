@@ -6,7 +6,7 @@
 .endm
 
 @ _ Init: Begin the chapter with +7 _. 
-.equ ChapterData, 0x202BCF0 
+.equ ChapterData, 0x202BBF8 
 
 .equ StrAnim, 0x01 
 .equ SklAnim, 0x02 

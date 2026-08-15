@@ -33,7 +33,7 @@ lsl r0,r0,#16
 lsr r3,r0,#16
 lsl r1,r1,#24
 lsl r2,r1,#24
-ldr r0,=#0x203A4D4
+ldr r0,=#0x203A3D8
 ldrh r1,[r0]
 
 pop {r4-r6}

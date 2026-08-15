@@ -9,7 +9,7 @@
 @.equ GetChapterEvents, ChapterDataStruct+4
 @.equ HealTrapID, GetChapterEvents+4
 
-@.equ ChapterDataStruct, #0x0202BCF0
+@.equ ChapterDataStruct, #0x0202BBF8
 @.equ GetChapterEvents, #0x080346B0
 @.equ CheckEventID, #0x08083DA8
 
@@ -134,7 +134,7 @@ beq	no_forager
 ldrb	r0,[r5,#0x10]	@x coord of unit
 ldrb	r1,[r5,#0x11]	@y coord of unit
 lsl	r1,#2		@y times 4 since it's pointer
-ldr	r2,=0x202E4DC	@tile id map pointer
+ldr	r2,=0x202E3E0	@tile id map pointer
 ldr	r2,[r2]		@tile id map offset
 ldr	r2,[r2,r1]	@load pointer to y row
 ldrb	r0,[r2,r0]	@load x byte of the row, which gets us tile id
@@ -155,7 +155,7 @@ add	r4,#20
 no_forager:
 
 @ Check for healing tiles
-ldr r0, =#0x0202BCF0
+ldr r0, =#0x0202BBF8
 ldrb r0, [ r0, #0x0E ]
 @blh GetChapterEvents, r1
 ldr r1, =#0x080346B0

@@ -57,7 +57,7 @@ pop   {r0}
 bx    r0
 
 
-@ Mimics Text_Init, 0x08003D5C, but doesn't call the TextVRAMClearer.
+@ Mimics Text_Init, 0x08005474, but doesn't call the TextVRAMClearer.
 Text_InitA:
 push  {r4}
 

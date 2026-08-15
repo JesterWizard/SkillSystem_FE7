@@ -178,15 +178,15 @@ bx    r0
 
 .align
 Bg0Buffer:
-.long 0x02022CA8
+.long 0x02022C60
 Const_203E1F0:
 .long 0x0203E1F0
 BattleStatTileLoc:
 .long 0x06000800
 Copy_Palette_To_Ram:
-.long 0x08000DB8
+.long 0x08001084
 ActionStruct:
-.long 0x0203A958
+.long 0x0203A868
 
 Num2Ascii:
 @r0=number, r1=place to write number to in bg0 buffer

@@ -30,7 +30,7 @@ bx		r0
 
 .align
 DisplayStatNumber:
-.long 0x08004B94
+.long 0x080061E4
 
 End:
 mov  r0, #0x4

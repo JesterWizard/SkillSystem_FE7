@@ -7,8 +7,8 @@
 
 .equ SetUnitNewStatus,0x80178D8
 .equ ReturnPoint,0x802C221
-.equ AttackerUnit,0x203a4ec
-.equ DefenderUnit,0x203a56c
+.equ AttackerUnit,0x203a3f0
+.equ DefenderUnit,0x203a470
 
 Synchronize: @r3 hook at 2C214
 @status ID in r0, unit in r4, attacker or defender ptr in r5

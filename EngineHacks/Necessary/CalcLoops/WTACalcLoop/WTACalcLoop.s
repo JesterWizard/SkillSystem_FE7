@@ -7,7 +7,7 @@
     .short 0xF800
 .endm
 
-.equ ApplyReaver, 0x0802C76C
+.equ ApplyReaver, 0x0802A11E
 
 .global WTACalcLoop
 .type WTACalcLoop, %function

@@ -14,7 +14,7 @@ cmp	r0,#0
 beq	Original
 
 GetRandom:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800
 
@@ -44,7 +44,7 @@ ldr	r0,[r0]
 ldrh	r0,[r0]
 
 End:
-ldr	r4,=#0x800A240
+ldr	r4,=#0x8012C60
 mov	lr,r4
 .short	0xF800
 mov	r6,r0

@@ -6,7 +6,7 @@
 .thumb
 .org 0
 push {r4-r7,lr}
-ldr r0,=0x3004e50
+ldr r0,=0x3004690
 ldr r4,[r0] @save active unit in r4
 ldr r1,[r4,#0xc]
 mov r0, #0x40 @has not moved...
@@ -26,7 +26,7 @@ b False
 
 HasMercy:
 @now check if can attack
-ldr r0, =0x80249ac @attack usability
+ldr r0, =0x802357c @attack usability
 mov lr, r0
 .short 0xf800
 cmp r0, #1

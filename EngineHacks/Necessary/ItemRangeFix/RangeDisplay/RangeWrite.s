@@ -93,16 +93,16 @@ bx		r4
 
 .align
 Pointer1:
-.long 0x02033F3C
+.long 0x02033E40
 Pointer2:
-.long 0x0202E4E4
+.long 0x0202E3E8
 Function1:
-.long 0x080197E4+1
+.long 0x080190AC+1
 Function2:
-.long 0x0804F8A4+1
+.long 0x0804ACE4+1
 Function3:
-.long 0x08018A1C+1
+.long 0x080184B4+1
 Function4:
-.long 0x0801AABC+1
+.long 0x0801A2D4+1
 Item_Table:
 

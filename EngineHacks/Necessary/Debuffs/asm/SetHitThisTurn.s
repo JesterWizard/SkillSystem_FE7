@@ -19,8 +19,8 @@ b onHit                     @3C
 
 lsl r0, #0x0                @3E
 
-.long 0x0203A4D4            @40
-.long 0x0203A608            @44
+.long 0x0203A3D8            @40
+.long 0x0203A50C            @44
 .long 0xFFF80000            @4C
 
 .org 0x2B44C

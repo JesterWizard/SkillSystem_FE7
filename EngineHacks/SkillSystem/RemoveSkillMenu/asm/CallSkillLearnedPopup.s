@@ -5,8 +5,8 @@
 
 	pExtraItemOrSkill = 0x0202BCDE
 
-	prNewPopup        = 0x08011474|1
-	prSetPopupShort   = 0x0801145C|1
+	prNewPopup        = 0x0800ad40|1
+	prSetPopupShort   = 0x0800AD28|1
 
 	lpPopupDef        = EALiterals+0x00
 	lTime             = EALiterals+0x04

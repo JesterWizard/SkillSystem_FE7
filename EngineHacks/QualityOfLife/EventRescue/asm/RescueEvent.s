@@ -12,7 +12,7 @@ ldrh r1,[r2,#2] @y coords
 bl GetUnitFromCoords
 cmp r0,#0
 beq End
-ldr r5, =0x8019430 @turn deployment no into ram ptr
+ldr r5, =0x8018d0c @turn deployment no into ram ptr
 mov lr,r5
 .short 0xf800
 mov r4,r0 @save rescuer's ram
@@ -26,7 +26,7 @@ mov lr,r5
 .short 0xf800
 mov r1,r0 @rescuee in r1
 mov r0,r4 @rescuer in r0
-ldr r3,=0x801834c @rescue routine
+ldr r3,=0x8017de4 @rescue routine
 mov  lr,r3
 .short 0xf800
 
@@ -37,7 +37,7 @@ bx r0
 
 GetUnitFromCoords:
 @gets deployment number, given r0=x and r1=y
-ldr r2,=0x202e4d8 @pointer to unit map
+ldr r2,=0x202e3dc @pointer to unit map
 ldr r2,[r2]
 lsl r1,#2 @y*4
 add r1,r2 @row address

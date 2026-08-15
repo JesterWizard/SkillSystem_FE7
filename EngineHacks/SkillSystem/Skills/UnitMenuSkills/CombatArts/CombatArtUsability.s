@@ -6,13 +6,13 @@
 .equ SkillID, SkillTester+4
 .equ ArtID, SkillID+4
 .equ CombatArtCostTable, ArtID+4
-.equ CanUnitWieldWeapon,0x8016574
+.equ CanUnitWieldWeapon,0x80161a4
 
 CombatArtUsability:
 @true if unit has skill AND attack is available
 
 push {r4-r7,lr}
-ldr r0,=0x3004e50
+ldr r0,=0x3004690
 ldr r4,[r0] @save active unit in r4
 ldr r1,[r4,#0xc]
 mov r0, #0x40 @has not moved...
@@ -66,7 +66,7 @@ ble LoopStart
 
 HasDurability:
 @now check if can attack
-ldr r0, =0x80249ac @attack usability
+ldr r0, =0x802357c @attack usability
 mov lr, r0
 .short 0xf800
 cmp r0, #1

@@ -4,7 +4,7 @@
 GetMinRange:
 	push {lr}
 	
-	ldr r3, =#0x0801766C @ Vanilla Min Range Getter (for Item only)
+	ldr r3, =#0x0801736C @ Vanilla Min Range Getter (for Item only)
 	
 	mov lr, r3
 	.short 0xF800

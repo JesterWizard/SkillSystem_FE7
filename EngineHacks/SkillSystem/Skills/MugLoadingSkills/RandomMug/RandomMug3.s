@@ -26,7 +26,7 @@ b End @ This is neither control code. Return 0.
 
 
 CurrentChar:
-ldr	r0,=#0x3004E50
+ldr	r0,=#0x3004690
 ldr	r0,[r0]
 cmp	r0,#0x00
 beq	NoChar
@@ -39,7 +39,7 @@ mov	r14,r2
 cmp	r0,#0x01
 beq	GetRandom
 
-ldr	r0,=#0x3004E50
+ldr	r0,=#0x3004690
 ldr	r0,[r0]
 ldr	r1,IdentityProblemsID
 ldr	r2,SkillTester	@test for skill
@@ -50,7 +50,7 @@ beq	End
 b	GetRandom2
 
 GetRandom:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800 @ Get RN
 GetMug:
@@ -61,7 +61,7 @@ add	r4,r2
 b Return @ Return this mug
 
 GetRandom2:
-ldr	r0,=#0x8000C64
+ldr	r0,=#0x8000E04
 mov	lr,r0
 .short	0xF800 @ Get RN
 

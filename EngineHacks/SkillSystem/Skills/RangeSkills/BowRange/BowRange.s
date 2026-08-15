@@ -12,7 +12,7 @@
 	@r2: min max range word
 @retuns
 	@r0: updated min max range word
-.set GetWeaponType, 0x8017548
+.set GetWeaponType, 0x801725c
 .set BonusWeaponType, 0x3 @Bows
 .set MaxRangeBonus, 0x1
 push 	{lr}

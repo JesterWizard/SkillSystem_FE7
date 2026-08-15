@@ -229,7 +229,7 @@ ldr r0, =0x02024cb0 @gBg2MapTarget	@{U}
 @ldr r0, =0x02024CB0 @gBg2MapTarget	@{J}
 ldr r0, [r0]
 mov r1, #0 
-blh 0x8001220 @FillBgMap	@FillBgMap(gBg2MapBuffer,0);	@{U}
+blh 0x8001810 @FillBgMap	@FillBgMap(gBg2MapBuffer,0);	@{U}
 @blh 0x80011D0 @FillBgMap	@FillBgMap(gBg2MapBuffer,0);	@{J}
 pop {r0}
 bx r0 
@@ -276,7 +276,7 @@ ldr r4, =MovementMap @ Movement Map	@{U}
 ldr r4, [r4] 
 mov r9, r4 
 
-ldr r3, =0x202E4D4 @ Map Size	@{U}
+ldr r3, =0x202E3D8 @ Map Size	@{U}
 @ldr r3, =0x202E4D0 @ Map Size	@{J}
 ldrh r6, [r3] @ XX Boundary size 
 ldrh r7, [r3, #2] @ YY Boundary size 
@@ -453,7 +453,7 @@ ldr r4, =MovementMap @ Movement Map	@{U}
 ldr r4, [r4] 
 mov r9, r4 
 
-ldr r3, =0x202E4D4 @ Map Size	@{U}
+ldr r3, =0x202E3D8 @ Map Size	@{U}
 @ldr r3, =0x202E4D0 @ Map Size	@{J}
 ldrh r6, [r3] @ XX Boundary size 
 ldrh r7, [r3, #2] @ YY Boundary size 
@@ -648,15 +648,15 @@ mov r7, r3 @ rotation byte
 
 
 
-ldr r0, =0x202E4E0 @ Movement map	@{U}
-@ldr r0, =0x202E4DC @ Movement map 	@{J}
+ldr r0, =0x202E3E4 @ Movement map	@{U}
+@ldr r0, =0x202E3E0 @ Movement map 	@{J}
 
 ldr r0, [r0] 
 mov r1, #0xFF
 blh FillMap
 
-ldr r0, =0x202E4F0 @ Backup Movement map	@{U}
-@ldr r0, =0x202E4EC @ Backup Movement map	@{J}
+ldr r0, =0x202E3F4 @ Backup Movement map	@{U}
+@ldr r0, =0x202E3F0 @ Backup Movement map	@{J}
 ldr r0, [r0] 
 mov r1, #0xFF
 blh FillMap
@@ -688,7 +688,7 @@ DisplayRed:
 mov r0, #0x42 @ red / purple
 DisplayColour:
 @ purple now, thanks to huichelaar & mokha 
-blh 0x801da98 @DisplayMoveRangeGraphics	@{U}
+blh 0x801d2a0 @DisplayMoveRangeGraphics	@{U}
 @blh 0x801D6FC @DisplayMoveRangeGraphics	@{J}
 
 mov r0, r6 @ aoe table entry 
@@ -740,7 +740,7 @@ mov r3, #2 @ Down (Direction)
 @ 0 = left, 1 = right, 2 = down, 3 = up
 mov r0, r4 @ Parent proc 
 
-blh 0x0801F780, r7 @FE8U Show_BrokenWall_Effect	@{U}
+blh 0x0801EE84, r7 @FE8U Show_BrokenWall_Effect	@{U}
 @blh  0x0801F3D8		@FE8J Show_BrokenWall_Effect	@{J}
 
 add sp, #0x4
@@ -785,7 +785,7 @@ mov r3, #1 @ right (Direction)
 @ 0 = left, 1 = right, 2 = down, 3 = up
 mov r0, r4 @ Parent proc 
 
-blh 0x0801F780, r7 @FE8U Show_BrokenWall_Effect	@{U}
+blh 0x0801EE84, r7 @FE8U Show_BrokenWall_Effect	@{U}
 @blh 0x0801F3D8		@FE8J Show_BrokenWall_Effect	@{J}
 
 ADD SP, #0x4
@@ -805,13 +805,13 @@ push {r4-r7, lr}
 @ given r0 = XX, r1 = yy, r2 = direction to search, return the number of tiles in the move map that are not 0xFF 
 
 mov r5, r2 @ direction 
-ldr r3, =0x202E4D4 @ Map Size @{U}
+ldr r3, =0x202E3D8 @ Map Size @{U}
 @ldr r3, =0x202E4D0 @ Map Size @{J}
 ldrh r6, [r3] @ XX 
 ldrh r7, [r3, #2] @ YY 
 
-ldr r4, =0x202E4E0 @ Movement Map pointer	@{U}
-@ldr r4, =0x202E4DC @ Movement Map pointer 	@{J}
+ldr r4, =0x202E3E4 @ Movement Map pointer	@{U}
+@ldr r4, =0x202E3E0 @ Movement Map pointer 	@{J}
 ldr r4, [r4] @ movement map 
 
 cmp r5, #2 
@@ -888,7 +888,7 @@ push {r4-r7, lr}
 mov r7, r8 
 push {r7} 
 
-ldr r3, =0x202E4D4 @ Map Size @{U}
+ldr r3, =0x202E3D8 @ Map Size @{U}
 @ldr r3, =0x202E4D0 @ Map Size @{J}
 ldrh r6, [r3] @ XX 
 ldrh r3, [r3, #2] @ YY 
@@ -904,8 +904,8 @@ add r1, #0x04*0x0C @ Slot C
 str r0, [r1] 
 
 
-ldr r4, =0x202E4E0 @ Movement Map	@{U}
-@ldr r4, =0x202E4DC @ Movement Map 	@{J}
+ldr r4, =0x202E3E4 @ Movement Map	@{U}
+@ldr r4, =0x202E3E0 @ Movement Map 	@{J}
 ldr r4, [r4] @ movement map [0,0] 
 
 mov r3, #0 @ Y coord 
@@ -979,7 +979,7 @@ push {r4-r7, lr}
 mov r7, r8 
 push {r7} 
 
-ldr r3, =0x202E4D4 @ Map Size @{U}
+ldr r3, =0x202E3D8 @ Map Size @{U}
 @ldr r3, =0x202E4D0 @ Map Size @{J}
 ldrh r6, [r3] @ XX 
 ldrh r3, [r3, #2] @ YY 
@@ -994,8 +994,8 @@ ldr r1, =MemorySlot
 add r1, #0x04*0x0C @ Slot C 
 str r0, [r1] 
 
-ldr r4, =0x202E4E0 @ Movement Map	@{U}
-@ldr r4, =0x202E4DC @ Movement Map 	@{J}
+ldr r4, =0x202E3E4 @ Movement Map	@{U}
+@ldr r4, =0x202E3E0 @ Movement Map 	@{J}
 ldr r4, [r4] @ movement map [0,0] 
 
 mov r2, #0 @ X coord 
@@ -1058,7 +1058,7 @@ pop {r4-r7}
 pop {r3}
 bx r3
 
-	.equ pr6C_New, 0x08002C7C	@{U}
+	.equ pr6C_New, 0x08004494	@{U}
 @	.equ pr6C_New, 0x08002BCC	@{J}
 .align 4
 .global AoE_Setup 
@@ -1174,7 +1174,7 @@ ldrb r1, [r3] @ XX
 ldrb r2, [r3, #2] @ YY 
 
 @r0 as parent 
-blh 0x08015e0c @EnsureCameraOntoPosition	@{U}
+blh 0x08015ce0 @EnsureCameraOntoPosition	@{U}
 @blh 0x08015E18 @EnsureCameraOntoPosition	@{J}
 
 pop {r1} 
@@ -1198,7 +1198,7 @@ str r1, [r3, #8] @ Slot 2 to have the value of "0xFFFFFFFF"
 @ldrb r1, [r3] @ XX 
 @ldrb r2, [r3, #2] @ YY 
 @@r0 as parent 
-@blh 0x08015e0c @EnsureCameraOntoPosition	@{U}
+@blh 0x08015ce0 @EnsureCameraOntoPosition	@{U}
 @@blh 0x08015E18 @EnsureCameraOntoPosition	@{J}
 
 
@@ -1240,7 +1240,7 @@ cmp r0, #0
 beq NoSound
 
 mov r1, #0 
-blh 0x080D01FC   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX 	{U}
+blh 0x080BE594   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX 	{U}
 @blh 0x080D4EF4   @m4aSongNumStart r0=music id:SOUND // Seems to work fine for SFX	{J}
 
 
@@ -1262,7 +1262,7 @@ bx r0
 
 
 @ arguments: r0 = pointer to ROM 6C code, r1 = parent; returns: r0 = new 6C pointer (0 if no space available)
-.equ New6CBlocking,                0x08002CE0	@{U}
+.equ New6CBlocking,                0x080044F8	@{U}
 @.equ New6CBlocking,                0x08002C30	@{J}
 
 .align 4
@@ -1284,7 +1284,7 @@ bx r0
 
 
 
-	.equ BreakProcLoop, 0x08002E94	@{U}
+	.equ BreakProcLoop, 0x080046A0	@{U}
 @	.equ BreakProcLoop, 0x08002DE4	@{J}
 
 .align 
@@ -1384,11 +1384,11 @@ b Start_ForEachUnitInRange
 DamageUnits: 
 ldr r0, =AoE_DamageUnitsInRange
 Start_ForEachUnitInRange:
-blh 0x8024eac @ForEachUnitInRange @ maybe this calls AoE_DamageUnitsInRange for each unit found in the range mask	{U}
+blh 0x8023944 @ForEachUnitInRange @ maybe this calls AoE_DamageUnitsInRange for each unit found in the range mask	{U}
 @blh 0x8024E5C @ForEachUnitInRange @ maybe this calls AoE_DamageUnitsInRange for each unit found in the range mask	@{J}
 
 ldr r0, =AoE_EventForUnitsInRange @ also does the death fade 
-blh 0x8024eac @ForEachUnitInRange
+blh 0x8023944 @ForEachUnitInRange
 
 End_AoE:
 ldr r1, =CurrentUnitFateData	@these four lines copied from wait routine
@@ -1590,15 +1590,15 @@ pop {r1}
 bx r1 
 
 
-.equ ProcFind, 0x08002E9C	@{U}
+.equ ProcFind, 0x080046A8	@{U}
 @.equ ProcFind, 0x08002DEC	@{J}
-.equ ClearBG0BG1, 0x0804E884	@{U}
+.equ ClearBG0BG1, 0x0804A040	@{U}
 @.equ ClearBG0BG1, 0x0804F610	@{J}
-.equ SetFont, 0x8003D38	@{U}
+.equ SetFont, 0x8005450	@{U}
 @.equ SetFont, 0x8003C68	@{J}
-.equ Font_ResetAllocation, 0x8003D20  	@{U}
+.equ Font_ResetAllocation, 0x8005438  	@{U}
 @.equ Font_ResetAllocation, 0x8003C50  	@{J}
-.equ EndAllMenus, 0x804EF20 	@{U}
+.equ EndAllMenus, 0x804A490 	@{U}
 @.equ EndAllMenus, 0x804FCAC 	@{J}
 
 .align 4
@@ -1607,7 +1607,7 @@ bx r1
 AoE_ClearGraphics:
 push {lr} 
 bl AoE_ClearRangeMap
-blh 0x801dacc @HideMoveRangeGraphics	@{U}
+blh 0x801d2d4 @HideMoveRangeGraphics	@{U}
 @blh 0x801D730 @HideMoveRangeGraphics	@{J}
 
 bl AoE_ClearBG2 
@@ -1617,7 +1617,7 @@ bl AoE_ClearBG2
 
 
 
-blh 0x8019b18 @UpdateGameTileGfx	@{U}
+blh 0x80193e0 @UpdateGameTileGfx	@{U}
 @blh 0x80197F0 @UpdateGameTileGfx	@{J}
 
 @blh ClearBG0BG1
@@ -1626,12 +1626,12 @@ blh 0x8019b18 @UpdateGameTileGfx	@{U}
 @blh SetFont 
 @blh Font_ResetAllocation 
 @blh EndAllMenus
-@blh 0x801a1f4 @RefreshEntityMaps	@{U}
+@blh 0x8019abc @RefreshEntityMaps	@{U}
 @@blh 0x08019ECC @RefreshEntityMaps	@{J}
-blh  0x08019c3c   @DrawTileGraphics	@{U}
+blh  0x08019504   @DrawTileGraphics	@{U}
 @blh  0x08019914   @DrawTileGraphics	@{J}
 
-@blh 0x80271a0 @SMS_UpdateFromGameData	@{U}
+@blh 0x8025724 @SMS_UpdateFromGameData	@{U}
 @@blh 0x8027144 @SMS_UpdateFromGameData	@{J}
 
 @bl AoE_EndTargetSelection 
@@ -1648,12 +1648,12 @@ bx r0
 
 AoE_ClearRangeMap:
 push {lr} 
-ldr r0, =0x202E4E4 @ range map pointer @{U}
-@ldr r0, =0x202E4E0 @ range map pointer @{J}
+ldr r0, =0x202E3E8 @ range map pointer @{U}
+@ldr r0, =0x202E3E4 @ range map pointer @{J}
 ldr r0, [r0]
 mov r1, #0
-blh 0x80197E4 @MapFill	@{U}
-@blh 0x80194BC @MapFill	@{J}
+blh 0x80190AC @MapFill	@{U}
+@blh 0x8018D88 @MapFill	@{J}
 pop {r0}
 bx r0 
 
@@ -1664,13 +1664,13 @@ bx r0
 AoE_ClearMoveMap:
 push {lr} 
 
-ldr r0, =0x202E4E0 @ range map pointer	@{U}
-@ldr r0, =0x202E4DC @ range map pointer	@{J}
+ldr r0, =0x202E3E4 @ range map pointer	@{U}
+@ldr r0, =0x202E3E0 @ range map pointer	@{J}
 ldr r0, [r0]
 mov r1, #0
 sub r1, #1
-blh 0x80197E4 @MapFill	@{U}
-@blh 0x80194BC @MapFill	@{J}
+blh 0x80190AC @MapFill	@{U}
+@blh 0x8018D88 @MapFill	@{J}
 pop {r0}
 bx r0 
 
@@ -1835,7 +1835,7 @@ strh r0, [r5, r6]
 cmp r0, #0 
 bne Done_DepleteItem
 mov r0, r5 
-blh 0x8017984 @RemoveUnitBlankItems	@{U}
+blh 0x8017688 @RemoveUnitBlankItems	@{U}
 @blh 0x801772C @RemoveUnitBlankItems	@{J}
 
 Done_DepleteItem:
@@ -1872,7 +1872,7 @@ bne AlwaysDamage @ If friendly fire is on, then we heal regardless of allegiance
 mov r2, #0x0B @ Allegiance byte 
 ldsb r0, [r6, r2] 
 ldsb r1, [r7, r2] 
-blh 0x8024d8c @AreAllegiancesAllied	@{U}
+blh 0x80238b0 @AreAllegiancesAllied	@{U}
 @blh 0x8024D3C @AreAllegiancesAllied	@{J}
 cmp r0, #1 
 beq DoNotDamageTarget
@@ -1969,7 +1969,7 @@ AoE_RemoveDeadUnitLoop_Setup:
 @foeach all units
 ldr r5, =0x0202BE4C	@Units {U}
 @ldr r5, =0x0202BE48	@Units {J}
-ldr r6, =0x0202DDCC+(0x48*0x14)	@Units {U}
+ldr r6, =0x0202DCD0+(0x48*0x14)	@Units {U}
 @ldr r6, =0x0202DDC8+(0x48*0x14)	@Units {J}
 
 AoE_RemoveDeadUnitLoop_Loop:
@@ -2022,7 +2022,7 @@ bic r0, r1
 str r0, [r3, #0x0C] @ so active unit isn't hidden during death fades
 
 mov r0 ,r5
-blh 0x08078464   @MakeMOVEUNITForMapUnit	@{U}
+blh 0x0806baf0   @MakeMOVEUNITForMapUnit	@{U}
 @blh 0x0807a888   @MakeMOVEUNITForMapUnit	@{J}
 blh 0x0807959C   @StartMoveUnitDeathBlend2	@{U}
 @blh 0x0807b9b0   @StartMoveUnitDeathBlend2	@{J}
@@ -2080,8 +2080,8 @@ bx r0
 .ltorg 
 
 .equ gProcGotItemPopup, 0x85922D0 
-.equ InitBattleUnitFromUnit, 0x802A584 
-.equ BATTLE_HandleItemDrop, 0x80328D0 
+.equ InitBattleUnitFromUnit, 0x80285D4 
+.equ BATTLE_HandleItemDrop, 0x802F9C4 
 .equ gProcPlayerPhase, 0x859AAD8 
 
 .type AoE_GotItemDropInit, %function 
@@ -2113,7 +2113,7 @@ ldr r4, =MovementMap
 ldr r4, [r4] 
 mov r9, r4 
 
-ldr r3, =0x202E4D4 @ Map Size	@{U}
+ldr r3, =0x202E3D8 @ Map Size	@{U}
 @ldr r3, =0x202E4D0 @ Map Size	@{J}
 ldrh r6, [r3] @ XX Boundary size 
 ldrh r7, [r3, #2] @ YY Boundary size 
@@ -2264,11 +2264,11 @@ bne DroppableItemLoop
 sub r3, #2 
 ldrh r6, [r0, r3] @ item 
 
-@	ldr  r3, =0x8031508 @size of convoy	{J}
+@	ldr  r3, =0x802e708 @size of convoy	{J}
 	ldr  r3, =0x80315bc @size of convoy	{U}
 	ldrb r3, [r3] @normally 0x63
 
-@	ldr  r0, =0x8031500 @pointer to convoy	{J}
+@	ldr  r0, =0x802e700 @pointer to convoy	{J}
 	ldr  r0, =0x80315b4 @pointer to convoy	{U}
 	ldr  r0, [r0]
 
@@ -2396,7 +2396,7 @@ bne AlwaysHeal @ If friendly fire is on, then we heal regardless of allegiance
 mov r2, #0x0B 
 ldsb r0, [r6, r2] 
 ldsb r1, [r7, r2] 
-blh 0x8024d8c @AreAllegiancesAllied	@{U}
+blh 0x80238b0 @AreAllegiancesAllied	@{U}
 @blh 0x8024D3C @AreAllegiancesAllied	@{J}
 cmp r0, #0 
 beq DoNotHealTarget
@@ -2470,7 +2470,7 @@ bne AlwaysHealInRange @ If friendly fire is on, then we heal regardless of alleg
 mov r2, #0x0B 
 ldsb r0, [r6, r2] 
 ldsb r1, [r7, r2] 
-blh 0x8024d8c @AreAllegiancesAllied	@{U}
+blh 0x80238b0 @AreAllegiancesAllied	@{U}
 @blh 0x8024D3C @AreAllegiancesAllied	@{J}
 cmp r0, #0 
 beq DoNotHealTargetInRange
@@ -2709,7 +2709,7 @@ bne AlwaysDamageInRange @ If friendly fire is on, then we heal regardless of all
 mov r2, #0x0B 
 ldsb r0, [r6, r2] 
 ldsb r1, [r7, r2] 
-blh 0x8024d8c @AreAllegiancesAllied	@{U}
+blh 0x80238b0 @AreAllegiancesAllied	@{U}
 @blh 0x8024D3C @AreAllegiancesAllied	@{J}
 cmp r0, #0 
 bne DoNotDamageTargetInRange

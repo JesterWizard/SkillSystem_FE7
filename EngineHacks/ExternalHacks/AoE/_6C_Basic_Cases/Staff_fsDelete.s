@@ -1,7 +1,7 @@
 .thumb
 .include "../_TargetSelectionDefinitions.s"
 
-.set PurgeVRAM, 0x8003D20	@{U}
+.set PurgeVRAM, 0x8005438	@{U}
 @.set PurgeVRAM, 0x08003C50	@{J}
 
 push {r4,r14}

@@ -51,7 +51,7 @@ bx		r1
 
 StealCommandUsability:
 push {r4,lr}
-ldr r4, =0x03004E50
+ldr r4, =0x03004690
 ldr r2, [r4, #0x0] 
 ldr r0, [r2, #0x0]
 ldr r1, [r2, #0x4]
@@ -69,12 +69,12 @@ beq StealCommandUsability_RetFalse
     bne StealCommandUsability_RetFalse
         mov r0 ,r2
         blh 0x08025c00   @MakeTargetListForSteal
-        blh 0x0804fd28   @GetTargetListSize Gets list size (used to check for empty lists in usability routines) Number of entries in the list
+        blh 0x0804b174   @GetTargetListSize Gets list size (used to check for empty lists in usability routines) Number of entries in the list
         cmp r0, #0x0
         beq StealCommandUsability_RetFalse
 
 ldr r0, [r4, #0x0] 
-blh 0x080179d8   @GetUnitItemCount
+blh 0x080176da   @GetUnitItemCount
 cmp r0, #0x5
 beq StealCommandUsability_RetFalse   @ItemFull
 

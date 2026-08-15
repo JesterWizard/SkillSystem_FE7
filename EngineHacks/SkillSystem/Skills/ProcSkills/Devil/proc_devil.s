@@ -7,7 +7,7 @@
 .equ DevilsLuckID, SkillTester+4
 .equ DevilsPactID, DevilsLuckID+4
 .equ DevilsWhimID, DevilsPactID+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker
@@ -56,7 +56,7 @@ beq	isDevil
 mov	r0,r5
 mov	r1,#0x4A    @Move to the attacker's weapon
 ldrh	r0,[r0,r1]
-ldr	r1,=#0x8017724	@get item word
+ldr	r1,=#0x8017424	@get item word
 mov	lr,r1
 .short	0xF800
 cmp	r0,#0x04	@devil effect
@@ -93,7 +93,7 @@ beq	isDevil
 mov	r0,r4
 mov	r1,#0x4A    @Move to the attacker's weapon
 ldrh	r0,[r0,r1]
-ldr	r1,=#0x8017724	@get item word
+ldr	r1,=#0x8017424	@get item word
 mov	lr,r1
 .short	0xF800
 cmp	r0,#0x04	@devil effect
@@ -102,14 +102,14 @@ bne     End	@do nothing if not devil
 @roll devil chance
 isDevil:
 mov	r0,r4
-ldr	r1,=#0x8019298	@luck getter
+ldr	r1,=#0x8018bb8	@luck getter
 mov	lr,r1
 .short	0xF800
 cmp	r0,#31	@check if luck is over cap, just in case
 bhi	End
 mov	r1,#31	@devil chance
 sub	r0,r1,r0	@devil chance - luck
-ldr	r1,=#0x8000CA0	@roll 1rn
+ldr	r1,=#0x8000E60	@roll 1rn
 mov	lr,r1
 .short	0xF800
 lsl	r0,#0x18

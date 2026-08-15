@@ -48,7 +48,7 @@ beq NotLunge
 mov r3,r0
 ldrb r0,[r3,#0x10]
 ldrb r1,[r3,#0x11]
-ldr		r2,=#0x202E4DC	@terrain map
+ldr		r2,=#0x202E3E0	@terrain map
 ldr		r2,[r2]			@Offset of map's table of row pointers
 lsl		r1,#0x2			@multiply y coordinate by 4
 add		r2,r1			@so that we can get the correct row pointer
@@ -83,7 +83,7 @@ ldrb 	r0,[r0,#0x1B]
 cmp 	r0,#0
 beq 	GoBack
 
-ldr 	r1,=#0x80182d8 @GetUnitByCharIdAndAllegiance
+ldr 	r1,=#0x8017d70 @GetUnitByCharIdAndAllegiance
 mov 	r14,r1
 .short 	0xF800 @bl r14
 cmp 	r0,#0 @if it returns null then don't try to do anything
@@ -107,10 +107,10 @@ bx      r1
 
 .align
 Somewhere:
-.long 0x0203A958
+.long 0x0203A868
 GetCharData:
-.long 0x08019430
+.long 0x08018d0c
 DefenderStruct:
-.long 0x0203A56C
+.long 0x0203A470
 LungeMarker:
 .long 0x203f101

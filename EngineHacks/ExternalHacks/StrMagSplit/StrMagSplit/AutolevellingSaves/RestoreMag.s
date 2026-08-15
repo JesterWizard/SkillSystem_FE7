@@ -30,4 +30,4 @@ bx		r3
 
 .align
 GetCharStruct:
-.long 0x08019430+1
+.long 0x08018d0c+1

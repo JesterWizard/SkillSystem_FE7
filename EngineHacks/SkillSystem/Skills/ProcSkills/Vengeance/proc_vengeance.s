@@ -7,7 +7,7 @@
   .short 0xf800
 .endm
 .equ VengeanceID, SkillTester+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 .equ GetUnit, 0x8019431
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}

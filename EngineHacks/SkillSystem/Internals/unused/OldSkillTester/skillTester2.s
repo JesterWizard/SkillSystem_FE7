@@ -6,8 +6,8 @@
 
 .thumb
 
-.set GetUnitEquippedItem, 0x8016B28
-.set GetUnitEquippedItemSlot, 0x8016B58
+.set GetUnitEquippedItem, 0x8016764
+.set GetUnitEquippedItemSlot, 0x8016794
 @.set ItemTable, SkillGetter+0x04
 
 .macro _blr reg

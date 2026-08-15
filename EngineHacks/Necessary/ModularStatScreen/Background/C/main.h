@@ -27,10 +27,10 @@ extern const void* SSS_PageTSATable[];
 extern const void* SSS_PortraitBoxTSA;
 
 // Vanilla, but not in FE-Clib.
-extern u16 gpStatScreenPageBg0Map[0x280]; //! FE8U = 0x2003D2C
-extern u16 gpStatScreenPageBg1Map[0x280]; //! FE8U = 0x200422C
-extern u16 gpStatScreenPageBg2Map[0x280]; //! FE8U = 0x200472C
-extern u8 StatScreenStruct[0x14]; //! FE8U = 0x2003BFC
+extern u16 gpStatScreenPageBg0Map[0x280]; //! FE8U = 0x200323C
+extern u16 gpStatScreenPageBg1Map[0x280]; //! FE8U = 0x200373C
+extern u16 gpStatScreenPageBg2Map[0x280]; //! FE8U = 0x2003C3C
+extern u8 StatScreenStruct[0x14]; //! FE8U = 0x200310C
 //extern u16* gOldUIPalettePointers[4]; //! FE8U = 0x85B6440
 
 #endif // MAIN_H

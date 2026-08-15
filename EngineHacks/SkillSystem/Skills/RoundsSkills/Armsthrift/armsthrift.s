@@ -1,7 +1,7 @@
 .thumb
 
-GetItemAfterUse = 0x08016AEC+1
-RollBattleRN    = 0x0802A52C+1
+GetItemAfterUse = 0x0801672E+1
+RollBattleRN    = 0x0802857C+1
 _ReturnLocation = 0x0802B828+1
 
 LUnitHasSkill      = EALiterals+0x00

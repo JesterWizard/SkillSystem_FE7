@@ -45,5 +45,5 @@ bx		r0
 
 .align
 MakeBarFn:
-.long 0x080D18FC
+.long 0x080BFC88
 MagGetter:

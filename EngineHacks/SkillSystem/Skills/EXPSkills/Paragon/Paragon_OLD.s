@@ -31,7 +31,7 @@ pop {r4}
 strb r0, [r6]
 
 @and again for the attacker
-ldr r0, =0x802c534
+ldr r0, =0x8029f10
 mov lr, r0
 mov r0, r4
 mov r1, r5

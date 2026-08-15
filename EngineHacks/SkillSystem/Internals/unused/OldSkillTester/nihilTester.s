@@ -17,7 +17,7 @@ push {r4-r7,lr}
 
 mov	r7,r0		@really need to save these for the skill tester routine
 mov	r6,r1
-ldr	r4,=#0x203A4D4	@pre-battle data pointer, gonna check if a target has been selected or the fight has started (0x02 if targeting someone, 0x01 if battle started)
+ldr	r4,=#0x203A3D8	@pre-battle data pointer, gonna check if a target has been selected or the fight has started (0x02 if targeting someone, 0x01 if battle started)
 ldrb	r4,[r4]
 cmp	r4,#0x01
 blo	End	@if 0, not in combat, Nihil does nothing
@@ -25,24 +25,24 @@ cmp	r4,#0x02
 bhi	End	@if 4 also not in combat so Nihil does nothing
 
 ldrb	r0,[r7,#0x0B]
-ldr	r4,=#0x203A4EC
+ldr	r4,=#0x203A3F0
 ldrb	r4,[r4,#0x0B]
 cmp	r0,r4		@check if the skill to test is from the attacker (compares allegiance byte of attacker and unit whose skill is being tested)
 beq	IsAttacker
-ldr	r4,=#0x203A56C
+ldr	r4,=#0x203A470
 ldrb	r4,[r4,#0x0B]
 cmp	r0,r4		@check if the skill to test is from the defender (compares allegiance byte of defender and unit whose skill is being tested)
 beq	IsDefender
 b	End		@if neither, skill is never negated, I think this last condition is met when checking for nearby auras and such
 
 IsAttacker:
-ldr	r0,=#0x203A56C	@prepare to get defender skills
-ldr	r5,=#0x203A4EC	@and to set lethality to 0 if we find nihil
+ldr	r0,=#0x203A470	@prepare to get defender skills
+ldr	r5,=#0x203A3F0	@and to set lethality to 0 if we find nihil
 b	GetSkills
 
 IsDefender:
-ldr	r0,=#0x203A4EC	@prepare to get attacker skills
-ldr	r5,=#0x203A56C	@and to set lethality to 0 if we find nihil
+ldr	r0,=#0x203A3F0	@prepare to get attacker skills
+ldr	r5,=#0x203A470	@and to set lethality to 0 if we find nihil
 
 GetSkills:		@gets skills (returns pointer in r0 that contains a list of the skills the unit has terminated in 0)
 ldr	r4,Skill_Getter

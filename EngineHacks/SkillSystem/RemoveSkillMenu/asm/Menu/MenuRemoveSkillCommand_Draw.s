@@ -3,11 +3,11 @@
 
 	.include "../Definitions.inc"
 
-	@ GetTextInStdBuffer = 0x0800A240|1
-	@ GenTextTiles       = 0x08004004|1
-	@ DrawText           = 0x08003E70|1
+	@ GetTextInStdBuffer = 0x08012C60|1
+	@ GenTextTiles       = 0x08005718|1
+	@ DrawText           = 0x08005590|1
 
-	@ DrawIcon           = 0x080036BC|1 @ Arguments: r0 = Where, r1 = Icon Index, r2 = ?
+	@ DrawIcon           = 0x08004E28|1 @ Arguments: r0 = Where, r1 = Icon Index, r2 = ?
 
 	lprDrawSkillMenuCommand = EALiterals+0x00
 	lprGetSkillIdByIndex    = EALiterals+0x04
@@ -17,7 +17,7 @@ Draw:
 
 	mov r4, r1 @ r4 = Command proc
 
-	ldr r5, =#0x02022CA8 @ BG0 Map Buffer
+	ldr r5, =#0x02022C60 @ BG0 Map Buffer
 
 	ldrh r1, [r4, #0x2A]
 	ldrh r2, [r4, #0x2C]

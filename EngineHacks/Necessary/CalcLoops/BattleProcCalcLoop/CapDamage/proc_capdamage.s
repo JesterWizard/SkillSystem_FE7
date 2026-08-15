@@ -4,8 +4,8 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ proc_truehit, 0x802A558
-.equ d100Result, 0x802a52c
+.equ proc_truehit, 0x80285A8
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker

@@ -26,6 +26,6 @@ bx		r3
 
 .align
 CurrentCharPtr:
-.long 0x03004E50
+.long 0x03004690
 GetMagOver2:
-.long 0x08018A1C+1
+.long 0x080184B4+1

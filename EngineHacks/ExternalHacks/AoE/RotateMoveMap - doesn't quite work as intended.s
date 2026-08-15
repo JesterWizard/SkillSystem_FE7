@@ -36,7 +36,7 @@ push {r4-r7, lr}
 mov r6, r0 @ Old map 
 mov r7, r1 @ New map 
 
-ldr r5, =0x202E4D4 @ Map Size 
+ldr r5, =0x202E3D8 @ Map Size 
 ldrh r4, [r5] 
 sub r4, #1 @ XX 
 ldrh r5, [r5, #2] 

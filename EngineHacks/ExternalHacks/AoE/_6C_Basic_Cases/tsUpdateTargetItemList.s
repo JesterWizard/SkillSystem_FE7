@@ -55,7 +55,7 @@ ldr 	r3, [sp, #0x20]
 _blr 	r3
 mov 	r4, r0
 mov 	r0, r7
-_blh 	0x8003DC8	@{U}
+_blh 	0x80054E0	@{U}
 @_blh 	0x8003CF8	@{J}
 mov 	r1, #0x0
 lsl 	r4, r4, #0x18
@@ -66,14 +66,14 @@ bne 	Skip1
 mov 	r1, #0x1
 Skip1:
 mov 	r0, r7
-_blh 	0x8003E60	@{U}
+_blh 	0x8005580	@{U}
 @_blh 	0x8003D90	@{J}
 mov 	r0, r6
-_blh 	0x80174F4	@{U}
+_blh 	0x80060E0	@{U}
 @_blh 	0x801729C	@{J}
 mov 	r1, r0
 mov 	r0, r7
-_blh 	0x8004004	@{U}
+_blh 	0x8005718	@{U}
 @_blh 	0x8003F28	@{J}
 ldr 	r0, [sp, #0x18]
 lsl 	r1, r0, #0x1
@@ -81,7 +81,7 @@ ldr 	r0, =pBG0TileMap
 mov 	r8, r0
 add 	r1, r8
 mov 	r0, r7
-_blh 0x8003E70	@{U}
+_blh 0x8005590	@{U}
 @_blh 0x08003DA0	@{J}
 ldr 	r1, [sp, #0x14]
 lsl 	r0, r1, #0x1
@@ -99,7 +99,7 @@ _blh 	0x08017584	@{U}
 mov 	r2, r0
 mov 	r0, r4
 mov 	r1, r5
-_blh 	0x8004B94	@{U}
+_blh 	0x80061E4	@{U}
 @_blh 	0x8004A9C	@{J}
 ldr 	r4, [sp, #0x1C]
 add 	r4, #0x1
@@ -108,13 +108,13 @@ add 	r4, r4, r1
 lsl 	r4, r4, #0x1
 add 	r4, r8
 mov 	r0, r6
-_blh 0x8017700	@{U}
+_blh 0x806d5ac	@{U}
 @_blh 0x80174A8	@{J}
 mov 	r1, r0
 mov 	r0, r4
 mov 	r2, #0x80
 lsl 	r2, r2, #0x7
-_blh 0x80036BC	@{U}
+_blh 0x8004E28	@{U}
 @_blh 0x8003608	@{J}
 ldr 	r0, [sp, #0x14]
 add 	r0, #0x40

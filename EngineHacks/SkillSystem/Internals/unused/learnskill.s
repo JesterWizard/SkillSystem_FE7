@@ -29,7 +29,7 @@
 @This part is for the "Display Weapon Rank Gained" hack (Teq)
 @it writes weapon exp to ram, next to where the weapon type would be
 
-blh 	0x802C0B4
+blh 	0x8029AFC
 ldr		r1,=#0x30005F4
 strb	r0,[r1,#0x2]
 ldr		r0,[r4]			@put things back

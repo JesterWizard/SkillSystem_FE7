@@ -10,23 +10,23 @@ SET_DATA SupportScreenPal, 0x8A1B174
 SET_FUNC ApplyMapSpritePalettes, 0x8026629
 SET_FUNC MapEventEngineExists, 0x800D199
 
-SET_FUNC Font_ResetAllocation, (0x08003D20+1) 
+SET_FUNC Font_ResetAllocation, (0x08005438+1) 
 SET_FUNC Clean, (0x800F0C8+1) 
 
 //@ Vanilla function declarations:
 SET_FUNC PushToSecondaryOAM, 0x08002BB9
 SET_FUNC RegisterObjectTileGraphics, 0x8012FF5
-SET_FUNC GetUnitRangeMask, (0x080171E8+1)
+SET_FUNC GetUnitRangeMask, (0x08016EBC+1)
 
-SET_FUNC CanUnitUseWeapon, (0x8016750+1)
+SET_FUNC CanUnitUseWeapon, (0x8016380+1)
 
-SET_FUNC CanUnitUseStaff, (0x8016800 + 1)
+SET_FUNC CanUnitUseStaff, (0x8016428 + 1)
 
-SET_FUNC DrawItemMenuCommand, (0x08016848+1)
+SET_FUNC DrawItemMenuCommand, (0x08016470+1)
 
-SET_FUNC GetWeaponRangeMask, (0x080170D4+1)
+SET_FUNC GetWeaponRangeMask, (0x08016DB4+1)
 
-SET_FUNC AttackUMEffect, (0x08022B30+1)
+SET_FUNC AttackUMEffect, (0x08021A3C+1)
 
 SET_FUNC DrawItemRText, (0x08088E60+1)
 
@@ -38,7 +38,7 @@ SET_FUNC RTextLeft, (0x080893B4+1)
 
 SET_FUNC RTextRight, (0x080893E4+1)
 
-SET_FUNC GetUnitEquippedItem, (0x08016B28+1)
+SET_FUNC GetUnitEquippedItem, (0x08016764+1)
 
 SET_FUNC StartMovingPlatform, (0x080CD408+1)
 
@@ -54,11 +54,11 @@ SET_FUNC MU_AllDisable, 0x80790E1
 SET_FUNC MU_AllEnable, 0x80790ED
 
 //@ Data declarations:
-SET_DATA gBG0MapBuffer, 0x02022CA8
+SET_DATA gBG0MapBuffer, 0x02022C60
 
-SET_DATA gBG1MapBuffer, 0x020234A8
+SET_DATA gBG1MapBuffer, 0x02023460
 
-SET_DATA gBG2MapBuffer, 0x02023CA8
+SET_DATA gBG2MapBuffer, 0x02023C60
 
 SET_DATA gPlayerGold, 0x202BCF8
 SET_DATA gSomeAISStruct, 0x030053A0

@@ -12,7 +12,7 @@
 AnimaTriangle:
 push { r4, r5, lr }
 mov r5, r1
-blh 0x08016B28, r2 @ Equiped weapon of the attacker in r0
+blh 0x08016764, r2 @ Equiped weapon of the attacker in r0
 lsl r0, r0, #24
 lsr r0, r0, #24
 push { r0 }
@@ -20,7 +20,7 @@ push { r0 }
 @ldrb r0, [ r0 ] @ Get attacker's item in r0
 
 mov r0, r5
-blh 0x08016B28, r2 @ Equiped weapon of the defender in r1
+blh 0x08016764, r2 @ Equiped weapon of the defender in r1
 lsl r0, r0, #24
 lsr r1, r0, #24
 pop { r0 }

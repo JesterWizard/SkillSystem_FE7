@@ -1,6 +1,6 @@
 .thumb
 .equ EnableBgSyncByIndex, 0x08001FBD // No clue where this is in FE7
-.equ Text_InitFont, 0x08012B00 //FE8 -> 0x08003C94
+.equ Text_InitFont, 0x080053B0 //FE8 -> 0x08003C94
 .equ _ResetIconGraphics, 0x08004CE8 //FE8 -> 0x08003578
 .equ Decompress, 0x08013168 //FE8 -> 0x08012F50
 .equ BgMap_ApplyTsa, 0x080C57B4 //FE8 -> 0x080D74A0

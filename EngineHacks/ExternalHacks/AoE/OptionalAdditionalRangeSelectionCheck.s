@@ -1,11 +1,11 @@
 .equ GetTrapAt, 0x802E1F0	@{U}
 @.equ GetTrapAt, 0x0802E128	@{J}
-.equ gMapUnit, 0x202E4D8	@{U}
-@.equ gMapUnit, 0x202E4D4	@{J}
+.equ gMapUnit, 0x202E3DC	@{U}
+@.equ gMapUnit, 0x202E3D8	@{J}
 .equ MoveCostClear, 0x880BB96	@{U}
 @.equ MoveCostClear, 0x88600EE	@{J}
-.equ gMapTerrain, 0x202E4DC	@{U}
-@.equ gMapTerrain, 0x0202E4D8	@{J}
+.equ gMapTerrain, 0x202E3E0	@{U}
+@.equ gMapTerrain, 0x0202E3DC	@{J}
 
 .macro blh to, reg=r3
     ldr \reg, =\to

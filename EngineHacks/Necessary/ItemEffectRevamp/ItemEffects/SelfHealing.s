@@ -23,7 +23,7 @@ ldr 	r3, HealHPUpdate
 bl		jump
 mov 	r0, r5
 _blh Unit_GetCurHP
-ldr 	r1, =#0x203A608	
+ldr 	r1, =#0x203A50C	
 ldr 	r2, [r1]
 ldr 	r4, =BattleActingUnit
 ldrb 	r1, [r4, #0x13]
@@ -36,7 +36,7 @@ add 	r4, #0x4A
 mov 	r0, #HealingItem
 strh 	r0, [r4]
 
-_blh #0x802CA14
+_blh #0x802A3B0
 @mov 	r0, r7
 @mov 	r1, r6
 @_blh New6CBlocking
@@ -47,4 +47,4 @@ bx	r3
 .ltorg
 .align
 OffsetList:
-.long 0x080193A4 | 1
+.long 0x08018C7C | 1

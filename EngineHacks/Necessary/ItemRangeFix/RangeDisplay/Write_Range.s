@@ -129,10 +129,10 @@ bx		r4
 
 .align
 BallistaMin:
-.long 0x0801766C+1
+.long 0x0801736C+1
 BallistaMax:
-.long 0x08017684+1
+.long 0x08017384+1
 IsBallista:
-.long 0x0803798C+1
+.long 0x080346C8+1
 WriteRange:
-.long 0x0801AABC+1
+.long 0x0801A2D4+1

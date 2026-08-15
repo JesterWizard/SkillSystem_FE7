@@ -16,6 +16,6 @@ bx		r2
 
 .align
 CurrentCharPtr:
-.long 0x03004E50
+.long 0x03004690
 Attack_Effect_Func:
-.long 0x08022B30+1
+.long 0x08021A3C+1

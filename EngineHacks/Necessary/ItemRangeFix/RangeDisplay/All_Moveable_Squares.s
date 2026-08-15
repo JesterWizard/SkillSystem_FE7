@@ -97,14 +97,14 @@ bx		r4
 
 .align
 MapSize:
-.long 0x0202E4D4
+.long 0x0202E3D8
 CanMoveMap:
-.long 0x202E4E0
+.long 0x202E3E4
 OccupiedTileMap:
-.long 0x202E4D8
+.long 0x202E3DC
 UnknownMap:
-.long 0x0202E4F0
+.long 0x0202E3F4
 UnknownPtr:
-.long 0x030049A0
+.long 0x030041F0
 GetRangeBitfield:
 @WriteRange:

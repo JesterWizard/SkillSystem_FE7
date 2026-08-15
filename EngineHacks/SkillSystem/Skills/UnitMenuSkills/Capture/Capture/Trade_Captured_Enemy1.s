@@ -36,4 +36,4 @@ bx		r1
 
 .align
 Compare_Allegiance_Func:
-.long 0x08024DA4
+.long 0x080238C2

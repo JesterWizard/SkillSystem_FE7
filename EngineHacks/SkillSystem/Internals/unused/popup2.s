@@ -13,7 +13,7 @@ ldrh r0, [r4, r0]
 cmp r0, #0
 bne SkillLearned
 mov r0, r4
-blh 0x8002e94
+blh 0x80046a0
 b EndDLS2
 SkillLearned:
   ldrh r0, [r4, #0x2c]
@@ -27,9 +27,9 @@ SkillLearned:
   ble EndDLS2
   ldr r0, [r4, #0x60]
   blh 0x8005004
-  blh 0x8055188
+  blh 0x8050018
   mov r0, r4
-  blh 0x8002e94
+  blh 0x80046a0
 EndDLS2:
 pop {r4}
 pop {r0}

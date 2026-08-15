@@ -8,8 +8,8 @@
 #define MAX_GREEN_UNITS 20
 #define MAX_RED_UNITS 50
 
-extern struct Unit gUnitArrayRed[]; //! FE8U = 0x202CFBC
-extern struct Unit gUnitArrayGreen[]; //! FE8U = 0x202DDCC
+extern struct Unit gUnitArrayRed[]; //! FE8U = 0x202CEC0
+extern struct Unit gUnitArrayGreen[]; //! FE8U = 0x202DCD0
 
 struct Leadership
 {

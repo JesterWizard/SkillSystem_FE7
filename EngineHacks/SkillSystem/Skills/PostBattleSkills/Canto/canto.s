@@ -30,7 +30,7 @@ cmp r0,#1
 beq End
 
 blh 0x8019ABD //FE8 -> 0x801A1F5 @first refresh the entity map
-ldr	r1,=#0x801865C //FE8 -> #0x8018BD8	@check if can move again
+ldr	r1,=#0x80180EC //FE8 -> #0x8018BD8	@check if can move again
 mov	lr, r1
 .short	0xF800
 lsl	r0, #0x18

@@ -6,7 +6,7 @@
   .short 0xf800
 .endm
 
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 
 TakeDamage:
@@ -28,7 +28,7 @@ bne End
 @ @if another skill already activated, don't do anything
 
 @only when attacker initiates
-ldr r0, =0x203a4ec
+ldr r0, =0x203a3f0
 cmp r4, r0
 bne End
 

@@ -4,7 +4,7 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ GetUnit, 0x8019430
+.equ GetUnit, 0x8018d0c
 .equ DivideBy5Constant, 0x3334
 
 .global SoulSap_CanUnitHeal

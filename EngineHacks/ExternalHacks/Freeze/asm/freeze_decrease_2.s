@@ -38,7 +38,7 @@ strb r2, [r0]
 cmp r3, #0
 bne NextEnemy
 
-ldr r0, =0x804f8bc
+ldr r0, =0x804acfc
 mov lr, r0
 
 mov r0, #0x10

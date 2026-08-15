@@ -38,7 +38,7 @@ bx		r1
 
 .align
 ChapterData:
-.long 0x0202BCF0
+.long 0x0202BBF8
 GetChapterEvents:
 .long 0x080346B0
 CheckEventID:
@@ -79,6 +79,6 @@ bx		r1
 
 .align
 GetCharData:
-.long 0x08019430
+.long 0x08018d0c
 BadTurnWord:
 .long 0x0001000C

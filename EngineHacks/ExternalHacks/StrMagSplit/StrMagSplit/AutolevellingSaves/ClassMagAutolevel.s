@@ -30,5 +30,5 @@ bx		r1
 
 .align
 GetGrowthChance:
-.long 0x0802B9C4
+.long 0x08029604
 MagClassGrowth:

@@ -82,7 +82,7 @@ and r1, r0
 add r1, r2
 mov r0, r4
 mov r2, #0x80
-blh 0x8003078 //FE8 -> 0x8002014
+blh 0x800486c //FE8 -> 0x8002014
 loc_36a4:
 ldrb r0, [r5, #1]
 blh 0x8004D7C //FE8 -> 0x8003610

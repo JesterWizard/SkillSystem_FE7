@@ -5,10 +5,10 @@
     mov lr, \reg
     .short 0xF800
 .endm
-.equ ActiveChar,0x3004E50
+.equ ActiveChar,0x3004690
 .equ prLearnNewSkill,SkillTester+4
 .equ SkillID,prLearnNewSkill+4
-.equ RemoveUnitBlankItems,0x8017984
+.equ RemoveUnitBlankItems,0x8017688
 
 @r4 = action struct, r5 = parent proc
 
@@ -58,9 +58,9 @@ bx        r0
 .align
 
 Get_Char_Data:
-.long 0x08019430
+.long 0x08018d0c
 Battle_Struct_For_Items:
-.long 0x0802CB24
+.long 0x0802A4B4
 GoBackLoc:
 .long 0x0802FF76+1
 SkillTester:

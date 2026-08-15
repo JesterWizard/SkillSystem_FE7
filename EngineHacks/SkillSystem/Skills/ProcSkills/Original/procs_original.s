@@ -5,7 +5,7 @@ mov     r5,r8                @ 0802B3F2 4645
 push    {r5-r7}                @ 0802B3F4 B4E0     
 mov     r6,r0             @Attacker                @ 0802B3F6 1C06     
 mov     r8,r1             @Defender                @ 0802B3F8 4688     
-ldr     r4,=#0x203A4D4    @Battle Stats Data?                @ 0802B3FA 4C11
+ldr     r4,=#0x203A3D8    @Battle Stats Data?                @ 0802B3FA 4C11
 @ 203A4D4 (FE8)
 @ 0x00  Short Seems to be a bitfield (0x2 seems to be 'battle hasn't started yet')
 @ 0x02  Short Type of animation? No idea, really.
@@ -23,7 +23,7 @@ bl      #0x802B1F4        @sure shot check              @ 0802B402 F7FFFEF7
   @skip if not a sniper - ah this must be sure shot then.
   @skip if ballista equipped
   @sets 0x4000 bit in battle buffer if it procd
-ldr     r5,=#0x203A608                @ current buffer position pointer   
+ldr     r5,=#0x203A50C                @ current buffer position pointer   
 ldr     r0,[r5]                @ 0802B408 6828     
 ldr     r0,[r0]           @r0 = battle buffer                @ 0802B40A 6800     
 lsl     r0,r0,#0xD                @ 0802B40C 0340     
@@ -35,7 +35,7 @@ cmp     r0,#0x0                @ 0802B416 2800
 bne     Successful_Hit        @If sure shot, branch                @ 0802B418 D118     
 ldrh    r0,[r4,#0xA]      @final hit rate                @ 0802B41A 8960     
 mov     r1,#0x1           @Default depending on where battle is called, leave it along             @ 0802B41C 2101     
-bl      #0x802A558        @Proc hit rate                @ 0802B41E F7FFF89B 
+bl      #0x80285A8        @Proc hit rate                @ 0802B41E F7FFF89B 
 lsl     r0,r0,#0x18                @ 0802B422 0600     
 cmp     r0,#0x0                @ 0802B424 2800     
 bne     Successful_Hit        @If we hit, branch                @ 0802B426 D111     
@@ -52,14 +52,14 @@ str     r0,[r3]                @ 0802B43A 6018
 b       Proc_End        @if you missed, just skip to Branch end.                @ 0802B43C E08F     
 .ltorg  
 Successful_Hit: 
-ldr     r5,=#0x203A4D4    @We hit. r5 = battle stats data.                @ 0802B44C 4D2B     
+ldr     r5,=#0x203A3D8    @We hit. r5 = battle stats data.                @ 0802B44C 4D2B     
 ldrh    r0,[r5,#0x6]      @Final might.                @ 0802B44E 88E8     
 mov     r9,r0                @ 0802B450 4681     
 ldrh    r4,[r5,#0x8]      @final defense.                @ 0802B452 892C     
 mov     r0,r6                @ 0802B454 1C30     
 mov     r1,r8                @ 0802B456 4641     
 bl      #0x802B2E8        @Checks for battle buffer things and not-poison effect? Then checks for classes 0xB and 0xC? Generals. Great Shield proc?                @ 0802B458 F7FFFF46 
-ldr     r7,=#0x203A608                @ 0802B45C 4F28     
+ldr     r7,=#0x203A50C                @ 0802B45C 4F28     
 ldr     r0,[r7]                @ 0802B45E 6838     
 ldr     r0,[r0]                @ 0802B460 6800     
 lsl     r0,r0,#0xD                @ 0802B462 0340     
@@ -101,7 +101,7 @@ mov     r0,#0x0                @ 0802B4AA 2000
 strh    r0,[r5,#0x4]                @ 0802B4AC 80A8     
 ldrh    r0,[r5,#0xC]      @Final crit                @ 0802B4AE 89A8     
 mov     r1,#0x0                @ 0802B4B0 2100     
-bl      #0x802A52C                @ 0802B4B2 F7FFF83B 
+bl      #0x802857C                @ 0802B4B2 F7FFF83B 
 lsl     r0,r0,#0x18                @ 0802B4B6 0600     
 asr     r4,r0,#0x18                @ 0802B4B8 1604     
 cmp     r4,#0x1                @ 0802B4BA 2C01     
@@ -153,7 +153,7 @@ bne     #0x802B52C        @If no critical, jump.                @ 0802B4BC D136
       add     r0,r0,r1                @ 0802B528 1840     
       strh    r0,[r5,#0x4]      @Store back.                @ 0802B52A 80A8     
 
-ldr     r4,=#0x203A4D4                @ 0802B52C 4C11     
+ldr     r4,=#0x203A3D8                @ 0802B52C 4C11     
 mov     r1,#0x4                @ 0802B52E 2104     
 ldsh    r0,[r4,r1]                @ 0802B530 5E60     
 cmp     r0,#0x7F                @ 0802B532 287F     

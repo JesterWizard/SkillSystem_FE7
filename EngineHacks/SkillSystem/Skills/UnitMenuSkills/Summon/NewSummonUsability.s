@@ -4,7 +4,7 @@
 .equ SummonID,SkillTester+4
 .equ AlsoUseVanillaCheck,SummonID+4
 
-.equ gActiveUnit,0x3004E50
+.equ gActiveUnit,0x3004690
 .equ ListSummonTargets,0x8025CA5
 .equ GetTargetListSize,0x804FD29
 .equ GetUnit,0x8019431

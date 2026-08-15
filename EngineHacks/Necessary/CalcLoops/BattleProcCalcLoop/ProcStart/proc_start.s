@@ -65,7 +65,7 @@ blh SkillTester, r3
 cmp r0, #0x00
 pop { r0 }
 beq SkipBarricadePlus
-@ Okay in case both units have this skill, the counter will use the first byte of r11 for 0x0203A4EC and the second byte for 0x0203A56C.
+@ Okay in case both units have this skill, the counter will use the first byte of r11 for 0x0203A3F0 and the second byte for 0x0203A470.
 @ I mean it really doesn't matter which it is as long as it's consistent.
 
 mov r1, r11

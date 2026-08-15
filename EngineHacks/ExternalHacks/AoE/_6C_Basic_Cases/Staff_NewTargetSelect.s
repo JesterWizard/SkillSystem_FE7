@@ -31,7 +31,7 @@ mov 	r4, r0
 @ldr 	r0, TargetTextID
 @cmp 	r0, #0x0
 @beq 	NoHelpText
-@ldr 	r3, =0x800A240 @GetInTextBuffer
+@ldr 	r3, =0x8012C60 @GetInTextBuffer
 @mov 	r14, r3
 @.short 0xF800
 @mov 	r1, r0
@@ -43,7 +43,7 @@ mov 	r4, r0
 
 SoundCheck:
 @check if sounds are turned off?
-ldr 	r0, =0x202BCF0 	@chapter data in ram	@{U}
+ldr 	r0, =0x202BBF8 	@chapter data in ram	@{U}
 @ldr 	r0, =0x202BCEC 	@chapter data in ram	@{J}
 add 	r0, #0x41
 ldrb	r0, [r0]

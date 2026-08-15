@@ -7,8 +7,8 @@
 
 .equ SkillTester,EALiterals+0
 .equ ShadeID,EALiterals+4
-.equ gActiveBattleUnit,0x203A4EC
-.equ gDefendingBattleUnit,0x203A56C
+.equ gActiveBattleUnit,0x203A3F0
+.equ gDefendingBattleUnit,0x203A470
 .equ gpAiBattleWeightFactorTable,0x30017D8
 
 @push {r14}

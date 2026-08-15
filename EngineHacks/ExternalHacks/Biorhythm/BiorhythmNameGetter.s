@@ -35,7 +35,7 @@ bx r1
 .align 4
 
 ActiveUnitPointer:
-.word 0x3004E50
+.word 0x3004690
 BiorhythmGetter:
 @POIN BiorhythmGetter
 @POIN BiorhythmTable

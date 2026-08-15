@@ -12,7 +12,7 @@
 
 RaidUsability:
 push { r4 - r7, r14 } @ 08023040
-ldr r0, =#0x3004E50
+ldr r0, =#0x3004690
 ldr r2, [ r0 ]
 ldr r1, [ r2, #0x4 ]
 ldrb r1, [ r1, #0x4 ]
@@ -26,7 +26,7 @@ cmp r0, #0x0
 bne End
 mov r0, #0x11
 ldsb r0, [ r2, r0 ]
-ldr r1, =#0x202E4DC
+ldr r1, =#0x202E3E0
 ldr r1, [ r1 ]
 lsl r0, r0, #0x2
 add r0, r0, r1
@@ -55,7 +55,7 @@ ldsb r5, [ r1, r0 ] @ r5 = current X
 ldrb r1, [ r1, #0x11 ]
 lsl r1, r1, #0x18
 asr r6, r1, #0x18 @ r6 = current Y
-ldr r0, =0x0202BCF0
+ldr r0, =0x0202BBF8
 ldrb r0, [ r0, #0x0E ] @ Current chapter ID
 blh 0x080346B0, r1 @ r0 = this chapter's events
 ldr r7, [ r0, #0x08 ] @ r7 = this chapter's location events
@@ -78,15 +78,15 @@ beq End @ End false if no Raids were found.
 			blh 0x08083DA8, r1 @ Check event ID
 			cmp r0, #0x01
 			beq UsabilityLoop
-@ldr r3, =#0x8084078
+@ldr r3, =#0x8078bd0
 @mov lr, r3
 @.short 0xF800
-		@bl #0x8084078			@ Checks LOCA event at current location. Returns command ID. So 0x10 for visit, 0x21 for raid.
+		@bl #0x8078bd0			@ Checks LOCA event at current location. Returns command ID. So 0x10 for visit, 0x21 for raid.
 @cmp r0, #0x21		@ Here's a visit 0x10. CHANGE THIS
 @bne End			@ If false end
 ldr r0, [ r4 ]	@ Here if true
 
-blh #0x8018D08, r1
+blh #0x801878E, r1
 lsl r0, r0, #0x18
 cmp r0, #0x0
 beq End2
@@ -110,12 +110,12 @@ bx r1
 RaidEffect:
 push { r4 - r6, lr }
 
-@ldr r0, =#0x0203A958 @ Set waited
+@ldr r0, =#0x0203A868 @ Set waited
 @add r0, #0x11
 @mov r1, #0x01
 @strb r1, [ r0 ]
 
-ldr r0, =#0x03004E50 @ Location of current character's struct
+ldr r0, =#0x03004690 @ Location of current character's struct
 ldr r0, [ r0 ] @ Pointer to character struct in r0
 mov r1, r0
 add r1, #0x10
@@ -123,7 +123,7 @@ add r0, r1, #0x01
 ldrb r1, [ r1 ] @ X coordinate in r1
 ldrb r2, [ r0 ] @ Y coordinate in r2
 
-ldr r0, =#0x0202BCF0
+ldr r0, =#0x0202BBF8
 add r0, #0x0E
 ldrb r0, [ r0 ] @ Chapter ID in r0
 
@@ -155,7 +155,7 @@ blh 0x08083D80, r1 @ Sets new event ID
 ldr r0, [ r4, #0x04 ] @ Now r0 does
 mov r1, #0x00
 blh 0x0800D07C, r2
-ldr r0, =#0x0203A958 @ Set waited
+ldr r0, =#0x0203A868 @ Set waited
 add r0, #0x11
 mov r1, #0x01
 strb r1, [ r0 ]

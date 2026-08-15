@@ -28,7 +28,7 @@ cmp r0, #0x1
 ble End
 
 @check if moved all the squares
-ldr	r0,=#0x8019224	@mov getter
+ldr	r0,=#0x8018b44	@mov getter
 mov	lr, r0
 mov	r0, r4		@attacker
 .short	0xF800
@@ -37,7 +37,7 @@ cmp	r0,r1
 beq	End
 
 blh 0x801A1F5 @first refresh the entity map
-ldr	r1,=#0x8018BD8	@check if can move again
+ldr	r1,=#0x801865C	@check if can move again
 mov	lr, r1
 .short	0xF800
 lsl	r0, #0x18
@@ -219,20 +219,20 @@ bx r1
 .equ MuCtr_StartMoveTowards, 0x8079DDC
 .equ EventEngine, 0x800D07C
 .equ MemorySlot,0x30004B8
-.equ gActionStruct, 0x203A958
-.equ MMS_EndAll, 0x80790a4
-.equ SetCursorMapPosition, 0x8015BBC 
+.equ gActionStruct, 0x203A868
+.equ MMS_EndAll, 0x806ccb8
+.equ SetCursorMapPosition, 0x8015A90 
 @.equ BattleMapState, 0x202BCB0 @ SetCursorMapPosition sets this 
-.equ ChapterData, 0x202BCF0 
+.equ ChapterData, 0x202BBF8 
 .equ UnitPos_BPress, 0x202BE48 
-.equ CurrentUnit, 0x3004E50
-.equ CurrentUnitFateData, 0x203A958 
-.equ Attacker, 0x203A4EC 
-.equ gMoveMap, 0x202E4E0 
-.equ gUnitMap, 0x202E4D8
-.equ FillMap, 0x080197E4	
-.equ UpdateUnitMapAndVision, 0x8019FA0 
-.equ ProcFind, 0x8002E9C
+.equ CurrentUnit, 0x3004690
+.equ CurrentUnitFateData, 0x203A868 
+.equ Attacker, 0x203A3F0 
+.equ gMoveMap, 0x202E3E4 
+.equ gUnitMap, 0x202E3DC
+.equ FillMap, 0x080190AC	
+.equ UpdateUnitMapAndVision, 0x8019868 
+.equ ProcFind, 0x80046A8
 .equ gProc_MoveUnit, 0x89A2C48
 
 .global SetActorCoords 
@@ -285,7 +285,7 @@ bx r0
 
 
 .equ AiSetDecision, 0x8039C20
-.equ CurrentUnit, 0x3004E50
+.equ CurrentUnit, 0x3004690
 .equ FindSafestTileAI, 0x803B808  
 @ Based on 803CDD4 
 @ 803B808 FindSafestTileAI from 803CDE7
@@ -340,7 +340,7 @@ mov r1, #0x10
 ldrh r0, [r3, r1] @ Current unit coords  
 ldr r2, =0x203AA96 @ AI decision +0x92 (XX) 
 strh r0, [r2, #0] @ 
-ldr r2, =0x203A958 @ Action struct 
+ldr r2, =0x203A868 @ Action struct 
 mov r1, #0x13
 strh r0, [r2, r1] @ Action Struct @ 203A958
 

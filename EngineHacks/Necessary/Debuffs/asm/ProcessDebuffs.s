@@ -5,8 +5,8 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ ChapterData, 0x202BCF0 
-.equ GetUnit, 0x8019430
+.equ ChapterData, 0x202BBF8 
+.equ GetUnit, 0x8018d0c
 .type ProcessPureWater, %function 
 .global ProcessPureWater
 ProcessPureWater: 

@@ -30,5 +30,5 @@ goto_r4:
 
 .align
 WeaponCheck:
-.long 0x08016574+1
+.long 0x080161a4+1
 ReturnRangeBitfield:

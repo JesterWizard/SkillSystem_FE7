@@ -10,7 +10,7 @@
 .equ DownFunc, 0x08089384
 .equ LeftFunc, 0x080893B4
 .equ RightFunc, 0x080893E4
-.equ StatScreenStruct, 0x2003BFC
+.equ StatScreenStruct, 0x200310C
 
 .global ItemMenuRtextGetter
 .global ItemMenuRtextLooper
@@ -35,7 +35,7 @@ ItemMenuRtextGetter:
 		mov   r1, #0x11
 		ldsb  r0, [r6, r0]
 		ldsb  r1, [r6, r1]
-		blh   0x0803798C 		@GetBallistaItemAt
+		blh   0x080346C8 		@GetBallistaItemAt
 		cmp   r0, #0x0
 		beq   NoBallistaEquipped
 		cmp   r5, #0x0
@@ -85,7 +85,7 @@ ItemMenuRtextLooper:
 		mov   r1, #0x11
 		ldsb  r0, [r6, r0]
 		ldsb  r1, [r6, r1]
-		blh   #0x803798C 		@GetBallistaItemAt
+		blh   #0x80346C8 		@GetBallistaItemAt
 		mov   r6, r0
 		cmp   r6, #0x0
 		bne   DoNavigation

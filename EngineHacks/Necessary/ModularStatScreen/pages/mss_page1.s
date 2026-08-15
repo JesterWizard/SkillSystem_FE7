@@ -52,7 +52,7 @@ draw_textID_at 13, 17, 0x4f7 @con
 draw_con_bar_at 16, 17
 
 @ draw_textID_at 21, 7, 0x4f8 @aid
-@ draw_number_at 25, 7, 0x80189B8, 1 @aid getter
+@ draw_number_at 25, 7, 0x8018450, 1 @aid getter
 @ draw_aid_icon_at 26, 7
 
 draw_textID_at 21, 3, 0x4f1 @affin

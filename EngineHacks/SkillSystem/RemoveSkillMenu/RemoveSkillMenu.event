@@ -75,7 +75,7 @@ POP
 ALIGN 4
 _pProc_FromBattleProc:
 	_6C_CALL_ROUTINE_2(_prCheckForBattleSkillForgetting|1)
-	_6C_CALL_ROUTINE_2(0x0328D0|1) // Handles Item Drop
+	_6C_CALL_ROUTINE_2(0x02F9C4|1) // Handles Item Drop
 	_6C_CALL_ROUTINE(0x03286C|1) // idk
 	_6C_YIELD
 	_6C_END
@@ -90,7 +90,7 @@ _pProc_FromArenaProc:
 ALIGN 4
 _pProc_FromMiscActionProc:
 	_6C_SLEEP(1)
-	_6C_CALL_ROUTINE(0x02CC1C|1) // SaveInstigatorFromBattle
+	_6C_CALL_ROUTINE(0x02A5B4|1) // SaveInstigatorFromBattle
 	_6C_CALL_ROUTINE_2(_prCheckForBattleSkillForgetting|1)
 	_6C_YIELD
 	_6C_END
@@ -111,8 +111,8 @@ _6C_LABEL(1) // prep screen promotion
 
 	_6C_CALL_ROUTINE_2(_prPromotionCheck|1)
 
-	_6C_CALL_ROUTINE_ARG(0x0AE2F4|1, 0x40) // StartFadeOut(0x40)
-	_6C_WHILE_ROUTINE(0x0AE2B8|1) // FadeOutExists
+	_6C_CALL_ROUTINE_ARG(0x0AA2C0|1, 0x40) // StartFadeOut(0x40)
+	_6C_WHILE_ROUTINE(0x0AA284|1) // FadeOutExists
 
 	_6C_GOTO(776)
 

@@ -5,7 +5,7 @@
   .short 0xf800
 .endm
 .equ LethalityID, SkillTester+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker
@@ -39,7 +39,7 @@ tst r0, r1
 beq End
 
 RollRN:
-ldr	r0,=#0x80191D0	@call skill getter
+ldr	r0,=#0x8018AF0	@call skill getter
 mov	r14,r0
 mov	r0,r4
 .short	0xF800

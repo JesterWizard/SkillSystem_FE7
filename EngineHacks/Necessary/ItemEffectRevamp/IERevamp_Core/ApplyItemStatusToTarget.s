@@ -1,10 +1,10 @@
 .thumb
 
-	.set gActionData,                  0x0203A958
-	.set gTargetBattleUnit,            0x0203A56C @defender
+	.set gActionData,                  0x0203A868
+	.set gTargetBattleUnit,            0x0203A470 @defender
 
-	.set GetUnit,                      0x08019430
-	.set SetUnitStatus,                0x80178F4
+	.set GetUnit,                      0x08018d0c
+	.set SetUnitStatus,                0x8017600
 
 @replaces routine at x803001C
 

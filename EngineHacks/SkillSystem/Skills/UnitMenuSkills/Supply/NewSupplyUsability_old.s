@@ -8,7 +8,7 @@
 .equ HasConvoyAccess,0x803161D
 .equ CheckSomethingSupplyRelated,0x8023EF1
 
-.equ gActiveUnit,0x3004E50
+.equ gActiveUnit,0x3004690
 
 .macro blh to, reg=r3
 	ldr \reg, =\to

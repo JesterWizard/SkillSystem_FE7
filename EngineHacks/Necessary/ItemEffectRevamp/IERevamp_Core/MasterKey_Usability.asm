@@ -33,8 +33,8 @@ Jump:
 bx r3
 .align
 ChestCheck:
-.long 0x80290FC | 1
+.long 0x8027354 | 1
 DoorCheck:
-.long 0x8029138 | 1
+.long 0x8027390 | 1
 Routine3:
-.long 0x802914C | 1
+.long 0x80273A4 | 1

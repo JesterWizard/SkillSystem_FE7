@@ -23,7 +23,7 @@ cmp r0,#0
 beq RetNoChange
 
 @are we the attacker?
-ldr r0,=#0x203A4EC
+ldr r0,=#0x203A3F0
 cmp r0,r4
 bne RetNoChange
 

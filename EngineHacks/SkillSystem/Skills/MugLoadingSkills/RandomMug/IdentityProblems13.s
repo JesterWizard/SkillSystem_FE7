@@ -28,7 +28,7 @@ ldrh	r0,[r0]
 
 End:
 pop	{r1}
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 ldr	r3,=#0x802D357

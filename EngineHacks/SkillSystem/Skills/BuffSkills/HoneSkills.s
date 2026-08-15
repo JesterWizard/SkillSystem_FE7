@@ -5,7 +5,7 @@
   .short 0xf800
 .endm
 
-.equ GetUnit, 0x8019430
+.equ GetUnit, 0x8018d0c
 
 @ Hone _ : At the start of your turn, give adjacent allies up to +3 _
 

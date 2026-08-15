@@ -156,42 +156,42 @@ enum {
 
 extern const ItemData gItemData[];
 
-char* GetItemNameWithArticle(int item, int capitalized); //! FE8U = (0x0801618C+1)
+char* GetItemNameWithArticle(int item, int capitalized); //! FE8U = (0x080171E4+1)
 
 int GetItemHpBonus(int item); //! FE8U = (0x080163F0+1)
-int GetItemPowBonus(int item); //! FE8U = (0x08016420+1)
-int GetItemSklBonus(int item); //! FE8U = (0x08016450+1)
-int GetItemSpdBonus(int item); //! FE8U = (0x08016480+1)
-int GetItemDefBonus(int item); //! FE8U = (0x080164B0+1)
-int GetItemResBonus(int item); //! FE8U = (0x080164E0+1)
-int GetItemLckBonus(int item); //! FE8U = (0x08016510+1)
+int GetItemPowBonus(int item); //! FE8U = (0x08016040+1)
+int GetItemSklBonus(int item); //! FE8U = (0x0801606c+1)
+int GetItemSpdBonus(int item); //! FE8U = (0x08016098+1)
+int GetItemDefBonus(int item); //! FE8U = (0x080160C4+1)
+int GetItemResBonus(int item); //! FE8U = (0x080160F0+1)
+int GetItemLckBonus(int item); //! FE8U = (0x0801611c+1)
 
 int MakeNewItem(u8 id); //! FE8U = (0x08016540+1)
 
-int CanUnitUseWeapon(const struct Unit*, int item); //! FE8U = (0x08016574+1)
-int CanUnitUseWeaponNow(const struct Unit*, int item); //! FE8U = (0x08016750+1)
+int CanUnitUseWeapon(const struct Unit*, int item); //! FE8U = (0x080161a4+1)
+int CanUnitUseWeaponNow(const struct Unit*, int item); //! FE8U = (0x08016380+1)
 
-int CanUnitUseStaff(const struct Unit*, int item); //! FE8U = (0x080167A4+1)
-int CanUnitUseStaffNow(const struct Unit*, int item); //! FE8U = (0x08016800+1)
+int CanUnitUseStaff(const struct Unit*, int item); //! FE8U = (0x080163D2+1)
+int CanUnitUseStaffNow(const struct Unit*, int item); //! FE8U = (0x08016428+1)
 
-u16 GetItemAfterUse(int item); //! FE8U = (0x08016AEC+1)
+u16 GetItemAfterUse(int item); //! FE8U = (0x0801672E+1)
 
-int GetUnitEquippedWeapon(const struct Unit*); //! FE8U = (0x08016B28+1)
-int GetUnitEquippedWeaponSlot(const struct Unit*); //! FE8U = (0x08016B58+1)
+int GetUnitEquippedWeapon(const struct Unit*); //! FE8U = (0x08016764+1)
+int GetUnitEquippedWeaponSlot(const struct Unit*); //! FE8U = (0x08016794+1)
 
-int IsItemCoveringRange(int item, int range); //! FE8U = (0x08016B8C+1)
+int IsItemCoveringRange(int item, int range); //! FE8U = (0x080167C6+1)
 
-void EquipUnitItemSlot(struct Unit*, int slot); //! FE8U = (0x08016BC0+1)
+void EquipUnitItemSlot(struct Unit*, int slot); //! FE8U = (0x080167F4+1)
 
-int IsItemEffectiveAgainst(int item, const struct Unit*); //! FE8U = (0x08016BEC+1)
+int IsItemEffectiveAgainst(int item, const struct Unit*); //! FE8U = (0x08016820+1)
 
-char* GetItemDisplayRangeString(int item); //! FE8U = (0x08016CC0+1)
-int GetWeaponLevelFromExp(int rank); //! FE8U = (0x08016D5C+1)
-char* GetItemDisplayRankString(int item); //! FE8U = (0x08016D94+1)
+char* GetItemDisplayRangeString(int item); //! FE8U = (0x080168AC+1)
+int GetWeaponLevelFromExp(int rank); //! FE8U = (0x08016948+1)
+char* GetItemDisplayRankString(int item); //! FE8U = (0x0801697C+1)
 
-char* GetWeaponTypeDisplayString(int wtype); //! FE8U = (0x08016E20+1)
+char* GetWeaponTypeDisplayString(int wtype); //! FE8U = (0x08016A08+1)
 
-void GetWeaponExpProgressState(int wrank, int* valOut, int* maxOut); //! FE8U = (0x08016E50+1)
+void GetWeaponExpProgressState(int wrank, int* valOut, int* maxOut); //! FE8U = (0x08016A38+1)
 
 int IsItemDanceRing(int item); //! FE8U = (0x08016EC8+1)
 int IsItemDisplayUsable(const struct Unit*, int item); //! FE8U = 0x8016EE5

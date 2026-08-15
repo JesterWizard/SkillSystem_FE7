@@ -8,7 +8,7 @@
   .short 0xf800
 .endm
 .equ DragonFangID, SkillTester+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker
@@ -44,7 +44,7 @@ bne End
 @bne End
 
 @make sure this is the actual attacker kthx
-ldr r0,=#0x203A4EC
+ldr r0,=#0x203A3F0
 cmp r0,r4
 bne End
 

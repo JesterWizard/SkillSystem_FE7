@@ -77,7 +77,7 @@ void Text_SetFontStandardGlyphSet(int typeId); //! FE8U = 0x8003CF5
 void Text_ResetTileAllocation(void); //! FE8U = 0x8003D21
 void Text_SetFont(struct FontData*); //! FE8U = 0x8003D39
 
-void Text_InitClear(struct TextHandle*, unsigned tileWidth); //! FE8U = 0x8003D5D
+void Text_InitClear(struct TextHandle*, unsigned tileWidth); //! FE8U = 0x8005475
 void Text_InitDB(struct TextHandle*, unsigned tileWidth); //! FE8U = 0x8003D85
 void InitClearTextBatch(const TextBatchEntry[]); //! FE8U = 0x8003DAD
 

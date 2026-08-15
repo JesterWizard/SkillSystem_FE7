@@ -3,8 +3,8 @@
 .equ VantagePlusID, VantageID+4
 .thumb
 push {r4-r7,r14}
-ldr r4, =0x203a4ec @atr
-ldr r5, =0x203a56c @dfr
+ldr r4, =0x203a3f0 @atr
+ldr r5, =0x203a470 @dfr
 mov r6, r0 @place to store attacker
 mov r7, r1 @place to store defender
 @check for Vantage, Vantage+ 

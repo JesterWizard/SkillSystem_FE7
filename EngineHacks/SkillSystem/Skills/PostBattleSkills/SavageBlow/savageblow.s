@@ -51,7 +51,7 @@ ldrb	r0, [r5,r6]
 cmp r0, #0x00
 beq End
 add	r6,#1
-ldr	r2,=#0x8019430
+ldr	r2,=#0x8018d0c
 mov	lr, r2
 .short	0xf800
 ldrb	r0,[r0,#0x13]	@current hp
@@ -72,7 +72,7 @@ Savage_loop:
 ldrb	r0, [r5,r6]
 cmp r0, #0x00
 beq End
-ldr	r2,=#0x8019430
+ldr	r2,=#0x8018d0c
 mov	lr, r2
 .short	0xf800
 @r0 is ram data

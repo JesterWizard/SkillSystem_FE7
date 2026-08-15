@@ -30,7 +30,7 @@ bx		r0
 
 .align
 ProcessMag:
-.long 0x08004B94
+.long 0x080061E4
 MagGetter:
-.long 0x080191B8
+.long 0x08018AD8
 MagClassTable:

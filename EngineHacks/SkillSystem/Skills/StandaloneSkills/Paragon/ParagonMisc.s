@@ -34,7 +34,7 @@ strb r0,[r1]
 ldrb r1,[r4,#9]
 add r1,r0
 strb r1,[r4,#9]
-ldr r0,=#0x802BA28
+ldr r0,=#0x8029660
 mov r14,r0
 mov r0,r4
 .short 0xF800

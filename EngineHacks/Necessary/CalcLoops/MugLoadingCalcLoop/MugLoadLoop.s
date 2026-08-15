@@ -40,9 +40,9 @@ ldr	r0, =#0x80078C1
 bx r0
 
 CurrentChar:
-ldr	r0, =#0x3004E50
+ldr	r0, =#0x3004690
 ldr	r0, [ r0 ]
-blh #0x080192B8, r2
+blh #0x08018BD8, r2
 pop { r5, r6 }
 ldr r2, =#0x080078AF
 bx r2

@@ -13,7 +13,7 @@ mov r4 ,r0
 @ 0x2Cで指定しているアニメーションProcsが終わるまで待ちます
 @ arg r0 = target proc 
 ldr r0, [r4, #0x2c]
-blh 0x08002e9c	@Fin6C	{U}
+blh 0x080046a8	@Fin6C	{U}
 
 
 
@@ -32,10 +32,10 @@ bne Exit
 
 
 
-	ldr  r6, =0x0203A4EC @BattleUnit@gBattleActor	{U}	戦闘アニメで右側.CopyUnit
+	ldr  r6, =0x0203A3F0 @BattleUnit@gBattleActor	{U}	戦闘アニメで右側.CopyUnit
 	@ldr r6, =0x0203A4E8 @BattleUnit@gBattleActor	{J}	戦闘アニメで右側.CopyUnit
 	ldrb r0, [r6, #0xb]
-	blh 0x08019430       @GetUnitStruct	{U}
+	blh 0x08018d0c       @GetUnitStruct	{U}
 	@blh 0x08019108       @GetUnitStruct	{J}
 	mov r5, r0	@Unit
 	
@@ -45,7 +45,7 @@ bne Exit
 	blh 0x8079BB8 @ MU_GetByUnit(struct Unit* unit);
 	blh 0x80790B4 @ mu_end 
 	@ユニットが移動中のモーションが残ってしまうので消す
-	@blh 0x080790A4       @ClearMOVEUNITs	{U}
+	@blh 0x0806CCB8       @ClearMOVEUNITs	{U}
 	@blh 0x0807B4B8       @ClearMOVEUNITs	{J}
 
 ldr r1, [r6, #0x0C] @ Unit state 
@@ -59,7 +59,7 @@ str r1, [r6, #0x0C]
 	@回復やダメージの結果をRAMUnitに書き戻して確定させます
 	mov r0, r5       @Arg1: Unit
 	mov r1, r6       @Arg2: 戦闘アニメで右側.CopyUnit
-	blh 0x0802c1ec   @SaveUnitFromBattle	{U}
+	blh 0x08029c24   @SaveUnitFromBattle	{U}
 	@blh 0x0802C134   @SaveUnitFromBattle	{J}
 
 	@もしユニットのHPが0になってしまっているなら死亡させる
@@ -72,7 +72,7 @@ str r1, [r6, #0x0C]
 
 	@マップアニメーションが終わったのでループを抜ける
 	mov r0 ,r4
-	blh 0x08002e94   @Break6CLoop	{U}
+	blh 0x080046a0   @Break6CLoop	{U}
 	@blh 0x08002DE4   @Break6CLoop	{J}
 	
 
@@ -80,14 +80,14 @@ str r1, [r6, #0x0C]
 
 NoActiveUnit:
 
-@ldr r0, =0x202E4D8 @ Unit map	{U}
+@ldr r0, =0x202E3DC @ Unit map	{U}
 @ldr r0, [r0] 
 @mov r1, #0
-@blh 0x080197E4 @ FillMap 
-@blh 0x08019FA0   @UpdateUnitMapAndVision
-@blh 0x0801A1A0   @UpdateTrapHiddenStates
-@blh  0x080271a0   @SMS_UpdateFromGameData
-@blh  0x08019c3c   @UpdateGameTilesGraphics
+@blh 0x080190AC @ FillMap 
+@blh 0x08019868   @UpdateUnitMapAndVision
+@blh 0x08019A68   @UpdateTrapHiddenStates
+@blh  0x08025724   @SMS_UpdateFromGameData
+@blh  0x08019504   @UpdateGameTilesGraphics
 
 
 Exit:

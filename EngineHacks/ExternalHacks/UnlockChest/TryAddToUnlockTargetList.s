@@ -7,8 +7,8 @@
 
 .equ IsThereClosedChestAt, 0x080831AC 
 .equ IsThereClosedDoorAt, 0x080831f0
-.equ AddTarget, 0x0804F8BC
-.equ gMapTerrain, 0x0202E4DC
+.equ AddTarget, 0x0804ACFC
+.equ gMapTerrain, 0x0202E3E0
 .equ ChestTerrainType, 0x21
 .equ DoorTerrainType, 0x1E
 .equ BridgeTerrainType, 0x14

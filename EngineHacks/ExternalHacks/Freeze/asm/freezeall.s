@@ -3,7 +3,7 @@
 
 push {r4-r6,lr}
 mov r4, #0x81 @first enemy
-ldr r5, =0x8019430 @get ram from dplynum
+ldr r5, =0x8018d0c @get ram from dplynum
 mov r6, #0x30 @status byte
 NextEnemy:
 mov r0, r4

@@ -51,6 +51,6 @@ bx r3
 .ltorg
 .align
 Expthing:
-.long 0x802CC54 | 1
+.long 0x802A5EC | 1
 @ItemGraphics: @removed since items should be able to have hardcoded animations
-@.long 0x802CA14 | 1
+@.long 0x802A3B0 | 1

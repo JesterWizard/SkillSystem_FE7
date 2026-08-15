@@ -195,7 +195,7 @@ BNE label5
 		label5:
         LDR r0, =NewEfxHPBar
         MOV r1, #0x3
-        blh 0x08002C7C, r3   //New6C
+        blh 0x08004494, r3   //New6C
         MOV r6 ,r0
 		
 		

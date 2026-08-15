@@ -1,7 +1,7 @@
 .thumb
 .syntax unified
 .org 0x00
-sub_80057C0: @ 0x080057C0
+sub_80057C0: @ 0x08006DB8
 	push {r4, lr}
 	add r3, r0, #0 @Move E_Face's Proc Pointer into r3
 	ldr r1, [r3, #0x30] @Load Word 0x30 of E_Face

@@ -122,9 +122,9 @@ End:
 
 .align
 Get_Unit_Data:
-.long 0x08019430 @ GetUnit
+.long 0x08018d0c @ GetUnit
 Write_Rescue_Data:
-.long 0x0801834C @ UnitRescue
+.long 0x08017DE4 @ UnitRescue
 Is_Capture_Set:
 @
 

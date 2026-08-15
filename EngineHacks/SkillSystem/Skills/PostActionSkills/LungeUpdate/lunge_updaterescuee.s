@@ -7,15 +7,15 @@
 
 .thumb
 push { lr }
-ldr r0, =0x8019430
+ldr r0, =0x8018d0c
 mov lr, r0
-ldr r0, =0x203a958 @action struct
+ldr r0, =0x203a868 @action struct
 ldrb r0, [r0, #0xd] @target
 cmp r0, #0
 beq End
 .short 0xf800
 @r0 is the target
-ldr r1, =0x801849c @update rescuee
+ldr r1, =0x8017f28 @update rescuee
 mov lr, r1
 .short 0xf800
 End:

@@ -99,7 +99,7 @@ PROC_LOOP_ROUTINE(DrawHealsplatFunc)
 PROC_LABEL(1) 
 PROC_END
 
-//PROC_WHILE_EXISTS(0x89A49FC) //MapAnimBattle (also used for vulneraries and poison damage etc.) 
+//PROC_WHILE_EXISTS(0x8C9E14C) //MapAnimBattle (also used for vulneraries and poison damage etc.) 
 ShowHealsplatProcName:
 String("HealsplatProc") ; BYTE 0
 ALIGN 4

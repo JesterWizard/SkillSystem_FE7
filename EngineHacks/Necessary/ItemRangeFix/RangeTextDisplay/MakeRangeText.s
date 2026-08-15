@@ -12,7 +12,7 @@ mov 	r4, r1
 
 ldr		r0,BlankTextID		@actually 3 spaces, not blank, but blank for our purposes
 
-ldr 	r3, =#0x800A240			@takes r0=text id as an argument, returns ram pointer to modify
+ldr 	r3, =#0x8012C60			@takes r0=text id as an argument, returns ram pointer to modify
 mov 	r14, r3
 .short 0xF800
 

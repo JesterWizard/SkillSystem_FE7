@@ -5,7 +5,7 @@
   .short 0xf800
 .endm
 .equ GreatShieldID, SkillTester+4
-.equ d100Result, 0x802a52c
+.equ d100Result, 0x802857c
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 push {r4-r7,lr}
 mov r4, r0 @attacker
@@ -26,7 +26,7 @@ bne End
 mov r0, #0x48
 add r0, r4
 ldrh r0, [r0]
-blh 0x8017724 @check for weapon ability
+blh 0x8017424 @check for weapon ability
 cmp r0, #1
 beq End @can't protect vs poison weapons
 

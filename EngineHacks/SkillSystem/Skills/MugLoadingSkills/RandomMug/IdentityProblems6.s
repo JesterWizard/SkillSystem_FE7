@@ -17,7 +17,7 @@ ldrb	r0,[r1]
 lsl	r0,#1
 ldr	r1,IdentityProblemsNames
 ldrh	r0,[r1,r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 b	End
@@ -25,7 +25,7 @@ b	End
 Original:
 ldr	r0,[r6]
 ldrh	r0,[r0]
-ldr	r3,=#0x800A240
+ldr	r3,=#0x8012C60
 mov	lr,r3
 .short	0xF800
 

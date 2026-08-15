@@ -1,6 +1,6 @@
 .thumb
 .equ origin, 0x2AF90
-.equ Get_Weapon_Effect, 0x8017724
+.equ Get_Weapon_Effect, 0x8017424
 .equ WaryFighterID, SkillTester+4
 .equ QuickRiposteID, WaryFighterID+4
 .equ MoonlightID, QuickRiposteID+4
@@ -119,9 +119,9 @@ bx    r1
 .ltorg
 .align
 DefenderStruct:
-.long 0x0203A56C
+.long 0x0203A470
 AttackerStruct:
-.long 0x0203A4EC
+.long 0x0203A3F0
 SkillTester:
 @POIN SkillTester
 @WORD WaryFighterID

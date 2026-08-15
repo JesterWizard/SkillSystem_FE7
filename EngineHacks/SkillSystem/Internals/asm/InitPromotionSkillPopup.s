@@ -4,7 +4,7 @@
 	gpBeforeBattleUnit = 0x0203E098 //FE8 -> 0x0203E18C @ unused, but here for reference
 	gpAfterBattleUnit  = 0x0203E094 //FE8 -> 0x0203E188 @ this is the one we are looking at
 
-	gPopupItem         = 0x03000108 //FE8 -> 0x030005F4
+	gPopupItem         = 0x03000110 //FE8 -> 0x030005F4
 
 	lGetUnitLevelSkills = EALiterals+0x00
 	lAddSkill           = EALiterals+0x04

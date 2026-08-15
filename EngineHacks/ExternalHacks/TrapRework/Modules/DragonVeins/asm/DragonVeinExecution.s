@@ -59,9 +59,9 @@ bx r3
 ExecuteEvent:
 	.long 0x800D07D @AF5D
 CurrentUnitFateData:
-	.long 0x203A958
+	.long 0x203A868
 CurrentUnitPointer:
-	.long 0x3004E50
+	.long 0x3004690
 GetTrap:
     .long 0x802E1F1
 RemoveTrap:

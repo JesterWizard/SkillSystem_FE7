@@ -30,14 +30,14 @@
 
 @getters
 .equ UnitHasMagicRank, 0x080184DC //FE8 -> 0x08018A58
-.equ MountedIconHelper, 0x08018578 //FE8 0x08018AF0
+.equ MountedIconHelper, 0x08018578 //FE8 0x08018578
 .equ MagCheck, 0x080184DC //FE8 -> 0x8018A58  this is the same as UnitHasMagicRank, I guess whoever set it up missed that?
 .equ AidCheck, 0x08018450 //FE8 -> 0x080189B8
 .equ CurHPGetter, 0x08018A70 //FE8 -> 0x08019150
 .equ MaxHPGetter, 0x08018AB0 //FE8 -> 0x08019190       
 .equ StrGetter, 0x08018AD0 //FE8 -> 0x080191b0
 .equ MagGetter, 0x08018AD8 //FE8 -> 0x080191b8
-.equ SklGetter, 0x08018AF0 //FE8 -> 0x080191d0
+.equ SklGetter, 0x08018578 //FE8 -> 0x080191d0
 .equ SpdGetter, 0x08018B30 //FE8 -> 0x08019210
 .equ LuckGetter, 0x08018BB8 //FE8 -> 0x08019298
 .equ DefGetter, 0x08018B70 //FE8 -> 0x08019250

@@ -7,7 +7,7 @@ mov lr, \reg
 .short 0xF800
 .endm
 Init:
-ldr r5, =0x30067A0
+ldr r5, =0x3005E70
 
 Player:
 mov r0, #0x48
@@ -25,7 +25,7 @@ mov r2, #50
 mul r2, r0 @Size of Copy
 ldr r0, =0x1F78+(51*0x48) @Dest
 add r0, r6, r0
-ldr r1, =0x202CFBC @Enemy Unit Pool
+ldr r1, =0x202CEC0 @Enemy Unit Pool
 ldr r3, [r5] @ LoadFromSRAM
 bl BXR3
 
@@ -35,7 +35,7 @@ mov r2, #10
 mul r2, r0 @Size of Copy
 ldr r0, =0x1F78+(51*0x48)+(50*0x48) @Dest
 add r0, r6, r0
-ldr r1, =0x202DDCC @NPC Unit Pool
+ldr r1, =0x202DCD0 @NPC Unit Pool
 ldr r3, [r5] @ LoadFromSRAM
 bl BXR3
 

@@ -19,7 +19,7 @@
 		
 		#define SpiritDustIcon 0xAB
 		PUSH
-		ORG $5926F4 + ( SpiritDustIcon * 0x80 )
+		ORG $0C5EA4 + ( SpiritDustIcon * 0x80 )
 		#incext Png2Dmp "SpiritDust.png"
 		POP
 	

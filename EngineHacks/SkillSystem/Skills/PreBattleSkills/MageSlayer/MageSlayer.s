@@ -1,6 +1,6 @@
 .thumb
 .equ MageSlayerID, SkillTester+4
-.equ gBattleData, 0x203A4D4
+.equ gBattleData, 0x203A3D8
 
 push {r4-r7, lr}
 mov r4, r0 @atkr

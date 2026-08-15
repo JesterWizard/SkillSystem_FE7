@@ -4,7 +4,7 @@
 	@this hack takes r0 = character data in ram and returns a pointer to a 0-terminated list of skills (using the text buffer)
 	@supports 1 personal, 1 class, 4 learned
 
-	SkillsBuffer = 0x02026B90 //FE7 -> FE8 0x202b156 @0x202a6ac
+	SkillsBuffer = 0x02026B90 //FE7 -> FE8 0x202b156 @0x202a5b4
 
 	SkillsUnitBuffer  = 0x0202A9D4 // FE7 -> FE8 0x02026BB0
 	SkillsCountBuffer = 0x0202A9D8 // FE7 -> FE8 0x02026BB4
