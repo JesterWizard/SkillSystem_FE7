@@ -45,21 +45,11 @@ ORG FreeSpaceBLRange //defined in custom definitions
   Unset_Attack_Flag:
   #incbin "SkillSystem/Internals/unset_attack_flag.dmp"
 
-  #ifdef USE_STRMAG_SPLIT
-	#include "ExternalHacks/StrMagSplit/BLRange.event"
-  #endif // USE_STRMAG_SPLIT
-	
 #undef inBLRange
 POP
 */
 ////////////////////////////////FREE SPACE OUT OF BL RANGE
 /*
-  // Expand unit promotion list
-  #include "ExternalHacks/ClassChgExpansion/ClassChgExpansion.event"
-
-  // Display damage numbers in battle animations.
-  #include "ExternalHacks/AnimNumbers/AnimNumbers.event"
-
   //HP Bars (and effective weapon warning)
   #include "QualityOfLife/HpBars/HpBars.event"
 
@@ -80,54 +70,14 @@ POP
 
   //Negative Stat Boosts
   #include "Necessary/NegativeStatBoosts/NegativeStatBoosts.event"
-
-  //Trap Rework (Dragon Veins & Heal Tiles)
-  #include "ExternalHacks/TrapRework/TrapRework.event"
-  
-  //Proper Range Getters
-  #include "ExternalHacks/ProperRangeGetters/ProperRangeGetters/ProperRangeGetters.event"
-
-  //Leadership Stars
-  #include "ExternalHacks/LeadershipStars/LeadershipStars.event"
-  
-  //Biorhythm
-  #include "ExternalHacks/Biorhythm/Biorhythm.event"
   */
 
   //Modular Stat Screen
   #include "Necessary/ModularStatScreen/ModularStatScreen.event"
 
   /*
-  // Strength/Magic Split
-  #ifdef USE_STRMAG_SPLIT
-  
-	#include "ExternalHacks/StrMagSplit/_MasterAsmInstaller.event"
-	
-  #endif // USE_STRMAG_SPLIT
-  
-  //Anima Triangle
-  #include "ExternalHacks/AnimaTriangle/AnimaTriangle.event"
-  
-  //Modular EXP
-  #include "ExternalHacks/ModularEXP/ModularEXP.event"
-  
-  //Portrait Selection
-  #include "ExternalHacks/PortraitSelectASM/PortraitSelectionASM.event"
-	
-  //Stairs
-  #include "ExternalHacks/Stairs/Stairs.event"
-
-  //Raid
-  #include "ExternalHacks/Raid/Raid.event"
-  
-  //Escape-Arrive
-  #include "ExternalHacks/EscapeArrive/EscapeArrive.event"
-  
   //Debuffs
   #include "Necessary/Debuffs/Debuffs.event"
-
-  //Stat Screens palette by allegiance
-  #include "ExternalHacks/StatScreenAllegiance/StatScreenAllegiance.event"
 
   //StealGfxFix
   #include "QualityOfLife/StealGfxFix.event"
@@ -157,39 +107,6 @@ POP
   //Unit Action Rework (required for movement skills)
   #include "Necessary/UnitActionRework/UnitActionRework.event"
 
-  //Change Sick Status to Freeze
-  #include "ExternalHacks/Freeze/Freeze.event"
-  #include "ExternalHacks/Freeze/EventFreeze.event"
-  
-  //Reaver Split
-  ALIGN 4
-  #include "ExternalHacks/ReaverSplit/ReaverSplit.event"
-  
-  //Cannot Crit
-  ALIGN 4
-  #include "ExternalHacks/CannotCrit/CannotCrit.event"
-  
-  //AdvWeaponLocks
-  ALIGN 4
-  #include "ExternalHacks/WeaponLockArray/AdvWeaponLocks.event"
-  
-  //Status-Inflicting Weapons
-  ALIGN 4
-  #include "ExternalHacks/StatusWeapons/StatusWeapons.event"
-  
-  //Narrow Fonts by Scraiza
-  ALIGN 4
-  #include "ExternalHacks/NarrowFont/NarrowFontInstaller.event"
-  
-  //UTF8 Fonts by Vesly, 7743, Mokha, Colorz, Scraiza, MintX, and Bly
-  ALIGN 4 
-  #include "ExternalHacks/Fonts/Installer.event" 
-  
-  //Crit Cap
-  #ifdef CRIT_CAP
-    #include "ExternalHacks/CritCap/CritCap.event"
-  #endif
-
   //Item Effect Revamp by Teraspark
   #include "Necessary/ItemEffectRevamp/IERevamp_Installer.event"
   
@@ -198,18 +115,6 @@ POP
   */
   //Generic routines that other things may rely on 
   #include "Necessary/Routines/Installer.event" 
-
-  /*
-  // Gaiden Magic 2.0
-  #include "ExternalHacks/GaidenMagic/GaidenMagic.event"
-  
-  #ifdef INSTALL_AoE
-	#include "ExternalHacks/AoE/Installer.event"
-  #endif 
-  
-  // Unlock working on chests
-  #include "ExternalHacks/UnlockChest/UnlockChest.event"
-*/
 
   ALIGN 4
   #include "SkillSystem/SkillSystemInstaller.event"
