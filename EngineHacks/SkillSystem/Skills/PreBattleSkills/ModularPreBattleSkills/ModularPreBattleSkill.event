@@ -3,7 +3,7 @@
 // By Vesly
 // 
 // Allows you to edit basic combat arts via a table. 
-// (No need to edit this file. See ModularPreBattleTable.csv)
+// (No need to edit this file. See ModularPreBattleTable.event)
 // 
 // Hp Costs use byte 0x4 of the battle buffer, which I've named as: injured self already (CmbArt Hp Cost)
 // Follow-up attacks will not cost additional hp, but multi-hit skills will cost extra hp for each attack.

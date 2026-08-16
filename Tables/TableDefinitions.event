@@ -183,8 +183,8 @@
 #define ItemStatus(StatusID,Duration) "StatusID | (Duration << 4)"
 
 // Skill catalog (CantoID, SKILL_OFF, ...). Use these names in:
-//   PersonalSkillEditor.csv, ClassSkillEditor.csv, ItemTable "Item Skill"
-// Level-up CSVs take a list label. Define lists in LevelUpSkillLists.event:
+//   PersonalSkillEditor.event, ClassSkillEditor.event, ItemTable "Item Skill"
+// Level-up tables take a list label. Define lists in LevelUpSkillLists.event:
 //   ALIGN 4
 //   LynTutorialSkillList:
 //   LevelUpSkill(1, CantoID)

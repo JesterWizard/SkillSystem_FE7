@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # USAGE: ./MakeHack.sh [quick]
-# If first argument is "quick", then this will not update text or tables
+# If first argument is "quick", then this will not update text or maps
 
 base_dir=$(dirname "$(readlink -f "$0")")
 
@@ -17,7 +17,6 @@ target_sym="$base_dir/SkillsTest.sym"
 
 # defining tools
 
-c2ea_py="$base_dir/Tools/C2EA/c2ea.py"
 textprocess_py="$base_dir/Tools/TextProcess/text-process-classic.py"
 parsefile="$base_dir/EventAssembler/Tools/ParseFileUTF8"
 tmx2ea="$base_dir/Tools/tmx2ea/tmx2ea.py"
@@ -44,14 +43,6 @@ cp -f "$source_rom" "$target_rom" || exit 2
 
 if [[ $1 != quick ]]; then
   # make hack full
-
-  # TABLES
-
-  echo "Processing tables"
-
-  cd "$base_dir/Tables"
-  echo | $python3 "$c2ea_py" \
-    "$source_rom"
 
   # TEXT
 

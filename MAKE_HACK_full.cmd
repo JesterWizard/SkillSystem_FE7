@@ -1,7 +1,7 @@
 @echo off
 
 @rem USAGE: "MAKE HACK_full.cmd" [quick]
-@rem If first argument is "quick", then this will not update text, tables, maps, or generate a patch
+@rem If first argument is "quick", then this will not update text, maps, or generate a patch
 @rem "MACK HACK_quick.cmd" simply calls this but with the quick argument, for convenience
 
 @rem defining buildfile config
@@ -16,7 +16,6 @@ set "target_rom=%~dp0FE7_Hack.gba"
 
 @rem defining tools
 
-set "c2ea=%~dp0Tools\C2EA\c2ea"
 set "textprocess=%~dp0Tools\TextProcess\text-process-classic"
 set "ups=%~dp0Tools\ups\ups"
 set "parsefile=%~dp0EventAssembler\Tools\ParseFileUTF8.exe"
@@ -36,12 +35,6 @@ copy "%source_rom%" "%target_rom%"
 if /I not [%1]==[quick] (
 
   @rem only do the following if this isn't a make hack quick
-
-  echo:
-  echo Processing tables
-
-  cd "%base_dir%Tables"
-  echo: | ("%c2ea%" "%source_rom%" -installer "%base_dir%Tables/TableInstaller.event")
 
   echo:
   echo Processing text

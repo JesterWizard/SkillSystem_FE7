@@ -10,7 +10,7 @@ PROTECT $23DE0 //FE8 -> $25224
     #include "Text/InstallTextData.event"
     MESSAGE Used text space ends at currentOffset
 
-    //CSV tables
+    //Data tables
     #include "Tables/TableInstaller.event"
     MESSAGE Used table space ends at currentOffset
 

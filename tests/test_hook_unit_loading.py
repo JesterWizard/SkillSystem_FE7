@@ -25,12 +25,17 @@ def _hex_literals(text: str) -> set[int]:
     return {int(m.group(0), 16) for m in re.finditer(r"0x080[0-9A-Fa-f]+", text)}
 
 
-def _c2ea_words(path: Path) -> list[int]:
+def _level_up_words(path: Path) -> list[int]:
     words = []
     for line in path.read_text(encoding="utf-8").splitlines():
-        m = re.search(r"_C2EA_\w+\((0x[0-9A-Fa-f]+)\)", line)
-        if m:
-            words.append(int(m.group(1), 16))
+        body = line.split("//")[0].strip()
+        if not body.startswith("WORD "):
+            continue
+        token = body.split()[1]
+        try:
+            words.append(int(token, 0))
+        except ValueError:
+            continue
     return words
 
 
@@ -65,7 +70,7 @@ class HookUnitLoadingTests(unittest.TestCase):
 
     def test_level_up_skill_tables_have_no_wild_pointers(self):
         for path in (CLASS_LEVEL_EVENT, CHAR_LEVEL_EVENT):
-            for i, word in enumerate(_c2ea_words(path)):
+            for i, word in enumerate(_level_up_words(path)):
                 self.assertEqual(
                     word,
                     0,

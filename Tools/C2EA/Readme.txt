@@ -34,3 +34,7 @@ where you have "#define ItemTable <offset of the new item table>"
 in your definitions file.
 
 Special thanks to Zahlman for making the code less bad.
+
+This folder is a one-shot converter only. Regular builds include
+Tables/TableInstaller.event and the .event tables directly.
+Use dump_all.py only if you still have CSV+NMM sources to convert.

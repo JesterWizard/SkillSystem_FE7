@@ -1,6 +1,5 @@
-Drag and drop your rom on n2c.exe to rip the vanilla tables.
+Edit the .event files under NightmareModules/. Tables/TableInstaller.event includes them all.
 
-Drag one csv on to c2ea to produce event files for all of your csvs in the Tables folder
+Vanilla overwrite tables use PUSH/ORG at the FE7 pointer. New tables are ALIGN 4 labels (PersonalSkillTable, MagCharTable, ...).
 
-Note: The CSVs have already been ripped for you, but it's nice to know how it's done
-
+Tools/C2EA remains as a one-shot converter if you ever need to dump a CSV again. It is not part of the regular build.

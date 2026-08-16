@@ -3,7 +3,7 @@ If ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK is commented out (in Config.event), yo
 If not commented, then this rework will come into play.
 Each class weakness/weapon effectiveness is now a "class type", a bit in a bitfield.
 
-Class weaknesses use a word at +0x50 (currently unused). This is set via the class data editor csv, or whatever way you edit tables. The definitions (ArmorType, HorseType, etc) are in Tables/Table Definitions.txt. Class weaknesses have been filled in for existing classes in the csv because that isn't used, while effectiveness data is set in Nullify EA.txt
+Class weaknesses use a word at +0x50 (currently unused). This is set via the class data editor event, or whatever way you edit tables. The definitions (ArmorType, HorseType, etc) are in Tables/TableDefinitions.event. Class weaknesses have been filled in for existing classes in the class table because that isn't used, while effectiveness data is set in Nullify EA.txt
 
 Items have a "effectiveness pointer" at +0x10 that would normally point to a list of classes this weapon is effect against. Instead, it now points to a list of entries that use the macro SetWeaponEffectiveness(class types this weapon is effective against, (coefficient to multiply by)*2)), terminated with a WORD 0. The coefficient is multipled by 2 to allow half-integer coefficients (if you wanted to do 2.5x, for instance, you could).
 Example: The rapier does 3x damage to armor and cavalry types. Therefore, the rapier list would look like SetWeaponEffectiveness(ArmorType|CavalryType, 6).

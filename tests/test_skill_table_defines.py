@@ -2,7 +2,6 @@
 Personal, class, and character skill tables can use any catalog name
 from skill_definitions.event (CantoID, CritUpID, SKILL_OFF, ...).
 """
-import csv
 import re
 import struct
 import subprocess
@@ -17,8 +16,9 @@ from lyn_bytes import lyn_to_bytes
 ROOT = Path(__file__).resolve().parents[1]
 DEFS = ROOT / "EngineHacks" / "SkillSystem" / "skill_definitions.event"
 TABLE_DEFS = ROOT / "Tables" / "TableDefinitions.event"
-PERSONAL_CSV = ROOT / "Tables" / "NightmareModules" / "Skills" / "PersonalSkillEditor.csv"
-CLASS_CSV = ROOT / "Tables" / "NightmareModules" / "Skills" / "ClassSkillEditor.csv"
+PERSONAL_EVENT = ROOT / "Tables" / "NightmareModules" / "Skills" / "PersonalSkillEditor.event"
+CLASS_EVENT = ROOT / "Tables" / "NightmareModules" / "Skills" / "ClassSkillEditor.event"
+BYTE_ROW_RE = re.compile(r"^BYTE\s+(\S+)")
 CLEAN_ROM = ROOT / "FE7_clean.gba"
 HACK_ROM = ROOT / "FE7_Hack.gba"
 COLORZCORE = ROOT / "EventAssembler" / "ColorzCore.exe"
@@ -118,32 +118,28 @@ class SkillTableDefineTests(unittest.TestCase):
             c2ea.process(str(csv_path), str(nmm), str(out), None)
             self.assertIn("CritUpID", out.read_text(encoding="utf-8"))
 
-    def test_personal_and_class_csv_names_are_catalog_defines(self):
+    def test_personal_and_class_event_names_are_catalog_defines(self):
         mapping = _catalog(DEFS.read_text(encoding="utf-8"))
-        for path in (PERSONAL_CSV, CLASS_CSV):
-            rows = list(csv.reader(path.read_text(encoding="utf-8").splitlines()))
-            for row in rows[1:]:
-                cell = row[1].strip()
-                try:
-                    int(cell, 0)
-                except ValueError:
-                    self.assertIn(
-                        cell,
-                        mapping,
-                        f"{path.name} {row[0]} uses {cell}, which is not in skill_definitions.event",
-                    )
+        for path in (PERSONAL_EVENT, CLASS_EVENT):
+            for i, cell in _skill_bytes(path):
+                if _is_numeric(cell):
+                    continue
+                self.assertIn(
+                    cell,
+                    mapping,
+                    f"{path.name} index {i} uses {cell}, which is not in skill_definitions.event",
+                )
 
     def test_named_personal_skills_assemble_to_catalog_ids(self):
         if not CLEAN_ROM.is_file() or not COLORZCORE.is_file():
             self.skipTest("FE7_clean.gba or ColorzCore.exe missing")
         mapping = _catalog(DEFS.read_text(encoding="utf-8"))
-        rows = list(csv.reader(PERSONAL_CSV.read_text(encoding="utf-8").splitlines()))
         named = [
-            (int(row[0].split()[0], 16), row[1].strip())
-            for row in rows[1:]
-            if row[1].strip() and not _is_numeric(row[1].strip())
+            (i, cell)
+            for i, cell in _skill_bytes(PERSONAL_EVENT)
+            if cell and not _is_numeric(cell)
         ]
-        self.assertTrue(named, "PersonalSkillEditor.csv should use at least one catalog name")
+        self.assertTrue(named, "PersonalSkillEditor.event should use at least one catalog name")
         bytes_src = " ".join(name for _, name in named)
         event = (
             f'#include "{TABLE_DEFS.as_posix()}"\n'
@@ -167,20 +163,17 @@ class SkillTableDefineTests(unittest.TestCase):
             expected = bytes(_resolve(name, mapping) for _, name in named)
             self.assertEqual(got, expected)
 
-    def test_hack_rom_personal_table_matches_csv_catalog_names(self):
+    def test_hack_rom_personal_table_matches_event_catalog_names(self):
         if not HACK_ROM.is_file():
             self.skipTest("FE7_Hack.gba missing")
         mapping = _catalog(DEFS.read_text(encoding="utf-8"))
-        rows = list(csv.reader(PERSONAL_CSV.read_text(encoding="utf-8").splitlines()))
         rom = HACK_ROM.read_bytes()
         blob = lyn_to_bytes(GET_SKILLS_LYN)
         idx = rom.find(blob)
         self.assertNotEqual(idx, -1, "GetSkills lyn blob not found in FE7_Hack.gba")
         table_ptr = struct.unpack_from("<I", rom, idx + len(blob))[0]
         table_off = table_ptr & 0x01FFFFFF
-        for row in rows[1:]:
-            char_id = int(row[0].split()[0], 16)
-            cell = row[1].strip()
+        for char_id, cell in _skill_bytes(PERSONAL_EVENT):
             if _is_numeric(cell):
                 continue
             expected = _resolve(cell, mapping)
@@ -189,7 +182,7 @@ class SkillTableDefineTests(unittest.TestCase):
                 got,
                 expected,
                 f"PersonalSkillTable[0x{char_id:02X}] is {got}, "
-                f"CSV {cell} should assemble to {expected}",
+                f"event {cell} should assemble to {expected}",
             )
             self.assertNotIn(got, (0, 255), f"{cell} must be a listable personal skill")
 
@@ -205,6 +198,15 @@ class SkillTableDefineTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("char_check_rom_banks", src)
         self.assertIn("class_check_rom_banks", src)
+
+
+def _skill_bytes(path: Path) -> list[tuple[int, str]]:
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = BYTE_ROW_RE.match(line.split("//")[0].strip())
+        if m:
+            rows.append((len(rows), m.group(1)))
+    return rows
 
 
 def _is_numeric(cell: str) -> bool:

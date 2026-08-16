@@ -1,5 +1,5 @@
 // Character and class level-up skill lists.
-// Point CharacterLevelUpSkillEditor.csv / ClassLevelUpSkillEditor.csv at a label here.
+// Point CharacterLevelUpSkillEditor.event / ClassLevelUpSkillEditor.event at a label here.
 // BYTE pairs are (level, skillID). Level 0xFF means learned on join. End with LevelUpSkillListEnd.
 //
 ALIGN 4

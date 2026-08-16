@@ -16,7 +16,7 @@ SKILL_TESTER_C = (
     ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "NewSkillTester" / "_src" / "SkillTester.c"
 )
 LYN_LIST = ROOT / "Tables" / "LevelUpSkillLists.event"
-CHAR_LEVEL_CSV = ROOT / "Tables" / "NightmareModules" / "Skills" / "CharacterLevelUpSkillEditor.csv"
+CHAR_LEVEL_EVENT = ROOT / "Tables" / "NightmareModules" / "Skills" / "CharacterLevelUpSkillEditor.event"
 
 COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 BTL_LIST_RE = re.compile(r"^BtlLoopList:\s*\n((?:POIN[^\n]*\n)+)", re.M)
@@ -59,11 +59,11 @@ class CritUpSkillTests(unittest.TestCase):
 
     def test_tutorial_lyn_level_list_is_critup(self):
         lists = LYN_LIST.read_text(encoding="utf-8")
-        csv = CHAR_LEVEL_CSV.read_text(encoding="utf-8")
+        table = CHAR_LEVEL_EVENT.read_text(encoding="utf-8")
         self.assertIn("LevelUpSkill(1, CritUpID)", lists)
         self.assertNotIn("CantoID", lists)
         self.assertNotIn("LockTouchID", lists)
-        self.assertIn("LynTutorialSkillList", csv.splitlines()[4])
+        self.assertIn("WORD LynTutorialSkillList", table)
 
 
 if __name__ == "__main__":
