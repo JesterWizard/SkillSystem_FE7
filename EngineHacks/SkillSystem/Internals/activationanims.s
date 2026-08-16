@@ -1,6 +1,7 @@
 .thumb
-@ FE7 C03: play the skill BG only for this AIS's current round, and only
-@ when that round's hit actually has a proc flag. No full-array scan.
+@ FE7 C03: nextRoundId is the current round (0 on the first C03, not yet +1).
+@ Do not subtract 1 — that made Adept's extra strike read the first hit.
+@ Also honor 0x4000 on the 4-byte hit array in case parse missed 0x0800.
 
 .equ GetAISLayerId,           0x08054665
 .equ GetAnimPosition,         0x08054679
@@ -8,6 +9,7 @@
 .equ NewEfxSkillCommonBG,     0x08058589
 .equ NewEfxSpecalEffect,      0x0806337D
 .equ gAnimRoundData,          0x0203E036
+.equ gBattleHitArray,         0x0203A4F0
 .equ C03_Wait,                0x080536A5
 
 .macro blh to, reg=r3
@@ -33,10 +35,8 @@ SkillActivationAnims:
     bne PopToWait
 
     ldrh r5, [r4, #0xE]
-    cmp r5, #0
-    beq RoundZero
-    sub r5, #1
-RoundZero:
+    cmp r5, #6
+    bhi DoSpecal
     lsl r5, #1
     mov r0, r4
     blh GetAnimPosition
@@ -46,8 +46,13 @@ RoundZero:
     add r1, r0
     ldrh r6, [r1]
 
-    mov r0, #0xFF
-    and r0, r6
+    ldrh r5, [r4, #0xE]
+    lsl r5, #2
+    ldr r1, =gBattleHitArray
+    add r1, r5
+    ldr r1, [r1]
+
+    ldrb r0, [r4, #0x12]
     cmp r0, #4
     blo TryOffensive
     cmp r0, #9
@@ -62,6 +67,10 @@ TryOffensive:
     mov r0, #0x80
     lsl r0, #4
     tst r6, r0
+    bne DoOffensive
+    mov r0, #0x40
+    lsl r0, #8
+    tst r1, r0
     bne DoOffensive
     b DoSpecal
 
