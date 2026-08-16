@@ -18,9 +18,8 @@ ldrb    r0, [r4, r0]   @Load the attacking unit weapon type.
 cmp     r0, #2         @Is it Axe?
 bne     NoSkill        @If not, goto end
 
-@Add to Hit
-mov     r0, #0x19
-ldrb    r0, [r4,r0]    @load luck
+@Add to Hit (luck is a byte; ldrh reads adjacent stats)
+ldrb    r0, [r4, #0x19] @load luck
 lsr     r1, r0, #1     @put half luck in r1
 add     r0, r0, r1     @add back together.
 mov     r3, #0x60

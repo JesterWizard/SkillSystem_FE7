@@ -739,8 +739,8 @@ Foresight: Avoid the damage[N]
 from enemy Critical Hits and[N]
 Skill Activations.[X]
 
-## SD_Axefaith
-Axefaith: Axes can't lose durability,[N]
+## SD_AxeFaith
+AxeFaith: Axes can't lose durability,[N]
 and grants (Luck x 1.5) Hit when[N]
 wielding axes.[X]
 

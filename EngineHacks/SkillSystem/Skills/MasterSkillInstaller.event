@@ -31,7 +31,7 @@ POP
 #include "PreBattleSkills/PreBattleSkills.event"
 #include "ProcSkills/ProcSkills.event"
 //#include "RangeSkills/RangeSkills.event"
-//#include "RoundsSkills/RoundsSkills.event"
+#include "RoundsSkills/RoundsSkills.event"
 //#include "StandaloneSkills/StandaloneSkills.event"
 //#include "StatModifierSkills/StatModifierSkills.event"
 //#include "TurnSkills/Installer.event" 

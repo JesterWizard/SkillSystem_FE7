@@ -7,8 +7,7 @@ jumpToHack(PostCombatLoop)
 POP
 
 PostCombatLoop:
-#incbin "post_loop.dmp"
-POIN PostCombatSkills
+#include "post_loop.lyn.event"
 
 PostCombatSkills: //I like having savage blow as the first one because it makes the activation sound play first
 POIN /* Despoil */ Lifetaker Fury /*PoisonStrike GrislyWound*/

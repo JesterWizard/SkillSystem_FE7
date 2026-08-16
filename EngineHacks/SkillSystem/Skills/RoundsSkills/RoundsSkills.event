@@ -1,12 +1,12 @@
 PUSH
 
-//Armsthrift
-ORG $2B7F8
+//Armsthrift + AxeFaith durability (FE7 BattleGenerateHitEffects)
+ORG $29498
 jumpToHack(Armsthrift)
-  
-//Dazzle (can't be countered)
-ORG 0x2C864
-jumpToHack(DazzleCheck)
+
+// Dazzle still uses FE8 0x2C864; do not install until ported.
+// ORG 0x2C864
+// jumpToHack(DazzleCheck)
 
 POP
 

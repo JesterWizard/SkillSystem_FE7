@@ -166,6 +166,7 @@
 
 //Pre-Battle Skills
 #define AxeFaithID 165
+#define AxefaithID AxeFaithID
 #define BattleVeteranID SKILL_OFF
 #define DuelistsBlowID 241
 #define DeathBlowID 240
