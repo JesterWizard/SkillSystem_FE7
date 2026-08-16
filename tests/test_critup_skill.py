@@ -46,6 +46,13 @@ class CritUpSkillTests(unittest.TestCase):
         self.assertIn("GetInitialSkillList_Pointer", tester)
         self.assertNotIn("unitBWL->skills", tester)
 
+    def test_skill_getters_do_not_wipe_ewram_on_read(self):
+        skills = GET_SKILLS.read_text(encoding="utf-8")
+        tester = SKILL_TESTER_C.read_text(encoding="utf-8")
+        self.assertNotIn("EnsureLearnedSkillRam.zero", skills)
+        self.assertNotIn("LearnedSkillRamSize", skills)
+        self.assertNotIn("for (int i = 0; i < 4 + LEARNED_SLOTS_SIZE + 0x46", tester)
+
     def test_tutorial_lyn_level_list_is_critup(self):
         lists = LYN_LIST.read_text(encoding="utf-8")
         csv = CHAR_LEVEL_CSV.read_text(encoding="utf-8")

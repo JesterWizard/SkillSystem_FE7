@@ -12,13 +12,15 @@
 	lPersonalSkillTable  = EALiterals+0x00
 	lClassSkillTable     = EALiterals+0x04
 	lGetInitialSkillList = EALiterals+0x08
+	lLearnedSkillRam     = EALiterals+0x0C
+
+	LEARNED_PID_MAX = 0x45
+	LEARNED_SLOT_COUNT = 6
+	LEARNED_SLOTS_SIZE = 0x1A4 @ 0x46 * 6
 
 GetSkills:
 	@ Arguments: r0 = Unit
 	@ Returns:   r0 = address of skill buffer
-
-	@ We now save what unit is used by the current buffer so that we can reuse skill lists
-	@ This is in attempt to reduce lag.
 
 	ldr r1, =SkillsUnitBuffer
 	ldr r2, [r1]
@@ -41,11 +43,60 @@ make_buffer:
 	mov r4, r0            @ var r4 = unit
 	ldr r5, =SkillsBuffer @ var r5 = it
 
+	@ Clear leftover IDs so callers that read a fixed slot count
+	@ cannot pick up another unit's skills after the terminator.
+	mov r0, #0
+	mov r1, #0
+clear_buf:
+	strb r0, [r5, r1]
+	add r1, #1
+	cmp r1, #8
+	blt clear_buf
+
+	@ Debugger override only. Never mass-clear this RAM: it sits
+	@ against DebuffTableRam+DebuffTableSize (0x0203F540).
+	ldr r1, lLearnedSkillRam
+	ldr r2, [r1]
+	ldr r3, LearnedSkillMagic
+	cmp r2, r3
+	bne no_override
+	ldr r0, [r4]
+	cmp r0, #0
+	beq no_override
+	ldrb r6, [r0, #4]
+	cmp r6, #0
+	beq no_override
+	cmp r6, #LEARNED_PID_MAX
+	bhi no_override
+	ldr r2, LearnedOverrideOff
+	add r1, r2
+	ldrb r2, [r1, r6]
+	cmp r2, #0
+	beq no_override
+
+	ldr r1, lLearnedSkillRam
+	add r1, #4
+	mov r2, #LEARNED_SLOT_COUNT
+	mul r2, r6
+	add r1, r2
+	mov r2, #0
+copy_override:
+	ldrb r3, [r1, r2]
+	strb r3, [r5, r2]
+	add r2, #1
+	cmp r2, #LEARNED_SLOT_COUNT
+	blt copy_override
+	mov r3, #0
+	strb r3, [r5, r2]
+	add r1, r5, r2
+	b end
+
+no_override:
 	@ personal skill first, if any
 
 	ldr  r6, [r4]
 	cmp  r6, #0x00
-    beq  no_personal
+	beq  no_personal
 	ldrb r6, [r6, #0x04] @ var r6 = character id
 
 	ldr  r2, lPersonalSkillTable
@@ -63,6 +114,8 @@ no_personal:
 	@ class skill, if any
 
 	ldr  r0, [r4, #0x04]
+	cmp  r0, #0
+	beq  no_class
 	ldrb r0, [r0, #0x04] @ r0 = class id
 
 	ldr  r2, lClassSkillTable
@@ -77,19 +130,14 @@ no_personal:
 	add  r5, #1
 
 no_class:
-	@ Learned skills from level-up lists. FE7 BWL+1..4 is favval, not skills.
-generic_unit:
+	@ Learned skills from level-up lists. Do not use FE7 BWL+1..4.
 
 	ldr r3, lGetInitialSkillList
 
-	mov r0, r4 @ arg r0 = unit
+	mov r0, r4 @ arg r0 = unit
 	mov r1, r5 @ arg r1 = output buffer
 
 	bl BXR3
-
-	@ implied  @ ret r0 = output buffer
-
-	@ move to the end of the skill buffer
 
 	mov r1, r0
 
@@ -115,6 +163,12 @@ end:
 BXR3:
 	bx r3
 
+	.align
+LearnedSkillMagic:
+	.word 0x534B4C53
+LearnedOverrideOff:
+	.word 4 + LEARNED_SLOTS_SIZE
+
 	.pool
 	.align
 
@@ -122,3 +176,4 @@ EALiterals:
 	@ POIN lPersonalSkillTable
 	@ POIN lClassSkillTable
 	@ POIN (GetInitialSkillList|1)
+	@ POIN gLearnedSkillRam

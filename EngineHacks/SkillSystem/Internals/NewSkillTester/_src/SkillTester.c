@@ -52,10 +52,42 @@ bool NihilTester(Unit* unit, u8 skillID) {
 /*Main functions*/
 
 //Makes skill buffer at a given location.
+#define LEARNED_SKILL_RAM ((u8 *)0x0203F540)
+#define LEARNED_SKILL_MAGIC 0x534B4C53
+#define LEARNED_SLOT_COUNT 6
+#define LEARNED_SLOTS_SIZE (0x46 * LEARNED_SLOT_COUNT)
+
+static u8* GetLearnedSkillOverrideSlots(int unitNum) {
+    u8* ram;
+    if (unitNum < 1 || unitNum > 0x45) {
+        return NULL;
+    }
+    ram = LEARNED_SKILL_RAM;
+    if (*(u32*)ram != LEARNED_SKILL_MAGIC) {
+        return NULL;
+    }
+    if (!ram[4 + LEARNED_SLOTS_SIZE + unitNum]) {
+        return NULL;
+    }
+    return ram + 4 + unitNum * LEARNED_SLOT_COUNT;
+}
+
 SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
     int unitNum = unit->pCharacterData->number;
     int count = 0, temp = 0;
     buffer->lastUnitChecked = unit->index;
+
+    u8* overrideSlots = GetLearnedSkillOverrideSlots(unitNum);
+    if (overrideSlots) {
+        for (int i = 0; i < LEARNED_SLOT_COUNT; ++i) {
+            if (!IsSkillIDValid(overrideSlots[i])) {
+                continue;
+            }
+            buffer->skills[count++] = overrideSlots[i];
+        }
+        buffer->skills[count++] = 0;
+        return buffer;
+    }
 
     //Personal skill
     temp = PersonalSkillTable[unitNum];
@@ -70,7 +102,7 @@ SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
     }
 
     // Learned skills from char/class level-up lists.
-    // FE7 BWL+1..4 is favval/actAmt/statViewAmt (Canto=1, LockTouch=5), not skill slots.
+    // FE7 BWL+1..4 is favval/actAmt/statViewAmt, not skill slots.
     u8* tempBuffer = GetInitialSkillList_Pointer(unit, gTempSkillBuffer);
     for (int i = 0; i < gSkillTestConfig.genericLearnedSkillLimit; ++i) {
         if (!IsSkillIDValid(tempBuffer[i])) {

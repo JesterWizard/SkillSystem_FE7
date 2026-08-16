@@ -16,6 +16,11 @@
     #define txt(string2) "String(string2); BYTE 0 0"
 #endif 
 
+ALIGN 4
+DrawSkillIcon:
+#incbin "Data/DrawSkillIcon.dmp"
+POIN SkillIcons 
+
 
 
 #ifndef DebuggerOnText
@@ -194,6 +199,7 @@ MenuCommand1(GodmodeText,GodmodeDesc, NormalText, MenuAlwaysEnabled, BootmodeDra
 #else 
 MenuCommand1(PromoteCommandText, PromoteDesc, NormalText, CanActiveUnitPromoteMenu, DebuggerMenuItemDraw, StartPromotionNow)
 MenuCommand1(ArenaText, ArenaDesc,NormalText, CallArenaIsUnitAllowed, DebuggerMenuItemDraw, StartArenaNow)
+MenuCommand1(EditSkillsText,EditSkillsDesc, NormalText, CanEditLearnedSkillsMenu, DebuggerMenuItemDraw, EditSkillsNow)
 MenuCommand1(ClearChText,ClearChDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, CallEndEventNow)
 
 #endif 

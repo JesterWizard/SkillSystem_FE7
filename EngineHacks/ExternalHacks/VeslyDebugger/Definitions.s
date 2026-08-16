@@ -271,6 +271,7 @@ SET_FUNC UnpackUiBarPalette, 0x80412DD
 
 .endif     
 .if FE7 == true 
+SET_DATA gLearnedSkillRam, 0x0203F540
 SET_FUNC UnpackUiBarPalette, 0x8049AF5
 SET_FUNC Text_GetCursor, 0x8005571
 SET_FUNC Text_SetCursor, 0x8005575

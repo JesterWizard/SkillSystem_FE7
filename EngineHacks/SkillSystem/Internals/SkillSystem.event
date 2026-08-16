@@ -115,11 +115,19 @@ POP
 
 
 ALIGN 4
+// Debugger extra learned-skill slots. FE7 BWL+1..4 is favval/stat views, not skills.
+#define gLearnedSkillRam 0x0203F540
+
 Skill_Getter: // gets a list of skills
 	#incbin "asm/GetSkills.dmp"
 	POIN PersonalSkillTable
 	POIN ClassSkillTable
 	POIN (GetInitialSkillList|1)
+	WORD gLearnedSkillRam
+
+ALIGN 4
+Skill_Getter_Pointer:
+POIN (Skill_Getter|1)
 
 #include "NewSkillTester/_src/SkillTester.lyn.event"
 

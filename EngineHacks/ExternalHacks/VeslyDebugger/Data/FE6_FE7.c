@@ -89,6 +89,7 @@ static void DrawUiFrameNew(u16 * tilemap, int x, int y, int width, int height, i
 #define ChStateLabel 15
 #define WExpLabel 16
 #define SupportLabel 17
+#define EditSkillsLabel 21
 #define SupplyLabel 18
 #define ListLabel 19
 #define LoopLabel 20
@@ -169,6 +170,8 @@ void EditWExpInit(DebuggerProc * proc);
 void EditWExpIdle(DebuggerProc * proc);
 void EditSupportsInit(DebuggerProc * proc);
 void EditSupportsIdle(DebuggerProc * proc);
+void EditSkillsInit(DebuggerProc * proc);
+void EditSkillsIdle(DebuggerProc * proc);
 void DebuggerListInit(DebuggerProc * proc);
 void DebuggerListIdle(DebuggerProc * proc);
 void RedrawUnitStatsMenu(DebuggerProc * proc);
@@ -282,6 +285,11 @@ const struct ProcCmd DebuggerProcCmd[] = {
     PROC_LABEL(SupportLabel), // Supports
     PROC_CALL(EditSupportsInit),
     PROC_REPEAT(EditSupportsIdle),
+    PROC_GOTO(EndLabel),
+
+    PROC_LABEL(EditSkillsLabel),
+    PROC_CALL(EditSkillsInit),
+    PROC_REPEAT(EditSkillsIdle),
     PROC_GOTO(EndLabel),
 
     PROC_LABEL(EndLabel),
@@ -3453,6 +3461,308 @@ void EditSupportsIdle(DebuggerProc * proc)
             }
 
             RedrawUnitSupportsMenu(proc);
+        }
+    }
+}
+
+#define LearnedSkillCount 6
+#define LearnedSkillNameWidth 12
+extern const u16 SkillDescTable[];
+extern u8 * (*Skill_Getter_Pointer)(struct Unit * unit);
+extern u8 DrawSkillIcon;
+
+static void CallDrawSkillIcon(u16 * dest, int iconId, int extra)
+{
+    ((void (*)(u16 *, int, int))(((int)&DrawSkillIcon) | 1))(dest, iconId, extra);
+}
+
+#define LEARNED_SKILL_RAM ((u8 *)0x0203F540)
+#define LEARNED_SKILL_MAGIC 0x534B4C53
+#define LEARNED_SLOTS_SIZE (0x46 * LearnedSkillCount)
+
+static void EnsureLearnedSkillRam(void)
+{
+    u8 * ram = LEARNED_SKILL_RAM;
+    u32 * magic = (u32 *)ram;
+    int i;
+    if (*magic == LEARNED_SKILL_MAGIC)
+    {
+        return;
+    }
+    for (i = 0; i < 4 + LEARNED_SLOTS_SIZE + 0x46; ++i)
+    {
+        ram[i] = 0;
+    }
+    *magic = LEARNED_SKILL_MAGIC;
+}
+
+static u8 * GetUnitLearnedSkillRam(struct Unit * unit)
+{
+    int pid;
+    if (!unit || !unit->pCharacterData)
+    {
+        return NULL;
+    }
+    pid = unit->pCharacterData->number;
+    if (pid < 1 || pid > 0x45)
+    {
+        return NULL;
+    }
+    EnsureLearnedSkillRam();
+    return LEARNED_SKILL_RAM + 4 + pid * LearnedSkillCount;
+}
+
+static void SetLearnedSkillOverride(struct Unit * unit, int on)
+{
+    int pid;
+    if (!unit || !unit->pCharacterData)
+    {
+        return;
+    }
+    pid = unit->pCharacterData->number;
+    if (pid < 1 || pid > 0x45)
+    {
+        return;
+    }
+    EnsureLearnedSkillRam();
+    LEARNED_SKILL_RAM[4 + LEARNED_SLOTS_SIZE + pid] = on ? 1 : 0;
+}
+
+static void InvalidateSkillBuffer(void)
+{
+    *(struct Unit **)0x0202A9D4 = NULL;
+}
+
+static const char * GetLearnedSkillName(int skillId)
+{
+    char * desc;
+    if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
+    {
+        return "---";
+    }
+    desc = GetStringFromIndexSafe(SkillDescTable[skillId]);
+    if (!desc)
+    {
+        return "---";
+    }
+    for (char * it = desc; *it; ++it)
+    {
+        if (*it == ':')
+        {
+            *it = 0;
+            break;
+        }
+    }
+    return desc;
+}
+
+void RedrawLearnedSkillsMenu(DebuggerProc * proc);
+void SaveLearnedSkills(DebuggerProc * proc)
+{
+    u8 * skills = GetUnitLearnedSkillRam(proc->unit);
+    if (!skills)
+    {
+        return;
+    }
+    for (int i = 0; i < LearnedSkillCount; ++i)
+    {
+        skills[i] = proc->tmp[i];
+    }
+    SetLearnedSkillOverride(proc->unit, TRUE);
+    InvalidateSkillBuffer();
+}
+
+u8 CanEditLearnedSkillsMenu(const struct MenuItemDef * def, int number)
+{
+    if (!gActiveUnit || !gActiveUnit->pCharacterData)
+    {
+        return greyed;
+    }
+    return usable;
+}
+
+u8 EditSkillsNow(struct MenuProc * menu, struct MenuItemProc * menuItem)
+{
+    DebuggerProc * proc;
+    proc = Proc_Find(DebuggerProcCmd);
+    Proc_Goto(proc, EditSkillsLabel);
+    return MENU_ACT_SKIPCURSOR | MENU_ACT_END | MENU_ACT_SND6A | MENU_ACT_CLEAR;
+}
+
+void EditSkillsInit(DebuggerProc * proc)
+{
+    u8 * skills;
+    SomeMenuInit(proc);
+    LoadIconPalettes(4);
+    InvalidateSkillBuffer();
+    skills = Skill_Getter_Pointer(proc->unit);
+    for (int i = 0; i < LearnedSkillCount; ++i)
+    {
+        proc->tmp[i] = 0;
+    }
+    if (skills)
+    {
+        for (int i = 0; i < LearnedSkillCount && skills[i] && skills[i] != 0xFF; ++i)
+        {
+            proc->tmp[i] = skills[i];
+        }
+    }
+
+    int x = NUMBER_X - LearnedSkillNameWidth - 3;
+    int y = Y_HAND - 1;
+    int w = LearnedSkillNameWidth + (START_X - NUMBER_X) + 8;
+    int h = (LearnedSkillCount * 2) + 2;
+
+    DrawUiFrame_(BG_GetMapBuffer_(1), x, y, w, h, TILEREF(0, 0), 0);
+    BG_EnableSyncByMask(BG2_SYNC_BIT);
+
+    struct Text * th = gStatScreen.text;
+    for (int i = 0; i < LearnedSkillCount; ++i)
+    {
+        InitText(&th[i], LearnedSkillNameWidth);
+    }
+    proc->id = 0;
+    proc->digit = 0;
+    proc->editing = false;
+    RedrawLearnedSkillsMenu(proc);
+}
+
+void RedrawLearnedSkillsMenu(DebuggerProc * proc)
+{
+    TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * LearnedSkillCount, 0);
+    BG_EnableSyncByMask(BG0_SYNC_BIT);
+    ResetIconGraphics();
+    LoadIconPalettes(4);
+    struct Text * th = gStatScreen.text;
+    int nameX = NUMBER_X - LearnedSkillNameWidth + 2;
+    int iconX = nameX - 2;
+    for (int i = 0; i < LearnedSkillCount; ++i)
+    {
+        ClearText(&th[i]);
+        Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
+        PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(nameX, Y_HAND + (i * 2)));
+        PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
+        if (proc->tmp[i] && proc->tmp[i] != 0xFF)
+        {
+            CallDrawSkillIcon(
+                TILEMAP_LOCATED(gBG0TilemapBuffer, iconX, Y_HAND + (i * 2)), proc->tmp[i], 0x4000);
+        }
+    }
+    BG_EnableSyncByMask(BG0_SYNC_BIT);
+}
+
+void EditSkillsIdle(DebuggerProc * proc)
+{
+    u16 keys = gKeyStatusPtr->repeatedKeys;
+    if (keys & B_BUTTON)
+    {
+        ClearTilesetRow(proc);
+        Proc_Goto(proc, RestartLabel);
+        BackPressSFX();
+    }
+    if ((keys & START_BUTTON) || (keys & A_BUTTON))
+    {
+        SaveLearnedSkills(proc);
+        ClearTilesetRow(proc);
+        Proc_Goto(proc, RestartLabel);
+        ConfirmPressSFX();
+    }
+    if (proc->editing)
+    {
+        DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+        int max = 255;
+        int min = 0;
+        int max_digits = GetMaxDigits(max, 0);
+
+        if (keys & DPAD_RIGHT)
+        {
+            if (proc->digit > 0)
+            {
+                proc->digit--;
+            }
+            else
+            {
+                proc->digit = max_digits - 1;
+                proc->editing = false;
+            }
+            RedrawLearnedSkillsMenu(proc);
+        }
+        if (keys & DPAD_LEFT)
+        {
+            if (proc->digit < (max_digits - 1))
+            {
+                proc->digit++;
+            }
+            else
+            {
+                proc->digit = 0;
+                proc->editing = false;
+            }
+            RedrawLearnedSkillsMenu(proc);
+        }
+        if (keys & DPAD_UP)
+        {
+            if (proc->tmp[proc->id] == max)
+            {
+                proc->tmp[proc->id] = min;
+            }
+            else
+            {
+                proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+                if (proc->tmp[proc->id] > max)
+                {
+                    proc->tmp[proc->id] = max;
+                }
+            }
+            RedrawLearnedSkillsMenu(proc);
+        }
+        if (keys & DPAD_DOWN)
+        {
+            if (proc->tmp[proc->id] == min)
+            {
+                proc->tmp[proc->id] = max;
+            }
+            else
+            {
+                proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+                if (proc->tmp[proc->id] < min)
+                {
+                    proc->tmp[proc->id] = min;
+                }
+            }
+            RedrawLearnedSkillsMenu(proc);
+        }
+    }
+    else
+    {
+        DisplayUiHand(CursorLocationTable[0].x - ((LearnedSkillNameWidth + 2) * 8), (Y_HAND + (proc->id * 2)) * 8);
+        if (keys & DPAD_RIGHT)
+        {
+            proc->digit = 1;
+            proc->editing = true;
+        }
+        if (keys & DPAD_LEFT)
+        {
+            proc->digit = 0;
+            proc->editing = true;
+        }
+        if (keys & DPAD_UP)
+        {
+            proc->id--;
+            if (proc->id < 0)
+            {
+                proc->id = LearnedSkillCount - 1;
+            }
+            RedrawLearnedSkillsMenu(proc);
+        }
+        if (keys & DPAD_DOWN)
+        {
+            proc->id++;
+            if (proc->id >= LearnedSkillCount)
+            {
+                proc->id = 0;
+            }
+            RedrawLearnedSkillsMenu(proc);
         }
     }
 }
