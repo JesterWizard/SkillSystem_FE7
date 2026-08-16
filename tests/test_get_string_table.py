@@ -183,6 +183,14 @@ class GetStringTableTests(unittest.TestCase):
         text = read_event_text(LEFT_LYN)
         self.assertIn("$83FC9FC", text)
 
+    def test_left_panel_uses_vanilla_mms_box_oam(self):
+        """FE6 SSS_MMSBoxOAM needs FE6 tiles at 0x6000000. Vanilla 08CC1E58 is the dark LV/HP box."""
+        self.assertEqual(
+            u32(self.hack, 0x80F3C),
+            u32(self.clean, 0x80F3C),
+            "0x80F3C still points at SSS_MMSBoxOAM instead of vanilla 08CC1E58",
+        )
+
     def test_items_page_uses_vanilla_item_box_tsa(self):
         """SSS_StatsBoxTSA is the FE6 equipment box. FE7 item names sit on 083FCAC0."""
         text = read_event_text(PAGE2_LYN)
