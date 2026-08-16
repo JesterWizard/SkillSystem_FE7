@@ -1,231 +1,116 @@
 #ifndef HAX_CONFIG
 #define HAX_CONFIG
 
-// This file holds configuration switches for all hacks shipped with the skill system.
+// Switches for Skill System, Vesly debugger, and skill-plumbing Necessary modules.
 
 // =========================
 // = GENERAL CONFIGURATION =
 // =========================
 
-// If commented, the test map will not be installed.
-#define USE_TEST_MAP
-
-// The amount of attack speed needed to double an opponent.
+// Attack speed needed to double. Used if CanUnitDoubleCalcLoop is included.
 #define AS_DOUBLING_THRESHOLD 4
-
-// If true, dropped items will retain their durability.
-#define DROPPED_ITEM_DURABILITY True
-
-// ===================================
-// = HACK INSTALLATION CONFIGURATION =
-// ===================================
-
-// If commented, slayer and effectiveness will remain the same as they are in vanilla
-// Look at SkillSystem/Skills/EffectivenessSkills/Nullify/_README.txt for the full ramifications of uncommenting this
-#define ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK
-
-// If uncommented, the statscreen will have a moving background similar to FE6 and FE7.
-// Customization of graphical assets is possible in Necessary/ModularStatScreen/Background/Graphics/Graphics.event.
-// #define SCROLLING_STATSCREEN_BACKGROUND
-
-// If uncommented, the fourth page of the stat screen will include personal information on the character.
-// This information can be edited in the "Personal Data Editor.csv" file.
-// #define ENABLE_PERSONAL_INFO
-
-// If uncommented, the third page of the stat screen will only show weapon ranks that the unit has a rank in.
-#define ONLY_SHOW_USED_RANKS
-
-// If uncommented, the second page of the stat screen will display data of map-based ballista in the inventory.
-//#define QOL_STAT_SCREEN_BALLISTA
-
-// If uncommented, passive stat boosts will not stack and only the 
-// first item in the inventory with passive stat boosts will apply them.
-// Setting the 0x00800000 bit in the item ability bitfield will enable passive boosts.
-// #define DONT_STACK_BOOSTS
-
-// If uncommented all boss kills will play critical hit animations.
-// #define FLASHY_MODE
-
-// If uncommented, the unit load buffer will be repointed.
-// The location it is repointed to is also defined here. The default location is
-// the area used for debug printing.
-#define REPOINT_UNIT_LOAD_BUFFER
-#define NewUnitLoadBufferLoc 0x2026D30 //FE8 -> 0x2026E30
 
 // =================================
 // = SKILL BEHAVIOUR CONFIGURATION =
 // =================================
 
-// If set to false, passive skills will not stack and only the first item with one will have an effect.
-// Setting the 0x00800000 bit in the item ability bitfield will enable passive skills.
+// If commented, slayer and effectiveness stay vanilla.
+// See SkillSystem/Skills/EffectivenessSkills/Nullify/_README.txt.
+#define ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK
+
+// If false, only the first inventory item with a passive skill applies.
+// Item ability 0x00800000 enables passive skills on an item.
 #define PASSIVE_SKILLS_STACK True
 
-// If set to true, units under roof tiles will be considered for aura skills
+// If true, units under roof tiles count for aura skills.
 #define ROOF_UNIT_AURAS True
 
-// if uncommented units will be select automatically after galeforce (pressing b won't end their turn)
-// #define ENABLE_GALEFORCE_AUTOSELECT
-
-// if uncommented lethality will work like it originally did in gba
-// #define ENABLE_GBA_LETHALITY
-
-// if set to false, only the skill will work, if set to true both the skill and the ability will work
+// If true, both the Canto skill and the vanilla canto ability apply.
 #define ENABLE_LEGACY_CANTO False
 
-// if commented, enemies with Steal+ will steal as normal in vanilla (ie, the skill will be pretty much useless
+// If commented, Steal+ AI steals as in vanilla.
 #define ENABLE_AI_STEAL_PLUS
 
-// if commented, Steal will no longer be a skill, but a character ability, and Steal+ will require having regular steal
+// If commented, Steal is a character ability and Steal+ requires vanilla steal.
 #define ENABLE_STEAL_SKILL
 
-// If commented, debuffs are allowed to take stats below zero
+// If commented, debuffs may take stats below zero.
 #define DEBUFFS_MIN_ZERO
 
-// If true Shadowgift/Lumina will check for staff ranks when checking for highest magic rank
+// Shadowgift/Lumina: also check staff rank as the highest magic rank.
 #define SHADOWGIFT_VIA_STAFF_RANK False
 #define LUMINA_VIA_STAFF_RANK True
 
-// If commented, Poison Strike and Grisly Wound will not check whether no damage was dealt before applying additional damage.
+// If commented, Poison Strike and Grisly Wound apply even when battle damage was 0.
 #define RESIDUAL_DAMAGE_REQUIRES_BATTLE_DAMAGE
 
-// If commented, Capture will be a global command and will not require the Capture skill.
+// If commented, Capture / Dragon Veins / Heroes Movement are global commands.
 #define CAPTURE_SKILL_REQUIRED
-
-// If commented, Dragon Veins will be a global command and will not require the Dragon's Blood skill.
 #define DRAGON_VEIN_SKILL_REQUIRED
-
-//If commented, Heroes Movement skills will use class checks and will not require their respective skills. Configure lists for each skill in 'SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event', at the bottom of the file.
 #define HEROES_MOVEMENT_SKILL_REQUIRED
 
-// If uncommented, the Charge mechanic will be disabled and Moonbow will use a skill% activation rate. This will not change Moonbow's description.
-// #define DISABLE_CHARGE
-
-//If commented, Triangle Attack will use a skill check instead of a bitflag.
-//#define VANILLA_TRIANGLE_ATTACK
-
-//If HEROES_MOVEMENT_SKILL_REQUIRED is not defined, this setting will control whether or not skills can still be used.
+// If HEROES_MOVEMENT_SKILL_REQUIRED is off, still allow the skill check.
 #define ALSO_USE_MOVEMENT_SKILL_CHECK True
 
-//If true, get 1/4 prices with both Bargain and Silver Card simultaneously.
 #define DOES_BARGAIN_STACK False
 
-//If true, will use the vanilla check in addition to the skill check.
 #define ALSO_USE_VANILLA_DANCE_CHECK False
 #define ALSO_USE_VANILLA_SUPPLY_CHECK True
 #define ALSO_USE_VANILLA_SUMMON_CHECK False
 #define ALSO_USE_VANILLA_STEAL_CHECK True
 
-//If uncommented, Combat Arts will be enabled.
-//This changes the behavior of most command skills and some proc skills such that they cost additional durability per hit and are selected from a submenu.
+// Combat Arts: extra durability per hit, selected from a submenu.
 // #define COMBAT_ARTS
-
-//If true, Combat Arts will not be allowed to hit more than once.
 #define ARTS_HIT_ONCE True
 
-//If uncommented, ModularPreBattleSkill will be installed.
-//This modularly affects combat arts. See: SkillSystem\Skills\PreBattleSkills\ModularPreBattleSkills
+// ModularPreBattleSkills (combat-art modifiers).
 // #define MODULAR_PRE_BATTLE_SKILLS
 
-// If uncommented, the range skills checker will use SkillTester2 instead of SkillTester.
-// This will prevent this function from checking for equipped weapon skills to prevent potential infinite recursion.
-// Uncommenting this may hinder edge edge cases of range-based skills working as equipped weapon skills.
+// Range-skill checks use SkillTester2 (no equipped-weapon skills; avoids recursion).
 // #define RANGE_SKILLS_CHECK_USES_SKILLTESTER2
 
-//If commented, level up skill learn lists will be replaced with ones emulating a vanilla skill spread. This will NOT remove personal skills.
-//  #define USE_LEGACY_SKILL_DEFAULTS
+// If uncommented, Moonbow uses skill% instead of Charge.
+// #define DISABLE_CHARGE
 
-//	Effectiveness skills coincide with a rework of the effectiveness system. 
-//	Weapon effectiveness by default is updated via macros in
-//	SkillSystem/Skills/EffectivenessSkills/EffectivenessRework.event.
+// If uncommented, Triangle Attack uses the vanilla bitflag instead of a skill check.
+// #define VANILLA_TRIANGLE_ATTACK
 
-//	Forager uses an external list of terrain IDs for what is considered valid for healing.
-//	This list can be edited, and is located in
-//	SkillSystem/Skills/HPRestorationSkills/HPRestorationSkills.event.
+// If uncommented, Lethality uses original GBA rules.
+// #define ENABLE_GBA_LETHALITY
 
-//	Quantum Visage pulls a mug ID from a list of 100 each time its effect is applied.
-//	The list of valid IDs can be edited, and is located in
-//	SkillSystem/Skills/MugLoadingSkills/MugLoadingSkills.event.
+// If uncommented, Galeforce auto-selects the unit (B does not end the turn).
+// #define ENABLE_GALEFORCE_AUTOSELECT
 
-//	Identity Problems swaps between 3 pairs of name IDs and mug IDs. 
-//	Each of these are external values, and can be changed in
-//	SkillSystem/Skills/MugLoadingSkills/MugLoadingSkills.event.
-
-//	Indoor & Outdoor Fighter use external lists of terrain IDs for what is considered indoor and outdoor terrain.
-//	These lists can be edited, and are located in
-//	Engine Hacks/SkillSystem/Skills/PreBattleSkills/DoorFighter/DoorFighter.event.
-
-//	Black Magic inflicts a random status pulled from an external list of statuses and the likelihood of their application.
-//	This list can be edited, and is located in
-//	SkillSystem/Skills/ProcSkills/ProcSkills.event.
-
-//	Bargain halves prices in shops, much like a Silver Card.
-//	It also includes a list of item IDs that are considered as valid Silver Cards, which can be edited in
-//	SkillSystem/Skills/StandaloneSkills/Bargain/Bargain.event.
-
-//	Amische disallows usage of any weapons not contained on a list.
-//	This list can be edited, and is located in
-//	SkillSystem/Skills/WeaponUsabilitySkills/WeaponUsabilitySkills.event.
-
-// If true, Hoarders Bane will consume vulneraries from your inventory and the supply (as long as your party can access the supply). 
-// If false, it will only consume vulneraries from your inventory. 
 #define HOARDERS_BANE_USE_CONVOY True
 
-// If true, enemies/npcs with Canto+ will retreat to their safest tile with any remaining movement after their action. 
+// If true, enemy/NPC Canto+ retreats to the safest remaining tile.
 #define CANTO_AI True
 
 // ================================
 // = GROWTH DISPLAY CONFIGURATION =
 // ================================
 
-//If commented, growths will not be displayed by pressing Select.
 #define PRESS_SELECT_TO_VIEW_GROWTHS
 
-//If true, the stat colors for player units will reflect their growth in the stat.
 #define USE_STAT_COLORS True
 
-//When leveling up, the game rerolls (up to 5 times) until you gain at least this many points
-#define MIN_STAT_GAIN 1 // vanilla is 1 
+#define MIN_STAT_GAIN 1
 
-// If true, fixed/bracketed levels will consider your lowest level as the level inputted in the character table
-#define BRACKETING_USE_BASE_LEVEL False 
+#define BRACKETING_USE_BASE_LEVEL False
 
-//If true, Fixed Growths mode will exist.
-// Note: this takes promotion level into account, but does not take stat boosters into account 
 #define FIXED_GROWTHS_MODE False
-
-//ID of flag to use for fixed growths mode, if enabled (also works if flag here is defined as 0)
 #define FIXED_GROWTHS_FLAG_ID 0xEF
 
-//If true, Stat bracketing mode will exist. This keeps your stats within X points of the average. 
-// Note: this takes promotion level into account, but does not take stat boosters into account 
-#define STAT_BRACKETING_EXISTS False 
+#define STAT_BRACKETING_EXISTS False
+#define BRACKETED_GROWTHS_FLAG_ID 0xED
 
-//ID of flag to use for bracketed growths mode, if enabled (also works if flag here is defined as 0)
-#define BRACKETED_GROWTHS_FLAG_ID 0xED // 0xEE is used to hide dmg numbers in battle
+#define FORCE_WHEN_BELOW_AVERAGE_BY_AMOUNT 3
+#define PREVENT_WHEN_ABOVE_AVERAGE_BY_AMOUNT 5
 
-//If using stat bracketing and your stat is below average by this many points, always gain it on levelup 
-#define FORCE_WHEN_BELOW_AVERAGE_BY_AMOUNT 3 
-
-//If using stat bracketing and your stat is above average by this many points, never gain it on levelup 
-#define PREVENT_WHEN_ABOVE_AVERAGE_BY_AMOUNT 5 
-
-//If true, passive growth boosters and metis tome will not affect growths in fixed growths mode.
 #define FIXED_GROWTHS_DONT_BOOST True
-
-//If true, enemy/NPC autolevels will use fixed growths as well.
 #define ENEMY_NPC_FIXED_GROWTHS True
-
-//If true, the effects of multiple passive growth boosters can stack.
-//Setting the 0x00800000 bit in the item ability bitfield will enable passive boosts.
 #define STACKABLE_GROWTH_BOOSTS True
-
-//Amount for Metis Tome to boost growths by
 #define METIS_TOME_BOOST 5
-
-//If true, growths will be calculated as (char growth + class growth).
 #define USE_CHAR_AND_CLASS_GROWTHS False
-
-//The growth rate ranges for each stat color and the colors themselves can be edited in
-//Necessary/MSS/DisplayGrowthsOptions/GrowthColorsTable.event and NewPalette.event, respectively.
 
 #endif // HAX_CONFIG

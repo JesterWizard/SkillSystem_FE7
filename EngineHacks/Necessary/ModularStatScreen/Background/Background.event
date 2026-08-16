@@ -1,14 +1,4 @@
 // For ScrollingStatScreen. Prefix SSS.
-// #ifndef SCROLLING_STATSCREEN_BACKGROUND
-//   ALIGN 4; SSS_Flag:                    // This flag indicates to mss_defs.s and mss_threepageconditional.s
-//   WORD 0x0                              // Which behaviour to use.
-
-//   ALIGN 4; SSS_PageTSATable:            // These labels are used in mss_defs.s and mss_threepageconditional.s
-//   WORD 0x0                              // and therefore still need to exist, or EA won't find them.
-
-//   ALIGN 4; SSS_StatsBoxTSA:             // ^
-//   WORD 0x0
-// #else
   ALIGN 4; SSS_Flag:
   WORD 0x1
 
@@ -93,5 +83,3 @@
     POIN SSS_StatsBoxGfx
     
   POP
-
-// //#endif // SCROLLING_STATSCREEN_BACKGROUND

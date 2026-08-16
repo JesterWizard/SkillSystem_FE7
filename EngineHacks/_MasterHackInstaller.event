@@ -6,26 +6,17 @@
 
 #include "Extensions/Hack Installation.txt"
 
-// hack configuration file
 #include "Config.event"
 
-  // Skill plumbing this build actually installs.
-  // Other Necessary modules (stat getters, debuffs, icon/popup rework,
-  // unit menu/action, durability items, negative boosts, EMS, MSG,
-  // FixWpnRnk for Shadowgift/Lumina) stay on disk until a skill include needs them.
+  // Keep-list: Skill System, Vesly debugger, and skill-plumbing Necessary modules.
 
-  //Modular Stat Screen
   #include "Necessary/ModularStatScreen/ModularStatScreen.event"
-
-  //Generic routines that other things may rely on
   #include "Necessary/Routines/Installer.event"
 
   ALIGN 4
   #include "SkillSystem/SkillSystemInstaller.event"
 
-  // Growth Getters
   #include "Necessary/GrowthGetters/GrowthGetters.event"
-
   #include "Necessary/CalcLoops/CalcLoops.event"
 
 #include "ExternalHacks/VeslyDebugger/Installer.event"
