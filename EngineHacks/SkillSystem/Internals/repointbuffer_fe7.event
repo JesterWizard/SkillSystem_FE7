@@ -7,6 +7,8 @@
 #define maxAtks 31
 #define BattleBufferWidth 4
 #define NewAnimRoundLocation (NewBattleBufferLocation + (maxAtks * BattleBufferWidth))
+#define NewHpRoundLocation 0x0203F730
+#define AnimRoundHalfwordCap 0x3D // cmp r2, #61: 62 halfwords = 31 L+R rounds
 
 PUSH
 
@@ -17,6 +19,13 @@ BYTE 0x1F 0x21 // mov r1, #31
 // Scan cap in the round walker (was cmp r2, #6)
 ORG $29E62
 BYTE 0x1F 0x2A // cmp r2, #31
+
+// gAnimRoundData / HP-round fill: vanilla cmp r2, #0x13 = 20 halfwords = 10 rounds.
+// 5+counter+5 is 11; leftover is not 0xFFFF so AIS never stops.
+ORG $52CC4
+BYTE AnimRoundHalfwordCap
+ORG $52CDC
+BYTE AnimRoundHalfwordCap
 
 // gBattleHitArray literals (was 0x0203A4F0)
 ORG $28FA8
@@ -71,5 +80,27 @@ ORG $53334
 WORD NewAnimRoundLocation
 ORG $53418
 WORD NewAnimRoundLocation
+
+// HP-per-round (was 0x0203E062)
+ORG $52D08
+WORD NewHpRoundLocation
+ORG $52DDC
+WORD NewHpRoundLocation
+ORG $52FE0
+WORD NewHpRoundLocation
+ORG $53020
+WORD NewHpRoundLocation
+ORG $530A0
+WORD NewHpRoundLocation
+ORG $53108
+WORD NewHpRoundLocation
+ORG $53188
+WORD NewHpRoundLocation
+ORG $53210
+WORD NewHpRoundLocation
+ORG $53350
+WORD NewHpRoundLocation
+ORG $5336C
+WORD NewHpRoundLocation
 
 POP

@@ -34,9 +34,9 @@ ldr r1, AstraID
 .short 0xf800
 cmp r0, #0
 beq CheckAdept
-@if user has Astra, check for proc rate
-mov r0, #100
-@ldrb r0, [r4, #0x15] @skill stat as activation rate
+@if user has Astra, check for proc rate (also in proc_astra.s)
+ldrb r0, [r4, #0x15] @skill stat as activation rate
+@mov r0, #100
 mov r1, r4 @skill user
 blh d100Result
 cmp r0, #1
@@ -61,7 +61,8 @@ ldr r1, AdeptID
 cmp r0, #0
 beq Return
 
-mov r0, #0x64 @ 100% (was speed at [r4,#0x16])
+ldrb r0, [r4, #0x16] @speed stat as activation rate
+@mov r0, #0x64
 mov r1, r4
 blh d100Result
 cmp r0, #1

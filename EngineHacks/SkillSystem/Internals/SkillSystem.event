@@ -10,10 +10,9 @@ PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 
 // //PROBLEM: skills 1 and 2 get kept along with loss count
 
-// ORG $52F7C // do not stamp 0x0800 onto FE7 gAnimRoundData (glitch + C03 hang)
-ORG $53680 // C03: Elfire OBJ splash on Astra 0x4000 (own proc, units stay)
-jumpToHack(SkillActivationAnims)
-// ORG $58920 // vanilla Elfire loop — do not hook; skill splash uses its own proc
+// ORG $52F7C // do not stamp 0x0800 onto FE7 gAnimRoundData
+// ORG $53680 // skill splash off — vanilla C03
+// ORG $58920 // do not hook vanilla Elfire loop
 // ORG $4CB80 //FE8 -> $518E4      // Don't overwrite VRAM holding procced skill icon.
 // jumpToHack(KeepProcSkillIcon)
 
@@ -103,12 +102,12 @@ POP
 ALIGN 4
 ParseHitSkillRoundFlags:
 #include "parse_hit_skill_round.lyn.event"
-ALIGN 4
-SkillActivationAnims:
-#include "activationanims.lyn.event"
-ALIGN 4
-EfxSkillType01BG_Loop:
-#include "efx_skill_type01_loop.lyn.event"
+// ALIGN 4
+// SkillActivationAnims:
+// #include "activationanims.lyn.event"
+// ALIGN 4
+// EfxSkillType01BG_Loop:
+// #include "efx_skill_type01_loop.lyn.event"
 // ALIGN 4
 // SkillProcDisplayMap:
 // #include "SkillProcDisplayMap.lyn.event"

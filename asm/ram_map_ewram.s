@@ -15,14 +15,16 @@
 .set BattleBufferMaxAtks, 31
 .set BattleBufferWidth,   4
 .set BattleHitArraySize,  (BattleBufferMaxAtks * BattleBufferWidth)
-.set AnimRoundDataSize,   (BattleBufferMaxAtks * 2)
+@ L+R halfword per round. Init loop at 0x52CBA writes this many halfwords.
+.set AnimRoundDataSize,   (BattleBufferMaxAtks * 4)
+.set HpRoundDataSize,     (BattleBufferMaxAtks * 4)
 
 .set DebuffTableSize, 0x440
 
 @ 4-byte magic + (0x46 PIDs * 6 slots) + 0x46 override flags
 .set LearnedSkillRamSize, (4 + (0x46 * 6) + 0x46)
 
-SET_DATA FreeEwramSpaceTop,    0x0203F730
+SET_DATA FreeEwramSpaceTop,    0x0203F7AC
 SET_DATA FreeEwramSpaceBottom, 0x02040000
 SET_DATA UsedFreeEwramSpaceTop, FreeEwramSpaceBottom
 
@@ -37,8 +39,10 @@ SET_ARRAY gBattleHitArray, 0x0203F000, BattleHitArraySize
 SET_ARRAY gAnimRoundData,  0x0203F07C, AnimRoundDataSize
 SET_ARRAY DebuffTableRam,  0x0203F100, DebuffTableSize
 SET_ARRAY gLearnedSkillRam, 0x0203F540, LearnedSkillRamSize
+@ vanilla 0x0203E062 HP-per-round; 11+ rounds smash AIS ptrs if left in place
+SET_ARRAY gHpRoundData,    0x0203F730, HpRoundDataSize
 
-@ -- Bump pool: 0x0203F730–0x02040000, allocated downward -----------------
+@ -- Bump pool: 0x0203F7AC–0x02040000, allocated downward -----------------
 @ Add new EWRAM with:
 @   _kernel_malloc_ewram gMyBuffer, 0x20
 @ Pad manually if the next symbol needs 2- or 4-byte alignment.

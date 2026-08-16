@@ -1,20 +1,21 @@
 .thumb
-@ C03: if this AIS is the Astra attacker on a 0x4000 hit, play Elfire OBJ
-@ on a NEW spell AIS (units stay). Own proc sets BLOCKEND after 0x28 frames.
-@ Do not call vanilla 0x0805889C (hides sprite, no BLOCKEND).
-@ Do not hook vanilla Elfire loop. Do not write gAnimRoundData.
+@ C03: Astra 0x4000 → Elfire OBJ on unused OBJ VRAM, then x5.
+@ Do not call 0x08058744 / 0x08058810 / 0x08058AC4 from C03 (LZ77 SWI crash).
+@ Do not call 0x0805889C (tiles 0x06010800 + pal 2 wipe both units).
+@ Tiles at 0x06014000, OBJ pal 15. No hide bit. Own proc BLOCKENDs.
 
 .equ GetAISLayerId,              0x08054665
 .equ GetAnimPosition,            0x08054679
 .equ New6C,                      0x08004495
 .equ PrepAIS,                    0x0805041D
-.equ StoreSpellAnimPaletteOBJ,   0x080505F1
-.equ StoreSpellAnimTilesOBJ,     0x080505C9
+.equ LZ77UnCompWram,             0x080BFA29
+.equ TileTransferInfoAdd,        0x08003079
+.equ CpuFastSet,                 0x080BFA0D
+.equ EnablePaletteSync,          0x0800105D
 .equ BreakLoop,                  0x08006651
 .equ Break6CLoop,                0x080046A1
 .equ VanillaC03_Continue,        0x08053689
 .equ gBattleHitArray,            0x0203F000
-.equ gEfxSemaphore,              0x0201774C
 .equ gAISArray,                  0x02000000
 .equ gBanimLeftUnit,             0x0203E094
 .equ gBanimRightUnit,            0x0203E098
@@ -23,6 +24,9 @@
 .equ ElfireTiles,                0x0820A924
 .equ ElfireFrameL,               0x08BB62EC
 .equ ElfireFrameR,               0x08BB54CC
+.equ SpellTileWram,              0x0201A784
+.equ SpellTileVram,              0x06014000
+.equ ObjPal15Buf,                0x02022C40
 
 .macro blh to, reg=r3
   ldr \reg, =\to
@@ -107,15 +111,10 @@ HitNo:
     mov r0, #0
     bx lr
 
-@ r0 = unit AIS. New OBJ AIS; do not set hide bit 0x400.
 StartSkillElfireOBJ:
     push {r4-r6, lr}
     sub sp, #4
     mov r5, r0
-    ldr r1, =gEfxSemaphore
-    ldr r0, [r1]
-    add r0, #1
-    str r0, [r1]
     ldr r0, =EfxSkillElfireOBJProc
     mov r1, #3
     blh New6C
@@ -142,13 +141,23 @@ ElfireRight:
     add r1, #8
 ElfireStoreX:
     strh r1, [r6, #2]
-    ldr r0, =ElfirePal
-    mov r1, #0x20
-    blh StoreSpellAnimPaletteOBJ
+    @ pal 15, prio 2, tile 0x200 (0x06014000)
+    mov r0, #0xFA
+    lsl r0, #8
+    strh r0, [r6, #8]
     ldr r0, =ElfireTiles
-    mov r1, #0x80
-    lsl r1, #4
-    blh StoreSpellAnimTilesOBJ
+    ldr r1, =SpellTileWram
+    blh LZ77UnCompWram
+    ldr r0, =SpellTileWram
+    ldr r1, =SpellTileVram
+    mov r2, #0x80
+    lsl r2, #4
+    blh TileTransferInfoAdd
+    ldr r0, =ElfirePal
+    ldr r1, =ObjPal15Buf
+    mov r2, #8
+    blh CpuFastSet
+    blh EnablePaletteSync
     add sp, #4
     pop {r4-r6}
     pop {r1}
@@ -190,10 +199,6 @@ EfxSkillElfireLoop:
 
     ldr r0, [r4, #0x60]
     blh BreakLoop
-    ldr r1, =gEfxSemaphore
-    ldr r0, [r1]
-    sub r0, #1
-    str r0, [r1]
     mov r0, r4
     blh Break6CLoop
 
