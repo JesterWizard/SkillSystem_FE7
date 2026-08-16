@@ -1,5 +1,5 @@
 """
-Skill IDs are toggled with SkillEnabled/SkillDisabled, not by overwriting the catalog ID.
+Skill IDs are toggled with a catalog number or SKILL_OFF.
 
 Disabled skills must still assemble as 255; enabled skills keep their assigned IDs.
 """
@@ -17,8 +17,6 @@ CLEAN_ROM = ROOT / "FE7_clean.gba"
 COLORZCORE = ROOT / "EventAssembler" / "ColorzCore.exe"
 
 DEFINE_RE = re.compile(r"^#define\s+(\w+ID)\s+(\S+)")
-ENABLED_RE = re.compile(r"^SkillEnabled\((\d+)\)$")
-DISABLED_RE = re.compile(r"^SkillDisabled\((\d+)\)$")
 ALIAS_RE = re.compile(r"^\w+ID$")
 SKILL_OFF = 255
 
@@ -39,22 +37,20 @@ def _catalog_defines(text: str) -> list[tuple[str, str]]:
 def _resolved_ids(text: str) -> dict[str, int]:
     resolved = {}
     for name, rhs in _catalog_defines(text):
-        en = ENABLED_RE.fullmatch(rhs)
-        dis = DISABLED_RE.fullmatch(rhs)
-        if en:
-            resolved[name] = int(en.group(1))
-        elif dis:
+        if rhs == "SKILL_OFF":
             resolved[name] = SKILL_OFF
+        elif rhs.isdigit():
+            resolved[name] = int(rhs)
         else:
-            raise AssertionError(f"{name} must use SkillEnabled(id) or SkillDisabled(id), got {rhs}")
+            raise AssertionError(f"{name} must use a catalog id or SKILL_OFF, got {rhs}")
     return resolved
 
 
 class SkillDefinitionToggleTests(unittest.TestCase):
     def test_toggle_macros_preserve_resolved_skill_ids(self):
         text = DEFS.read_text(encoding="utf-8")
-        self.assertIn("#define SkillEnabled(id)", text)
-        self.assertIn("#define SkillDisabled(id)", text)
+        self.assertNotIn("SkillEnabled", text)
+        self.assertNotIn("SkillDisabled", text)
         self.assertIn("#define SKILL_OFF 255", text)
 
         resolved = _resolved_ids(text)
@@ -62,7 +58,7 @@ class SkillDefinitionToggleTests(unittest.TestCase):
         self.assertEqual(resolved, expected)
         self.assertEqual(resolved["CantoID"], 1)
         self.assertEqual(resolved["AmischeID"], SKILL_OFF)
-        self.assertIn("SkillDisabled(131)", text)
+        self.assertEqual(resolved["BloodTideID"], SKILL_OFF)
 
     def test_colorzcore_expands_enabled_and_disabled_ids(self):
         if not CLEAN_ROM.is_file() or not COLORZCORE.is_file():

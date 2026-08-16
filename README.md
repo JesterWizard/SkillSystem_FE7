@@ -19,7 +19,7 @@ of installation, such as FEBuilderGBA, are not officially supported.
 
 ## Basic Usage Notes
 
-- Only 254 skills can be used at a time. To configure which skills are in use, use `EngineHacks/SkillSystem/skill_definitions.event`. This also doubles as a list of all skills and their effects.
+- Only 254 skills can be used at a time. To configure which skills are in use, use `EngineHacks/SkillSystem/skill_definitions.event`. Skill effects and authors are listed in `EngineHacks/SkillSystem/skill_definition_descriptions.event`.
 - Skill effects themselves are sorted by skill type and located in `EngineHacks/SkillSystem/Skills`. To customize their effects, change the skill's corresponding .s file and drag it over `AssembleARM.bat`.
 - Several optional toggles for other assembly hacks (such as the STR/MAG split, save expansion, etc) as well as the configuration of the effects of various skills can be found in `EngineHacks/Config.event`.
 - To customize skill learnsets (what skills learned, at what level), see `EngineHacks/SkillSystem/Skill_lists.event`.
