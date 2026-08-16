@@ -1265,7 +1265,7 @@
   ldrh    r0, [r0]        @load name
   blh     String_GetFromIndex
   mov     r5, r0
-  mov     r0, #0x30
+  mov     r0, #0x38         @ vanilla FE7U: 7-tile name box (8*7)
   mov     r1, r5
   blh     Text_GetStringTextCenteredPos
   mov     r6, r0
@@ -1279,7 +1279,6 @@
   str     r5, [sp, #4]
   mov     r2, #0
   mov     r3, r6
-  add     r3, #3
   blh     DrawTextInline
 .endm
 
@@ -1296,7 +1295,7 @@
   str     r0, [sp, #4]
   mov     r0, r2
   mov     r2, #0
-  mov     r3, #0
+  mov     r3, #0            @ vanilla FE7U: class name is left-aligned
   blh     DrawTextInline
 .endm
 
