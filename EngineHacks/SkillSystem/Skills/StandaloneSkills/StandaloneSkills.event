@@ -1,8 +1,6 @@
 PUSH
 
-//Bargain
-ORG 0xB5240
-jumpToHack(Bargain)
+// Bargain is installed from MasterSkillInstaller (this file is not included).
 
 //Boon
 ORG $188F6
@@ -54,8 +52,6 @@ ORG $2F840
 jumpToHack(ShrewdPotential) 
 
 POP
-
-#include "Bargain/Bargain.event"
 
 ALIGN 4
 Boon:

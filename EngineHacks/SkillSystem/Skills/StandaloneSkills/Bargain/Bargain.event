@@ -1,4 +1,7 @@
-
+PUSH
+ORG 0xB1D40
+jumpToHack(Bargain)
+POP
 
 ALIGN 4
 Bargain:

@@ -1,11 +1,13 @@
 .thumb
 .align
 
-@8 byte hook @ B5240
-@r5 = unit struct
-@r4 = current item price
+@FE7 GetItemPurchasePrice replacement
+@8 byte jumpToHack @ B1D40
+@r0 = unit struct
+@r1 = item
 
-.equ UnitHasItem,0x80179F9
+.equ GetItemCost,0x8017341
+.equ UnitHasItem,0x80176F9
 .equ BargainID,SkillTester+4
 .equ SilverCardList,BargainID+4
 .equ DoesBargainStack,SilverCardList+4
@@ -16,9 +18,13 @@
     .short 0xF800
 .endm
 
-@while we're at it, let's let you make a bunch of silver cards
+push {r4-r7,lr}
+mov r5, r0 @unit
+mov r0, r1 @item
+blh GetItemCost, r3
+mov r4, r0 @price
 
-push {r6-r7}
+@while we're at it, let's let you make a bunch of silver cards
 
 ldr r0, SkillTester
 mov lr, r0
@@ -47,12 +53,12 @@ b LoopStart
 LoopEnd:
 lsr r4,#1 @halve price of item
 
-
 GoBack:
 mov r0,r4
+lsl r0,r0,#16
+lsr r0,r0,#16
 
-pop {r6-r7}
-pop {r4-r5}
+pop {r4-r7}
 pop {r1}
 bx r1
 
