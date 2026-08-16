@@ -276,7 +276,6 @@
 #define AirRaidResID SKILL_OFF
 #define ChaosStyleID SKILL_OFF
 #define DragonSkinID SKILL_OFF
-//#define DragonskinID DragonSkinID //Alias
 #define StunningSmileID SKILL_OFF
 #define KeenFighterID 211
 #define SteadyBrawlerID SKILL_OFF

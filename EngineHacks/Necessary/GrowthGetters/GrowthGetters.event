@@ -19,7 +19,7 @@
 
   ALIGN 4
   Growth_Bonus_CalcLoop:
-  //POIN BlossomGrowthModifier AptitudeGrowthModifier MetisTomeCheck ScrollsCheck
+  POIN BlossomGrowthModifier AptitudeGrowthModifier MetisTomeCheck ScrollsCheck
   WORD 0 //Terminator
   
   

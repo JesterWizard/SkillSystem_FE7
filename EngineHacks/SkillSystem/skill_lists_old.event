@@ -189,7 +189,6 @@ DruidSkillList:
 BYTE 255 MaleficAuraID
 BYTE 255 SpurDefID
 BYTE 5 FrenzyID
-BYTE 15 TomebreakerID
 BYTE 00 00
 ALIGN 4
 

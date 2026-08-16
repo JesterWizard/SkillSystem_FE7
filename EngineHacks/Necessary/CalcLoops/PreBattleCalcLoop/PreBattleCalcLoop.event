@@ -35,7 +35,7 @@ POIN BlueFlame DoubleLion Thighdeology Thotslayer ForeignPrincess /* ChargePlus 
 POIN Frenzy
 POIN KeenFighter
 POIN TowerShieldPlus
-POIN Dragonskin
+POIN DragonSkin
 POIN AxeFaith
 POIN StancesASM
 POIN AirRaidSkillCheck
@@ -86,8 +86,8 @@ POIN LethalitySkill NonGBALethalitySkill
 POIN KeenFighter SteadyBrawler // % Damage reduction if doubling goes near end 
 //tower shield plus needs to go after every other skill that may affect defender's attack
 POIN TowerShieldPlus
-// Dragonskin goes after anything effecting atk or def
-POIN Dragonskin
+// DragonSkin goes after anything effecting atk or def
+POIN DragonSkin
 // Because of how killing machine works, critical check should always be done last
 POIN CriticalCheck
 #ifdef CANNOT_CRIT

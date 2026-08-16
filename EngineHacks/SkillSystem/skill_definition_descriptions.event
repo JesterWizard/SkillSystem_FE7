@@ -209,7 +209,7 @@ Earth Boost: Grants +6 Defense if unit's current HP is at least 3 higher than th
 Water Boost: Grants +6 Resistance if unit's current HP is at least 3 higher than the enemy's.  [Mikey Seregon]
 Air Raid: Grants +5 or +15 on a stat when on a tile enemy cannot enter  [Jopettajah]
 Chaos Style: AS +3 during combat with a physical weapon against a foe armed with magic or vice versa.  [Jopettajah]
-Dragonskin: Halve damage taken  [Jopettajah]
+DragonSkin: Halve damage taken  [Jopettajah]
 Stunning Smile: If foe is male, inflicts Avo-20 on that foe during combat.  [Jopettajah]
 Keen Fighter: Unit takes 75% damage if the opponent can double.  [Vesly]
 Steady Brawler: This unit deals 25% less damage while doubling, but 25% more when not.  [Vesly]

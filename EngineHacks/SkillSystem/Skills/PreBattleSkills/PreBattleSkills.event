@@ -44,8 +44,8 @@ POIN SkillTester
 WORD DancingBladeID
 
 ALIGN 4
-Dragonskin:
-#include "Dragonskin/DragonSkin.lyn.event"
+DragonSkin:
+#include "DragonSkin/DragonSkin.lyn.event"
 POIN SkillTester
 WORD DragonSkinID
 
