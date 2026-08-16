@@ -1,0 +1,75 @@
+// FE7: vanilla gBattleHitArray is 6 x 4-byte rounds at 0x0203A4F0.
+// Astra (5) + counter + follow-up Astra (5) does not fit. Keep 4-byte
+// width; move the array and gAnimRoundData into unused EWRAM before
+// gLearnedSkillRam. Addresses: asm/ram_map_ewram.s.
+
+#define NewBattleBufferLocation 0x0203F000
+#define maxAtks 31
+#define BattleBufferWidth 4
+#define NewAnimRoundLocation (NewBattleBufferLocation + (maxAtks * BattleBufferWidth))
+
+PUSH
+
+// ClearBattleHits loop count (was mov r1, #6)
+ORG $28F90
+BYTE 0x1F 0x21 // mov r1, #31
+
+// Scan cap in the round walker (was cmp r2, #6)
+ORG $29E62
+BYTE 0x1F 0x2A // cmp r2, #31
+
+// gBattleHitArray literals (was 0x0203A4F0)
+ORG $28FA8
+WORD NewBattleBufferLocation
+ORG $29E70
+WORD NewBattleBufferLocation
+ORG $2A01C
+WORD NewBattleBufferLocation
+ORG $2A4B0
+WORD NewBattleBufferLocation
+ORG $2A810
+WORD NewBattleBufferLocation
+ORG $2A8F8
+WORD NewBattleBufferLocation
+ORG $2CC60
+WORD NewBattleBufferLocation
+ORG $2CD20
+WORD NewBattleBufferLocation
+ORG $52CF4
+WORD NewBattleBufferLocation
+ORG $53224
+WORD NewBattleBufferLocation
+ORG $67DD4
+WORD NewBattleBufferLocation
+ORG $6EDA0
+WORD NewBattleBufferLocation
+ORG $6EDF4
+WORD NewBattleBufferLocation
+ORG $6F044
+WORD NewBattleBufferLocation
+ORG $6F0D0
+WORD NewBattleBufferLocation
+ORG $6F188
+WORD NewBattleBufferLocation
+ORG $6F234
+WORD NewBattleBufferLocation
+ORG $6F2B0
+WORD NewBattleBufferLocation
+ORG $6F3A4
+WORD NewBattleBufferLocation
+ORG $711A8
+WORD NewBattleBufferLocation
+
+// gAnimRoundData literals (was 0x0203E036)
+ORG $52CF8
+WORD NewAnimRoundLocation
+ORG $52FD8
+WORD NewAnimRoundLocation
+ORG $53308
+WORD NewAnimRoundLocation
+ORG $53334
+WORD NewAnimRoundLocation
+ORG $53418
+WORD NewAnimRoundLocation
+
+POP

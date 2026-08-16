@@ -1,4 +1,5 @@
 //Skill System replacing favouritism stat
+#include "repointbuffer_fe7.event"
 // #include "repointbuffer.event"
 // #include "FE8-Weapon Rank on Levelup/FE8-Weapon Rank on Levelup EA.txt"
 
@@ -9,12 +10,10 @@ PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 
 // //PROBLEM: skills 1 and 2 get kept along with loss count
 
-ORG $5314C // copy hit 0x4000/0x8000 onto gAnimRoundData
-jumpToHack(ParseHitSkillRoundFlags)
-ORG $53680 // C03 wait-for-attack: FE8-style skill BG
+// ORG $52F7C // do not stamp 0x0800 onto FE7 gAnimRoundData (glitch + C03 hang)
+ORG $53680 // C03: Elfire OBJ splash on Astra 0x4000 (own proc, units stay)
 jumpToHack(SkillActivationAnims)
-ORG $58920 // Type01BG loop: set BLOCKEND so C03 can finish
-jumpToHack(EfxSkillType01BG_Loop)
+// ORG $58920 // vanilla Elfire loop — do not hook; skill splash uses its own proc
 // ORG $4CB80 //FE8 -> $518E4      // Don't overwrite VRAM holding procced skill icon.
 // jumpToHack(KeepProcSkillIcon)
 

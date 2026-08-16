@@ -18,6 +18,9 @@ mov r7, r3
 mov r0, r4
 add r0, #0x7F
 ldrb r1, [r0]
+mov r2, #0x80 @Astra owns this swing
+tst r1, r2
+bne End
 cmp r1, #0
 beq End
 sub r1, #1

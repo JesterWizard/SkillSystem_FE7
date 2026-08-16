@@ -59,12 +59,19 @@ GetBattleUnitHitCount_Adept:
 #include "Adept/get_battle_unit_hit_count.lyn.event"
 POIN SkillTester
 WORD AdeptID
+WORD AstraID
 
 ALIGN 4
 Proc_Adept:
 #include "Adept/proc_adept.lyn.event"
 POIN SkillTester
 WORD AdeptID
+
+ALIGN 4
+Proc_Astra:
+#include "Astra/proc_astra.lyn.event"
+POIN SkillTester
+WORD AstraID
 
 /*
 ALIGN 4

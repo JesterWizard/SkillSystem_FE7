@@ -5,118 +5,78 @@
   .short 0xf800
 .endm
 .equ AstraID, SkillTester+4
-.equ d100Result, 0x802857c
-.equ recurse_round, 0x802b83c
+
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+@
+@ Extra hits come from GetBattleUnitHitCount (FE7 r5), Skill % rolled there.
+@ BattleUnit+0x7F bit7 = this swing is Astra; low 4 bits = remaining hits.
+@ Vanilla rounds are 4 bytes — do not write +4.
+@ Stamp 0x4000 only on the first Astra hit so C03 does not replay on the foe.
 push {r4-r7,lr}
 mov r4, r0 @attacker
 mov r5, r1 @defender
 mov r6, r2 @battle buffer
 mov r7, r3 @battle data
 
-@check if we're already in astra
-ldrb r0, [r2, #4] @active skill
-ldrb r1, AstraID
-cmp r1,#255
+mov r0, r4
+add r0, #0x7F
+ldrb r1, [r0]
+mov r2, #0x80 @Astra this-swing flag
+tst r1, r2
 beq End
-cmp r0, r1
-beq AlreadyAstra
-@make sure no other skill is active
-cmp r0, #0
-bne End
 
-ldr     r0,[r2]           @r0 = battle buffer                @ 0802B40A 6800     
-lsl     r0,r0,#0xD                @ 0802B40C 0340     
-lsr     r0,r0,#0xD        @Without damage data                @ 0802B40E 0B40     
-mov r1, #0xC0 @skill flag
-lsl r1, #8 @0xC000
-add r1, #0x2 @miss @@@@OR BRAVE??????
+@first hit of the swing? (count still 5) — save flag in r5
+mov r3, #0x0F
+mov r2, r1
+and r2, r3 @count
+mov r5, #0
+cmp r2, #5
+bne DecRemain
+mov r5, #1 @stamp skill flag this round
+DecRemain:
+sub r2, #1
+bic r1, r3
+orr r1, r2
+cmp r2, #0
+bne StoreRemain
+mov r2, #0x80
+bic r1, r2
+StoreRemain:
+strb r1, [r0]
+
+ldr     r0,[r6]
+lsl     r0,r0,#0xD
+lsr     r0,r0,#0xD
+mov r1, #0xC0
+lsl r1, #8
+add r1, #0x2 @miss
 tst r0, r1
 bne End
-@if another skill already activated, don't do anything
 
-@check for Astra proc
-ldr r0, SkillTester
-mov lr, r0
-mov r0, r4 @attacker data
-ldr r1, AstraID
-.short 0xf800
-cmp r0, #0
-beq End
-@if user has Astra, check for proc rate
+@half damage every Astra hit
+mov     r2, #4
+ldrsh   r3, [r7, r2]
+asr     r3, #1
+strh    r3, [r7, #4]
 
-ldrb r0, [r4, #0x15] @speed stat as activation rate
-mov r1, r4 @skill user
-blh d100Result
-cmp r0, #1
+cmp r5, #1
 bne End
 
+ldrb r0, [r4, #0x0B]
+ldr r1, =0x0203F0FC
+strb r0, [r1]
 
-@astra effect starts here
-
-@write the damage, since we're skipping ahead
-mov     r2, #4
-ldrsh   r3, [r7, r2]
-asr     r3, #1 @damage halved
-strh    r3, [r7, #4]
-
-@ lsl     r3, #0x18
-
-@if we proc
-ldr     r2,[r6]    
-lsl     r1,r2,#0xD                @ 0802B42C 0351     
-lsr     r1,r1,#0xD                @ 0802B42E 0B49     
+@0x4000 on the first hit only
+ldr     r2,[r6]
+lsl     r1,r2,#0xD
+lsr     r1,r1,#0xD
 mov     r0, #0x40
-lsl     r0, #8           @0x4000, attacker skill activated
+lsl     r0, #8
 orr     r1, r0
-ldr     r0,=#0xFFF80000                @ 0802B434 4804     
-and     r0,r2                @ 0802B436 4010     
-orr     r0,r1                @ 0802B438 4308   
-@ orr     r0,r3  
-str     r0,[r6]                @ 0802B43A 6018 
-ldrb    r0, AstraID
-strb    r0,[r6,#4] @save the thing
-
-@now add the number of rounds - 
-mov r1, #0x38
-mov r2, sp
-ldr r0, [r2,r1] @location of number of rounds on the stack... hopefully
-add r0, #4
-str r0, [r2,r1]
-
-@HERE'S THE TRICKY BIT: UPDATE A NEW ROUND OF BATTLE AND SET THE OFFENSIVE SKILL FLAG
-mov r4, r6
-
-add r4, #8 @next round
-mov r0, #0
-str     r0,[r4]                @ 0802B43A 6018 
-ldrb    r0, AstraID
-strb    r0,[r4,#4] @save the thing
-mov     r0, #4 @number of extra attacks
-strb    r0,[r4,#6]
-b End
-
-.ltorg
-
-AlreadyAstra:
-@write the damage, since we're skipping ahead
-mov     r2, #4
-ldrsh   r3, [r7, r2]
-asr     r3, #1 @damage halved
-strh    r3, [r7, #4]
-
-ldrb    r0,[r6,#6] @attacks remaining
-sub     r0, #1
-cmp r0, #0
-beq End
-
-add     r6, #8
-strb    r0,[r6,#6]
-
-mov r0, #0   
-str     r0,[r6]                @ 0802B43A 6018 
-ldrb    r0, AstraID
-strb    r0,[r6,#4] @save the thing
+ldr     r0,=#0xFFF80000
+and     r0,r2
+orr     r0,r1
+str     r0,[r6]
 
 End:
 pop {r4-r7}

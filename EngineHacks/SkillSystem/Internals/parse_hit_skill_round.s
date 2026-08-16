@@ -1,12 +1,12 @@
 .thumb
-@ After vanilla writes the round type at [r0], copy skill-hit bits onto
-@ the acting unit's gAnimRoundData slot. r5 = round*2+0 (POS_L), r4 =
-@ round*2+1 (POS_R). Writing only r4 misses a left-side attacker.
+@ Hook at 0x08052F7C (after POS_L/POS_R gAnimRoundData writes).
+@ r5 = POS_L, r4 = POS_R, r9 = current hit, r0 = POS_R type to store.
+@ Continue at 0x08052F87 (cmp r0, #0 after miss-bit and).
 
-.equ ParseHitSkillRound_Continue, 0x08053155
+.equ ParseHit_Continue, 0x08052F87
 
 parse_hit_skill_round:
-    strh r2, [r0]
+    strh r0, [r4]
 
     push {r0-r3}
 
@@ -14,7 +14,7 @@ parse_hit_skill_round:
     ldrh r2, [r2]
 
     mov r0, #0x40
-    lsl r0, #8 @ 0x4000
+    lsl r0, #8 @ 0x4000 attacker skill
     tst r2, r0
     beq CheckShield
 
@@ -44,7 +44,7 @@ OrRightOff:
 
 CheckShield:
     mov r0, #0x80
-    lsl r0, #8 @ 0x8000
+    lsl r0, #8 @ 0x8000 defender skill
     tst r2, r0
     beq ToVanilla
 
@@ -76,10 +76,11 @@ RightDef:
 
 ToVanilla:
     pop {r0-r3}
-    mov r0, #0x40
     mov r2, r9
-    ldrh r2, [r2]
-    ldr r3, =ParseHitSkillRound_Continue
+    ldrh r1, [r2]
+    mov r0, #2
+    and r0, r1
+    ldr r3, =ParseHit_Continue
     bx r3
 
     .align
