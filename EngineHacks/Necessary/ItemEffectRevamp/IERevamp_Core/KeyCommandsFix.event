@@ -9,7 +9,7 @@
 	#ifndef LockpickCheckASM
 		#define LockpickCheckASM
 		LockpickCheck:
-		#incbin "LockpickCheck.dmp"
+		#include "LockpickCheck.lyn.event"
 	#endif
 	
 	#ifndef Inventory_IEIDCheck_ASM
@@ -28,12 +28,12 @@
 	SHORT 0x0
 	jumpToHack($28BFE)
 	MasterKeyUseCheck:
-	#incbin "MasterKey_Usability.dmp"
+	#include "MasterKey_Usability.lyn.event"
 	
 	PUSH
 		//Update Door and Chest commands to check for item effect ids instead of item ids
 		ORG $18A9C
-		#incbin "KeyCommand_ItemCheck.dmp"
+		#include "KeyCommand_ItemCheck.lyn.event"
 		POIN LockpickCheck Inventory_EIDCheck
 		
 	POP 

@@ -10,6 +10,9 @@ import sys
 import unittest
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
+
 ROOT = Path(__file__).resolve().parents[1]
 CLEAN_ROM = ROOT / "FE7_clean.gba"
 HACK_ROM = ROOT / "FE7_Hack.gba"
@@ -21,7 +24,7 @@ GET_STRING_BUFFER_LITERAL = 0x12C8C
 HELPER_TABLE_LITERAL = 0x12CB8
 LEFT_PAGE_HOOK = 0x7FA8C
 AFFINITY_GETTER = 0x08026B24
-GET_SKILLS_DMP = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.dmp"
+GET_SKILLS_LYN = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.lyn.event"
 PAGE1_LYN = (
     ROOT
     / "EngineHacks"
@@ -215,10 +218,10 @@ class GetStringTableTests(unittest.TestCase):
 
     def test_get_skills_skips_invalid_id_0xff(self):
         """Lyn Lord's class skill is 0xFF (none). Listing it draws a bogus weapon icon."""
-        dmp = GET_SKILLS_DMP.read_bytes()
+        blob = lyn_to_bytes(GET_SKILLS_LYN)
         self.assertIn(
             bytes([0xFF, 0x2A]),
-            dmp,
+            blob,
             "GetSkills must cmp r2, #0xFF so placeholder class skills are not listed",
         )
 

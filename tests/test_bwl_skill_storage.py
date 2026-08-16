@@ -1,8 +1,12 @@
 """Learned skills must use FE7 BWL_GetEntry's table, not the next entry."""
 import re
 import struct
+import sys
 import unittest
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 CLEAN_ROM = ROOT / "FE7_clean.gba"
@@ -15,8 +19,8 @@ WRONG_BASE = 0x0203E7A0
 SOURCES = (
     INTERNALS / "addSkill.s",
 )
-DMPS = (
-    INTERNALS / "addSkill.dmp",
+LYNS = (
+    INTERNALS / "addSkill.lyn.event",
 )
 
 ASSIGN_RE = re.compile(
@@ -38,11 +42,11 @@ class Fe7BwlSkillStorageTests(unittest.TestCase):
             self.assertIsNotNone(match, path.name)
             self.assertEqual(int(match.group(1), 16), FE7_BWL_TABLE, path.name)
 
-    def test_dmps_use_fe7_bwl_table_literal(self):
+    def test_lyns_use_fe7_bwl_table_literal(self):
         want = struct.pack("<I", FE7_BWL_TABLE)
         wrong = struct.pack("<I", WRONG_BASE)
-        for path in DMPS:
-            data = path.read_bytes()
+        for path in LYNS:
+            data = lyn_to_bytes(path)
             self.assertIn(want, data, path.name)
             self.assertNotIn(wrong, data, path.name)
 

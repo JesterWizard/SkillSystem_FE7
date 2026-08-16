@@ -369,7 +369,6 @@ POP
 	ALIGN 4
 	Weapon_Attack:
 	#include "RangeDisplay/Weapon_Attack.lyn.event"
-	//#incbin "RangeDisplay/Weapon_Attack.dmp"
 	
 	ALIGN 4
 	

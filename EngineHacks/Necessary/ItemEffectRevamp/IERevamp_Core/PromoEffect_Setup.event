@@ -34,7 +34,7 @@
 	POIN PromoItem_LevelCheck
 	
 	PromoLordCheck:
-	#incbin "PromoCheck_FlagSkip.dmp"
+	#include "PromoCheck_FlagSkip.lyn.event"
 	BYTE 0x0 0x20 0x0 0x0	//character/class ability bits to compare against
 	POIN PromoItem_LevelCheck
 	
@@ -47,7 +47,7 @@
 	
 	PUSH
 		ORG $291A8
-		#incbin "PromoItemUsability.dmp"
+		#include "PromoItemUsability.lyn.event"
 		POIN Item_GetStat_EffectID
 		POIN PromoItemTable
 		

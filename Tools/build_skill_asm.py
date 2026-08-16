@@ -1,4 +1,4 @@
-"""Rebuild SkillSystem .s files to .lyn.event (and .dmp) when sources change."""
+"""Rebuild SkillSystem .s files to .lyn.event when sources change."""
 from __future__ import annotations
 
 import argparse
@@ -11,7 +11,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_ROOT = ROOT / "EngineHacks" / "SkillSystem"
 AS = Path(r"C:\devkitPro\devkitARM\bin\arm-none-eabi-as.exe")
-OBJCOPY = Path(r"C:\devkitPro\devkitARM\bin\arm-none-eabi-objcopy.exe")
 LYN = ROOT / "EventAssembler" / "Tools" / "lyn.exe"
 
 INC_BIN_RE = re.compile(r'#incbin\s+"([^"]+\.dmp)"')
@@ -106,17 +105,13 @@ def build_one(src: Path) -> None:
     lyn = src.with_suffix(".lyn.event")
     dmp = src.with_suffix(".dmp")
     if not stale(src, lyn):
-        if stale(src, dmp):
-            _assemble(src, obj)
-            subprocess.run([str(OBJCOPY), "-S", str(obj), "-O", "binary", str(dmp)], check=True)
-            obj.unlink(missing_ok=True)
-            print(f"[DMP] {dmp.relative_to(ROOT)}")
+        dmp.unlink(missing_ok=True)
         return
     _assemble(src, obj)
     lyn_text = subprocess.check_output([str(LYN), str(obj)], cwd=str(ROOT))
     lyn.write_bytes(lyn_text.replace(b"\r\n", b"\n"))
-    subprocess.run([str(OBJCOPY), "-S", str(obj), "-O", "binary", str(dmp)], check=True)
     obj.unlink(missing_ok=True)
+    dmp.unlink(missing_ok=True)
     print(f"[LYN] {lyn.relative_to(ROOT)}")
 
 
@@ -142,7 +137,7 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
-    for tool in (AS, OBJCOPY, LYN):
+    for tool in (AS, LYN):
         if not tool.is_file():
             print(f"Missing tool: {tool}", file=sys.stderr)
             return 1
@@ -154,8 +149,8 @@ def main() -> int:
     sources = discover_sources()
     if args.force:
         for src in sources:
-            for extra in (src.with_suffix(".lyn.event"), src.with_suffix(".dmp")):
-                extra.unlink(missing_ok=True)
+            src.with_suffix(".lyn.event").unlink(missing_ok=True)
+            src.with_suffix(".dmp").unlink(missing_ok=True)
 
     print(f"Building {len(sources)} skill asm files")
     errors = []

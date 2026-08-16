@@ -11,6 +11,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFS = ROOT / "EngineHacks" / "SkillSystem" / "skill_definitions.event"
 TABLE_DEFS = ROOT / "Tables" / "TableDefinitions.event"
@@ -20,7 +23,7 @@ CLEAN_ROM = ROOT / "FE7_clean.gba"
 HACK_ROM = ROOT / "FE7_Hack.gba"
 COLORZCORE = ROOT / "EventAssembler" / "ColorzCore.exe"
 C2EA_DIR = ROOT / "Tools" / "C2EA"
-GET_SKILLS_DMP = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.dmp"
+GET_SKILLS_LYN = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.lyn.event"
 
 DEFINE_RE = re.compile(r"^#define\s+(\w+)\s+(\S+)")
 
@@ -170,10 +173,10 @@ class SkillTableDefineTests(unittest.TestCase):
         mapping = _catalog(DEFS.read_text(encoding="utf-8"))
         rows = list(csv.reader(PERSONAL_CSV.read_text(encoding="utf-8").splitlines()))
         rom = HACK_ROM.read_bytes()
-        dmp = GET_SKILLS_DMP.read_bytes()
-        idx = rom.find(dmp)
-        self.assertNotEqual(idx, -1, "GetSkills.dmp not found in FE7_Hack.gba")
-        table_ptr = struct.unpack_from("<I", rom, idx + len(dmp))[0]
+        blob = lyn_to_bytes(GET_SKILLS_LYN)
+        idx = rom.find(blob)
+        self.assertNotEqual(idx, -1, "GetSkills lyn blob not found in FE7_Hack.gba")
+        table_ptr = struct.unpack_from("<I", rom, idx + len(blob))[0]
         table_off = table_ptr & 0x01FFFFFF
         for row in rows[1:]:
             char_id = int(row[0].split()[0], 16)

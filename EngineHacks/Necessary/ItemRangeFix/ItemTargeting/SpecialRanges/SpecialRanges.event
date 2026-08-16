@@ -20,16 +20,13 @@ SpecialRangeEnd	//End of Table
 
 RangeCalcGetter:
 #include "RangeCalcGetter.lyn.event"
-//#incbin "RangeCalcGetter.dmp"
 POIN SpecialRangeTable
 RangeTextGetter:
 #include "RangeTextGetter.lyn.event"
-//#incbin "RangeTextGetter.dmp"
 POIN SpecialRangeTable
 
 HalfMag_Range:
 #include "RangeCalcs/HalfMag_Range.lyn.event"
-//#incbin "RangeCalcs/HalfMag_Range.dmp"
 	#ifdef _FE8_
 	POIN 0x18A1C
 	#endif

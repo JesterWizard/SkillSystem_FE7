@@ -35,20 +35,17 @@
 	*/
 	GetItemRange:
 	#include "ItemRangeGetter.lyn.event"
-	//#incbin "ItemRangeGetter.dmp"
 	POIN RangeCalcGetter
 	POIN RangeSkillsCheck
 	
 	//GetItemRangeM:
 	#include "ItemRangeGetterM.lyn.event"
-	//#incbin "ItemRangeGetterM.dmp"
 	//POIN GetItemRange|1
 	
 	#ifndef BasicRange
 		#define BasicRange
 		FillRange:
 		#include "FillRange.lyn.event"
-		//#incbin "FillRange.dmp"
 		POIN 0x1AABC|1
 	#endif
 #endif

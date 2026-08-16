@@ -1,12 +1,16 @@
 """CritUp must be in the pre-battle loop and add +15 to battle crit as a halfword."""
 import re
+import sys
 import unittest
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 LOOP = ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "PreBattleCalcLoop" / "PreBattleCalcLoop.event"
 SRC = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "PreBattleSkills" / "CritUp" / "CritUpSkill.s"
-DMP = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "PreBattleSkills" / "CritUp" / "CritUpSkill.dmp"
+LYN = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "PreBattleSkills" / "CritUp" / "CritUpSkill.lyn.event"
 GET_SKILLS = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSkills.s"
 SKILL_TESTER_C = (
     ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "NewSkillTester" / "_src" / "SkillTester.c"
@@ -33,7 +37,7 @@ class CritUpSkillTests(unittest.TestCase):
         self.assertRegex(src, r"add\s+r\d+\s*,\s*#(?:15|0x0F)")
 
     def test_dmp_uses_halfword_store(self):
-        data = DMP.read_bytes()
+        data = lyn_to_bytes(LYN)
         self.assertIn(b"\x60\x5A", data)
         self.assertIn(b"\x60\x52", data)
         self.assertNotIn(b"\x21\x70", data, "old strb r1, [r4] must not remain")

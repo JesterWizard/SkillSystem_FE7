@@ -1,7 +1,11 @@
 """Adept adds a consecutive attack (Speed %); FE7 stores round count in r5."""
 import re
+import sys
 import unittest
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 LOOP = ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "BattleProcCalcLoop.event"
@@ -15,7 +19,7 @@ HIT_SRC = (
     / "Adept"
     / "get_battle_unit_hit_count.s"
 )
-HIT_DMP = HIT_SRC.with_suffix(".dmp")
+HIT_LYN = HIT_SRC.with_name(HIT_SRC.stem + ".lyn.event")
 ADEPT_SRC = (
     ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "ProcSkills" / "Adept" / "proc_adept.s"
 )
@@ -77,7 +81,7 @@ class AdeptSkillTests(unittest.TestCase):
         self.assertNotRegex(src, r"mov r1, #0x38")
 
     def test_dmp_calls_brave_then_adds_a_hit(self):
-        data = HIT_DMP.read_bytes()
+        data = lyn_to_bytes(HIT_LYN)
         self.assertIn(b"\x01\x25", data)
         self.assertIn(b"\x85\x40", data)
         self.assertIn(b"\x01\x35", data)
