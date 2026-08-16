@@ -25,7 +25,33 @@
   */
 
   #include "EAstdlib.event"
-  
+
+  // Vanilla FE7U help IDs from the stat-screen R-menu at 0x08CC2140.
+  // Right column is Mov/Con/Aid/Trv/Affin, not FE8's Con/Aid first.
+  // FE8 0x54x/0x55x/0x6E8 IDs are names and class descs here, not help.
+  #define HTID_Class 0x22B
+  #define HTID_Level 0x25B
+  #define HTID_Exp   0x25C
+  #define HTID_HP    0x25D
+  #define HTID_Atk   0x25F
+  #define HTID_Hit   0x260
+  #define HTID_Rng   0x261
+  #define HTID_Crit  0x262
+  #define HTID_Avo   0x263
+  #define HTID_Str   0x264
+  #define HTID_Mag   0x265
+  #define HTID_Skl   0x266
+  #define HTID_Spd   0x267
+  #define HTID_Def   0x268
+  #define HTID_Res   0x269
+  #define HTID_Con   0x26A
+  #define HTID_Aid   0x26B
+  #define HTID_Mov   0x26C
+  #define HTID_Trv   0x26D
+  #define HTID_Luck  0x26E
+  #define HTID_Affin 0x26F
+  #define HTID_Supports 0x350
+
   #include "RTextGetters/RTextGetters.event"
 
   #define RMenu(up,down,left,right,xcoord,ycoord,TID) "POIN up down left right;BYTE xcoord ycoord; SHORT TID; WORD 0 0;"
@@ -41,7 +67,6 @@
   #define ItemDescLooper 0x81669 //FE8 -> 0x88B41
   #define WRankGetter 0x816BD //FE8 -> 0x88B95
   #define SupportsConditional 0x81739 //FE8 -> 0x88C15
- 
 
   PUSH
   
@@ -79,52 +104,52 @@
     RMenu(0,ST_Class,0,ST_Luck,0x18,0x50,0x0,NameDescGetter)
 
   ST_Class:
-    RMenu(ST_Name,ST_Level,0,ST_Def,0x6,0x68,0x6E8,ClassDescGetter)
+    RMenu(ST_Name,ST_Level,0,ST_Def,0x6,0x68,HTID_Class,ClassDescGetter)
 
   ST_Level:
-    RMenu(ST_Class,ST_HP,0,ST_Exp,0x6,0x78,0x542)
+    RMenu(ST_Class,ST_HP,0,ST_Exp,0x6,0x78,HTID_Level)
 
   ST_Exp:
-    RMenu(ST_Class,ST_HP,ST_Level,ST_Res,0x26,0x78,0x543)
+    RMenu(ST_Class,ST_HP,ST_Level,ST_Res,0x26,0x78,HTID_Exp)
 
   ST_HP:
-    RMenu(ST_Level,0,0,ST_Mov,0x6,0x88,0x544)
+    RMenu(ST_Level,0,0,ST_Mov,0x6,0x88,HTID_HP)
 
   ST_Str:
-    RMenu(PersonalDataRText,ST_Mag,ST_Name,ST_Con,0x66,0x18,0x546,StrMagGetter)
+    RMenu(PersonalDataRText,ST_Mag,ST_Name,ST_Con,0x66,0x18,HTID_Str,StrMagGetter)
 
   ST_Mag:
-    RMenu(ST_Str,ST_Skl,ST_Name,ST_Aid,0x66,0x28,0x547)
+    RMenu(ST_Str,ST_Skl,ST_Name,ST_Aid,0x66,0x28,HTID_Mag)
 
   ST_Skl:
-    RMenu(ST_Mag,ST_Spd,ST_Name,ST_Cond,0x66,0x38,0x548)
+    RMenu(ST_Mag,ST_Spd,ST_Name,ST_Cond,0x66,0x38,HTID_Skl)
 
   ST_Spd:
-    RMenu(ST_Skl,ST_Luck,ST_Name,ST_Affin,0x66,0x48,0x549)
+    RMenu(ST_Skl,ST_Luck,ST_Name,ST_Affin,0x66,0x48,HTID_Spd)
 
   ST_Luck:
-    RMenu(ST_Spd,ST_Def,ST_Name,ST_Talk,0x66,0x58,0x54a)
+    RMenu(ST_Spd,ST_Def,ST_Name,ST_Talk,0x66,0x58,HTID_Luck)
 
   ST_Def:
-    RMenu(ST_Luck,ST_Res,ST_Class,ST_Skills,0x66,0x68,0x54b)
+    RMenu(ST_Luck,ST_Res,ST_Class,ST_Skills,0x66,0x68,HTID_Def)
 
   ST_Res:
-    RMenu(ST_Def,ST_Mov,ST_Exp,ST_Skill1,0x66,0x78,0x54c)
+    RMenu(ST_Def,ST_Mov,ST_Exp,ST_Skill1,0x66,0x78,HTID_Res)
 
   ST_Mov:
-    RMenu(ST_Res,0,ST_Exp,ST_Skill4,0x66,0x88,0x54d,MovHPDescGetter)
+    RMenu(ST_Res,0,ST_Exp,ST_Skill4,0x66,0x88,HTID_Mov,MovHPDescGetter)
 
   ST_Con:
-    RMenu(PersonalDataRText,ST_Aid,ST_Str,0,0xA6,0x18,0x54e)
+    RMenu(PersonalDataRText,ST_Aid,ST_Str,0,0xA6,0x18,HTID_Con)
 
   ST_Aid:
-    RMenu(ST_Con,ST_Cond,ST_Mag,0,0xa6,0x28,0x54F)
+    RMenu(ST_Con,ST_Cond,ST_Mag,0,0xa6,0x28,HTID_Aid)
 
   ST_Cond:
-    RMenu(ST_Aid,ST_Affin,ST_Skl,0,0xa6,0x38,0x552,ConditionGetter)
+    RMenu(ST_Aid,ST_Affin,ST_Skl,0,0xa6,0x38,0,ConditionGetter)
 
   ST_Affin:
-    RMenu(ST_Cond,ST_Talk,ST_Spd,ST_AffinDesc,0xa6,0x48,0x551)
+    RMenu(ST_Cond,ST_Talk,ST_Spd,ST_AffinDesc,0xa6,0x48,HTID_Affin)
 
   ST_AffinDesc:
     RMenu(ST_Cond,ST_Talk,ST_Affin,0,0xbe,0x48,AffinityDescLooper,AffinityDescGetter)
@@ -176,35 +201,35 @@
   RMenu(ST_Inventory4,ST_Atk,ST_Name2,ST_Rng,0x68,0x58,4,ItemDescLooper,ItemDescGetter)
 
   ST_Atk: 
-  RMenu(ST_Inventory5,ST_Hit,ST_Exp2,ST_Crit,0x76,0x78,0x55C)
+  RMenu(ST_Inventory5,ST_Hit,ST_Exp2,ST_Crit,0x76,0x78,HTID_Atk)
 
   ST_Hit: 
-  RMenu(ST_Atk,0,ST_HP2,ST_Avo,0x76,0x88,0x55D)
+  RMenu(ST_Atk,0,ST_HP2,ST_Avo,0x76,0x88,HTID_Hit)
 
   ST_Rng: 
-  RMenu(ST_Inventory5,ST_Crit,ST_Atk,0,0xAE,0x68,0x55E)
+  RMenu(ST_Inventory5,ST_Crit,ST_Atk,0,0xAE,0x68,HTID_Rng)
 
   ST_Crit: 
-  RMenu(ST_Rng,ST_Avo,ST_Atk,0,0xAE,0x78,0x55F)
+  RMenu(ST_Rng,ST_Avo,ST_Atk,0,0xAE,0x78,HTID_Crit)
 
   ST_Avo: 
-  RMenu(ST_Crit,0,ST_Hit,0,0xAE,0x88,0x560)
+  RMenu(ST_Crit,0,ST_Hit,0,0xAE,0x88,HTID_Avo)
 
   
   ST_Name2: 
   RMenu(0,ST_Class2,0,ST_Inventory4,0x18,0x50,0,NameDescGetter)
 
   ST_Class2: 
-  RMenu(ST_Name2,ST_Level2,0,ST_Atk,0x6,0x68,0x6E8,ClassDescGetter)
+  RMenu(ST_Name2,ST_Level2,0,ST_Atk,0x6,0x68,HTID_Class,ClassDescGetter)
 
   ST_Level2: 
-  RMenu(ST_Class2,ST_HP2,0,ST_Exp2,0x6,0x78,0x542)
+  RMenu(ST_Class2,ST_HP2,0,ST_Exp2,0x6,0x78,HTID_Level)
 
   ST_Exp2: 
-  RMenu(ST_Class2,ST_HP2,ST_Level2,ST_Atk,0x26,0x78,0x543)
+  RMenu(ST_Class2,ST_HP2,ST_Level2,ST_Atk,0x26,0x78,HTID_Exp)
 
   ST_HP2: 
-  RMenu(ST_Level2,0,0,ST_Hit,0x6,0x88,0x544)
+  RMenu(ST_Level2,0,0,ST_Hit,0x6,0x88,HTID_HP)
 
 
 
@@ -227,21 +252,21 @@
   RMenu(ST_WRank3,ST_Supports,ST_WRank2,0,0xA8,0x28,3,WRankGetter)
 
   ST_Supports:
-  RMenu_Cond(ST_WRank2,ST_Name3,ST_Name3,0,0x80,0x40,0x569,SupportsConditional) 
+  RMenu_Cond(ST_WRank2,ST_Name3,ST_Name3,0,0x80,0x40,HTID_Supports,SupportsConditional) 
 
 
   ST_Name3:
   RMenu(0,ST_Class3,0,ST_Supports,0x18,0x50,0,NameDescGetter)
 
   ST_Class3:
-  RMenu(ST_Name3,ST_Level3,0,ST_Supports,0x6,0x68,0x6E8,ClassDescGetter)
+  RMenu(ST_Name3,ST_Level3,0,ST_Supports,0x6,0x68,HTID_Class,ClassDescGetter)
 
   ST_Level3:
-  RMenu(ST_Class3,ST_HP3,0,ST_Exp3,0x6,0x78,0x542)
+  RMenu(ST_Class3,ST_HP3,0,ST_Exp3,0x6,0x78,HTID_Level)
 
   ST_Exp3:
-  RMenu(ST_Class3,ST_HP3,ST_Level3,ST_Supports,0x26,0x78,0x543)
+  RMenu(ST_Class3,ST_HP3,ST_Level3,ST_Supports,0x26,0x78,HTID_Exp)
 
   ST_HP3:
-  RMenu(ST_Level3,0,0,ST_Supports,0x6,0x88,0x544)
+  RMenu(ST_Level3,0,0,ST_Supports,0x6,0x88,HTID_HP)
 

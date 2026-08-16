@@ -120,3 +120,7 @@ Unit's essence emanates animus.[N]
 
 ## SS_AffinText
 Affin[X]
+
+## SS_MovRText
+Movement. The normal distance[N]
+you can cross in 1 turn.[X]

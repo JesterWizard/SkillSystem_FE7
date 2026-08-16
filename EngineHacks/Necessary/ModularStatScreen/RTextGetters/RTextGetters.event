@@ -1,6 +1,6 @@
 
-#define MovDesc 0x054D
-#define HPDesc  0x0544
+#define MovDesc HTID_Mov
+#define HPDesc  0x025D
 
 ALIGN 4
 MovHPDescGetter:
