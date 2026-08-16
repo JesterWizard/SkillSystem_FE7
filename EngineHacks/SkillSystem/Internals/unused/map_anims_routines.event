@@ -55,7 +55,7 @@ BYTE $02 $00 $00 $00 $0D $A8 $07 $08
 BYTE $00 $00 $00 $00 $00 $00 $00 $00
 
 SkillCheckAnimsOff:
-#incbin "skillCheckAnimsOff.dmp"
+#include "skillCheckAnimsOff.lyn.event"
 POIN LevelUpSkillTable
 POIN SkillAdder
 POIN PopupStruct

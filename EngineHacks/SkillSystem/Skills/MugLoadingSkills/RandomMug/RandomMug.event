@@ -69,7 +69,7 @@
     POP
 	ALIGN 4
     RandomMug1:
-    #incbin "RandomMug1.dmp"
+    #include "RandomMug1.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -78,7 +78,7 @@
     POIN IdentityProblemsMugs
  	ALIGN 4   
     RandomMug2:
-    #incbin "RandomMug2.dmp"
+    #include "RandomMug2.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -87,7 +87,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug3:
-    #incbin "RandomMug3.dmp"
+    #include "RandomMug3.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -96,7 +96,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug4:
-    #incbin "RandomMug4.dmp"
+    #include "RandomMug4.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -105,7 +105,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug5:
-    #incbin "RandomMug5.dmp"
+    #include "RandomMug5.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -114,7 +114,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug6:
-    #incbin "RandomMug6.dmp"
+    #include "RandomMug6.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -123,7 +123,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug7:
-    #incbin "RandomMug7.dmp"
+    #include "RandomMug7.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -132,7 +132,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug8:
-    #incbin "RandomMug8.dmp"
+    #include "RandomMug8.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -141,7 +141,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug9:
-    #incbin "RandomMug9.dmp"
+    #include "RandomMug9.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -150,7 +150,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug10:
-    #incbin "RandomMug10.dmp"
+    #include "RandomMug10.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -159,7 +159,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug11:
-    #incbin "RandomMug11.dmp"
+    #include "RandomMug11.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -168,7 +168,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug12:
-    #incbin "RandomMug12.dmp"
+    #include "RandomMug12.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -177,7 +177,7 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     RandomMug13:
-    #incbin "RandomMug13.dmp"
+    #include "RandomMug13.lyn.event"
     POIN MugList
     POIN SkillTester
     WORD RandomMugID
@@ -186,120 +186,120 @@
     POIN IdentityProblemsMugs
 	ALIGN 4    
     PrepScreenIsDumb:
-    #incbin "PrepScreenIsDumb.dmp"
+    #include "PrepScreenIsDumb.lyn.event"
     WORD IdentityRamByte
 	ALIGN 4    
     PrepScreenIsDumb2:
-    #incbin "PrepScreenIsDumb2.dmp"
+    #include "PrepScreenIsDumb2.lyn.event"
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems1:
-    #incbin "IdentityProblems1.dmp"
+    #include "IdentityProblems1.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems2:
-    #incbin "IdentityProblems2.dmp"
+    #include "IdentityProblems2.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems3:
-    #incbin "IdentityProblems3.dmp"
+    #include "IdentityProblems3.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems4:
-    #incbin "IdentityProblems4.dmp"
+    #include "IdentityProblems4.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems5:
-    #incbin "IdentityProblems5.dmp"
+    #include "IdentityProblems5.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4        
     IdentityProblems6:
-    #incbin "IdentityProblems6.dmp"
+    #include "IdentityProblems6.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4
     IdentityProblems7:
-    #incbin "IdentityProblems7.dmp"
+    #include "IdentityProblems7.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
 	ALIGN 4    
     IdentityProblems8:
-    #incbin "IdentityProblems8.dmp"
+    #include "IdentityProblems8.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems9:
-    #incbin "IdentityProblems9.dmp"
+    #include "IdentityProblems9.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems10:
-    #incbin "IdentityProblems10.dmp"
+    #include "IdentityProblems10.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems11:
-    #incbin "IdentityProblems11.dmp"
+    #include "IdentityProblems11.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems12:
-    #incbin "IdentityProblems12.dmp"
+    #include "IdentityProblems12.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems13:
-    #incbin "IdentityProblems13.dmp"
+    #include "IdentityProblems13.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems14:
-    #incbin "IdentityProblems14.dmp"
+    #include "IdentityProblems14.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems15:
-    #incbin "IdentityProblems15.dmp"
+    #include "IdentityProblems15.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID
     WORD IdentityRamByte
  	ALIGN 4   
     IdentityProblems16:
-    #incbin "IdentityProblems16.dmp"
+    #include "IdentityProblems16.lyn.event"
     POIN IdentityProblemsNames
     POIN SkillTester
     WORD IdentityProblemsID

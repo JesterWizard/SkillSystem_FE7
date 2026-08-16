@@ -1,12 +1,12 @@
 ALIGN 4
 TriangleAdept:
-#incbin "TriangleAdept/TriangleAdept.dmp"
+#include "TriangleAdept/TriangleAdept.lyn.event"
 POIN SkillTester
 WORD TriAdeptID
 WORD TriAdeptPlusID
 
 ALIGN 4
 Poise:
-#incbin "Poise/Poise.dmp"
+#include "Poise/Poise.lyn.event"
 POIN SkillTester
 WORD PoiseID

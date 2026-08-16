@@ -2,36 +2,36 @@
 
 ALIGN 4
 prPushStr:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushStrID
 
 ALIGN 4
 prPushMag:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushMagID
 
 ALIGN 4
 prPushSkl:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushSklID
 
 ALIGN 4
 prPushSpd:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushSpdID
 
 ALIGN 4
 prPushDef:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushDefID
 
 ALIGN 4
 prPushRes:
-#incbin "PushSkill.dmp"
+#include "PushSkill.lyn.event"
 POIN SkillTester
 WORD PushResID

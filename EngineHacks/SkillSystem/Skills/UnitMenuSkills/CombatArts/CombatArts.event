@@ -114,7 +114,7 @@ UM_Separator
 
 ALIGN 4
 AdeptUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD AdeptID
 WORD 6 //Adept art ID
@@ -122,12 +122,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 AdeptEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 6 //Adept art ID
 
 ALIGN 4
 AetherUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD AetherID
 WORD 7 //Aether art ID
@@ -135,13 +135,13 @@ POIN CombatArtCostTable
 
 ALIGN 4
 AetherEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 7 //Aether art ID
 
 
 ALIGN 4
 AstraUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD AstraID
 WORD 8 //Astra art ID
@@ -149,12 +149,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 AstraEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 8 //Astra art ID
 
 ALIGN 4
 DragonFangUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD DragonFangID
 WORD 9 //Dragon Fang art ID
@@ -162,12 +162,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 DragonFangEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 9 //Dragon Fang art ID
 
 ALIGN 4
 GlaciesUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD GlaciesID
 WORD 10 //Glacies art ID
@@ -175,12 +175,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 GlaciesEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 10 //Glacies art ID
 
 ALIGN 4
 IgnisUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD IgnisID
 WORD 11 //Ignis art ID
@@ -188,12 +188,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 IgnisEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 11 //Ignis art ID
 
 ALIGN 4
 LunaUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD LunaID
 WORD 12 //Luna art ID
@@ -201,12 +201,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 LunaEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 12 //Luna art ID
 
 ALIGN 4
 SolUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD SolID
 WORD 13 //Sol art ID
@@ -214,12 +214,12 @@ POIN CombatArtCostTable
 
 ALIGN 4
 SolEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 13 //Sol art ID
 
 ALIGN 4
 SureShotUsability:
-#incbin "CombatArtUsability.dmp"
+#include "CombatArtUsability.lyn.event"
 POIN SkillTester
 WORD SureShotID
 WORD 14 //Sure Shot art ID
@@ -227,6 +227,6 @@ POIN CombatArtCostTable
 
 ALIGN 4
 SureShotEffect:
-#incbin "CombatArtEffect.dmp"
+#include "CombatArtEffect.lyn.event"
 WORD 14 //Sure Shot art ID
 

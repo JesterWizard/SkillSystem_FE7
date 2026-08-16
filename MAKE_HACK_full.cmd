@@ -58,6 +58,17 @@ if /I not [%1]==[quick] (
 )
 
 echo:
+echo Building skill ASM
+
+cd "%base_dir%"
+python "%base_dir%Tools\build_skill_asm.py"
+if errorlevel 1 (
+  echo Skill ASM build failed.
+  pause
+  exit /b 1
+)
+
+echo:
 echo Dumping FE7 text table
 python "%base_dir%Tools\dump_fe7_text_table.py" --rom "%source_rom%" --out "%base_dir%Text\NewTextTable.dmp"
 
@@ -117,6 +128,10 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+
+echo Closing existing NO$GBA
+taskkill /F /IM NO$GBA.EXE >nul 2>&1
+taskkill /F /IM no$gba.exe >nul 2>&1
 
 echo Launching NO$GBA
 start "" "%base_dir%..\no$gba\NO$GBA.EXE" "%target_rom%"

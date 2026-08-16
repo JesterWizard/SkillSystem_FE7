@@ -206,7 +206,7 @@
 #define BowfaireID 198
 #define StafffaireID 199
 #define AnimafaireID 169
-#define DarkfaireID 170
+#define DarkfaireID SKILL_OFF
 #define LightfaireID 223
 #define FieryBloodID 219
 #define ForeignPrincessID SKILL_OFF
@@ -259,7 +259,7 @@
 #define BlueFlameID SKILL_OFF
 #define DoubleLionID SKILL_OFF
 #define ThighdeologyID 152
-#define ThotslayerID 14
+#define ThotslayerID 164
 #define HeavyBladeID 25
 #define DancingBladeID 187
 #define FireBoostID SKILL_OFF
@@ -267,7 +267,7 @@
 #define EarthBoostID SKILL_OFF
 #define WaterBoostID SKILL_OFF
 #define AirRaidAtkID SKILL_OFF
-#define AirRaidSpdID 254
+#define AirRaidSpdID SKILL_OFF
 #define AirRaidDefID SKILL_OFF
 #define AirRaidCriID SKILL_OFF
 #define AirRaidHitID SKILL_OFF

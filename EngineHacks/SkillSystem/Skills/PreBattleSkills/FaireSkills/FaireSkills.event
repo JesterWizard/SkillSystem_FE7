@@ -1,7 +1,7 @@
 
 ALIGN 4
 FaireCheck: //added to fe7_calc_loop.event
-#incbin "FaireCheck.dmp"
+#include "FaireCheck.lyn.event"
 POIN SkillTester
 POIN FaireIDList
 

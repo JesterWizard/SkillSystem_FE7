@@ -22,12 +22,12 @@ POP
 
 ALIGN 4
 AcrobatCheck:
-#incbin "Acrobat/Acrobat.dmp"
+#include "Acrobat/Acrobat.lyn.event"
 POIN SkillTester
 WORD AcrobatID
 
 ALIGN 4
 PassCheck:
-#incbin "Pass/Pass.dmp"
+#include "Pass/Pass.lyn.event"
 POIN SkillTester
 WORD PassID

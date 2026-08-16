@@ -3,7 +3,7 @@ ProcLoopParent:
 POIN ProcLoop_Start	//start
 POIN Proc_Eclipse	//skills that do damage and all that
 POIN /*Proc_BlackMagic*/ /*Proc_Petrify*/ Proc_Enrage /*Proc_Deadeye*/ //skills that apply a status effect
-POIN /*Proc_Adept*/ Proc_DragonFang 
+POIN Proc_Adept Proc_DragonFang 
 POIN Proc_Glacies
 POIN Proc_Colossus 
 POIN Proc_Bane /*DownWithArch Proc_Lethality*/	//skills that set damage to max

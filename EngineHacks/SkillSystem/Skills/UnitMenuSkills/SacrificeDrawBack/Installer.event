@@ -27,17 +27,17 @@ WORD 0x2b
 //s6 HealValue
 ALIGN 4
 ASMC_HealLikeVulnerary:
-#incbin "ASMC_HealLikeVulnerary.dmp"
+#include "ASMC_HealLikeVulnerary.lyn.event"
 POIN WaitForMotionEndProc
 
 ALIGN 4
 ASMC_SelfDamageLikeBomb:
-#incbin "ASMC_SelfDamageLikeBomb.dmp"
+#include "ASMC_SelfDamageLikeBomb.lyn.event"
 POIN WaitForMotionEndProc
 
 ALIGN 4
 WaitForMotionEnd:
-#incbin "WaitForMotionEnd.dmp"
+#include "WaitForMotionEnd.lyn.event"
 
 #include "ProcDefinitions.event"
 ALIGN 4

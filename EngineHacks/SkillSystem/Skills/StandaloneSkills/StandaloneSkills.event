@@ -59,36 +59,36 @@ POP
 
 ALIGN 4
 Boon:
-#incbin "Boon/Boon.dmp"
+#include "Boon/Boon.lyn.event"
 POIN SkillTester
 WORD BoonID
 
 ALIGN 4
 Discipline:
-#incbin "Discipline/Discipline.dmp"
+#include "Discipline/Discipline.lyn.event"
 POIN SkillTester
 WORD DisciplineID
 WORD DisciplinePlusID
 
 ALIGN 4
 LiveToServe:
-#incbin "LiveToServe/LiveToServe.dmp"
+#include "LiveToServe/LiveToServe.lyn.event"
 POIN SkillTester
 WORD LiveToServeID
 
 ALIGN 4
 LockTouch:
-#incbin "Locktouch/LockTouch.dmp"
+#include "Locktouch/LockTouch.lyn.event"
 POIN SkillTester
 WORD LockTouchID
 
 ALIGN 4
 Lunge:
-#incbin "Lunge/lunge.dmp"
+#include "Lunge/lunge.lyn.event"
 
 ALIGN 4
 Vantage:
-#incbin "Vantage/vantage.dmp"
+#include "Vantage/vantage.lyn.event"
 POIN SkillTester
 WORD VantageID
 WORD VantagePlusID

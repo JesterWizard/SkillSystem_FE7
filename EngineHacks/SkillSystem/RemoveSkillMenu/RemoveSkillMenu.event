@@ -125,43 +125,43 @@ _6C_LABEL(776)
 
 ALIGN 4
 _prCheckForBattleSkillForgetting:
-	#incbin "asm/CheckForBattleSkillForgetting.dmp"
+	#include "asm/CheckForBattleSkillForgetting.lyn.event"
 	POIN (prCheckForSkillForgetting|1)
 
 ALIGN 4
 _prPromotionInit:
-	#incbin "asm/PromotionInit.dmp"
+	#include "asm/PromotionInit.lyn.event"
 
 ALIGN 4
 _prPromotionCheck:
-	#incbin "asm/PromotionCheck.dmp"
+	#include "asm/PromotionCheck.lyn.event"
 	POIN (prCheckForSkillForgetting|1)
 
 _prPromotionPrepScreenSetup:
-	#incbin "asm/PromotionPrepScreenSetup.dmp"
+	#include "asm/PromotionPrepScreenSetup.lyn.event"
 
 }
 
 ALIGN 4
 ASMC_LearnNewSkill:
-	#incbin "asm/ASMC/ASMC_LearnSkill.dmp"
+	#include "asm/ASMC/ASMC_LearnSkill.lyn.event"
 	POIN (prLearnNewSkill|1)
 
 ALIGN 4
 ASMC_HasSkill:
-	#incbin "asm/ASMC/ASMC_HasSkill.dmp"
+	#include "asm/ASMC/ASMC_HasSkill.lyn.event"
 	POIN (SkillTester|1)
 
 ALIGN 4
 ASMC_ForgetSkill:
-	#incbin "asm/ASMC/ASMC_ForgetSkill.dmp"
+	#include "asm/ASMC/ASMC_ForgetSkill.lyn.event"
 
 ALIGN 4
 prLearnNewSkill:
 // Arguments: r0 = Unit, r1 = Skill Index, r2 = Parent proc
 // Returns:   r0 = proc (if you really need it)
 {
-	#incbin "asm/LearnNewSkill.dmp"
+	#include "asm/LearnNewSkill.lyn.event"
 	POIN pProc_NewSkillLearn
 	POIN (SkillAdder|1)
 
@@ -176,7 +176,7 @@ _psName:
 	BYTE 0; ALIGN 4
 
 _prCheckForget:
-	#incbin "asm/LearnNewSkill_CheckForget.dmp"
+	#include "asm/LearnNewSkill_CheckForget.lyn.event"
 	POIN (prCheckForSkillForgetting|1)
 }
 
@@ -185,7 +185,7 @@ prCallSkillLearnedPopup:
 // Arguments: r0 = Parent proc
 // Returns:   r0 = 0 on success (skill is displayed and all)
 {
-	#incbin "asm/CallSkillLearnedPopup.dmp"
+	#include "asm/CallSkillLearnedPopup.lyn.event"
 	POIN _pPopupDef
 	WORD 90 // time (in frames) the popup stays up (I think if you put -1 it will wait for user input)
 
@@ -202,7 +202,7 @@ ALIGN 4
 prCheckForSkillForgetting:
 // Arguments: r0 = Unit, r1 = Parent proc
 // Returns:   r0 = 0 on success (menu is open and all)
-	#incbin "asm/CheckForSkillForgetting.dmp"
+	#include "asm/CheckForSkillForgetting.lyn.event"
 	POIN (prCallRemoveSkillMenu|1)
 
 ALIGN 4
@@ -210,7 +210,7 @@ prCallRemoveSkillMenu:
 // Arguments: r0 = Unit, r1 = Parent proc (can be 0)
 // Returns:   nothing
 {
-	#incbin "asm/CallMenuRemoveSkill.dmp"
+	#include "asm/CallMenuRemoveSkill.lyn.event"
 	POIN pMenuDef_RemoveSkill
 	POIN pProc_MenuWrapper
 
@@ -247,45 +247,45 @@ UM_Separator
 
 ALIGN 4
 prMenuRemoveSkill_OnCancel:
-	#incbin "asm/Menu/MenuRemoveSkill_OnCancel.dmp"
+	#include "asm/Menu/MenuRemoveSkill_OnCancel.lyn.event"
 
 ALIGN 4
 prMenuRemoveSkill_OnHelp:
-	#incbin "asm/Menu/MenuRemoveSkill_OnHelp.dmp"
+	#include "asm/Menu/MenuRemoveSkill_OnHelp.lyn.event"
 	POIN (prGetSkillIdByIndex|1)
 	POIN SkillDescTable
 
 ALIGN 4
 prMenuRemoveSkillCommand_Usability:
-	#incbin "asm/Menu/MenuRemoveSkillCommand_Usability.dmp"
+	#include "asm/Menu/MenuRemoveSkillCommand_Usability.lyn.event"
 	POIN (prGetSkillIdByIndex|1)
 
 ALIGN 4
 prMenuRemoveSkillCommand_ForgetEffect:
-	#incbin "asm/Menu/MenuRemoveSkillCommand_ForgetEffect.dmp"
+	#include "asm/Menu/MenuRemoveSkillCommand_ForgetEffect.lyn.event"
 
 ALIGN 4
 prMenuRemoveSkillCommand_NoLearnEffect:
-	#incbin "asm/Menu/MenuRemoveSkillCommand_NoLearnEffect.dmp"
+	#include "asm/Menu/MenuRemoveSkillCommand_NoLearnEffect.lyn.event"
 
 ALIGN 4
 prMenuRemoveSkillCommand_NoEffect:
-	#incbin "asm/Menu/MenuRemoveSkillCommand_NoEffect.dmp"
+	#include "asm/Menu/MenuRemoveSkillCommand_NoEffect.lyn.event"
 
 ALIGN 4
 prMenuRemoveSkillCommand_Draw:
-	#incbin "asm/Menu/MenuRemoveSkillCommand_Draw.dmp"
+	#include "asm/Menu/MenuRemoveSkillCommand_Draw.lyn.event"
 	POIN (prDrawSkillMenuCommand|1)
 	POIN (prGetSkillIdByIndex|1)
 
 ALIGN 4
 prDrawSkillMenuCommand:
-	#incbin "asm/DrawSkillMenuCommand.dmp"
+	#include "asm/DrawSkillMenuCommand.lyn.event"
 	POIN SkillDescTable
 
 ALIGN 4
 prGetSkillIdByIndex:
-	#incbin "asm/GetSkillIdByIndex.dmp"
+	#include "asm/GetSkillIdByIndex.lyn.event"
 	POIN PersonalSkillTable
 	POIN ClassSkillTable
 

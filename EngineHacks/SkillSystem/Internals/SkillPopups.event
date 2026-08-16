@@ -10,20 +10,20 @@ PopRSkillIconComponent:
 
 ALIGN 4
 PopRSkillIconLength:
-	#incbin "asm/PopRSkillIconLength.dmp"
+	#include "asm/PopRSkillIconLength.lyn.event"
 
 ALIGN 4
 PopRSkillIconDisplay:
-	#incbin "asm/PopRSkillIconDisplay.dmp"
+	#include "asm/PopRSkillIconDisplay.lyn.event"
 
 ALIGN 4
 InitLevelUpSkillPopup:
-	#incbin "asm/InitLevelUpSkillPopup.dmp"
+	#include "asm/InitLevelUpSkillPopup.lyn.event"
 	POIN (GetUnitLevelSkills|1)
 	POIN (SkillAdder|1)
 
 InitPromotionSkillPopup:
-	#incbin "asm/InitPromotionSkillPopup.dmp"
+	#include "asm/InitPromotionSkillPopup.lyn.event"
 	POIN (GetUnitLevelSkills|1)
 	POIN (SkillAdder|1)
 

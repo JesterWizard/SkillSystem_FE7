@@ -14,13 +14,13 @@ ALIGN 4
 Armsthrift:
 AxeFaithArmsthrift:
 ArmsthriftAxeFaith:
-#incbin "Armsthrift/armsthriftaxefaith.dmp"
+#include "Armsthrift/armsthriftaxefaith.lyn.event"
 POIN SkillTester|1
 WORD ArmsthriftID AxeFaithID
 
 ALIGN 4
 DazzleCheck:
-#incbin "Dazzle/dazzle.dmp"
+#include "Dazzle/dazzle.lyn.event"
 POIN SkillTester
 WORD DazzleID
 WORD MoonlightID

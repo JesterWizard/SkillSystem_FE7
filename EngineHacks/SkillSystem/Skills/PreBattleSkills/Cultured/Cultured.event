@@ -2,7 +2,7 @@
 
 ALIGN 4
 Cultured:
-#incbin "Cultured.dmp"
+#include "Cultured.lyn.event"
 POIN SkillTester
 WORD CulturedID
 WORD NiceThighsID

@@ -5,7 +5,7 @@ jumpToHack(HackLocation)
 POP
 
 HackLocation:
-#incbin "doubleRogueSkillFE8.dmp"
+#include "doubleRogueSkillFE8.lyn.event"
 
 POIN ClassTable
 

@@ -1,6 +1,6 @@
 ALIGN 4
 AirRaidSkillCheck:
-#incbin "AirRaidSkillCheck.dmp"
+#include "AirRaidSkillCheck.lyn.event"
 POIN SkillTester
 POIN AirRaidSkillIDList
 

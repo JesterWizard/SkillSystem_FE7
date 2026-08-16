@@ -9,9 +9,12 @@ PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 
 // //PROBLEM: skills 1 and 2 get kept along with loss count
 
-// ORG $53AEE //FE8 -> $5904A
-// SHORT 0x46C0
-// jumpToHack(SkillActivationAnims)
+ORG $5314C // copy hit 0x4000/0x8000 onto gAnimRoundData
+jumpToHack(ParseHitSkillRoundFlags)
+ORG $53680 // C03 wait-for-attack: FE8-style skill BG
+jumpToHack(SkillActivationAnims)
+ORG $58920 // Type01BG loop: set BLOCKEND so C03 can finish
+jumpToHack(EfxSkillType01BG_Loop)
 // ORG $4CB80 //FE8 -> $518E4      // Don't overwrite VRAM holding procced skill icon.
 // jumpToHack(KeepProcSkillIcon)
 
@@ -98,12 +101,15 @@ POP
 
 #include "MenuResetSkillBuffer.lyn.event"
 
-// ALIGN 4
-// KeepProcSkillIcon:
-// #include "KeepProcSkillIcon.lyn.event"
-// ALIGN 4
-// SkillActivationAnims:
-// #include "activationanims.lyn.event"
+ALIGN 4
+ParseHitSkillRoundFlags:
+#include "parse_hit_skill_round.lyn.event"
+ALIGN 4
+SkillActivationAnims:
+#include "activationanims.lyn.event"
+ALIGN 4
+EfxSkillType01BG_Loop:
+#include "efx_skill_type01_loop.lyn.event"
 // ALIGN 4
 // SkillProcDisplayMap:
 // #include "SkillProcDisplayMap.lyn.event"
@@ -119,7 +125,7 @@ ALIGN 4
 #define gLearnedSkillRam 0x0203F540
 
 Skill_Getter: // gets a list of skills
-	#incbin "asm/GetSkills.dmp"
+	#include "asm/GetSkills.lyn.event"
 	POIN PersonalSkillTable
 	POIN ClassSkillTable
 	POIN (GetInitialSkillList|1)
@@ -362,11 +368,11 @@ BYTE 0x00 //terminator
 
 ALIGN 4
 SkillAdder: //given chardata in r0, skill in r1, add skill if possible
-#incbin "addSkill.dmp"
+#include "addSkill.lyn.event"
 
 ALIGN 4
 HookUnitLoading:
-	#incbin "asm/HookUnitLoading.dmp"
+	#include "asm/HookUnitLoading.lyn.event"
 	POIN (AutoloadSkills|1)
 	POIN (Skill_Getter|1)
 	POIN ChargeupTable
@@ -374,31 +380,31 @@ HookUnitLoading:
 ALIGN 4
 AutoloadSkills:
 	// TODO: maybe merge with HookUnitLoading?
-	#incbin "asm/AutoloadSkills.dmp"
+	#include "asm/AutoloadSkills.lyn.event"
 	POIN (GetInitialSkillList|1)
 	POIN (SkillAdder|1)
 
 ALIGN 4
 GetInitialSkillList:
-	#incbin "asm/GetInitialSkillList.dmp"
+	#include "asm/GetInitialSkillList.lyn.event"
 	POIN (GetUnitLevelSkills|1)
 
 ALIGN 4
 GetUnitLevelSkills:
-	#incbin "asm/GetUnitLevelSkills.dmp"
+	#include "asm/GetUnitLevelSkills.lyn.event"
 	POIN ClassLevelUpSkillTable
 	POIN CharLevelUpSkillTable
 
 Unset_Attack_Flag_2:
-#incbin "clearAttackFlag.dmp"
+#include "clearAttackFlag.lyn.event"
 
 
 RTextLoop:
-#incbin "rtextloop.dmp"
+#include "rtextloop.lyn.event"
 POIN Skill_Getter
 
 Rerun_Battle_Calcs:
-#incbin "Rerun_Battle_Calcs.dmp"
+#include "Rerun_Battle_Calcs.lyn.event"
 
 // Right now causes battles to crash
 // #include "RemoveRound.lyn.event" // This hack makes bit 5 of rounds attributes cause the round not to occur. -Snek

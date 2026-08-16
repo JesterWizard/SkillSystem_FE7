@@ -1,11 +1,11 @@
 ALIGN 4
 BlossomGrowthModifier:
-#incbin "Blossom/Blossom.dmp"
+#include "Blossom/Blossom.lyn.event"
 POIN SkillTester
 WORD BlossomID
 
 ALIGN 4
 AptitudeGrowthModifier:
-#incbin "Aptitude/Aptitude.dmp"
+#include "Aptitude/Aptitude.lyn.event"
 POIN SkillTester
 WORD AptitudeID

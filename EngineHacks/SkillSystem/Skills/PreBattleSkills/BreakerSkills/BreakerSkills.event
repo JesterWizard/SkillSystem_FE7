@@ -1,6 +1,6 @@
 ALIGN 4
 BreakerCheck: //added to fe7_calc_loop.event
-#incbin "BreakerCheck.dmp"
+#include "BreakerCheck.lyn.event"
 POIN SkillTester
 POIN BreakerIDList
 

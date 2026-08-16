@@ -1,7 +1,7 @@
 
 ALIGN 4
 DefendingCheck:
-#incbin "Defending.dmp"
+#include "Defending.lyn.event"
 POIN SkillTester
 POIN DefendingIDList
 

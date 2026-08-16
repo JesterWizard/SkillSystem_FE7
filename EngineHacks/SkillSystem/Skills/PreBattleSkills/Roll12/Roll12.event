@@ -1,7 +1,7 @@
 
 ALIGN 4
 Roll1d12:
-#incbin "roll12.dmp"
+#include "roll12.lyn.event"
 POIN SkillTester
 WORD Roll12ID
 POIN _12SkillList

@@ -66,6 +66,10 @@ if [[ $1 != quick ]]; then
   echo | $python3 $tmx2ea -s -O "MasterMapInstaller.event"
 fi
 
+echo "Building skill ASM"
+cd "$base_dir"
+$python3 "$base_dir/Tools/build_skill_asm.py" || exit 1
+
 echo "Assembling"
 
 cd "$base_dir/EventAssembler"

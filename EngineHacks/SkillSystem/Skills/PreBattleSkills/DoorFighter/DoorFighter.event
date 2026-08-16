@@ -1,14 +1,14 @@
 
 ALIGN 4
 IndoorFighter:
-#incbin "IndoorFighter.dmp"
+#include "IndoorFighter.lyn.event"
 POIN SkillTester
 WORD IndoorFighterID
 POIN IndoorTerrainList
 
 ALIGN 4
 OutdoorFighter:
-#incbin "OutdoorFighter.dmp"
+#include "OutdoorFighter.lyn.event"
 POIN SkillTester
 WORD OutdoorFighterID
 POIN OutdoorTerrainList

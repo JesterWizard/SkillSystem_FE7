@@ -28,7 +28,7 @@ POP
 
 ALIGN 4
 Rogue_Robbery:
-#incbin "FE8-Rogue_Robbery.dmp"
+#include "FE8-Rogue_Robbery.lyn.event"
 POIN prConGetter
 POIN SkillTester
 WORD StealPlusID
@@ -50,14 +50,14 @@ WORD WatchfulID
 	SHORT 0x2B00 //cmp r3,#0
 	
 	ORG $3DC0C
-	#incbin "Find_Most_Valuable_Item.dmp"
+	#include "Find_Most_Valuable_Item.lyn.event"
 	POIN Most_Valuable_Item
 	
 	POP
 	
 	ALIGN 4
 	Most_Valuable_Item:
-	#incbin "Most_Valuable_Item.dmp"
+	#include "Most_Valuable_Item.lyn.event"
 
 #endif
 
@@ -87,7 +87,7 @@ WORD WatchfulID
 	
 	ALIGN 4
 	Can_Unit_Steal:
-	#incbin "Can_Unit_Steal.dmp"
+	#include "Can_Unit_Steal.lyn.event"
 	POIN SkillTester
 	WORD StealID
 	WORD StealPlusID

@@ -1,6 +1,6 @@
 ALIGN 4
 CheckGaleforce: //decides if the unit should be cantoing or not
-#incbin "Galeforce/checkgaleforce.dmp"
+#include "Galeforce/checkgaleforce.lyn.event"
 
 PUSH
 ORG $1CC04 //FE8 -> $1D2B8 //this used to set state to "cantoing", it's just there to make sure galeforce has priority
@@ -16,7 +16,7 @@ POP
 
 ALIGN 4
 ReMove:
-#incbin "ReMove/remove.dmp"
+#include "ReMove/remove.lyn.event"
 POIN SkillTester
 WORD ReMoveID
 //POIN ReMoveEvent
@@ -24,7 +24,7 @@ WORD ReMoveID
 
 ALIGN 4
 Lifetaker:
-#incbin "Lifetaker/lifetaker.dmp"
+#include "Lifetaker/lifetaker.lyn.event"
 POIN SkillTester
 WORD LifetakerID
 //POIN LifetakerEvent
@@ -32,7 +32,7 @@ WORD LifetakerID
 
 ALIGN 4
 Canto:
-#incbin "Canto/canto.dmp"
+#include "Canto/canto.lyn.event"
 POIN SkillTester
 WORD CantoID
 //WORD ENABLE_LEGACY_CANTO
@@ -42,7 +42,7 @@ WORD CANTO_AI
 
 ALIGN 4
 Despoil:
-#incbin "Despoil/despoil.dmp"
+#include "Despoil/despoil.lyn.event"
 POIN SkillTester
 WORD DespoilID
 //POIN DespoilEvent
@@ -50,7 +50,7 @@ WORD DespoilID
 
 ALIGN 4
 Fury:
-#incbin "Fury/fury.dmp"
+#include "Fury/fury.lyn.event"
 POIN SkillTester
 WORD FuryID
 //POIN FuryEvent
@@ -68,7 +68,7 @@ BYTE GrislyWoundID
 
 ALIGN 4
 Powerstaff:
-#incbin "Powerstaff/powerstaff.dmp"
+#include "Powerstaff/powerstaff.lyn.event"
 POIN SkillTester
 WORD PowerstaffID
 //POIN PowerstaffEvent
@@ -76,7 +76,7 @@ WORD PowerstaffID
 
 ALIGN 4
 Galeforce:
-#incbin "Galeforce/galeforce.dmp"
+#include "Galeforce/galeforce.lyn.event"
 POIN SkillTester
 WORD GaleforceID
 //POIN GaleforceEvent
@@ -84,7 +84,7 @@ WORD GaleforceID
 
 ALIGN 4
 FailGale:
-#incbin "FailGale/FailGale.dmp"
+#include "FailGale/FailGale.lyn.event"
 POIN SkillTester
 WORD FailGaleID
 
@@ -114,7 +114,7 @@ POP
 /*
 ALIGN 4
 Despoil:
-#incbin "Despoil/despoil.dmp"
+#include "Despoil/despoil.lyn.event"
 POIN SkillTester
 WORD DespoilID
 POIN DespoilEvent
@@ -122,7 +122,7 @@ POIN DespoilEvent
 
 ALIGN 4
 SavageBlow:
-#incbin "SavageBlow/savageblow.dmp"
+#include "SavageBlow/savageblow.lyn.event"
 POIN SkillTester
 WORD SavageBlowID
 POIN SavageBlowEvent
@@ -131,7 +131,7 @@ POIN GetUnitsInRange
 
 ALIGN 4
 BreathOfLife:
-#incbin "BreathOfLife/BreathOfLife.dmp"
+#include "BreathOfLife/BreathOfLife.lyn.event"
 POIN SkillTester
 WORD BreathOfLifeID
 POIN BreathOfLifeEvent
@@ -161,7 +161,7 @@ ENDA
 
 ALIGN 4
 Gridmaster:
-#incbin "Gridmaster/Gridmaster.dmp"
+#include "Gridmaster/Gridmaster.lyn.event"
 POIN SkillTester
 WORD GridmasterID
 WORD ACTION_MOVETARGET

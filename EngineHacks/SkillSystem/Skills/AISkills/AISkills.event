@@ -22,24 +22,24 @@ POP
 
 ALIGN 4
 Provoke:
-#incbin "Provoke/Provoke.dmp"
+#include "Provoke/Provoke.lyn.event"
 POIN SkillTester
 WORD ProvokeID
 
 ALIGN 4
 LungeAI:
-#incbin "LungeAI/lungeAI.dmp"
+#include "LungeAI/lungeAI.lyn.event"
 POIN SkillTester
 WORD LungeID
 
 ALIGN 4
 Shade:
-#incbin "Shade/Shade.dmp"
+#include "Shade/Shade.lyn.event"
 POIN SkillTester
 WORD ShadeID
 
 ALIGN 4
 ShadePlus:
-#incbin "ShadePlus/ShadePlus.dmp"
+#include "ShadePlus/ShadePlus.lyn.event"
 POIN SkillTester
 WORD ShadePlusID

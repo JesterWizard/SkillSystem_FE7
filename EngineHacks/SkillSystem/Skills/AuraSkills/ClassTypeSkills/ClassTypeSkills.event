@@ -1,6 +1,6 @@
 ALIGN 4
 Armorboost:
-#incbin "Armorboost.dmp"
+#include "Armorboost.lyn.event"
 POIN SkillTester
 POIN GetUnitsInRange
 WORD ArmorboostID
@@ -8,7 +8,7 @@ WORD ArmorType
 
 ALIGN 4
 Horseguard:
-#incbin "Horseguard.dmp"
+#include "Horseguard.lyn.event"
 POIN SkillTester
 POIN GetUnitsInRange
 WORD HorseguardID
@@ -16,7 +16,7 @@ WORD HorseType
 
 ALIGN 4
 Skyguard:
-#incbin "Skyguard.dmp"
+#include "Skyguard.lyn.event"
 POIN SkillTester
 POIN GetUnitsInRange
 WORD SkyguardID

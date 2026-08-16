@@ -1,6 +1,6 @@
 ALIGN 4
 ElementBoostCheck:
-#incbin "ElementBoost.dmp"
+#include "ElementBoost.lyn.event"
 POIN SkillTester
 POIN ElementBoostIDList
 

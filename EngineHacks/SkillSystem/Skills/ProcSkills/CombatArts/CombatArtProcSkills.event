@@ -1,56 +1,56 @@
 
 ALIGN 4
 CombatArt_Adept:
-#incbin "Adept/proc_adept.dmp"
+#include "Adept/proc_adept.lyn.event"
 POIN SkillTester
 WORD AdeptID
 
 ALIGN 4
 CombatArt_AetherDamage:
-#incbin "Aether/proc_aetherdamage.dmp"
+#include "Aether/proc_aetherdamage.lyn.event"
 POIN SkillTester
 WORD AetherID
 
 ALIGN 4
 CombatArt_Astra:
-#incbin "Astra/proc_astra.dmp"
+#include "Astra/proc_astra.lyn.event"
 POIN SkillTester
 WORD AstraID
 
 ALIGN 4
 CombatArt_DragonFang:
-#incbin "DragonFang/proc_dragonfang.dmp"
+#include "DragonFang/proc_dragonfang.lyn.event"
 POIN SkillTester
 WORD DragonFangID
 
 ALIGN 4
 CombatArt_Glacies:
-#incbin "Glacies/proc_glacies.dmp"
+#include "Glacies/proc_glacies.lyn.event"
 POIN SkillTester
 WORD GlaciesID
 
 ALIGN 4
 CombatArt_Ignis:
-#incbin "Ignis/proc_ignis.dmp"
+#include "Ignis/proc_ignis.lyn.event"
 POIN SkillTester
 WORD IgnisID
 
 ALIGN 4
 CombatArt_Luna:
-#incbin "Luna/proc_luna.dmp"
+#include "Luna/proc_luna.lyn.event"
 POIN SkillTester
 WORD LunaID
 
 ALIGN 4
 CombatArt_Sol:
-#incbin "Sol/proc_sol.dmp"
+#include "Sol/proc_sol.lyn.event"
 POIN SkillTester
 WORD SolID
 WORD LiquidOozeID
 
 ALIGN 4
 CombatArt_SureShot:
-#incbin "SureShot/proc_sureshot.dmp"
+#include "SureShot/proc_sureshot.lyn.event"
 POIN SkillTester
 WORD SureShotID
 

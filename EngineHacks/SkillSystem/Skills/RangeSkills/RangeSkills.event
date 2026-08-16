@@ -1,15 +1,15 @@
 ALIGN 4
 BowRangeBonus:
-#incbin "BowRange/BowRange.dmp"
+#include "BowRange/BowRange.lyn.event"
 
 ALIGN 4
 StaffSavantBonus:
-#incbin "StaffSavant/StaffSavant.dmp"
+#include "StaffSavant/StaffSavant.lyn.event"
 
 ALIGN 4
 PointBlankBonus:
-#incbin "PointBlank/PointBlank.dmp"
+#include "PointBlank/PointBlank.lyn.event"
 
 ALIGN 4
 TomeRangeBonus:
-#incbin "TomeRange/TomeRange.dmp"
+#include "TomeRange/TomeRange.lyn.event"

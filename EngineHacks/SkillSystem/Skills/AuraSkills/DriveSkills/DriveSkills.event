@@ -1,29 +1,29 @@
 ALIGN 4
 DriveDef:
-#incbin "DriveDef/DriveDef.dmp"
+#include "DriveDef/DriveDef.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveDefID
 
 ALIGN 4
 DriveMag:
-#incbin "DriveMag/DriveMag.dmp"
+#include "DriveMag/DriveMag.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveMagID
 
 ALIGN 4
 DriveRes:
-#incbin "DriveRes/DriveRes.dmp"
+#include "DriveRes/DriveRes.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveResID
 
 ALIGN 4
 DriveSpd:
-#incbin "DriveSpd/DriveSpd.dmp"
+#include "DriveSpd/DriveSpd.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveSpdID
 
 ALIGN 4
 DriveStr:
-#incbin "DriveStr/DriveStr.dmp"
+#include "DriveStr/DriveStr.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveStrID

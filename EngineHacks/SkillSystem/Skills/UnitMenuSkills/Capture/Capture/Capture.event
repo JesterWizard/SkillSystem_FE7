@@ -72,7 +72,7 @@
 	#ifdef CAPTURE_SKILL_REQUIRED
 	ALIGN 4
 	Capture_Usability:
-	#incbin "Capture_Usability_Func.dmp"
+	#include "Capture_Usability_Func.lyn.event"
 	POIN Fill_Capture_Range_Map SkillTester
 	WORD CaptureID
 	#endif
@@ -80,85 +80,85 @@
 	#ifndef CAPTURE_SKILL_REQUIRED
 	ALIGN 4
 	Capture_Usability:
-	#incbin "Capture_Usability_Func_NoSkill.dmp"
+	#include "Capture_Usability_Func_NoSkill.lyn.event"
 	POIN Fill_Capture_Range_Map SkillTester
 	WORD CaptureID
 	#endif
 
 	ALIGN 4
 	Fill_Capture_Range_Map:
-	#incbin "Fill_Capture_Range_Map.dmp"
+	#include "Fill_Capture_Range_Map.lyn.event"
 	POIN Capture_Target_Check|1
 	
 	ALIGN 4
 	Capture_Target_Check:
-	#incbin "Capture_Target_Check.dmp"
+	#include "Capture_Target_Check.lyn.event"
 	POIN SkillTester
 	WORD WatchfulID
 	
 	ALIGN 4
 	Capture_Effect_Func:
-	#incbin "Capture_Effect_Func.dmp"
+	#include "Capture_Effect_Func.lyn.event"
 	
 	ALIGN 4
 	New_Attack_Map:
-	#incbin "New_Attack_Map.dmp"
+	#include "New_Attack_Map.lyn.event"
 	POIN Is_Capture_Set Fill_Capture_Range_Map
 	
 	ALIGN 4
 	New_Weapon_Select:
-	#incbin "New_Weapon_Select.dmp"
+	#include "New_Weapon_Select.lyn.event"
 	POIN Is_Capture_Set Fill_Capture_Range_Map
 	
     ALIGN 4
     Show_Red_Squares:
-    #incbin "Show_Red_Squares.dmp"
+    #include "Show_Red_Squares.lyn.event"
     POIN Is_Capture_Set All_Weapons_One_Square
 	
 	ALIGN 4
 	Is_Capture_Set:
-	#incbin "Is_Capture_Set.dmp"
+	#include "Is_Capture_Set.lyn.event"
 	
 	ALIGN 4
 	Cancel_Capture:
-	#incbin "Cancel_Capture.dmp"
+	#include "Cancel_Capture.lyn.event"
 	
 	ALIGN 4
 	After_Battle_Rescue:
-	#incbin "After_Battle_Rescue.dmp"
+	#include "After_Battle_Rescue.lyn.event"
 	POIN Is_Capture_Set
 	
 	ALIGN 4
 	Drop_Dead_Enemy:
-	#incbin "Drop_Dead_Enemy.dmp"
+	#include "Drop_Dead_Enemy.lyn.event"
 	
 	ALIGN 4
 	Trade_Captured_Enemy1:
-	#incbin "Trade_Captured_Enemy1.dmp"
+	#include "Trade_Captured_Enemy1.lyn.event"
 	ALIGN 4
 	Trade_Captured_Enemy2:
-	#incbin "Trade_Captured_Enemy2.dmp"
+	#include "Trade_Captured_Enemy2.lyn.event"
 	
 	ALIGN 4
 	Trade_Portrait_Fix1:
-	#incbin "Trade_Portrait_Fix1.dmp"
+	#include "Trade_Portrait_Fix1.lyn.event"
 	
 	ALIGN 4
 	Trade_Portrait_Fix2:
-	#incbin "Trade_Portrait_Fix2.dmp"
+	#include "Trade_Portrait_Fix2.lyn.event"
 	
 //	ALIGN 4
 //	Should_Dead_Unit_Be_Cleared:
-//	#incbin "Should_Dead_Unit_Be_Cleared.dmp"
+//	#include "Should_Dead_Unit_Be_Cleared.lyn.event"
 	
 	ALIGN 4
 	StopDeathQuote:
-	#incbin "StopDeathQuote.dmp"
+	#include "StopDeathQuote.lyn.event"
 	POIN Is_Capture_Set
 	
 	ALIGN 4
 	GiveDropExp:
-	#incbin "GiveDropExp.dmp"
+	#include "GiveDropExp.lyn.event"
 	WORD GIVE_DROP_EXP			//add exp
 	POIN give_drop_exp_proc
 

@@ -1,6 +1,6 @@
 ALIGN 4
 BlowCheck:
-#incbin "BlowCheck.dmp"
+#include "BlowCheck.lyn.event"
 POIN SkillTester
 POIN BlowIDList
 

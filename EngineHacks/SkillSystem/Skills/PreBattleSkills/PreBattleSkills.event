@@ -1,12 +1,12 @@
 ALIGN 4
 LifeAndDeath:
-#incbin "LifeAndDeath/LifeAndDeath.dmp"
+#include "LifeAndDeath/LifeAndDeath.lyn.event"
 POIN SkillTester
 WORD LifeAndDeathID
 
 ALIGN 4
 LuckySeven:
-#incbin "LuckySeven/LuckySeven.dmp"
+#include "LuckySeven/LuckySeven.lyn.event"
 POIN SkillTester
 WORD LuckySevenID
 
@@ -14,208 +14,208 @@ WORD LuckySevenID
 
 ALIGN 4
 CritUpSkill:
-#incbin "CritUp/CritUpSkill.dmp"
+#include "CritUp/CritUpSkill.lyn.event"
 POIN SkillTester
 WORD CritUpID
 
 ALIGN 4
 DoubleLion:
-#incbin "DoubleLion/DoubleLion.dmp"
+#include "DoubleLion/DoubleLion.lyn.event"
 POIN SkillTester
 WORD DoubleLionID
 
 ALIGN 4
 Deadeye:
-#incbin "Deadeye/Deadeye.dmp"
+#include "Deadeye/Deadeye.lyn.event"
 POIN SkillTester
 WORD DeadeyeID
 
 ALIGN 4
 HeavyStrikes:
-#incbin "HeavyStrikes/HeavyStrikes.dmp"
+#include "HeavyStrikes/HeavyStrikes.lyn.event"
 POIN SkillTester
 POIN ItemTable
 WORD HeavyStrikesID
 
 ALIGN 4
 DancingBlade:
-#incbin "DancingBlade/DancingBlade.dmp"
+#include "DancingBlade/DancingBlade.lyn.event"
 POIN SkillTester
 WORD DancingBladeID
 
 ALIGN 4
 Dragonskin:
-#incbin "Dragonskin/DragonSkin.dmp"
+#include "Dragonskin/DragonSkin.lyn.event"
 POIN SkillTester
 WORD DragonSkinID
 
 ALIGN 4
 EvenRhythm:
-#incbin "EvenRhythm/EvenRhythm.dmp"
+#include "EvenRhythm/EvenRhythm.lyn.event"
 POIN SkillTester
 WORD EvenRhythmID
 
 ALIGN 4
 SlowBurn:
-#incbin "SlowBurn/SlowBurn.dmp"
+#include "SlowBurn/SlowBurn.lyn.event"
 POIN SkillTester
 WORD SlowBurnID
 
 ALIGN 4
 DefiantCrit:
-#incbin "DefiantCrit/DefiantCrit.dmp"
+#include "DefiantCrit/DefiantCrit.lyn.event"
 POIN SkillTester
 WORD DefiantCritID
 
 ALIGN 4
 DefiantAvo:
-#incbin "DefiantAvo/DefiantAvo.dmp"
+#include "DefiantAvo/DefiantAvo.lyn.event"
 POIN SkillTester
 WORD DefiantAvoID
 
 ALIGN 4
 Fortune:
-#incbin "Fortune/Fortune.dmp"
+#include "Fortune/Fortune.lyn.event"
 POIN SkillTester
 WORD FortuneID
 
 ALIGN 4
 ElbowRoom:
-#incbin "ElbowRoom/ElbowRoom.dmp"
+#include "ElbowRoom/ElbowRoom.lyn.event"
 POIN SkillTester
 WORD ElbowRoomID
 
 ALIGN 4
 FieryBlood:
-#incbin "FieryBlood/FieryBlood.dmp"
+#include "FieryBlood/FieryBlood.lyn.event"
 POIN SkillTester
 WORD FieryBloodID
 
 ALIGN 4
 ForeignPrincess:
-#incbin "ForeignPrincess/ForeignPrincess.dmp"
+#include "ForeignPrincess/ForeignPrincess.lyn.event"
 POIN SkillTester
 WORD ForeignPrincessID
 
 ALIGN 4
 EyesOfHawk: 
-#incbin "EyesOfHawk/EyesOfHawk.dmp"
+#include "EyesOfHawk/EyesOfHawk.lyn.event"
 POIN SkillTester
 WORD EyesOfHawkID
 
 ALIGN 4
 Insight:
-#incbin "Insight/Insight.dmp"
+#include "Insight/Insight.lyn.event"
 POIN SkillTester
 WORD InsightID
 
 ALIGN 4
 Perfectionist:
-#incbin "Perfectionist/Perfectionist.dmp"
+#include "Perfectionist/Perfectionist.lyn.event"
 POIN SkillTester
 WORD PerfectionistID
 
 ALIGN 4
 Outrider:
-#incbin "Outrider/Outrider.dmp"
+#include "Outrider/Outrider.lyn.event"
 POIN SkillTester
 WORD OutriderID
 
 ALIGN 4
 LightWeight:
-#incbin "LightWeight/LightWeight.dmp"
+#include "LightWeight/LightWeight.lyn.event"
 POIN SkillTester
 WORD LightWeightID
 
 ALIGN 4
 Loyalty:
-#incbin "Loyalty/Loyalty.dmp"
+#include "Loyalty/Loyalty.lyn.event"
 POIN SkillTester
 POIN GetUnitsInRange
 WORD LoyaltyID
 
 ALIGN 4
 OddRhythm:
-#incbin "OddRhythm/OddRhythm.dmp"
+#include "OddRhythm/OddRhythm.lyn.event"
 POIN SkillTester
 WORD OddRhythmID
 
 ALIGN 4
 QuickBurn:
-#incbin "QuickBurn/QuickBurn.dmp"
+#include "QuickBurn/QuickBurn.lyn.event"
 POIN SkillTester
 WORD QuickBurnID
 
 ALIGN 4
 Puissance:
-#incbin "Puissance/Puissance.dmp"
+#include "Puissance/Puissance.lyn.event"
 POIN SkillTester
 WORD PuissanceID
 
 ALIGN 4
 SilentPride:
-#incbin "SilentPride/SilentPride.dmp"
+#include "SilentPride/SilentPride.lyn.event"
 POIN SkillTester
 WORD SilentPrideID
 
 ALIGN 4
 Thunderstorm:
-#incbin "Thunderstorm/Thunderstorm.dmp"
+#include "Thunderstorm/Thunderstorm.lyn.event"
 POIN SkillTester
 POIN ItemTable
 WORD ThunderstormID
 
 ALIGN 4
 Trample:
-#incbin "Trample/Trample.dmp"
+#include "Trample/Trample.lyn.event"
 POIN SkillTester
 WORD TrampleID
 
 ALIGN 4
 Vigilance:
-#incbin "Vigilance/Vigilance.dmp"
+#include "Vigilance/Vigilance.lyn.event"
 POIN SkillTester
 WORD VigilanceID
 
 ALIGN 4
 BattleVeteran:
-#incbin "BattleVeteran/BattleVeteran.dmp"
+#include "BattleVeteran/BattleVeteran.lyn.event"
 POIN SkillTester
 WORD BattleVeteranID
 
 ALIGN 4
 AxeFaith:
-#incbin "AxeFaith/AxeFaith.dmp"
+#include "AxeFaith/AxeFaith.lyn.event"
 POIN SkillTester
 WORD AxeFaithID
 
 ALIGN 4
 KnightAspirant:
-#incbin "KnightAspirant/KnightAspirant.dmp"
+#include "KnightAspirant/KnightAspirant.lyn.event"
 POIN SkillTester
 WORD KnightAspirantID
 
 ALIGN 4
 ArcaneBlade:
-#incbin "ArcaneBlade/ArcaneBlade.dmp"
+#include "ArcaneBlade/ArcaneBlade.lyn.event"
 POIN SkillTester
 WORD ArcaneBladeID
 
 ALIGN 4
 AssassinateDamageBonus:
-#incbin "AssassinateDamageBonus/AssassinateDamageBonus.dmp"
+#include "AssassinateDamageBonus/AssassinateDamageBonus.lyn.event"
 POIN SkillTester
 WORD AssassinateID
 
 ALIGN 4
 BlueFlame:
-#incbin "BlueFlame/BlueFlame.dmp"
+#include "BlueFlame/BlueFlame.lyn.event"
 POIN SkillTester
 WORD BlueFlameID
 
 ALIGN 4
 ChaosStyle:
-#incbin "ChaosStyle/ChaosStyle.dmp"
+#include "ChaosStyle/ChaosStyle.lyn.event"
 POIN SkillTester
 WORD ChaosStyleID
 
@@ -223,102 +223,102 @@ WORD ChaosStyleID
 
 ALIGN 4
 Frenzy:
-#incbin "Frenzy/Frenzy.dmp"
+#include "Frenzy/Frenzy.lyn.event"
 POIN SkillTester
 WORD FrenzyID
 
 ALIGN 4
 HeavyBlade:
-#incbin "HeavyBlade/HeavyBlade.dmp"
+#include "HeavyBlade/HeavyBlade.lyn.event"
 POIN SkillTester
 WORD HeavyBladeID
 
 ALIGN 4
 LethalitySkill:
-#incbin "Lethality/LethalitySkill.dmp"
+#include "Lethality/LethalitySkill.lyn.event"
 POIN SkillTester
 WORD LethalityID
 
 ALIGN 4
 NonGBALethalitySkill: //makes lethality skill/x% (/2 by default, and halved on bosses) instead of crit/2%, include this in the battle calculations after LethalitySkill (do NOT remove LethalitySkill)
-#incbin "Lethality/NonGBALethalitySkill.dmp" //if you decide to go with this please remember to change the skill definition to match the new effect
+#include "Lethality/NonGBALethalitySkill.lyn.event" //if you decide to go with this please remember to change the skill definition to match the new effect
 
 ALIGN 4
 MageSlayer:
-#incbin "MageSlayer/MageSlayer.dmp"
+#include "MageSlayer/MageSlayer.lyn.event"
 POIN SkillTester
 WORD MageSlayerID
 
 ALIGN 4
 NaturalCover:
-#incbin "NaturalCover/NaturalCover.dmp"
+#include "NaturalCover/NaturalCover.lyn.event"
 POIN SkillTester
 WORD NaturalCoverID
 
 ALIGN 4
 Opportunist:
-#incbin "Opportunist/Opportunist.dmp"
+#include "Opportunist/Opportunist.lyn.event"
 POIN SkillTester
 WORD OpportunistID
 
 ALIGN 4
 Prescience:
-#incbin "Prescience/Prescience.dmp"
+#include "Prescience/Prescience.lyn.event"
 POIN SkillTester
 WORD PrescienceID
 
 ALIGN 4
 ShortShield:
-#incbin "ShortShield/ShortShield.dmp"
+#include "ShortShield/ShortShield.lyn.event"
 POIN SkillTester
 WORD ShortShieldID
 
 ALIGN 4
 TowerShield:
-#incbin "TowerShield/TowerShield.dmp"
+#include "TowerShield/TowerShield.lyn.event"
 POIN SkillTester
 WORD TowerShieldID
 
 ALIGN 4
 TowerShieldPlus:
-#incbin "TowerShieldPlus/TowerShieldPlus.dmp"
+#include "TowerShieldPlus/TowerShieldPlus.lyn.event"
 POIN SkillTester
 WORD TowerShieldPlusID
 
 ALIGN 4
 TraceSkill:
-#incbin "Trace/trace.dmp"
+#include "Trace/trace.lyn.event"
 POIN SkillTester
 WORD TraceID
 POIN Skill_Getter
 
 ALIGN 4
 Vanity:
-#incbin "Vanity/Vanity.dmp"
+#include "Vanity/Vanity.lyn.event"
 POIN SkillTester
 WORD VanityID
 
 ALIGN 4
 Wrath:
-#incbin "Wrath/wrath.dmp"
+#include "Wrath/wrath.lyn.event"
 POIN SkillTester
 WORD WrathID
 
 ALIGN 4
 WindDisciple:
-#incbin "WindDisciple/Winddisciple.dmp"
+#include "WindDisciple/Winddisciple.lyn.event"
 POIN SkillTester
 WORD WindDiscipleID
 
 ALIGN 4
 StunningSmile:
-#incbin "StunningSmile/StunningSmile.dmp"
+#include "StunningSmile/StunningSmile.lyn.event"
 POIN SkillTester
 WORD StunningSmileID
 
 ALIGN 4
 KeenFighter:
-#incbin "KeenFighter/KeenFighter.dmp"
+#include "KeenFighter/KeenFighter.lyn.event"
 POIN SkillTester
 WORD KeenFighterID 
 
@@ -332,7 +332,7 @@ WORD KeenFighterID
 
 ALIGN 4
 Charge:
-#incbin "Charge/Charge.dmp"
+#include "Charge/Charge.lyn.event"
 POIN SkillTester
 WORD ChargeID
 
@@ -346,7 +346,7 @@ WORD ChargeID
 
 ALIGN 4
 Thighdeology:
-#incbin "Thighdeology/Thighdeology.dmp"
+#include "Thighdeology/Thighdeology.lyn.event"
 POIN SkillTester
 WORD ThighdeologyID
 POIN NewAuraSkillCheck
@@ -354,7 +354,7 @@ WORD NiceThighsID
 
 ALIGN 4
 Thotslayer:
-#incbin "Thotslayer/Thotslayer.dmp"
+#include "Thotslayer/Thotslayer.lyn.event"
 POIN SkillTester
 WORD ThotslayerID
 WORD NiceThighsID
@@ -364,13 +364,13 @@ WORD PersonalityID
 
 ALIGN 4
 Gamble:
-#incbin "Gamble/Gamble.dmp"
+#include "Gamble/Gamble.lyn.event"
 POIN SkillTester
 WORD GambleID
 
 ALIGN 4
 HolyAura:
-#incbin "HolyAura/HolyAura.dmp"
+#include "HolyAura/HolyAura.lyn.event"
 POIN SkillTester
 WORD HolyAuraID
 
@@ -380,7 +380,7 @@ WORD HolyAuraID
 
 ALIGN 4
 ChargePlus:
-#incbin "ChargePlus/ChargePlus.dmp"
+#include "ChargePlus/ChargePlus.lyn.event"
 POIN SkillTester
 WORD ChargePlusID
 POIN prMovGetter

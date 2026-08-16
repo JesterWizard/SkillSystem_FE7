@@ -2,7 +2,7 @@
 
 ALIGN 4
 Bargain:
-#incbin "Bargain.dmp"
+#include "Bargain.lyn.event"
 POIN SkillTester
 WORD BargainID
 POIN SilverCardList

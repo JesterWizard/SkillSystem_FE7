@@ -1,41 +1,41 @@
 Proc_Aegis:
-#incbin "Aegis/proc_aegis.dmp"
+#include "Aegis/proc_aegis.lyn.event"
 POIN SkillTester
 WORD AegisID
 
 Proc_Bane: //Proc_Bane should always come after Proc_Lethality
-#incbin "Bane/proc_bane.dmp" //bane does not proc against counter because it was giving problems
+#include "Bane/proc_bane.lyn.event" //bane does not proc against counter because it was giving problems
 POIN SkillTester
 WORD CounterID
 WORD CounterMagicID
 WORD BaneID
 
 Proc_Colossus:
-#incbin "Colossus/proc_colossus.dmp"
+#include "Colossus/proc_colossus.lyn.event"
 POIN SkillTester
 WORD ColossusID
 
 Proc_CounterMagic:
 // #incbin "proc_distantcounter.dmp"
-#incbin "Countermagic/proc_countermagic.dmp"
+#include "Countermagic/proc_countermagic.lyn.event"
 POIN SkillTester
 WORD CounterMagicID
 
 ALIGN 4
 Proc_Enrage:
-#incbin "Enrage/proc_enrage.dmp"
+#include "Enrage/proc_enrage.lyn.event"
 POIN SkillTester
 WORD EnrageID
 
 ALIGN 4
 Proc_DragonFang:
-#incbin "DragonFang/proc_dragonfang.dmp"
+#include "DragonFang/proc_dragonfang.lyn.event"
 POIN SkillTester
 WORD DragonFangID
 
 ALIGN 4
 Proc_Eclipse:
-#incbin "Eclipse/proc_eclipse.dmp"
+#include "Eclipse/proc_eclipse.lyn.event"
 POIN SkillTester
 WORD EclipseID
 WORD CounterID
@@ -43,124 +43,143 @@ WORD CountermagicID
 
 ALIGN 4
 Proc_Glacies:
-#incbin "Glacies/proc_glacies.dmp"
+#include "Glacies/proc_glacies.lyn.event"
 POIN SkillTester
 WORD GlaciesID
+
+// Adept extra strikes: FE7 hit count lives in r5, so hook GetBattleUnitHitCount
+// (0x8029114) instead of the FE8 proc-loop stack poke / 8-byte buffer write.
+PUSH
+ORG $29114
+jumpToHack(GetBattleUnitHitCount_Adept)
+POP
+
+ALIGN 4
+GetBattleUnitHitCount_Adept:
+#include "Adept/get_battle_unit_hit_count.lyn.event"
+POIN SkillTester
+WORD AdeptID
+
+ALIGN 4
+Proc_Adept:
+#include "Adept/proc_adept.lyn.event"
+POIN SkillTester
+WORD AdeptID
 
 /*
 ALIGN 4
 Proc_Devil:
-#incbin "Devil/proc_devil.dmp"
+#include "Devil/proc_devil.lyn.event"
 POIN SkillTester
 WORD DevilsLuckID
 WORD DevilsPactID
 WORD DevilsWhimID
 
 Proc_Foresight:
-#incbin "Foresight/proc_foresight.dmp"
+#include "Foresight/proc_foresight.lyn.event"
 POIN SkillTester
 WORD ForesightID
 
 Proc_Sureshot:
-#incbin "SureShot/proc_sureshot.dmp"
+#include "SureShot/proc_sureshot.lyn.event"
 POIN SkillTester
 WORD SureShotID
 
 Proc_Adept:
-#incbin "Adept/proc_adept.dmp"
+#include "Adept/proc_adept.lyn.event"
 POIN SkillTester
 WORD AdeptID
 
 Proc_Astra:
-#incbin "Astra/proc_astra.dmp"
+#include "Astra/proc_astra.lyn.event"
 POIN SkillTester
 WORD AstraID
 
 Proc_Pavise:
-#incbin "Pavise/proc_pavise.dmp"
+#include "Pavise/proc_pavise.lyn.event"
 POIN SkillTester
 WORD PaviseID
 
 Proc_Sol:
-#incbin "Sol/proc_sol.dmp"
+#include "Sol/proc_sol.lyn.event"
 POIN SkillTester
 WORD SolID
 WORD LiquidOozeID
 
 Proc_Luna:
-#incbin "Luna/proc_luna.dmp"
+#include "Luna/proc_luna.lyn.event"
 POIN SkillTester
 WORD LunaID
 
 Proc_Lethality:
-#incbin "Lethality/proc_lethality.dmp"
+#include "Lethality/proc_lethality.lyn.event"
 POIN SkillTester
 WORD LethalityID
 
 Proc_AetherHeal:
-#incbin "Aether/proc_aetherheal.dmp"
+#include "Aether/proc_aetherheal.lyn.event"
 POIN SkillTester
 WORD AetherID
 WORD LiquidOozeID
 
 Proc_AetherDamage:
-#incbin "Aether/proc_aetherdamage.dmp"
+#include "Aether/proc_aetherdamage.lyn.event"
 POIN SkillTester
 WORD AetherID
 
 Proc_Counter:
 // #incbin "proc_closecounter.dmp"
-#incbin "Counter/proc_counter.dmp"
+#include "Counter/proc_counter.lyn.event"
 POIN SkillTester
 WORD CounterID
 
 Proc_CounterMagic:
 // #incbin "proc_distantcounter.dmp"
-#incbin "Countermagic/proc_countermagic.dmp"
+#include "Countermagic/proc_countermagic.lyn.event"
 POIN SkillTester
 WORD CounterMagicID
 
 Proc_Miracle:
-#incbin "Miracle/proc_miracle.dmp"
+#include "Miracle/proc_miracle.lyn.event"
 POIN SkillTester
 WORD MiracleID
 
 Proc_Mercy:
-#incbin "Mercy/proc_mercy.dmp"
+#include "Mercy/proc_mercy.lyn.event"
 
 Proc_Impale:
-#incbin "Impale/proc_impale.dmp"
+#include "Impale/proc_impale.lyn.event"
 POIN SkillTester
 WORD ImpaleID
 
 Proc_Ignis:
-#incbin "Ignis/proc_ignis.dmp"
+#include "Ignis/proc_ignis.lyn.event"
 POIN SkillTester
 WORD IgnisID
 
 Proc_Moonbow:
 #ifndef DISABLE_CHARGE
-#incbin "Moonbow/proc_moonbow.dmp"
+#include "Moonbow/proc_moonbow.lyn.event"
 #else
-#incbin "Moonbow/proc_moonbowNoCharge.dmp"
+#include "Moonbow/proc_moonbowNoCharge.lyn.event"
 #endif
 POIN SkillTester
 WORD MoonbowID
 
 Proc_Bane: //Proc_Bane should always come after Proc_Lethality
-#incbin "Bane/proc_bane.dmp" //bane does not proc against counter because it was giving problems
+#include "Bane/proc_bane.lyn.event" //bane does not proc against counter because it was giving problems
 POIN SkillTester
 WORD CounterID
 WORD CounterMagicID
 WORD BaneID
 
 DownWithArch: //lethality if the enemies name starts with "Arch"
-#incbin "DownWithArch/proc_downwitharch.dmp"
+#include "DownWithArch/proc_downwitharch.lyn.event"
 POIN SkillTester
 WORD DownWithArchID
 
 Proc_BlackMagic:
-#incbin "BlackMagic/proc_blackmagic.dmp"
+#include "BlackMagic/proc_blackmagic.lyn.event"
 POIN SkillTester
 WORD BlackMagicID
 POIN BlackMagicTable
@@ -182,47 +201,47 @@ SHORT 0x2800 0xD005 //cmp r0,#0; beq End
 POP
 ALIGN 4
 BlackMagic_AnimsOff:
-#incbin "BlackMagic/BlackMagic_AnimsOff.dmp"
+#include "BlackMagic/BlackMagic_AnimsOff.lyn.event"
 
 ALIGN 4
 Proc_Corona:
-#incbin "Corona/proc_corona.dmp"
+#include "Corona/proc_corona.lyn.event"
 POIN SkillTester
 WORD CoronaID
 
 ALIGN 4
 Proc_Flare:
-#incbin "Flare/proc_flare.dmp"
+#include "Flare/proc_flare.lyn.event"
 POIN SkillTester
 WORD FlareID
 
 ALIGN 4
 Proc_Petrify:
-#incbin "Petrify/proc_petrify.dmp"
+#include "Petrify/proc_petrify.lyn.event"
 POIN SkillTester
 WORD PetrifyID
 
 ALIGN 4
 Proc_Enrage:
-#incbin "Enrage/proc_enrage.dmp"
+#include "Enrage/proc_enrage.lyn.event"
 POIN SkillTester
 WORD EnrageID
 
 ALIGN 4
 Proc_Deadeye:
-#incbin "Deadeye/proc_deadeye.dmp"
+#include "Deadeye/proc_deadeye.lyn.event"
 POIN SkillTester
 WORD DeadeyeID
 
 ALIGN 4
 Proc_DragonFang:
-#incbin "DragonFang/proc_dragonfang.dmp"
+#include "DragonFang/proc_dragonfang.lyn.event"
 POIN SkillTester
 WORD DragonFangID
 
 ALIGN 4
 Proc_Eclipse:
-#incbin "Eclipse/proc_eclipse.dmp"
+#include "Eclipse/proc_eclipse.lyn.event"
 POIN SkillTester
 WORD EclipseID
 WORD CounterID
@@ -230,25 +249,25 @@ WORD CountermagicID
 
 ALIGN 4
 Proc_Corrosion:
-#incbin "Corrosion/proc_corrosion.dmp"
+#include "Corrosion/proc_corrosion.lyn.event"
 POIN SkillTester
 WORD CorrosionID
 
 ALIGN 4
 Proc_Glacies:
-#incbin "Glacies/proc_glacies.dmp"
+#include "Glacies/proc_glacies.lyn.event"
 POIN SkillTester
 WORD GlaciesID
 
 ALIGN 4
 Proc_GreatShield:
-#incbin "GreatShield/proc_greatshield.dmp"
+#include "GreatShield/proc_greatshield.lyn.event"
 POIN SkillTester
 WORD GreatShieldID
 
 ALIGN 4
 Proc_Vengeance:
-#incbin "Vengeance/proc_vengeance.dmp"
+#include "Vengeance/proc_vengeance.lyn.event"
 POIN SkillTester
 WORD VengeanceID
 

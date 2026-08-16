@@ -38,8 +38,8 @@ BYTE $00 $00 $00 $00 $00 $00 $00 $00
 
 ALIGN 4
 LearnSkill:
-#incbin "popup1.dmp"
+#include "popup1.lyn.event"
 
 ALIGN 4
 LearnSkill2:
-#incbin "popup2.dmp"
+#include "popup2.lyn.event"

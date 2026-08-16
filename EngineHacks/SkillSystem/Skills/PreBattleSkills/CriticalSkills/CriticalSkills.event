@@ -1,6 +1,6 @@
 ALIGN 4
 CriticalCheck:
-#incbin "Critical.dmp"
+#include "Critical.lyn.event"
 POIN SkillTester
 POIN CriticalIDList
 

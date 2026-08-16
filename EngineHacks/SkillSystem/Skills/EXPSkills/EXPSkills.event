@@ -1,17 +1,17 @@
 ALIGN 4
 Blossom:
-#incbin "Blossom/BlossomExp.dmp"
+#include "Blossom/BlossomExp.lyn.event"
 POIN SkillTester
 WORD BlossomID
 
 ALIGN 4
 Paragon:
-#incbin "Paragon/Paragon.dmp"
+#include "Paragon/Paragon.lyn.event"
 POIN SkillTester
 WORD ParagonID
 
 ALIGN 4
 VoidCurse:
-#incbin "VoidCurse/VoidCurse.dmp"
+#include "VoidCurse/VoidCurse.lyn.event"
 POIN SkillTester
 WORD VoidCurseID

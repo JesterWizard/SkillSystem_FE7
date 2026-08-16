@@ -11,7 +11,7 @@ WORD 2
 #include "DefiantSkills/DefiantSkills.event"
 
 prResolve:
-#incbin "Resolve/Resolve.dmp"
+#include "Resolve/Resolve.lyn.event"
 POIN SkillTester
 WORD ResolveID
 

@@ -1,7 +1,7 @@
 
 ALIGN 4
 Shadowgift: //Also includes Lumina
-#incbin "Shadowgift/shadowgift.dmp"
+#include "Shadowgift/shadowgift.lyn.event"
 POIN CheckSkillBuffer
 WORD ShadowgiftID
 WORD LuminaID
@@ -11,7 +11,7 @@ POIN ItemTable
 
 ALIGN 4
 Amische:
-#incbin "Amische/Amische.dmp"
+#include "Amische/Amische.lyn.event"
 POIN CheckSkillBuffer
 WORD AmischeID
 POIN IronWeaponsList

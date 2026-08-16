@@ -1,7 +1,7 @@
 
 ALIGN 4
 CulturedPostCombat:
-#incbin "CulturedPostBattle.dmp"
+#include "CulturedPostBattle.lyn.event"
 POIN SkillTester
 WORD CulturedID
 POIN CulturedEvent
@@ -10,6 +10,6 @@ POIN NiceThighsTester
 
 ALIGN 4
 NiceThighsTester:
-#incbin "NiceThighsTester.dmp"
+#include "NiceThighsTester.lyn.event"
 POIN SkillTester
 WORD NiceThighsID

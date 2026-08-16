@@ -60,6 +60,14 @@ class SkillDefinitionToggleTests(unittest.TestCase):
         self.assertEqual(resolved["AmischeID"], SKILL_OFF)
         self.assertEqual(resolved["BloodTideID"], SKILL_OFF)
 
+        seen = {}
+        for name, sid in resolved.items():
+            if sid == SKILL_OFF:
+                continue
+            other = seen.get(sid)
+            self.assertIsNone(other, f"{name} and {other} share skill id {sid}")
+            seen[sid] = name
+
     def test_colorzcore_expands_enabled_and_disabled_ids(self):
         if not CLEAN_ROM.is_file() or not COLORZCORE.is_file():
             self.skipTest("FE7_clean.gba or ColorzCore.exe missing")
