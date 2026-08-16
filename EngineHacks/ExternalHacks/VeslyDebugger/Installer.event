@@ -1,0 +1,527 @@
+
+#include "EAstdlib.event" 
+#ifndef callHackNew 
+	#define callHackNew(offset) 		"BYTE $01 $4B $9E $46 $00 $F8 $01 $E0; POIN (offset|0x1)"
+#endif 
+
+#ifndef TutText 
+    #define TutText(text) "SVAL 0xB 0xFFFFFFFF; TUTORIALTEXTBOXSTART; TEXTSHOW text; TEXTEND; REMA" // Centered 
+#endif 
+
+
+
+
+#ifndef txt
+    // This ColorzCore has String(), not STRING/#inctbl.
+    #define txt(string2) "String(string2); BYTE 0 0"
+#endif 
+
+
+
+#ifndef DebuggerOnText
+    #define DebuggerOnText 0x9df 
+    // { 
+    // textLabel: 
+    // txt("Debugger turned on using\L + Left + Up")
+    // setText(DebuggerOnText, textLabel); } 
+#endif 
+#ifndef DebuggerOffText 
+    #define DebuggerOffText 0x9de 
+    // { 
+    // textLabel: 
+    // txt("Debugger turned off using\L + Left + Up")
+    // setText(DebuggerOffText, textLabel); } 
+#endif 
+
+#ifndef DebuggerFlag
+#define DebuggerFlag 0xEC
+#endif 
+
+
+#ifdef _FE8_ 
+ALIGN 4 
+DebuggerFlagEvent:
+CHECK_EVENTID DebuggerFlag 
+BNE 0 0xC 0x0 
+TutText(DebuggerOnText)
+ENUF DebuggerFlag 
+#ifdef POKEMBLEM 
+SetSaveSlotFlag(1) // No more retroachievements :-( 
+#endif 
+GOTO 99 
+LABEL 0 // Off 
+TutText(DebuggerOffText) 
+ENUT DebuggerFlag 
+LABEL 99 
+NoFade 
+ENDA 
+#endif 
+
+
+#ifndef DebuggerMod
+ALIGN 2
+DebuggerMod:
+SHORT $2900 $d101 $2000 $4770 $df06 $1c08 $4770
+#endif
+#ifndef Mod
+#define Mod "(DebuggerMod|1)"
+#endif 
+
+#ifdef _FE8_ 
+    PUSH 
+    ORG 0x1ca0c
+    callHackNew(CallDebuggerProc)
+    POP 
+    #define MenuAlwaysEnabled 0x804f449
+    #define MenuNeverEnabled  0x804f451 
+#endif 
+
+#ifdef _FE7_ 
+    PUSH 
+    ORG 0x1c304
+    callHackNew(CallDebuggerProc_FE7)
+    POP 
+    #define MenuAlwaysEnabled 0x804A8F9
+    #define MenuNeverEnabled  0x804A901
+#endif 
+
+#ifdef _FE6_ 
+    PUSH 
+    ORG 0x1b190
+    callHackNew(CallDebuggerProc_FE6)
+    POP 
+    #define MenuAlwaysEnabled 0x8041E6D
+    #define MenuNeverEnabled  0x8041E71
+#endif 
+
+
+
+ALIGN 4 
+DebuggerTurnedOff_Flag:
+#ifdef _FE8_ 
+WORD DebuggerFlag // if this flag is on, the debugger is off 
+#endif 
+#ifdef _FE7_ 
+WORD 0xA1
+#endif 
+#ifdef _FE6_ 
+WORD 0xA1 
+#endif 
+
+#ifndef A_BUTTON 
+#define A_BUTTON        0x0001
+#define B_BUTTON        0x0002
+#define SELECT_BUTTON   0x0004
+#define START_BUTTON    0x0008
+#define DPAD_RIGHT      0x0010
+#define DPAD_LEFT       0x0020
+#define DPAD_UP         0x0040
+#define DPAD_DOWN       0x0080
+#define R_BUTTON        0x0100
+#define L_BUTTON        0x0200
+#endif 
+
+ALIGN 4 
+KeyComboToDisableFlag:
+WORD DPAD_UP|DPAD_LEFT|L_BUTTON 
+
+ALIGN 4 
+KonamiCodeEnabled:
+WORD 1 // if 0, it is disabled 
+
+
+
+#ifndef UNIT_MENU_DEFINITIONS
+    #define MenuCommand(name,description,colour,usability,effect) "WORD $80d7d94; SHORT name description; BYTE colour $4e; SHORT 0; POIN usability|1; WORD 0; POIN effect|1; WORD 0 0 0"
+    #define MenuCommand(name,description,colour,usability,effect, unknown1, unknown2) "WORD $80d7d94; SHORT name description; BYTE colour $4e; SHORT 0; POIN usability|1; WORD 0; POIN effect|1; POIN 0 unknown1|1 unknown2|1"
+
+    #define NormalText 0x0
+    #define GrayText 0x1
+    #define BlueText 0x2
+    #define OrangeText 0x3
+    #define GreenText 0x4
+    #define BlackText 0x5
+#endif 
+
+
+ALIGN 4 
+gDebuggerMenuText: 
+FILL(256 * 4) 
+
+#define Counter 0 
+#define MenuCommand1(NameLabel, DescLabel,colour,usability,draw, effect) "WORD $80d7d94; SHORT 0x505 0x505; BYTE colour $4e; SHORT 0; POIN usability|1; POIN draw|1; POIN effect|1; POIN PageIdler|1; WORD 0 0; PUSH; ORG gDebuggerMenuText + (2 * ((CURRENTOFFSET - (9 * 4)) - gDebuggerMenuItems) / 9); POIN NameLabel DescLabel; POP"
+// #define MenuCommand2(NameLabel, DescLabel,colour,usability,draw, effect) "WORD $80d7d94; SHORT 0x505 0x505; BYTE colour $4e; SHORT 0; POIN usability|1; POIN draw|1; POIN effect|1; POIN PageIdler|1; WORD 0 0; PUSH; ORG gDebuggerMenuText2 + (2 * ((CURRENTOFFSET - (9 * 4)) - gDebuggerMenuItemsPage2) / 9); POIN NameLabel DescLabel; POP"
+//#define MenuCommand(NameLabel, DescLabel,colour,usability,draw, effect) "WORD $80d7d94; SHORT 0x505 0x505; BYTE colour $4e; SHORT 0; POIN usability|1; POIN draw|1; POIN effect|1; WORD 0 0 0; "
+    
+ALIGN 4 
+NumberOfPages:
+#ifdef _FE8_ 
+WORD 4
+#else 
+WORD 2 
+#endif 
+
+ggDebuggerMenuItems:
+POIN gDebuggerMenuItems gDebuggerMenuItemsPage2 gDebuggerMenuItemsPage3 gDebuggerMenuItemsPage4
+WORD 0 
+
+ALIGN 4 
+gDebuggerMenuItems: 
+MenuCommand1(PickupText, PickupDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, PickupUnitNow)
+
+MenuCommand1(LevelupText,LevelupDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, LevelupNow)
+MenuCommand1(EditStatsText,EditStatsDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditStatsNow)
+MenuCommand1(EditMiscText,EditMiscDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditMiscNow)
+MenuCommand1(EditItemsText,EditItemsDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditItemsNow)
+MenuCommand1(EditStateText,EditStateDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditStateNow)
+MenuCommand1(WExpText,WExpDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditWExpNow)
+MenuCommand1(SupportMenuText,SupportMenuDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditSupportNow)
+MenuCommand1(PageNumText, PageDesc, NormalText, MenuAlwaysEnabled, PageMenuItemDraw, PageIncrementNow) // sprite draw assumes always on the bottom 
+WORD 0 0 0 0 0 0 0 0 0 // terminator 
+
+
+ALIGN 4 
+gDebuggerMenuItemsPage2: // must be immediately after gDebuggerMenuItems 
+#ifdef _FE8_ 
+MenuCommand1(GodmodeText,GodmodeDesc, NormalText, MenuAlwaysEnabled, GodmodeDrawText, StartGodmodeNow)
+MenuCommand1(ControlAiText,ControlAiDesc, NormalText, MenuAlwaysEnabled, ControlAiDrawText, ControlAiNow)
+MenuCommand1(EditMapText,EditMapDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditMapNow)
+MenuCommand1(EditTrapText,EditTrapDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditTrapNow)
+MenuCommand1(ChStateText,ChStateDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, ChStateNow)
+MenuCommand1(ClearChText,ClearChDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, CallEndEventNow)
+MenuCommand1(LoadUnitsText,LoadUnitsDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, LoadUnitsNow)
+MenuCommand1(GodmodeText,GodmodeDesc, NormalText, MenuAlwaysEnabled, BootmodeDrawText, ToggleBootNow)
+#else 
+MenuCommand1(PromoteCommandText, PromoteDesc, NormalText, CanActiveUnitPromoteMenu, DebuggerMenuItemDraw, StartPromotionNow)
+MenuCommand1(ArenaText, ArenaDesc,NormalText, CallArenaIsUnitAllowed, DebuggerMenuItemDraw, StartArenaNow)
+MenuCommand1(ClearChText,ClearChDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, CallEndEventNow)
+
+#endif 
+MenuCommand1(PageNumText, PageDesc, NormalText, MenuAlwaysEnabled, PageMenuItemDraw, PageIncrementNow) // sprite draw assumes always on the bottom 
+#ifdef DEBUG_SKILL_EDIT_INCLUDED 
+//MenuCommand(EditSkillsText,EditSkillsDesc, OrangeText, $04F449,DebuggerMenuItemDraw, SkillDebugCommand_OnSelect)
+#endif 
+WORD 0 0 0 0 0 0 0 0 0 // terminator 
+ALIGN 4 
+gDebuggerMenuItemsPage3: // must be immediately after gDebuggerMenuItemsPage2 
+#ifdef _FE8_ 
+MenuCommand1(SupplyMenuText,SupplyMenuDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, SupplyNow)
+MenuCommand1(ListMenuText,ListMenuDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, ListNow) 
+MenuCommand1(PromoteCommandText, PromoteDesc, NormalText, CanActiveUnitPromoteMenu, DebuggerMenuItemDraw, StartPromotionNow)
+MenuCommand1(ArenaText, ArenaDesc,NormalText, CallArenaIsUnitAllowed, DebuggerMenuItemDraw, StartArenaNow)
+MenuCommand1(AiControlRemainingUnitsText,AiControlRemainingUnitsDesc, NormalText, MenuAlwaysEnabled, AiControlRemainingUnitsDrawText, AiControlRemainingUnitsNow) 
+MenuCommand1(EditAiText,EditAiDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditAiNow)
+MenuCommand1(GfxViewerText,GfxViewerDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, GfxViewerNow) 
+#ifdef VeslyBuildfile 
+MenuCommand1(EditSkillsText,EditSkillsDesc, NormalText, $04F449,DebuggerMenuItemDraw, DebugSkillsNow) // This is external - it is located in skillsystems folders 
+#endif 
+#ifdef POKEMBLEM 
+MenuCommand1(EditSkillsText,EditSkillsDesc, NormalText, $04F449,DebuggerMenuItemDraw, DebugSkillsNow) // This is external - it is located in skillsystems folders 
+#endif 
+#endif 
+MenuCommand1(PageNumText, PageDesc, NormalText, MenuAlwaysEnabled, PageMenuItemDraw, PageIncrementNow) // sprite draw assumes always on the bottom 
+#ifdef DEBUG_SKILL_EDIT_INCLUDED 
+//MenuCommand(EditSkillsText,EditSkillsDesc, OrangeText, $04F449,DebuggerMenuItemDraw, SkillDebugCommand_OnSelect)
+#endif 
+WORD 0 0 0 0 0 0 0 0 0 // terminator 
+
+ALIGN 4 
+gDebuggerMenuItemsPage4: // must be immediately after gDebuggerMenuItemsPage3
+#ifdef _FE8_
+MenuCommand1(EditBgmText,EditBgmDesc, NormalText, MenuAlwaysEnabled, DebuggerMenuItemDraw, EditBgmNow)
+#endif
+MenuCommand1(PageNumText, PageDesc, NormalText, MenuAlwaysEnabled, PageMenuItemDraw, PageIncrementNow) // sprite draw assumes always on the bottom 
+WORD 0 0 0 0 0 0 0 0 0 // terminator 
+
+
+#ifndef VeslyBuildfile 
+#ifndef POKEMBLEM
+SkillDebugCommand_OnSelect:
+SHORT $4770 // bx lr 
+#endif 
+#endif 
+
+
+PickupText:
+    txt(" Pickup");
+PickupDesc:
+    txt("Pickup a unit and\place them anywhere."); 
+
+PromoteCommandText:
+    txt(" Promote");
+PromoteDesc:
+    txt("Promote the unit\into an advanced\class."); 
+    
+ArenaText:
+    txt(" Arena");
+ArenaDesc: 
+    txt("Enter the arena\and fight for glory.");
+
+ClearChText:
+    txt(" Clear Ch.");
+ClearChDesc:
+    txt("Clear the current\chapter.");
+    
+ChStateText:
+    txt(" Ch. State");
+ChStateDesc:
+    txt("Edit things about\the chapter.");
+
+EditMapText:
+    txt(" Edit Map");
+EditMapDesc:
+    txt("Edit tiles on the\map with the tileset.");
+
+EditTrapText:
+    txt(" Traps");
+EditTrapDesc:
+    txt("Edit trap slots\and trap data.");
+
+EditBgmText:
+    txt(" BGM");
+EditBgmDesc:
+    txt("Change the current\music track.");
+
+EditStatsText:
+    txt(" Stats");
+EditStatsDesc:
+    txt("Edit a unit's stats.");
+
+EditItemsText:
+    txt(" Items");
+EditItemsDesc:
+    txt("Edit a unit's items.");
+
+EditSkillsText:
+    txt(" Skills");
+EditSkillsDesc:
+    txt("Edit a unit's\learned skills."); 
+
+GodmodeText:
+    txt(" Godmode off"); 
+GodmodeDesc:
+    txt("Make your units\win every battle."); 
+
+ControlAiText:
+    txt(" Enemy Ctrl off"); 
+ControlAiDesc:
+    txt("Control just players\or control everyone."); 
+
+PageNumText:
+    txt(" Page"); 
+PageDesc:
+    txt("Swap pages in\this debugger."); 
+
+
+EditMiscText:
+    txt(" Misc"); 
+EditMiscDesc:
+    txt("Edit unit's ID, class,\bonuses, and more."); 
+
+LoadUnitsText:
+    txt(" Load units"); 
+LoadUnitsDesc:
+    txt("Load units.\Possibly useful."); 
+
+LevelupText:
+    txt(" Level up"); 
+LevelupDesc:
+    txt("Level up\the unit."); 
+
+EditStateText:
+    txt(" State"); 
+EditStateDesc:
+    txt("Level up\the unit."); 
+
+WExpText:
+#ifdef POKEMBLEM 
+    txt(" Moves"); 
+#else 
+    txt(" WExp"); 
+#endif 
+WExpDesc:
+    txt("Edit WExp\for the unit."); 
+
+SupportMenuText:
+    txt(" Supports"); 
+SupportMenuDesc:
+    txt("Edit support levels\for the unit."); 
+
+SupplyMenuText:
+    txt(" Supply"); 
+SupplyMenuDesc:
+    txt("Open the convoy\to access items."); 
+
+ListMenuText:
+    txt(" List"); 
+ListMenuDesc:
+    txt("Open the list\of everyone's items."); 
+
+AiControlRemainingUnitsText:
+    txt(" Autoplay off"); 
+AiControlRemainingUnitsDesc:
+    txt("Open the list\of everyone's items."); 
+
+EditAiText:
+    txt(" AI");
+EditAiDesc:
+    txt("Edit unit's AI.");
+    
+   
+    GfxViewerText:
+    txt(" Gfx viewer"); 
+GfxViewerDesc:
+    txt("Open the list\of everyone's items."); 
+    
+    
+#ifdef _FE6_  
+
+
+ALIGN 32 
+states:
+STRING "Acting" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Acted" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING        "Dead" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING       "Undeployed" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING  "Rescuing" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING  "Rescued" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING     "Cantoed" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "Under roof" "fe6TR"; BYTE 0 0; 
+ALIGN 32 ; STRING "Spotted" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Concealed" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "AI decided" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "In ballista" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Drop item" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Afa's drops" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Solo anim1" "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "Solo anim2" "fe6TR"; BYTE 0 0; 
+ALIGN 32 ; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING      "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING     "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "     " "fe6TR"; BYTE 0 0; 
+ALIGN 32 ; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING   "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING   "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING      "     " "fe6TR"; BYTE 0 0 ; ALIGN 32; STRING    "     " "fe6TR"; BYTE 0 0; 
+ALIGN 32; 
+
+ALIGN 32 
+weaponTypes:
+STRING "Sword" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Lance" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Axe" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Bow" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Staff" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Anima" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Light" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Dark" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Drg" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Drg" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+STRING "Drg" "fe6TR"; BYTE 0 0 ; ALIGN 16 
+
+
+ALIGN 16 
+LevelText: 
+STRING "Level" "fe6TR"; BYTE 0 0 
+ExpText:
+STRING "Exp" "fe6TR"; BYTE 0 0 
+BonusConText:
+STRING "Bonus Con" "fe6TR"; BYTE 0 0 
+BonusMovText:
+STRING "Bonus Mov" "fe6TR"; BYTE 0 0 
+StatusText:
+STRING "Status" "fe6TR"; BYTE 0 0 
+AllegianceText:
+STRING "Allegiance" "fe6TR"; BYTE 0 0 
+PlayerText:
+STRING "  Player" "fe6TR"; BYTE 0 0 
+NPCText: 
+STRING "  NPC" "fe6TR"; BYTE 0 0 
+EnemyText: 
+STRING "  Enemy" "fe6TR"; BYTE 0 0 
+
+
+MaxHPText:
+STRING "Max HP" "fe6TR"; BYTE 0 0 
+HPText:
+STRING "HP" "fe6TR"; BYTE 0 0 
+StrText:
+STRING "Str" "fe6TR"; BYTE 0 0 
+SklText:
+STRING "Skl" "fe6TR"; BYTE 0 0 
+SpdText:
+STRING "Spd" "fe6TR"; BYTE 0 0 
+DefText:
+STRING "Def" "fe6TR"; BYTE 0 0 
+ResText:
+STRING "Res" "fe6TR"; BYTE 0 0 
+LckText:
+STRING "Lck" "fe6TR"; BYTE 0 0 
+MagText:
+STRING "Mag" "fe6TR"; BYTE 0 0 
+BlankString:
+STRING " " "fe6TR"; BYTE 0 0 
+
+#endif 
+
+#ifdef _FE7_ 
+ALIGN 32 
+states:
+txt("Acting"); ALIGN 32; txt("Acted"); ALIGN 32; txt("Dead"); ALIGN 32; txt("Undeployed"); ALIGN 32; txt("Rescuing"); ALIGN 32; txt("Rescued"); ALIGN 32; txt("Cantoed"); ALIGN 32; txt("Under roof")
+ALIGN 32; txt("Spotted"); ALIGN 32; txt("Concealed"); ALIGN 32; txt("AI decided"); ALIGN 32; txt("In ballista"); ALIGN 32; txt("Drop item"); ALIGN 32; txt("Afa's drops"); ALIGN 32; txt("Solo anim1"); ALIGN 32; txt("Solo anim2")
+ALIGN 32; txt("Escaped"); ALIGN 32; txt("Arena 1"); ALIGN 32; txt("Arena 2"); ALIGN 32; txt("Super arena"); ALIGN 32; txt("Unk 25"); ALIGN 32; txt("Benched"); ALIGN 32; txt("Scene unit"); ALIGN 32; txt("Portrait+1")
+ALIGN 32; txt("Shake"); ALIGN 32; txt("Can't deploy"); ALIGN 32; txt("Departed"); ALIGN 32; txt("4th palette"); ALIGN 32; txt("Unk 35"); ALIGN 32; txt("Unk 36"); ALIGN 32; txt("Capture"); ALIGN 32; txt("Unk 38")
+ALIGN 32
+
+ALIGN 16 
+LevelText: 
+txt("Level")
+ExpText:
+txt("Exp")
+BonusConText:
+txt("Bonus Con")
+BonusMovText:
+txt("Bonus Mov")
+StatusText:
+txt("Status")
+
+
+MaxHPText:
+txt("Max HP")
+HPText:
+txt("HP")
+StrText:
+txt("Str")
+SklText:
+txt("Skl")
+SpdText:
+txt("Spd")
+DefText:
+txt("Def")
+ResText:
+txt("Res")
+LckText:
+txt("Lck")
+MagText:
+txt("Mag")
+BlankString:
+txt(" ")
+#endif 
+
+
+
+
+ALIGN 4 
+POKEMBLEM_EXISTS:
+#ifdef POKEMBLEM 
+WORD 1 
+#else 
+WORD 0 
+#endif 
+
+
+
+#ifdef _FE6_ 
+#ifndef GetBGMTrack 
+    #define GetBGMTrack 0x801637D
+#endif 
+    #include "Data/FE6_AsmHooks.lyn.event" 
+    #include "Data/FE6.lyn.event" 
+#endif 
+#ifdef _FE7_
+#ifndef GetBGMTrack 
+    #define GetBGMTrack 0x8015E9D 
+#endif 
+    #include "Data/FE7_AsmHooks.lyn.event" 
+    #include "Data/FE7.lyn.event" 
+#endif 
+#ifdef _FE8_
+#ifndef GetBGMTrack 
+    #define GetBGMTrack 0x8015fc9 // GetCurrentMapMusicIndex 
+#endif 
+    #include "Data/FE8_AsmHooks.lyn.event" 
+    #include "Data/FE8.lyn.event"  
+#endif 
+
+
+

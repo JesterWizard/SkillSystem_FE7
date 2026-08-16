@@ -240,3 +240,4 @@ POP
   //  MESSAGE "Using EMS Save/Suspend Expansion"
   //  #include "Necessary/ExpandedModularSave/ExModularSave.event"
 
+#include "ExternalHacks/VeslyDebugger/Installer.event"
