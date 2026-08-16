@@ -54,10 +54,11 @@ no_skills:
 	ldr  r1, =0x202BBE6 @ fe7 -> FE8 0x0202BCDE
 	strh r0,[r1]
 
-	@ original
+	@ original UnitLoadSupports: jumpToHack ate the BL to GetUnitSupporterCount.
+	@ Resume at hook+8 (0x080179F0 + 8).
 	mov r0, r5
-	blh 0x08024c98// Following the function of FE8 gives me 26628 for FE7, but apparently 0x0802BCBC is right?  //FE8 -> 0x080281C8
-	ldr r6, =0x080176F8 //FE8 0x08017EFD
+	blh 0x08026628 @ GetUnitSupporterCount; FE8 0x080281C8
+	ldr r6, =0x080179F9 @ UnitLoadSupports+9; FE8 0x08017EFD
 	bx  r6
 
 BXR3:

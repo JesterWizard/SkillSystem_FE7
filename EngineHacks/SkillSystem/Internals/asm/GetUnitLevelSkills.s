@@ -53,10 +53,17 @@ check_char_skill:
 	ldrb r3, [r3, #0x04] @ r3 = unit character id
 
 	lsl  r3, #2
-	ldr  r4, [r4, r3] @ var r4 = class level up skill list it
+	ldr  r4, [r4, r3] @ var r4 = char level up skill list
 
 	cmp r4, #0
 	beq end_char_skill @ if no class skill list, then no class skill learned
+
+	@ 0xFFFFFFFF / IWRAM dumps hang the load loop; only walk ROM lists.
+	lsr r3, r4, #24
+	cmp r3, #8
+	beq lop_char_skill
+	cmp r3, #9
+	bne end_char_skill
 
 lop_char_skill:
 	ldrb r3, [r4]
@@ -116,6 +123,12 @@ check_class_skill:
 
 	cmp r4, #0
 	beq end_class_skill @ if no class skill list, then no class skill learned
+
+	lsr r3, r4, #24
+	cmp r3, #8
+	beq lop_class_skill
+	cmp r3, #9
+	bne end_class_skill
 
 lop_class_skill:
 	ldrb r3, [r4]

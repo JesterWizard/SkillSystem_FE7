@@ -72,8 +72,8 @@ PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 */
 
 //Last I checked, enabling this produced a protected write error from icon_internal.event at line 141 from the protect in ROMBuildFile.event
-// ORG $179F0 //FE8 -> $17ef4
-// jumpToHack(HookUnitLoading)
+ORG $179F0 //FE8 -> $17ef4
+jumpToHack(HookUnitLoading)
 
 //Crashes on water drop intro
 // ORG $29264 //FE8 -> $2B3EC
