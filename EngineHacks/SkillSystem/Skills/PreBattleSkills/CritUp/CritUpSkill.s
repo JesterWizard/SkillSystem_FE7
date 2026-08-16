@@ -1,32 +1,33 @@
 @crit up skill, does pretty much the same as vanilla one but calls skill tester to make nihil easier
 @character/class ability crit up (ability 1 value 0x40) no longer gives crit +15
-@r4 has either attacker or defendant (the skill user)
+@r0 is attacker (skill user), r1 is defender
 
 .equ CritUpID, SkillTester+4
 
 .thumb
 
-push {r4, lr} 
+push {r4-r7, lr}
+mov r4, r0 @skill user
+mov r5, r1 @defender
 
-mov	r4,r0		@get user into r4 for later
+ldr r0, SkillTester
+mov lr, r0
+mov r0, r4
+ldr r1, CritUpID
+.short 0xf800
+cmp r0, #0
+beq End
 
-@go to skill check
-ldr	r1,CritUpID
-ldr	r2,SkillTester	@test for critup skill
-mov	r14,r2
-.short	0xF800
-add	r4,#0x66	@pointer to crit
-cmp	r0,#0x00
-beq	End		@if skill not found do nothing
-mov	r0,#0x0F	@crit that will be added
-ldrb	r1,[r4]		@get crit
-add	r1,r0		@add 15
-strb	r1,[r4]		@store crit
+@battle crit is a signed halfword at +0x66
+mov r1, #0x66
+ldrh r0, [r4, r1]
+add r0, #15
+strh r0, [r4, r1]
 
 End:
-pop	{r4}
-pop	{r0}
-bx	r0
+pop {r4-r7}
+pop {r0}
+bx r0
 
 .align
 .ltorg

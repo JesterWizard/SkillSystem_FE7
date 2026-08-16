@@ -69,26 +69,14 @@ SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
         buffer->skills[count++] = temp;
     }
 
-    //Learned skills (In BWL data)
-    BWLData* unitBWL = BWL_GetEntry(unitNum);
-    if (unitBWL) {
-        for (int i = 0; i < 4; ++i) {
-            if (!IsSkillIDValid(unitBWL->skills[i])) {
-                break;
-            }
-            buffer->skills[count++] = unitBWL->skills[i];
+    // Learned skills from char/class level-up lists.
+    // FE7 BWL+1..4 is favval/actAmt/statViewAmt (Canto=1, LockTouch=5), not skill slots.
+    u8* tempBuffer = GetInitialSkillList_Pointer(unit, gTempSkillBuffer);
+    for (int i = 0; i < gSkillTestConfig.genericLearnedSkillLimit; ++i) {
+        if (!IsSkillIDValid(tempBuffer[i])) {
+            break;
         }
-    }
-
-    //If generic, load skills from learned list
-    else {
-        u8* tempBuffer = GetInitialSkillList_Pointer(unit, gTempSkillBuffer);
-        for (int i = 0; i < gSkillTestConfig.genericLearnedSkillLimit; ++i) {
-            if (!IsSkillIDValid(tempBuffer[i])) {
-                break;
-            }
-            buffer->skills[count++] = tempBuffer[i];
-        }
+        buffer->skills[count++] = tempBuffer[i];
     }
 
     //Item passive skills

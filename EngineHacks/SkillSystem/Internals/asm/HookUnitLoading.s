@@ -11,7 +11,7 @@
 @	lGetSkills        = EALiterals+0x04
 @	lChargeupTable    = EALiterals+0x08
 
-	BWLTable = 0x0203E7A0 //FE7 -> FE8 0x0203E884
+	@ Do not wipe BWL+1..4: on FE7 those bytes are favval/actAmt/statViewAmt.
 
 	.macro blh to, reg=r3
 		ldr \reg, =\to
@@ -24,31 +24,7 @@ HookUnitLoading:
 	push {r4-r7, lr}
 	mov r5, r0
 
-	@ let's uh clear out the existing skills first... just in case
-	ldr  r4, [r5]
-	ldrb r4, [r4, #4] @char num in r4
-
-	cmp r4, #0x46
-	bhi no_skills
-
-	ldr r0, =BWLTable
-	lsl r1, r4, #4 @ r1 = char*0x10
-	add r0, r1
-	add r0, #1 @ start at byte 1, not 0
-
-	mov  r1, #0
-	strb r1, [r0]
-	strb r1, [r0, #1]
-	strb r1, [r0, #2]
-	strb r1, [r0, #3]
-
-	ldr r3, lAutoloadSkills
-
-	mov r0, r5 @ arg r0 = Unit
-
-	bl BXR3
-
-no_skills:
+	@ Table-defined learned skills are applied via GetInitialSkillList, not BWL.
 	@ avoid skill forgetting issues after loading units that learn more than 4 skills
 	mov  r0, #0
 	ldr  r1, =0x202BBE6 @ fe7 -> FE8 0x0202BCDE

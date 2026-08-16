@@ -71,7 +71,13 @@ char_check_rom_banks:
 	cmp r3, #8
 	beq lop_char_skill
 	cmp r3, #9
+	beq lop_char_skill
+	cmp r3, #0
 	bne end_char_skill
+	@ c2ea WORD label can be a 00xxxxxx ROM offset
+	mov r3, #0x08
+	lsl r3, #24
+	orr r4, r3
 
 lop_char_skill:
 	ldrb r3, [r4]
@@ -143,7 +149,12 @@ class_check_rom_banks:
 	cmp r3, #8
 	beq lop_class_skill
 	cmp r3, #9
+	beq lop_class_skill
+	cmp r3, #0
 	bne end_class_skill
+	mov r3, #0x08
+	lsl r3, #24
+	orr r4, r3
 
 lop_class_skill:
 	ldrb r3, [r4]

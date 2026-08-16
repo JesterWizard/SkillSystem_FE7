@@ -16,12 +16,9 @@ BtlLoopParent:
 #incbin "FE7_battle_calc_loop.dmp"
 POIN BtlLoopList
 
-//CritUpSkill seems to be affecting Lyn even when it isn't applied to her.
-//Maybe something to do with her being a mymridon lord? It isn't always consistent either.
-
 ALIGN 4
 BtlLoopList:
-POIN BC_DefRes BC_Power BC_ASpd BC_Hit BC_Avo BC_Crit /*CritUpSkill*/ BC_Dodge BC_Support BC_WRank BC_Status //these are the existing battle calculation routines
+POIN BC_DefRes BC_Power BC_ASpd BC_Hit BC_Avo BC_Crit CritUpSkill BC_Dodge BC_Support BC_WRank BC_Status //these are the existing battle calculation routines
 POIN FaireCheck
 POIN BreakerCheck MageSlayer
 POIN BlowCheck

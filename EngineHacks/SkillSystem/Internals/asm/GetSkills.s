@@ -9,8 +9,6 @@
 	SkillsUnitBuffer  = 0x0202A9D4 // FE7 -> FE8 0x02026BB0
 	SkillsCountBuffer = 0x0202A9D8 // FE7 -> FE8 0x02026BB4
 
-	BWLTable = 0x0203E7A0 //FE7 -> FE8 0x0203E884
-
 	lPersonalSkillTable  = EALiterals+0x00
 	lClassSkillTable     = EALiterals+0x04
 	lGetInitialSkillList = EALiterals+0x08
@@ -79,56 +77,8 @@ no_personal:
 	add  r5, #1
 
 no_class:
-	@ learned skills, up to 4
-	cmp r6, #0x46
-	bhi generic_unit
-
-	ldr r0, =BWLTable
-	lsl r1, r6, #4 @ r1 = char*0x10
-	add r0, r1
-	add r0, #1 @start at byte 1, not 0
-	mov r2, #0
-
-lop:
-	ldrb r1, [r0, r2]
-
-	cmp  r1, #0
-	beq  continue
-	cmp  r1, #0xFF
-	beq  continue
-
-	strb r1, [r5]
-	add  r5, #1
-
-continue:
-	cmp r2, #3
-	bge lop_end
-
-	add r2, #1
-	b lop
-
-lop_end:
-	mov  r0, #0
-	strb r0, [r5]
-
-	mov  r1, r5 @ r1 =end of skill buffer
-
-end:
-	@ return
-	ldr r0, =SkillsBuffer
-	sub r1, r0 @number of skills
-
-	ldr r2, =SkillsCountBuffer
-	str r1, [r2]
-
-	pop {r4-r7}
-
-	pop {r3}
-BXR3:
-	bx r3
-
+	@ Learned skills from level-up lists. FE7 BWL+1..4 is favval, not skills.
 generic_unit:
-	@ call the initial skill list function
 
 	ldr r3, lGetInitialSkillList
 
@@ -151,6 +101,19 @@ lop_move_to_end:
 
 	add r1, #1
 	b lop_move_to_end
+
+end:
+	ldr r0, =SkillsBuffer
+	sub r1, r0
+
+	ldr r2, =SkillsCountBuffer
+	str r1, [r2]
+
+	pop {r4-r7}
+
+	pop {r3}
+BXR3:
+	bx r3
 
 	.pool
 	.align
