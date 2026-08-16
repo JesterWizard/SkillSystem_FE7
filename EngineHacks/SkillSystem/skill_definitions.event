@@ -2,6 +2,9 @@
 //Toggle a skill with its id or SKILL_OFF. Disabled skills assemble as SKILL_OFF (255).
 //Skill effects and authors: skill_definition_descriptions.event.
 
+#ifndef SKILL_DEFINITIONS
+#define SKILL_DEFINITIONS
+
 #define SKILL_OFF 255
 
 //AI Skills
@@ -446,3 +449,5 @@
 //Broken Skills
 #define Roll12ID SKILL_OFF
 #define TraceID 131
+
+#endif // SKILL_DEFINITIONS

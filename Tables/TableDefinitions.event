@@ -182,6 +182,19 @@
 //status staves will give 
 #define ItemStatus(StatusID,Duration) "StatusID | (Duration << 4)"
 
+// Skill catalog (CantoID, SKILL_OFF, ...). Use these names in:
+//   PersonalSkillEditor.csv, ClassSkillEditor.csv, ItemTable "Item Skill"
+// Level-up CSVs take a list label. Define lists in LevelUpSkillLists.event:
+//   ALIGN 4
+//   LynTutorialSkillList:
+//   LevelUpSkill(1, CantoID)
+//   LevelUpSkillListEnd
+#define LevelUpSkill(level, skillID) "BYTE level skillID"
+#define LevelUpSkillListEnd "BYTE 0 0"
+
+#include "../EngineHacks/SkillSystem/skill_definitions.event"
+#include "LevelUpSkillLists.event"
+
 #endif
 
 #include "ExternalTables.event"

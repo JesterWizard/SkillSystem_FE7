@@ -59,7 +59,15 @@ check_char_skill:
 	beq end_char_skill @ if no class skill list, then no class skill learned
 
 	@ 0xFFFFFFFF / IWRAM dumps hang the load loop; only walk ROM lists.
+	@ c2ea WORD labels at FreeSpace 0x1000000 assemble as 0x01xxxxxx (not POIN 0x09).
 	lsr r3, r4, #24
+	cmp r3, #1
+	bne char_check_rom_banks
+	mov r3, #0x08
+	lsl r3, #24
+	orr r4, r3
+	b lop_char_skill
+char_check_rom_banks:
 	cmp r3, #8
 	beq lop_char_skill
 	cmp r3, #9
@@ -125,6 +133,13 @@ check_class_skill:
 	beq end_class_skill @ if no class skill list, then no class skill learned
 
 	lsr r3, r4, #24
+	cmp r3, #1
+	bne class_check_rom_banks
+	mov r3, #0x08
+	lsl r3, #24
+	orr r4, r3
+	b lop_class_skill
+class_check_rom_banks:
 	cmp r3, #8
 	beq lop_class_skill
 	cmp r3, #9
