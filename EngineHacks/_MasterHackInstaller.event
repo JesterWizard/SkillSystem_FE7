@@ -5,92 +5,27 @@
 /////////////////////////////////////////////////////////
 
 #include "Extensions/Hack Installation.txt"
-//#include "Necessary/PopupRework/Extensions/PopupDefinitions.txt"
 
 // hack configuration file
 #include "Config.event"
 
-//#include "Necessary/UnitMenu/_UnitMenuDefs.event"
-
-////////////////////////////////SUPPORTING CHANGES
-/*
-PUSH
-  //Include essential fixes and autopatches
-  #include "_FE8EssentialFixes.event"
-  
-  // Debug Startup Screen
-  #ifdef __DEBUG__
-    ORG 0x000AD8   // this is somewhere in the startup routine
-      BL(0x01B924) // Call the debug startup menu
-  #endif
-POP
-*/
-
-////////////////////////////////FREE SPACE WITHIN BL RANGE
-/*
-PUSH
-ORG FreeSpaceBLRange //defined in custom definitions
-#define inBLRange
-
-  //clears the gamble/lunge/mercy when cancelling out of attack menu
-  Unset_Attack_Flag:
-  #incbin "SkillSystem/Internals/unset_attack_flag.dmp"
-
-#undef inBLRange
-POP
-*/
-////////////////////////////////FREE SPACE OUT OF BL RANGE
-/*
-  //Negative Stat Boosts
-  #include "Necessary/NegativeStatBoosts/NegativeStatBoosts.event"
-  */
+  // Skill plumbing this build actually installs.
+  // Other Necessary modules (stat getters, debuffs, icon/popup rework,
+  // unit menu/action, durability items, negative boosts, EMS, MSG,
+  // FixWpnRnk for Shadowgift/Lumina) stay on disk until a skill include needs them.
 
   //Modular Stat Screen
   #include "Necessary/ModularStatScreen/ModularStatScreen.event"
 
-  /*
-  //Debuffs
-  #include "Necessary/Debuffs/Debuffs.event"
-
-  //Item Range Fix
-  #include "Necessary/ItemRangeFix/ItemRangeFix.event"
-  
-  // Fix gaining wexp from weapons you don't have wexp in (for Shadowgift/Lumina)
-  #include "Necessary/FixWpnRnk.event"
-  
-  //Unit Action Rework (required for movement skills)
-  #include "Necessary/UnitActionRework/UnitActionRework.event"
-
-  //Item Effect Revamp by Teraspark
-  #include "Necessary/ItemEffectRevamp/IERevamp_Installer.event"
-  
-  //Durability-Based Items, for Skill Scrolls
-  #include "Necessary/DurabilityBasedItems/DurabilityBasedItems.event"
-  */
-  //Generic routines that other things may rely on 
-  #include "Necessary/Routines/Installer.event" 
+  //Generic routines that other things may rely on
+  #include "Necessary/Routines/Installer.event"
 
   ALIGN 4
   #include "SkillSystem/SkillSystemInstaller.event"
 
-  // ALIGN 4
-  // #include "Necessary/StatGetters/_InstallStatGetters.event"
-  
   // Growth Getters
   #include "Necessary/GrowthGetters/GrowthGetters.event"
 
-  //ALIGN 4
-  //#include "Necessary/IconRework/IconRework.event"   // Allows using standard Icon routines to draw skill icons
-  /*
-  #include "Necessary/PopupRework/PopupRework.event" // Allows to expand on vanilla popups by adding components
-  
-  #include "Necessary/UnitMenu/UnitMenu.event"
-  #include "Necessary/Popups.event"
-*/
   #include "Necessary/CalcLoops/CalcLoops.event"
-
-  // Save/Suspend Expansion
-  //  MESSAGE "Using EMS Save/Suspend Expansion"
-  //  #include "Necessary/ExpandedModularSave/ExModularSave.event"
 
 #include "ExternalHacks/VeslyDebugger/Installer.event"

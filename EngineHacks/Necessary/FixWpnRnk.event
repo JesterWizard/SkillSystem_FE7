@@ -1,10 +1,11 @@
 #ifndef FIX_WPN_RNK_GAIN
 #define FIX_WPN_RNK_GAIN
 
-// Makes it so that you cannot gain weapon ranks for weapons you don't have a rank in
-// Fixes Shadowgift/Lumina related glitches in the skill system
-// As well as the ECG/Evil Eye vanilla thing I guess
-// hack by Stan
+// Documented skill dependency (not installed in the current build).
+// Required when WeaponUsabilitySkills / Shadowgift / Lumina are enabled:
+// you cannot gain weapon ranks for weapons you don't have a rank in.
+// Also covers the ECG/Evil Eye vanilla case. Hack by Stan.
+
 
 ALIGN 4
 FixWpnRnkHook:
