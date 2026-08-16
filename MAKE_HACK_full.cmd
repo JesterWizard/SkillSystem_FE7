@@ -105,6 +105,12 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+python "%base_dir%tests\test_skill_definitions.py"
+if errorlevel 1 (
+  echo ROM tests failed.
+  pause
+  exit /b 1
+)
 
 echo Launching NO$GBA
 start "" "%base_dir%..\no$gba\NO$GBA.EXE" "%target_rom%"
