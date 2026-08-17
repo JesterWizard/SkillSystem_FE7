@@ -2,7 +2,7 @@
 	.thumb
 
 	@this hack takes r0 = character data in ram and returns a pointer to a 0-terminated list of skills (using the text buffer)
-	@supports 1 personal, 1 class, 4 learned
+	@supports 1 personal, 1 class, 7 learned (unit->supports at +0x32)
 
 	SkillsBuffer = 0x02026B90 //FE7 -> FE8 0x202b156 @0x202a5b4
 
@@ -11,10 +11,9 @@
 
 	lPersonalSkillTable  = EALiterals+0x00
 	lClassSkillTable     = EALiterals+0x04
-	lGetInitialSkillList = EALiterals+0x08
 
-	.set BWLTable, 0x0203E790 @ FE7 BWL_GetEntry table; FE8 0x0203E884
-	LEARNED_PID_MAX = 0x45
+	UNIT_SUPPORTS = 0x32
+	LEARNED_SKILL_COUNT = 7
 
 GetSkills:
 	@ Arguments: r0 = Unit
@@ -48,7 +47,7 @@ make_buffer:
 clear_buf:
 	strb r0, [r5, r1]
 	add r1, #1
-	cmp r1, #8
+	cmp r1, #16
 	blt clear_buf
 
 	@ personal skill first, if any
@@ -89,20 +88,24 @@ no_personal:
 	add  r5, #1
 
 no_class:
-	@ Learned skills: unique units keep 4 slots in BWL (saved).
-	@ Generics have no BWL row; use the level-up list.
-
-	cmp r6, #0
-	beq end_learned
-	cmp r6, #LEARNED_PID_MAX
-	bhi generic_learned
-
-	ldr r0, =BWLTable
-	lsl r1, r6, #4
-	add r0, r1
-	add r0, #1
+	@ Learned skills in unit->supports[]. Players 7, others 6 (leader).
+	mov r0, r4
+	ldrb r0, [r0, #0x0B]
+	mov r1, #0xC0
+	and r0, r1
+	cmp r0, #0
+	bne learned_other_max
+	mov r7, #LEARNED_SKILL_COUNT
+	b learned_have_max
+learned_other_max:
+	mov r7, #6
+learned_have_max:
+	mov r0, r4
+	add r0, #UNIT_SUPPORTS
 	mov r2, #0
-copy_bwl:
+copy_learned:
+	cmp r2, r7
+	bge end_learned
 	ldrb r1, [r0, r2]
 	cmp r1, #0
 	beq end_learned
@@ -111,28 +114,7 @@ copy_bwl:
 	strb r1, [r5]
 	add r5, #1
 	add r2, #1
-	cmp r2, #4
-	blt copy_bwl
-	b end_learned
-
-generic_learned:
-	ldr r3, lGetInitialSkillList
-
-	mov r0, r4 @ arg r0 = unit
-	mov r1, r5 @ arg r1 = output buffer
-
-	bl BXR3
-
-	mov r1, r0
-
-lop_move_to_end:
-	ldrb r0, [r1]
-
-	cmp r0, #0
-	beq end
-
-	add r1, #1
-	b lop_move_to_end
+	b copy_learned
 
 end_learned:
 	mov r1, r5
@@ -147,7 +129,6 @@ end:
 	pop {r4-r7}
 
 	pop {r3}
-BXR3:
 	bx r3
 
 	.pool
@@ -156,4 +137,3 @@ BXR3:
 EALiterals:
 	@ POIN lPersonalSkillTable
 	@ POIN lClassSkillTable
-	@ POIN (GetInitialSkillList|1)

@@ -3268,14 +3268,37 @@ void EditWExpIdle(DebuggerProc * proc)
 
 #define SupportWidth 5
 #define SupportOptions 7
+#define gBwlSupportExp ((u8 *)0x0203FE10)
+extern void * BWL_GetEntry(int pid); /* long_call in headers if needed */
+
+static u8 * GetUnitBwlSupportRow(struct Unit * unit)
+{
+    int pid;
+    if (!unit || !unit->pCharacterData)
+    {
+        return NULL;
+    }
+    pid = unit->pCharacterData->number;
+    if (pid < 1 || pid > 0x45)
+    {
+        return NULL;
+    }
+    if (!((void * (*)(int))(0x080A0550 | 1))(pid))
+    {
+        return NULL;
+    }
+    return gBwlSupportExp + pid * SupportOptions;
+}
+
 void RedrawUnitSupportsMenu(DebuggerProc * proc);
 void EditSupportsInit(DebuggerProc * proc)
 {
     SomeMenuInit(proc);
     struct Unit * unit = proc->unit;
+    u8 * row = GetUnitBwlSupportRow(unit);
     for (int i = 0; i < SupportOptions; ++i)
     {
-        proc->tmp[i] = unit->supports[i];
+        proc->tmp[i] = row ? row[i] : 0;
     }
 
     int x = NUMBER_X - SupportWidth - 1;
@@ -3337,9 +3360,14 @@ void RedrawUnitSupportsMenu(DebuggerProc * proc)
 void SaveSupports(DebuggerProc * proc)
 {
     struct Unit * unit = proc->unit;
+    u8 * row = GetUnitBwlSupportRow(unit);
+    if (!row)
+    {
+        return;
+    }
     for (int i = 0; i < SupportOptions; ++i)
     {
-        unit->supports[i] = proc->tmp[i];
+        row[i] = proc->tmp[i];
     }
 }
 
@@ -3465,7 +3493,7 @@ void EditSupportsIdle(DebuggerProc * proc)
     }
 }
 
-#define LearnedSkillCount 4
+#define LearnedSkillCount 7
 #define LearnedSkillNameWidth 12
 extern const u16 SkillDescTable[];
 extern u8 DrawSkillIcon;
@@ -3475,21 +3503,26 @@ static void CallDrawSkillIcon(u16 * dest, int iconId, int extra)
     ((void (*)(u16 *, int, int))(((int)&DrawSkillIcon) | 1))(dest, iconId, extra);
 }
 
-#define BWL_TABLE ((u8 *)0x0203E790)
-
 static u8 * GetUnitLearnedSkillRam(struct Unit * unit)
 {
-    int pid;
-    if (!unit || !unit->pCharacterData)
+    if (!unit)
     {
         return NULL;
     }
-    pid = unit->pCharacterData->number;
-    if (pid < 1 || pid > 0x45)
+    return unit->supports;
+}
+
+static int GetUnitLearnedSkillLimit(struct Unit * unit)
+{
+    if (!unit)
     {
-        return NULL;
+        return 0;
     }
-    return BWL_TABLE + pid * 0x10 + 1;
+    if ((unit->index & 0xC0) != 0)
+    {
+        return 6; /* keep supports[6] leader */
+    }
+    return LearnedSkillCount;
 }
 
 static void InvalidateSkillBuffer(void)
@@ -3524,26 +3557,22 @@ void RedrawLearnedSkillsMenu(DebuggerProc * proc);
 void SaveLearnedSkills(DebuggerProc * proc)
 {
     u8 * skills = GetUnitLearnedSkillRam(proc->unit);
+    int limit = GetUnitLearnedSkillLimit(proc->unit);
+    int i;
     if (!skills)
     {
         return;
     }
-    for (int i = 0; i < LearnedSkillCount; ++i)
+    for (i = 0; i < limit; ++i)
     {
-        skills[i] = proc->tmp[i];
+        skills[i] = (u8)proc->tmp[i];
     }
     InvalidateSkillBuffer();
 }
 
 u8 CanEditLearnedSkillsMenu(const struct MenuItemDef * def, int number)
 {
-    int pid;
-    if (!gActiveUnit || !gActiveUnit->pCharacterData)
-    {
-        return greyed;
-    }
-    pid = gActiveUnit->pCharacterData->number;
-    if (pid < 1 || pid > 0x45)
+    if (!gActiveUnit)
     {
         return greyed;
     }
@@ -3561,32 +3590,37 @@ u8 EditSkillsNow(struct MenuProc * menu, struct MenuItemProc * menuItem)
 void EditSkillsInit(DebuggerProc * proc)
 {
     u8 * skills;
+    int limit = GetUnitLearnedSkillLimit(proc->unit);
+    int i;
+    int x, y, w, h;
+    struct Text * th;
+
     SomeMenuInit(proc);
     LoadIconPalettes(4);
     InvalidateSkillBuffer();
     skills = GetUnitLearnedSkillRam(proc->unit);
-    for (int i = 0; i < LearnedSkillCount; ++i)
+    for (i = 0; i < LearnedSkillCount; ++i)
     {
         proc->tmp[i] = 0;
     }
     if (skills)
     {
-        for (int i = 0; i < LearnedSkillCount; ++i)
+        for (i = 0; i < limit; ++i)
         {
             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
         }
     }
 
-    int x = NUMBER_X - LearnedSkillNameWidth - 3;
-    int y = Y_HAND - 1;
-    int w = LearnedSkillNameWidth + (START_X - NUMBER_X) + 8;
-    int h = (LearnedSkillCount * 2) + 2;
+    x = NUMBER_X - LearnedSkillNameWidth - 3;
+    y = Y_HAND - 1;
+    w = LearnedSkillNameWidth + (START_X - NUMBER_X) + 8;
+    h = (limit * 2) + 2;
 
     DrawUiFrame_(BG_GetMapBuffer_(1), x, y, w, h, TILEREF(0, 0), 0);
     BG_EnableSyncByMask(BG2_SYNC_BIT);
 
-    struct Text * th = gStatScreen.text;
-    for (int i = 0; i < LearnedSkillCount; ++i)
+    th = gStatScreen.text;
+    for (i = 0; i < limit; ++i)
     {
         InitText(&th[i], LearnedSkillNameWidth);
     }
@@ -3598,14 +3632,17 @@ void EditSkillsInit(DebuggerProc * proc)
 
 void RedrawLearnedSkillsMenu(DebuggerProc * proc)
 {
-    TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * LearnedSkillCount, 0);
+    int limit = GetUnitLearnedSkillLimit(proc->unit);
+    int i;
+    int nameX = NUMBER_X - LearnedSkillNameWidth + 2;
+    int iconX = nameX - 2;
+    struct Text * th = gStatScreen.text;
+
+    TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * limit, 0);
     BG_EnableSyncByMask(BG0_SYNC_BIT);
     ResetIconGraphics();
     LoadIconPalettes(4);
-    struct Text * th = gStatScreen.text;
-    int nameX = NUMBER_X - LearnedSkillNameWidth + 2;
-    int iconX = nameX - 2;
-    for (int i = 0; i < LearnedSkillCount; ++i)
+    for (i = 0; i < limit; ++i)
     {
         ClearText(&th[i]);
         Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
@@ -3623,6 +3660,8 @@ void RedrawLearnedSkillsMenu(DebuggerProc * proc)
 void EditSkillsIdle(DebuggerProc * proc)
 {
     u16 keys = gKeyStatusPtr->repeatedKeys;
+    int limit = GetUnitLearnedSkillLimit(proc->unit);
+
     if (keys & B_BUTTON)
     {
         SaveLearnedSkills(proc);
@@ -3721,14 +3760,14 @@ void EditSkillsIdle(DebuggerProc * proc)
             proc->id--;
             if (proc->id < 0)
             {
-                proc->id = LearnedSkillCount - 1;
+                proc->id = limit - 1;
             }
             RedrawLearnedSkillsMenu(proc);
         }
         if (keys & DPAD_DOWN)
         {
             proc->id++;
-            if (proc->id >= LearnedSkillCount)
+            if (proc->id >= limit)
             {
                 proc->id = 0;
             }

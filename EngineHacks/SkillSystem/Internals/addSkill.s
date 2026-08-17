@@ -1,46 +1,47 @@
 .thumb
-@adds a skill to the given unit's list of skills. Returns 0 if unit already has 4 skills
-@r0 is unit in ram
-.set BWLTable, 0x0203E790 @ FE7 BWL_GetEntry table; FE8 0x0203E884
+@ r0 = unit, r1 = skill id
+@ Learned skills in unit->supports[]. Players: 7 slots. Non-players: 6 (keep leader at [6]).
+.set UNIT_SUPPORTS, 0x32
+.set LEARNED_SKILL_COUNT_PLAYER, 7
+.set LEARNED_SKILL_COUNT_OTHER, 6
 
-push {r4-r5,lr}
+push {r4-r6,lr}
 
-mov r5, r1
+mov r6, r0 @ unit
+mov r5, r1 @ skill
 
-ldr r4, [r0]
-ldrb r4, [r4, #4] @char num in r4
-cmp r4, #0x46
-bhi False
+ldrb r1, [r6, #0x0B]
+mov r2, #0xC0
+and r1, r2
+cmp r1, #0
+bne OtherMax
+mov r3, #LEARNED_SKILL_COUNT_PLAYER
+b HaveMax
+OtherMax:
+mov r3, #LEARNED_SKILL_COUNT_OTHER
 
-ldr r0, =BWLTable
-lsl r1, r4, #4 @r1 = char*0x10
-add r0, r1
-add r0, #1 @start at byte 1, not 0
+HaveMax:
+mov r4, r6
+add r4, #UNIT_SUPPORTS
 mov r2, #0
 LoopStart:
-ldrb r1, [r0,r2] @get nth skill
+ldrb r1, [r4, r2]
 cmp r1, r5
-beq False @if skill already known, don't learn
+beq False
 cmp r1, #0
-bne NextLoop @if skill already here, skip ahead
-
-strb r5, [r0, r2]
+bne NextLoop
+strb r5, [r4, r2]
 b True
 
 NextLoop:
-cmp r2, #3
-bge SetForForgetting
 add r2, #1
-b LoopStart
+cmp r2, r3
+blt LoopStart
 
-SetForForgetting:
-@ r1 = (0x8000 | Skill Index) (top bit set to denote it is indeed a skill to be learned)
 mov  r1, #0x80
 lsl  r1, #8
 orr  r1, r5
-
-@ store
-ldr  r0, =0x202BBE6 @ fe7 -> FE8 0x0202BCDE @ pExtraItemOrSkill, used by vanilla for when it tries to send an item to convoy
+ldr  r0, =0x202BBE6
 strh r1, [r0]
 
 True:
@@ -51,6 +52,6 @@ False:
 mov r0, #0
 
 End:
-pop {r4-r5}
+pop {r4-r6}
 pop {r1}
 bx r1

@@ -1,6 +1,4 @@
-"""Learned skills must use FE7 BWL_GetEntry's table, not the next entry."""
-import re
-import struct
+"""Learned skills in unit->supports[]; support exp in gBwlSupportExp (DEC-59)."""
 import sys
 import unittest
 from pathlib import Path
@@ -9,73 +7,93 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lyn_bytes import lyn_to_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
-CLEAN_ROM = ROOT / "FE7_clean.gba"
 INTERNALS = ROOT / "EngineHacks" / "SkillSystem" / "Internals"
-
-FE7_BWL_GET_ENTRY_LITERAL_OFF = 0xA0570
-FE7_BWL_TABLE = 0x0203E790
-WRONG_BASE = 0x0203E7A0
+REMOVE = ROOT / "EngineHacks" / "SkillSystem" / "RemoveSkillMenu"
+EMS = ROOT / "EngineHacks" / "Necessary" / "ExpandedModularSave"
 
 SOURCES = (
     INTERNALS / "addSkill.s",
     INTERNALS / "asm" / "GetSkills.s",
+    REMOVE / "asm" / "GetSkillIdByIndex.s",
+    REMOVE / "asm" / "ASMC" / "ASMC_ForgetSkill.s",
+    REMOVE / "asm" / "Menu" / "MenuRemoveSkillCommand_ForgetEffect.s",
 )
+
 LYNS = (
     INTERNALS / "addSkill.lyn.event",
     INTERNALS / "asm" / "GetSkills.lyn.event",
+    INTERNALS / "asm" / "BwlSupports.lyn.event",
 )
 
-ASSIGN_RE = re.compile(
-    r"(?:\.set\s+BWLTable\s*,\s*|BWLTable\s*=\s*)(0x[0-9A-Fa-f]+)"
-)
+BWL_TABLE = 0x0203E790
+GBWL_SUPPORT = 0x0203FE10
 
 
-class Fe7BwlSkillStorageTests(unittest.TestCase):
-    def test_clean_rom_bwl_get_entry_table_base(self):
-        if not CLEAN_ROM.is_file():
-            self.skipTest("FE7_clean.gba missing")
-        word = struct.unpack_from("<I", CLEAN_ROM.read_bytes(), FE7_BWL_GET_ENTRY_LITERAL_OFF)[0]
-        self.assertEqual(word, FE7_BWL_TABLE)
-
-    def test_skill_writers_match_bwl_get_entry(self):
+class Fe7SupportSkillStorageTests(unittest.TestCase):
+    def test_sources_use_unit_supports_not_bwl_for_skills(self):
         for path in SOURCES:
             text = path.read_text(encoding="utf-8")
-            match = ASSIGN_RE.search(text)
-            self.assertIsNotNone(match, path.name)
-            self.assertEqual(int(match.group(1), 16), FE7_BWL_TABLE, path.name)
+            self.assertIn("UNIT_SUPPORTS", text, path.name)
+            self.assertNotIn("BWLTable", text, path.name)
+            self.assertNotIn("pBWLTable", text, path.name)
+            self.assertNotIn("gBWLTable", text, path.name)
 
-    def test_lyns_use_fe7_bwl_table_literal(self):
-        want = struct.pack("<I", FE7_BWL_TABLE)
-        wrong = struct.pack("<I", WRONG_BASE)
-        for path in LYNS:
+    def test_player_seven_other_six(self):
+        add = (INTERNALS / "addSkill.s").read_text(encoding="utf-8")
+        self.assertIn("LEARNED_SKILL_COUNT_PLAYER, 7", add)
+        self.assertIn("LEARNED_SKILL_COUNT_OTHER, 6", add)
+        skill_sys = (INTERNALS / "SkillSystem.event").read_text(encoding="utf-8")
+        self.assertIn("#define MaxGenericLearnedSkills 7", skill_sys)
+
+    def test_bwl_supports_module(self):
+        text = (INTERNALS / "asm" / "BwlSupports.s").read_text(encoding="utf-8")
+        self.assertIn("gBwlSupportExp = 0x0203FE10", text)
+        self.assertIn("GetUnitSupportLevel_Bwl", text)
+        self.assertIn("AddSupportPoints_Bwl", text)
+        self.assertIn("InitBwlSupportsForUnit", text)
+        skill_sys = (INTERNALS / "SkillSystem.event").read_text(encoding="utf-8")
+        self.assertIn("jumpToHack(GetUnitSupportLevel_Bwl)", skill_sys)
+        self.assertIn("jumpToHack(AddSupportPoints_Bwl)", skill_sys)
+
+    def test_ems_chunk_declared(self):
+        text = (EMS / "ExModularSave.event").read_text(encoding="utf-8")
+        self.assertIn("SUD_SaveBwlSupports", text)
+        self.assertIn("$01F0", text)
+
+    def test_lyns_no_skill_bwl_base(self):
+        want_bwl = BWL_TABLE.to_bytes(4, "little")
+        want_sup = GBWL_SUPPORT.to_bytes(4, "little")
+        for path in LYNS[:2]:
             data = lyn_to_bytes(path)
-            self.assertIn(want, data, path.name)
-            self.assertNotIn(wrong, data, path.name)
+            self.assertNotIn(want_bwl, data, path.name)
+        bwl_lyn = lyn_to_bytes(LYNS[2])
+        self.assertIn(want_sup, bwl_lyn)
 
-    def test_debugger_writes_bwl_not_ewram_buffer(self):
+    def test_debugger_skills_and_supports_split(self):
         debugger = (
             ROOT / "EngineHacks" / "ExternalHacks" / "VeslyDebugger" / "Data" / "FE6_FE7.c"
         ).read_text(encoding="utf-8")
-        ram_map = (ROOT / "Asm" / "ram_map_ewram.s").read_text(encoding="utf-8")
-        skill_sys = (INTERNALS / "SkillSystem.event").read_text(encoding="utf-8")
-        self.assertIn("0x0203E790", debugger)
-        self.assertIn("pid * 0x10 + 1", debugger)
-        self.assertNotIn("0x0203F540", debugger)
-        self.assertNotIn("gLearnedSkillRam", ram_map)
-        self.assertNotIn("LearnedSkillRamSize", ram_map)
-        self.assertIn("PidStatsAddActAmt", skill_sys)
-        self.assertIn("$9FFAC", skill_sys)
-        self.assertIn("PidStatsAddFavval", skill_sys)
-        self.assertNotIn("$A91D0", skill_sys)
+        self.assertIn("#define LearnedSkillCount 7", debugger)
+        self.assertIn("return unit->supports", debugger)
+        self.assertIn("gBwlSupportExp", debugger)
+        self.assertIn("GetUnitBwlSupportRow", debugger)
+        self.assertIn("return 6; /* keep supports[6] leader */", debugger)
+        self.assertIn("int limit = GetUnitLearnedSkillLimit(proc->unit)", debugger)
+        self.assertIn("h = (limit * 2) + 2", debugger)
+        lyn = (
+            ROOT / "EngineHacks" / "ExternalHacks" / "VeslyDebugger" / "Data" / "FE7.lyn.event"
+        ).read_text(encoding="utf-8")
+        self.assertIn("SaveLearnedSkills:", lyn)
+        self.assertIn("EditSkillsInit:", lyn)
 
-    def test_getters_stop_at_first_empty_bwl_slot(self):
+    def test_getters_stop_at_first_empty_slot(self):
         skills = (INTERNALS / "asm" / "GetSkills.s").read_text(encoding="utf-8")
         tester = (
             INTERNALS / "NewSkillTester" / "_src" / "SkillTester.c"
         ).read_text(encoding="utf-8")
         self.assertIn("beq end_learned", skills)
-        self.assertNotIn("skip_bwl", skills)
-        self.assertIn("break;", tester)
+        self.assertIn("unit->supports", tester)
+        self.assertIn("0xC0", tester)
 
 
 if __name__ == "__main__":

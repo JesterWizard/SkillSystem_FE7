@@ -68,24 +68,18 @@ SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
         buffer->skills[count++] = temp;
     }
 
-    // Unique units: 4 learned skills in BWL (chapter save already stores this).
-    // Generics have no BWL row; use the level-up list.
-    BWLData* unitBWL = BWL_GetEntry(unitNum);
-    if (unitBWL) {
-        for (int i = 0; i < 4; ++i) {
-            if (!IsSkillIDValid(unitBWL->skills[i])) {
-                break;
-            }
-            buffer->skills[count++] = unitBWL->skills[i];
+    // Learned skills in unit->supports[]. Players: up to limit. Others: 6 (leader at [6]).
+    int learnedLimit = gSkillTestConfig.genericLearnedSkillLimit;
+    if ((unit->index & 0xC0) != 0) {
+        if (learnedLimit > 6) {
+            learnedLimit = 6;
         }
-    } else {
-        u8* tempBuffer = GetInitialSkillList_Pointer(unit, gTempSkillBuffer);
-        for (int i = 0; i < gSkillTestConfig.genericLearnedSkillLimit; ++i) {
-            if (!IsSkillIDValid(tempBuffer[i])) {
-                break;
-            }
-            buffer->skills[count++] = tempBuffer[i];
+    }
+    for (int i = 0; i < learnedLimit; ++i) {
+        if (!IsSkillIDValid(unit->supports[i])) {
+            break;
         }
+        buffer->skills[count++] = unit->supports[i];
     }
 
     //Item passive skills

@@ -1,7 +1,8 @@
 """
-HookUnitLoading must resume FE7 UnitLoadSupports, not jump into item code.
+HookUnitLoading (DEC-59): AutoloadSkills + InitBwlSupports, then return to caller.
 
-A wrong return/BL here black-screens when Lyn's hut loads units.
+Must not resume vanilla UnitLoadSupports (would wipe learned skills in supports[]).
+Must not jump into item/inventory or sprite-palette code.
 """
 import re
 import unittest
@@ -16,13 +17,15 @@ CHAR_LEVEL_EVENT = (
     ROOT / "Tables" / "NightmareModules" / "Skills" / "CharacterLevelUpSkillEditor.event"
 )
 
-# FE7U UnitLoadSupports is at 0x080179F0; jumpToHack is 8 bytes.
+# Wrong resumes that previously black-screened Lyn's hut.
+FE7_BAD_ITEM_RESUME = 0x080176F8
+FE7_BAD_SPRITE_PAL = 0x08024C98
 FE7_UNIT_LOAD_SUPPORTS_RESUME = 0x080179F9
 FE7_GET_UNIT_SUPPORTER_COUNT = 0x08026628
 
 
 def _hex_literals(text: str) -> set[int]:
-    return {int(m.group(0), 16) for m in re.finditer(r"0x080[0-9A-Fa-f]+", text)}
+    return {int(m.group(0), 16) for m in re.finditer(r"0x0[0-9A-Fa-f]+", text)}
 
 
 def _level_up_words(path: Path) -> list[int]:
@@ -40,30 +43,33 @@ def _level_up_words(path: Path) -> list[int]:
 
 
 class HookUnitLoadingTests(unittest.TestCase):
-    def test_hook_resumes_unit_load_supports(self):
+    def test_hook_returns_to_caller_not_unit_load_supports(self):
         src = HOOK_S.read_text(encoding="utf-8")
         literals = _hex_literals(src)
-        self.assertIn(
+        self.assertNotIn(
             FE7_UNIT_LOAD_SUPPORTS_RESUME,
             literals,
-            "HookUnitLoading must bx back to UnitLoadSupports+8 (0x080179F9)",
+            "DEC-59: do not bx into UnitLoadSupports+8 (wipes supports[] skills)",
         )
         self.assertNotIn(
-            0x080176F8,
+            FE7_BAD_ITEM_RESUME,
             literals,
-            "0x080176F8 is FE7 item/inventory code, not UnitLoadSupports",
+            "0x080176F8 is FE7 item/inventory code, not a valid resume",
         )
+        self.assertIn("InitBwlSupports", src)
+        self.assertIn("pop {r1}", src)
+        self.assertIn("bx r1", src)
 
-    def test_hook_calls_get_unit_supporter_count(self):
+    def test_hook_does_not_call_vanilla_supporter_count_inline(self):
         src = HOOK_S.read_text(encoding="utf-8")
         literals = _hex_literals(src)
-        self.assertIn(
+        self.assertNotIn(
             FE7_GET_UNIT_SUPPORTER_COUNT,
             literals,
-            "Overwritten BL must be GetUnitSupporterCount (0x08026628)",
+            "GetUnitSupporterCount lives in InitBwlSupportsForUnit, not HookUnitLoading",
         )
         self.assertNotIn(
-            0x08024C98,
+            FE7_BAD_SPRITE_PAL,
             literals,
             "0x08024C98 is ApplyUnitSpritePalettes, not GetUnitSupporterCount",
         )

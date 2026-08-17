@@ -1,19 +1,5 @@
-// Skill System reuses FE7 BWL+1..4 (favval/actAmt/statViewAmt) as learned skills,
-// same as FE8 SkillSys. Stub the vanilla writers so they cannot corrupt skill IDs.
+// Learned skills live in unit->supports[] (DEC-59). BWL favval/act/statView stay vanilla.
 #include "repointbuffer_fe7.event"
-
-PUSH
-ORG $9FF6C // PidStatsAddActAmt (BWL+3)
-SHORT $4770 // bx lr
-ORG $9FFAC // PidStatsAddStatViewAmt (BWL+4) — NOT 0x80A91D0
-SHORT $4770
-ORG $A0248 // PidStatsAddFavval (BWL+1..2)
-SHORT $4770
-ORG $A00FC // PidStatsSubFavval08
-SHORT $4770
-ORG $A0110 // PidStatsSubFavval100
-SHORT $4770
-POP
 
 PUSH //let 203e884 + charnum*10 = skill area (bytes 1,2,3,4 NOT 0 tho)
 
@@ -134,7 +120,6 @@ Skill_Getter: // gets a list of skills
 	#include "asm/GetSkills.lyn.event"
 	POIN PersonalSkillTable
 	POIN ClassSkillTable
-	POIN (GetInitialSkillList|1)
 
 ALIGN 4
 Skill_Getter_Pointer:
@@ -150,8 +135,8 @@ POIN (GetInitialSkillList|1)
 //Determines the maximum number of entries the AuraSkillBuffer can take up. Each entry is 2 bytes long
 #define AuraSkillBufferLimit 480
 
-//Determines the max number of skills generics get from learned skills
-#define MaxGenericLearnedSkills 4
+// Max learned skills in unit->supports[] (UNIT_SUPPORT_MAX_COUNT)
+#define MaxGenericLearnedSkills 7
 
 //SkillTester configs
 ALIGN 4
@@ -379,8 +364,20 @@ ALIGN 4
 HookUnitLoading:
 	#include "asm/HookUnitLoading.lyn.event"
 	POIN (AutoloadSkills|1)
-	POIN (Skill_Getter|1)
-	POIN ChargeupTable
+	POIN (InitBwlSupportsForUnit|1)
+
+ALIGN 4
+BwlSupports:
+	#include "asm/BwlSupports.lyn.event"
+
+PUSH
+ORG $26694
+jumpToHack(GetUnitSupportLevel_Bwl)
+ORG $26744
+jumpToHack(AddSupportPoints_Bwl)
+POP
+
+#define gBwlSupportExp 0x0203FE10
 
 ALIGN 4
 AutoloadSkills:

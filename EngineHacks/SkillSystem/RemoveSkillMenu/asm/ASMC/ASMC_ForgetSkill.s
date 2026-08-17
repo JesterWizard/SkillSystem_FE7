@@ -1,94 +1,76 @@
 
 	.thumb
 
-	gBWLTable  = 0x0203E790 @ FE7 BWL_GetEntry table; FE8 0x0203E884
-	gEventSlot = 0x030004B8 @ Where the event slot values are stored
+	gEventSlot = 0x030004B8
+	UNIT_SUPPORTS = 0x32
+	LEARNED_SKILL_COUNT_PLAYER = 7
+	LEARNED_SKILL_COUNT_OTHER = 6
 
-	GetUnitFromEventParam = 0x0800BC50|1 @ Given an event parameter (either a char id or -1/-2/-3 special values), gets a Unit*
+	GetUnitFromEventParam = 0x0800BC50|1
 
 ASMC_ForgetSkill:
-	push {r4-r6, lr}
+	push {r4-r7, lr}
 
-	@ PUT SKILL ID IN SLOT 1
-	@ PUT CHAR ID IN SLOT 2
-
-	@ Sets Slot C to 1 if skill was successfully forgotten, 0 otherwise
-
-	@ r0 = char id
 	ldr r1, =gEventSlot
-	ldr r0, [r1, #(0x02 * 4)] @ Load unit from event slot 2
+	ldr r0, [r1, #(0x02 * 4)]
 
 	ldr r3, =GetUnitFromEventParam
 	bl BXR3
+	mov r4, r0 @ unit
 
-	ldr  r0, [r0] @ CharData
-	ldrb r0, [r0, #4] @ CharId
+	mov r3, r4
+	add r3, #UNIT_SUPPORTS
 
-	@ r1 = skill id
 	ldr r1, =gEventSlot
-	ldr r1, [r1, #(0x01 * 4)] @ Load skill from event slot 1
+	ldr r1, [r1, #(0x01 * 4)]
+	mov r5, r1 @ skill id
 
-	@ r3 = Learned Skill List for Active Char
-	ldr r3, =gBWLTable
-	lsl r0, #4 @ CharId * sizeof(BWLEntry)
-	add r3, r0
-	add r3, #1 @ Learned Skills start at byte 1 in BWL Entry
+	ldrb r0, [r4, #0x0B]
+	mov r1, #0xC0
+	and r0, r1
+	cmp r0, #0
+	bne ASMC_ForgetSkill.other
+	mov r7, #LEARNED_SKILL_COUNT_PLAYER
+	b ASMC_ForgetSkill.have_max
+ASMC_ForgetSkill.other:
+	mov r7, #LEARNED_SKILL_COUNT_OTHER
+ASMC_ForgetSkill.have_max:
 
-	@ r2 = current slot
 	mov r2, #0
-
 loop_find_slot:
-	@ r0 = learned skill in slot #r2
 	ldrb r0, [r3, r2]
-
-	@ compare skill
-	cmp r0, r1
+	cmp r0, r5
 	beq found_slot
-
-	@ add current slot (check next slot next iteration)
 	add r2, #1
-
-	@ loop back if we haven't done all skill slots yet
-	cmp r2, #4
+	cmp r2, r7
 	blt loop_find_slot
 
-	@ we reached end of learned skill list
-	@ we didn't find the skill we want to forget
-	@ so we end, bye
-
-	@ set slot C to 0/false
 	ldr r1, =gEventSlot
 	mov r0, #0
 	str r0, [r1, #(0x0C * 4)]
-
 	b end
 
 found_slot:
 loop_remove:
-	add r0, r2, #1 @ r0 = next slot id
-
-	ldrb r0, [r3, r0] @ load skill after current slot
-	strb r0, [r3, r2] @ store into current slot
-
+	add r0, r2, #1
+	cmp r0, r7
+	bge clear_last
+	ldrb r0, [r3, r0]
+	strb r0, [r3, r2]
 	add r2, #1
+	b loop_remove
 
-	cmp r2, #4
-	blt loop_remove
+clear_last:
+	mov r0, #0
+	sub r1, r7, #1
+	strb r0, [r3, r1]
 
-	@ set last skill as zero
-	@ otherwise it would have been whatever is after the skill list in memory
-	@ aka unwanted garbage
-	mov  r0, #0
-	strb r0, [r3, #3]
-
-	@ set slot C to 1/true
 	ldr r1, =gEventSlot
 	mov r0, #1
 	str r0, [r1, #(0x0C * 4)]
 
 end:
-	pop {r4-r6}
-
+	pop {r4-r7}
 	pop {r3}
 BXR3:
 	bx r3

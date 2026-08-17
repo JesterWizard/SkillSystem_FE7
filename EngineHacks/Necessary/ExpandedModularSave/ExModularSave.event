@@ -141,7 +141,8 @@ gGameSaveChunks:
 	// Save 62 blue units (62 * 0x2C = $0AA8)
 	DeclSaveChunk($0680, $0AA8, ESU_SaveGameUnits, ESU_LoadGameUnits, EMS_CHUNK_SAVEUNITS)
 
-	// $1128
+	// $1128 — BWL support exp (DEC-59), 0x46 pids * 7 slots padded to 0x1F0
+	DeclSaveChunk($1128, $01F0, SUD_SaveBwlSupports, SUD_LoadBwlSupports)
 
 	// free up to $1344
 
@@ -198,7 +199,7 @@ gSuspendSaveChunks:
 	DeclSaveChunk($2DA8, $0019, $09E954+1, $09E974+1)
 
 	// ends at $2DC1
-	// free up to $2E78 ($B7 free bytes)
+	// free up to $2E78 ($B7 free — too small for full BwlSupportExp; game-save only)
 
 	DeclSaveChunk(0, 0, 0, MSu_LoadClaimFlagsFromParentSave) // Load Bonus Claim flags from parent save
 

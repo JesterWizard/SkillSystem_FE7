@@ -26,6 +26,9 @@ enum {
 	// Maximum unit item count
 	UNIT_ITEM_COUNT = 5,
 
+	// Maximum support / learned-skill slots
+	UNIT_SUPPORT_MAX_COUNT = 7,
+
 	// Maximum unit definition item count
 	UNIT_DEFINITION_ITEM_COUNT = 4
 };
@@ -173,10 +176,7 @@ struct Unit {
 	/* 31 */ u8 torchDuration : 4;
 	/* 31 */ u8 barrierDuration : 4;
 
-								// EDITS FOR SUPPORT REWORK
-	/* 32 */ u16 supportLevels;
-	/* 34 */ u8 supports[5]; // 38 is also character leader. Unioning to the last index of this array sounds oof, so eeeehhhhh.
-	
+	/* 32 */ u8 supports[UNIT_SUPPORT_MAX_COUNT]; // learned skills (DEC-59); was support exp
 	/* 39 */ u8 supportBits;
 	/* 3A */ u8 unk3A;
 	/* 3B */ u8 unk3B;

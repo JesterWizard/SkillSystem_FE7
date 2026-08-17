@@ -42,3 +42,8 @@ SET_ARRAY gHpRoundData,    0x0203F730, HpRoundDataSize
 @ Add new EWRAM with:
 @   _kernel_malloc_ewram gMyBuffer, 0x20
 @ Pad manually if the next symbol needs 2- or 4-byte alignment.
+
+@ Support exp for playable chars (DEC-59). 0x46 pids * 7 slots. Saved via EMS.
+@ Address: 0x02040000 - 0x1F0 = 0x0203FE10
+.set BwlSupportExpSize, 0x1F0
+_kernel_malloc_ewram gBwlSupportExp, BwlSupportExpSize
