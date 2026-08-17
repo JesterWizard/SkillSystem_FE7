@@ -165,14 +165,14 @@ class GetStringTableTests(unittest.TestCase):
             "left panel still calls AffinityGetter (icon next to the name)",
         )
 
-    def test_page1_affinity_does_not_use_icon_sheet_2(self):
-        """MSS keeps FE7 AffinityGetter item-sheet ids; IconRework sheet 2 is for other affinity hooks."""
+    def test_page1_affinity_uses_icon_sheet_2(self):
+        """IconRework: AffinityGetter is sheet-local; DrawIcon must OR sheet 2."""
         text = read_event_text(PAGE1_LYN)
         self.assertIn("$8026B24", text)
-        self.assertNotIn(
+        self.assertIn(
             "$2092102",
             text,
-            "page 1 still does mov r1,#2; lsl r1,#8 before DrawIcon (IconRework sheet 2)",
+            "page 1 must OR IconRework sheet 2 before DrawIcon for affinity",
         )
 
     def test_left_panel_does_not_apply_fe6_portrait_box(self):

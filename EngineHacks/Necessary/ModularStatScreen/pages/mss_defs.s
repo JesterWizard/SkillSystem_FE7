@@ -724,9 +724,11 @@
   ldr     r4, =(tile_origin+(0x20*2*\tile_y)+(2*\tile_x))
   mov     r0, r8
   blh     AffinityGetter
-  @ FE7 AffinityGetter already returns item-icon index (affinity+0x79, sheet 0).
-  @ IconRework sheet 2 AffinityIcons is used by the rework's other affinity hooks.
-  mov     r1, r0
+  @ IconRework: AffinityGetter returns sheet-local index (affinity-1);
+  @ OR sheet 2 so AffinityIcons is used instead of item/weapon sheet 0.
+  mov     r1, #2
+  lsl     r1, r1, #8
+  orr     r1, r0
   mov     r2, #0xA0       
   lsl     r2, r2, #0x7      
   mov     r0, r4    
