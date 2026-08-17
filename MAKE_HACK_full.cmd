@@ -133,6 +133,12 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+python "%base_dir%tests\test_icon_rework.py"
+if errorlevel 1 (
+  echo ROM tests failed.
+  pause
+  exit /b 1
+)
 python "%base_dir%tests\test_skill_scroll_id.py"
 if errorlevel 1 (
   echo ROM tests failed.

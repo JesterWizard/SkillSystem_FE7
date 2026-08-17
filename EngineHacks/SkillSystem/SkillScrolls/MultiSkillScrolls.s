@@ -69,7 +69,6 @@ UsabilityFalse:
 
 UsabilityReturn:
     pop {r4-r5}
-    pop {r4}
     pop {r1}
     bx r1
 
@@ -218,7 +217,9 @@ PrepScrollEffectDispatch_Scroll:
 
 
 MultiScrollTargeting:
-    ldr r0, =0x08026E6D
+@ Same self-target path as vulnerary (0x08026EC8). Do not bx into the
+@ jump-table stub bytes at 0x08026E6C — that softlocks with a stuck portrait.
+    ldr r0, =0x08026EC9
     bx r0
 
 .ltorg

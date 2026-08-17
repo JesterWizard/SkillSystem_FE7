@@ -15,7 +15,7 @@ ITEM_BIN = (
     / "EngineHacks"
     / "SkillSystem"
     / "SkillScrolls"
-    / "fe7_item_table_through_9A.bin"
+    / "fe7_item_table_through_9E.bin"
 )
 HACK_ROM = ROOT / "FE7_Hack.gba"
 CLEAN_ROM = ROOT / "FE7_clean.gba"
@@ -38,6 +38,10 @@ def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+VANILLA_ITEM_TABLE_PTR = bytes((0x2C, 0x22, 0xBE, 0x08))
+MAKE_NEW_ITEM_TABLE_LIT = 0x161A0
+
+
 class SkillScrollIdTests(unittest.TestCase):
     def test_define_is_0x9f(self):
         self.assertRegex(
@@ -48,19 +52,25 @@ class SkillScrollIdTests(unittest.TestCase):
     def test_expanded_table_not_vanilla_slot(self):
         src = _text(SCROLLS)
         self.assertIn("ExpandedItemTable", src)
-        self.assertIn("fe7_item_table_through_9A.bin", src)
+        self.assertIn("fe7_item_table_through_9E.bin", src)
+        self.assertNotRegex(src, r"(?m)^\s*FILL\b")
         self.assertNotRegex(
             src,
             r"ORG\s+0xBE222C\s*\+|ORG\s+ItemTable\s*\+\s*\(0x24\s*\*\s*SkillScroll\)",
         )
         self.assertTrue(ITEM_BIN.is_file())
-        self.assertEqual(ITEM_BIN.stat().st_size, 0x9B * ITEM_SIZE)
+        self.assertEqual(ITEM_BIN.stat().st_size, 0x9F * ITEM_SIZE)
+        # MakeNewItem / other helpers must be repointed (not only GetItemData).
+        self.assertIn("ORG $161A0", src)
+        self.assertGreaterEqual(src.count("POIN ExpandedItemTable"), 60)
 
     def test_use_tables_extend_to_scroll_index(self):
         src = _text(SCROLLS)
         self.assertRegex(src, r"SHORT 0x2855")
         self.assertNotRegex(src, r"SHORT 0x2872")
-        self.assertEqual(src.count("POIN (MultiScroll"), 4)
+        # Usability + effect + prep usability. Targeting reuses vulnerary stub.
+        self.assertEqual(src.count("POIN (MultiScroll"), 3)
+        self.assertRegex(src, r"POIN 0x08026EC8")
 
     def test_hack_rom_preserves_lord_mov_costs(self):
         if not HACK_ROM.is_file() or not CLEAN_ROM.is_file():
@@ -93,13 +103,30 @@ class SkillScrollIdTests(unittest.TestCase):
         self.assertEqual(entry[2:4], b"\xff\xff")
         self.assertEqual(entry[6], SKILL_SCROLL)
 
-        for ptr_off in (USE_TABLE_PTR, TARGET_TABLE_PTR, EFFECT_TABLE_PTR):
+        # Usability / effect: custom thumb handlers. Targeting: vulnerary stub.
+        expected = {
+            USE_TABLE_PTR: "thumb",
+            TARGET_TABLE_PTR: 0x08026EC8,
+            EFFECT_TABLE_PTR: "thumb",
+        }
+        for ptr_off, want in expected.items():
             use_table = struct.unpack_from("<I", rom, ptr_off)[0]
             self.assertGreater(use_table, 0x09000000, f"table not repointed at 0x{ptr_off:05X}")
             slot = (use_table & 0x01FFFFFF) + 4 * CMP_INDEX
             dest = struct.unpack_from("<I", rom, slot)[0]
-            self.assertTrue(dest & 1, f"scroll handler at 0x{slot:08X}")
-            self.assertGreater(dest & 0x01FFFFFF, 0x01000000)
+            if want == "thumb":
+                self.assertTrue(dest & 1, f"scroll handler at 0x{slot:08X}")
+                self.assertGreater(dest & 0x01FFFFFF, 0x01000000)
+            else:
+                self.assertEqual(dest, want, f"scroll targeting at 0x{slot:08X}")
+
+        # MakeNewItem (debugger Give Item) must not still embed vanilla ItemTable.
+        self.assertNotEqual(
+            rom[MAKE_NEW_ITEM_TABLE_LIT : MAKE_NEW_ITEM_TABLE_LIT + 4],
+            VANILLA_ITEM_TABLE_PTR,
+        )
+        make_new_table = struct.unpack_from("<I", rom, MAKE_NEW_ITEM_TABLE_LIT)[0]
+        self.assertEqual(make_new_table, table)
 
 
 if __name__ == "__main__":

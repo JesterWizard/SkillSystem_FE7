@@ -43,7 +43,7 @@ ALIGN 4
 SkillScrollTargetingTable:
 #incbin "fe7_item_targeting_table.bin"
 WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-POIN (MultiScrollTargeting|1)
+POIN 0x08026EC8                              // 0x55 SkillScroll (same self-target stub as vulnerary)
 
 ALIGN 4
 SkillScrollEffectTable:
@@ -79,14 +79,13 @@ ORG $2CD28
 jumpToHack(PrepScrollEffectDispatch)
 POP
 
-// Item 0x9F sits past the vanilla item table. Writing it at
+// Item 0x9F is the first free slot after vanilla 0x00..0x9E. Writing it at
 // 0xBE222C + 0x24*0x9F overwrites Lord movement-cost data at 0xBE3888
 // (plains become impassable → Mov 0 on the map). Keep 0x9F, but host the
-// expanded table in FreeSpace and repoint GetItemData.
+// expanded table in FreeSpace and repoint GetItemData. Do not FILL/wipe 0x9A–0x9E.
 ALIGN 4
 ExpandedItemTable:
-#incbin "fe7_item_table_through_9A.bin" // items 0x00..0x9A
-FILL ((SkillScroll - 0x9B) * 0x24)      // 0x9B..0x9E
+#incbin "fe7_item_table_through_9E.bin" // items 0x00..0x9E
 SHORT 0xFFFF                            // 0x9F SkillScroll
 SHORT 0xFFFF
 SHORT SkillScrollDesc
@@ -112,11 +111,132 @@ BYTE 0
 #undef ItemTable
 #define ItemTable ExpandedItemTable
 
+// Vanilla helpers embed 0x8BE222C directly (MakeNewItem, getters, menu draws).
+// GetItemData alone is not enough — debugger Give Item calls MakeNewItem(0x9F),
+// which still read the vanilla slot and crashed into movement-cost data.
 PUSH
-// GetItemData (0x080174AC) ItemTable literal
+ORG $16060
+POIN ExpandedItemTable
+ORG $1608C
+POIN ExpandedItemTable
+ORG $160B8
+POIN ExpandedItemTable
+ORG $160E4
+POIN ExpandedItemTable
+ORG $16110
+POIN ExpandedItemTable
+ORG $1613C
+POIN ExpandedItemTable
+ORG $16168
+POIN ExpandedItemTable
+ORG $161A0
+POIN ExpandedItemTable
+ORG $16300
+POIN ExpandedItemTable
+ORG $1634C
+POIN ExpandedItemTable
+ORG $163BC
+POIN ExpandedItemTable
+ORG $1640C
+POIN ExpandedItemTable
+ORG $16464
+POIN ExpandedItemTable
+ORG $164F0
+POIN ExpandedItemTable
+ORG $165C0
+POIN ExpandedItemTable
+ORG $1664C
+POIN ExpandedItemTable
+ORG $16714
+POIN ExpandedItemTable
+ORG $16758
+POIN ExpandedItemTable
+ORG $167EC
+POIN ExpandedItemTable
+ORG $16844
+POIN ExpandedItemTable
+ORG $168F0
+POIN ExpandedItemTable
+ORG $169BC
+POIN ExpandedItemTable
+ORG $16AD8
+POIN ExpandedItemTable
+ORG $16B54
+POIN ExpandedItemTable
+ORG $16D08
+POIN ExpandedItemTable
+ORG $16D5C
+POIN ExpandedItemTable
+ORG $16DA8
+POIN ExpandedItemTable
+ORG $16DD4
+POIN ExpandedItemTable
+ORG $16F50
+POIN ExpandedItemTable
+ORG $16FAC
+POIN ExpandedItemTable
+ORG $1702C
+POIN ExpandedItemTable
+ORG $1707C
+POIN ExpandedItemTable
+ORG $170F0
+POIN ExpandedItemTable
+ORG $17170
+POIN ExpandedItemTable
+ORG $171AC
+POIN ExpandedItemTable
+ORG $171E0
+POIN ExpandedItemTable
+ORG $17228
+POIN ExpandedItemTable
+ORG $17240
+POIN ExpandedItemTable
+ORG $17258
+POIN ExpandedItemTable
+ORG $17274
+POIN ExpandedItemTable
+ORG $17290
+POIN ExpandedItemTable
+ORG $172B4
+POIN ExpandedItemTable
+ORG $172D8
+POIN ExpandedItemTable
+ORG $172F4
+POIN ExpandedItemTable
+ORG $1730C
+POIN ExpandedItemTable
+ORG $17324
+POIN ExpandedItemTable
+ORG $1733C
+POIN ExpandedItemTable
+ORG $17360
+POIN ExpandedItemTable
+ORG $17380
+POIN ExpandedItemTable
+ORG $1739C
+POIN ExpandedItemTable
+ORG $173B4
+POIN ExpandedItemTable
+ORG $173CC
+POIN ExpandedItemTable
+ORG $173E4
+POIN ExpandedItemTable
+ORG $173FC
+POIN ExpandedItemTable
+ORG $17418
+POIN ExpandedItemTable
+ORG $17438
+POIN ExpandedItemTable
+ORG $17450
+POIN ExpandedItemTable
+ORG $17468
+POIN ExpandedItemTable
+ORG $17490
+POIN ExpandedItemTable
+ORG $174A8
+POIN ExpandedItemTable
 ORG $174BC
 POIN ExpandedItemTable
-// Adjacent helper that also embeds ItemTable
-ORG $17360
+ORG $174D4
 POIN ExpandedItemTable
 POP

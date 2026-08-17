@@ -3,6 +3,15 @@
 #define brk asm("mov r11, r11");
 #include "../C_code.h"
 
+#ifndef SELECT_BUTTON
+#define SELECT_BUTTON 0x0004
+#endif
+
+extern void StartHelpBox(int x, int y, int msgId);
+extern void CloseHelpBox(void);
+extern int GetItemDescId(int item);
+extern void DrawIcon(u16 * bgOut, int iconId, int oam2Base);
+
 #ifdef FE6
 #define hidden 2
 #define greyed 1
@@ -982,12 +991,21 @@ void RedrawItemMenu(DebuggerProc * proc)
     {
         itemData[i] = GetItemData(proc->tmp[i] & 0xFF);
     }
+    char * str;
     for (int i = 0; i < NumberOfItems; ++i)
     {
         ClearText(&th[i]);
         if (proc->tmp[i])
         {
-            Text_DrawString(&th[i], GetStringFromIndexSafe(itemData[i]->nameTextId));
+            // Durability-based scrolls use nameTextId 0xFFFF; resolve via GetItemName.
+            if (GetItemDescId(proc->tmp[i] & 0xFFFF) < 0x4000)
+            {
+                str = GetItemName(proc->tmp[i] & 0xFFFF);
+                if (str && *str)
+                {
+                    Text_DrawString(&th[i], str);
+                }
+            }
         }
     }
 
@@ -1050,15 +1068,32 @@ void EditItemsIdle(DebuggerProc * proc)
     u16 keys = gKeyStatusPtr->repeatedKeys;
     if (keys & B_BUTTON)
     { // press B to not save stats
+        CloseHelpBox();
         Proc_Goto(proc, RestartLabel);
         ConfirmPressSFX();
     };
     if ((keys & START_BUTTON) || (keys & A_BUTTON))
     { // press A or Start to update stats and continue
+        CloseHelpBox();
         SaveItems(proc);
         Proc_Goto(proc, RestartLabel);
         ConfirmPressSFX();
     };
+    if (keys & SELECT_BUTTON)
+    {
+        u16 item = proc->tmp[proc->id];
+        if (item)
+        {
+            int msg = GetItemDescId(item);
+            if (msg > 0 && msg < 0x4000)
+            {
+                StartHelpBox(
+                    CursorLocationTable[0].x - ((ItemNameWidth + 4) * 8),
+                    (Y_HAND + (proc->id * 2)) * 8,
+                    msg);
+            }
+        }
+    }
     if (proc->editing)
     {
         if (proc->editing == 1)
@@ -3495,13 +3530,9 @@ void EditSupportsIdle(DebuggerProc * proc)
 
 #define LearnedSkillCount 7
 #define LearnedSkillNameWidth 12
+#define SKILL_ICON(id) (0x100 + (id)) /* IconRework sheet 1 */
 extern const u16 SkillDescTable[];
-extern u8 DrawSkillIcon;
-
-static void CallDrawSkillIcon(u16 * dest, int iconId, int extra)
-{
-    ((void (*)(u16 *, int, int))(((int)&DrawSkillIcon) | 1))(dest, iconId, extra);
-}
+/* StartHelpBox / CloseHelpBox / DrawIcon declared above */
 
 static u8 * GetUnitLearnedSkillRam(struct Unit * unit)
 {
@@ -3551,6 +3582,24 @@ static const char * GetLearnedSkillName(int skillId)
         }
     }
     return desc;
+}
+
+static int GetSkillDescTextId(int skillId)
+{
+    if (skillId == 0 || skillId == 0xFF)
+    {
+        return 0;
+    }
+    return SkillDescTable[skillId];
+}
+
+static void TryShowSkillHelp(int skillId, int x, int y)
+{
+    int msg = GetSkillDescTextId(skillId);
+    if (msg)
+    {
+        StartHelpBox(x, y, msg);
+    }
 }
 
 void RedrawLearnedSkillsMenu(DebuggerProc * proc);
@@ -3650,8 +3699,10 @@ void RedrawLearnedSkillsMenu(DebuggerProc * proc)
         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
         if (proc->tmp[i] && proc->tmp[i] != 0xFF)
         {
-            CallDrawSkillIcon(
-                TILEMAP_LOCATED(gBG0TilemapBuffer, iconX, Y_HAND + (i * 2)), proc->tmp[i], 0x4000);
+            DrawIcon(
+                TILEMAP_LOCATED(gBG0TilemapBuffer, iconX, Y_HAND + (i * 2)),
+                SKILL_ICON(proc->tmp[i]),
+                0x4000);
         }
     }
     BG_EnableSyncByMask(BG0_SYNC_BIT);
@@ -3664,6 +3715,7 @@ void EditSkillsIdle(DebuggerProc * proc)
 
     if (keys & B_BUTTON)
     {
+        CloseHelpBox();
         SaveLearnedSkills(proc);
         ClearTilesetRow(proc);
         Proc_Goto(proc, RestartLabel);
@@ -3671,10 +3723,18 @@ void EditSkillsIdle(DebuggerProc * proc)
     }
     if ((keys & START_BUTTON) || (keys & A_BUTTON))
     {
+        CloseHelpBox();
         SaveLearnedSkills(proc);
         ClearTilesetRow(proc);
         Proc_Goto(proc, RestartLabel);
         ConfirmPressSFX();
+    }
+    if (keys & SELECT_BUTTON)
+    {
+        TryShowSkillHelp(
+            proc->tmp[proc->id],
+            CursorLocationTable[0].x - ((LearnedSkillNameWidth + 2) * 8),
+            (Y_HAND + (proc->id * 2)) * 8);
     }
     if (proc->editing)
     {

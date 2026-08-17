@@ -5,7 +5,7 @@
 .global MSS_page1
 .type MSS_page1, %function
 
-.set NoAltIconDraw, 0 @ DrawSkillIcon; IconRework is not installed
+.set NoAltIconDraw, 1 @ DrawIcon + IconRework sheet 1 (SkillIcons)
 
 MSS_page1:
 
@@ -251,6 +251,5 @@ pop		{r1}
 bx		r1
 
 .include "GetTalkee.s"
-.include "../asm/old/alternateicondraw.s"
 
 .ltorg

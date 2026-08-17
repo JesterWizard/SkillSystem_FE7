@@ -37,9 +37,14 @@ ICONS = (
 HACK_ROM = ROOT / "FE7_Hack.gba"
 
 FE7_GET_ITEM_NAME_HOOK = 0x171C0
+FE7_GET_ITEM_NAME_ID_HOOK = 0x1722C
 FE7_GET_ITEM_DESC_HOOK = 0x17244
 FE7_GET_ITEM_USES_HOOK = 0x17294
+FE7_STATSCREEN_USES_HOOK = 0x166B0
+FE7_MENU_USES_HOOKS = (0x164C8, 0x16570)
 FE7_GET_ITEM_ICON_HOOK = 0x17400
+FE7_INLINE_NAME_HOOKS = (0x16690, 0x1649C, 0x16538, 0x165F4)
+FE7_MENU_ICON_HOOKS = (0x164E8, 0x165B4, 0x16640, 0x16708)
 JUMP_TO_HACK = bytes((0x00, 0x4B, 0x18, 0x47))
 
 FE8_GET_ITEM_NAME_HOOK = 0x174F8
@@ -64,13 +69,21 @@ class DurabilityBasedItemsTests(unittest.TestCase):
             r'DurabilityBasedItems/DurabilityBasedItems\.event',
         )
 
-    def test_hooks_fe7_getters_not_fe8_inline_draw(self):
+    def test_hooks_fe7_getters_and_inline_icons(self):
         event = _text(EVENT)
         orgs = _orgs(event)
         self.assertIn(FE7_GET_ITEM_NAME_HOOK, orgs)
+        self.assertIn(FE7_GET_ITEM_NAME_ID_HOOK, orgs)
         self.assertIn(FE7_GET_ITEM_DESC_HOOK, orgs)
         self.assertIn(FE7_GET_ITEM_USES_HOOK, orgs)
+        self.assertIn(FE7_STATSCREEN_USES_HOOK, orgs)
+        for off in FE7_MENU_USES_HOOKS:
+            self.assertIn(off, orgs, f"missing menu uses skip ORG ${off:X}")
         self.assertIn(FE7_GET_ITEM_ICON_HOOK, orgs)
+        for off in FE7_INLINE_NAME_HOOKS:
+            self.assertIn(off, orgs, f"missing inline name hook ORG ${off:X}")
+        for off in FE7_MENU_ICON_HOOKS:
+            self.assertIn(off, orgs, f"missing inline icon hook ORG ${off:X}")
         self.assertNotIn(FE8_GET_ITEM_NAME_HOOK, orgs)
         self.assertNotIn(FE8_GET_ITEM_USES_HOOK, orgs)
         self.assertNotRegex(event, r"DurabilityChest/")
@@ -85,6 +98,8 @@ class DurabilityBasedItemsTests(unittest.TestCase):
         self.assertNotIn("0x800A241", src)
         self.assertIn("GetItemNameString", src)
         self.assertIn("GetItemDescStringIndex", src)
+        self.assertIn("NewItemNameGetter1", src)
+        self.assertIn("NewItemNameGetter4", src)
 
     def test_uses_getter_returns_with_bx_lr(self):
         src = _text(USES)
@@ -94,6 +109,8 @@ class DurabilityBasedItemsTests(unittest.TestCase):
     def test_icon_getter_uses_durability_list(self):
         src = _text(ICONS)
         self.assertIn("CheckIfSkillBookIcon_Generic", src)
+        self.assertIn("CheckIfSkillBookIcon_MenuA", src)
+        self.assertIn("ResolveDurabilityIcon", src)
         self.assertIn("DurabilityBasedItemIconList", src)
 
     def test_hack_rom_jump_hooks(self):
@@ -102,9 +119,14 @@ class DurabilityBasedItemsTests(unittest.TestCase):
         rom = HACK_ROM.read_bytes()
         for off in (
             FE7_GET_ITEM_NAME_HOOK,
+            FE7_GET_ITEM_NAME_ID_HOOK,
             FE7_GET_ITEM_DESC_HOOK,
             FE7_GET_ITEM_USES_HOOK,
+            FE7_STATSCREEN_USES_HOOK,
+            *FE7_MENU_USES_HOOKS,
             FE7_GET_ITEM_ICON_HOOK,
+            *FE7_INLINE_NAME_HOOKS,
+            *FE7_MENU_ICON_HOOKS,
         ):
             self.assertEqual(
                 rom[off : off + 4],

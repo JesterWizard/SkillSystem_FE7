@@ -2,7 +2,7 @@
 .include "_Definitions.h.s"
 
 .set prRegisterTileFill,    (0x080030FC+1) //FE8 -> (0x08002054+1)
-.set prRegisterTileGfx,     (0x0801320C+1) //FE8 -> (0x08002014+1)
+.set prRegisterTileGfx,     (0x08003078+1) //FE8 -> (0x08002014+1) RegisterDataMove / TileTransferInfoAdd
 
 .set lpaIconGfxGetterArray, (EALiterals+0x00)
 

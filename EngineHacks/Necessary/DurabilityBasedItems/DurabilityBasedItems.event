@@ -1,6 +1,6 @@
 // Shop/chest durability helpers stay FE8-addressed; skip until a later ticket.
-// FE7 item menus call GetItemName / GetItemUses / GetItemIconId, so getter
-// hooks cover inventory, stat screen, prep, and shop display.
+// FE7 item menus call GetItemName / GetItemUses / GetItemIconId for some paths,
+// but inventory icon draws are inlined (ItemTable+0x1D) — those need MenuA–D hooks.
 
 #include "ScrollNames.lyn.event"
 #include "ScrollDurability.lyn.event"
@@ -11,11 +11,42 @@ PUSH
 	ORG $171C0
 		jumpToHack(GetItemNameString)
 
+	ORG $1722C
+		jumpToHack(GetItemNameIdStringIndex) // help / ItemDescGetter R-text mid
+
 	ORG $17244
 		jumpToHack(GetItemDescStringIndex)
 
 	ORG $17294
 		jumpToHack(ScrollDurabilityGetter)
+
+	ORG $166B0
+		jumpToHack(ScrollDurabilityGetter_StatScreen) // skip '/' + uses on status items
+	ORG $164C8
+		jumpToHack(ScrollDurabilityGetter_MenuA) // skip uses on unit item menu
+	ORG $16570
+		jumpToHack(ScrollDurabilityGetter_MenuB) // skip uses/'/' on long item lines
+
+	// Inline name loads (menus / status) bypass GetItemName — patch them.
+	ORG $16690
+		jumpToHack(NewItemNameGetter1) // DrawItemOnStatscreen
+	ORG $1649C
+		jumpToHack(NewItemNameGetter2) // DrawItemMenuLine
+	ORG $16538
+		jumpToHack(NewItemNameGetter3) // DrawItemMenuLineLong
+	ORG $165F4
+		jumpToHack(NewItemNameGetter4) // DrawItemMenuLineNoColor
+
+	// Inline inventory icon draws (DrawItemMenuLine-style).
+	// jumpToHack needs 4-byte alignment; hook at cmp after item is loaded.
+	ORG $164E8
+		jumpToHack(CheckIfSkillBookIcon_MenuA)
+	ORG $165B4
+		jumpToHack(CheckIfSkillBookIcon_MenuB)
+	ORG $16640
+		jumpToHack(CheckIfSkillBookIcon_MenuC)
+	ORG $16708
+		jumpToHack(CheckIfSkillBookIcon_MenuD)
 
 	ORG $17400
 		jumpToHack(CheckIfSkillBookIcon_Generic)

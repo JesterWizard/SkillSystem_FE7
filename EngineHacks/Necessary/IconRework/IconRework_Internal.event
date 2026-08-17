@@ -21,9 +21,10 @@
 {
 PUSH
 	//FE8 -> ORG 0x003650
-	//Crashes the game when icons show up?
-	// ORG 0x004DBC
-	// 	replaceWithHack(prGetIconTileIndex)
+	// Was left disabled: GetIconTileIndex.s / LoadIconObjGfx.s used
+	// 0x0801320C instead of FE7 RegisterDataMove 0x08003078.
+	ORG 0x004DBC
+		replaceWithHack(prGetIconTileIndex)
 	
 	//FE8 -> ORG 0x003584
 	ORG 0x004CF4

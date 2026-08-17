@@ -166,7 +166,7 @@ class GetStringTableTests(unittest.TestCase):
         )
 
     def test_page1_affinity_does_not_use_icon_sheet_2(self):
-        """IconRework is off. Sheet 2 ORed onto AffinityGetter makes DrawIcon index 0x02xx and garbles VRAM."""
+        """MSS keeps FE7 AffinityGetter item-sheet ids; IconRework sheet 2 is for other affinity hooks."""
         text = read_event_text(PAGE1_LYN)
         self.assertIn("$8026B24", text)
         self.assertNotIn(

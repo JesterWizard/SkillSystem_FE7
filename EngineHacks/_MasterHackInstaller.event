@@ -18,6 +18,9 @@
 
   #include "Necessary/DurabilityBasedItems/DurabilityBasedItems.event"
 
+  ALIGN 4
+  #include "Necessary/IconRework/IconRework.event" // sheet icons (skills / durability scrolls)
+
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 

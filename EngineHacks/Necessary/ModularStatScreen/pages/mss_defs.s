@@ -724,8 +724,8 @@
   ldr     r4, =(tile_origin+(0x20*2*\tile_y)+(2*\tile_x))
   mov     r0, r8
   blh     AffinityGetter
-  @ FE7 AffinityGetter already returns item-icon index (affinity+0x79).
-  @ IconRework sheet 2 is not installed; ORing 0x0200 makes DrawIcon garbage.
+  @ FE7 AffinityGetter already returns item-icon index (affinity+0x79, sheet 0).
+  @ IconRework sheet 2 AffinityIcons is used by the rework's other affinity hooks.
   mov     r1, r0
   mov     r2, #0xA0       
   lsl     r2, r2, #0x7      
