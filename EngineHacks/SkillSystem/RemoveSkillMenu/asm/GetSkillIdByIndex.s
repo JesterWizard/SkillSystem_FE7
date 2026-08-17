@@ -3,8 +3,8 @@
 
 	.include "Definitions.inc"
 
-	pExtraItemOrSkill = 0x0202BCDE
-	pBWLTable         = 0x0203E884
+	pExtraItemOrSkill = 0x0202BBE6 @ FE7; FE8 0x0202BCDE
+	pBWLTable         = 0x0203E790 @ FE7 BWL_GetEntry table; FE8 0x0203E884
 
 	lpCharSkillTable  = EALiterals+0x00
 	lpClassSkillTable = EALiterals+0x04

@@ -42,13 +42,16 @@ class CritUpSkillTests(unittest.TestCase):
         self.assertIn(b"\x60\x52", data)
         self.assertNotIn(b"\x21\x70", data, "old strb r1, [r4] must not remain")
 
-    def test_display_and_tester_use_level_up_list_not_bwl(self):
+    def test_display_and_tester_use_bwl_for_unique_units(self):
         skills = GET_SKILLS.read_text(encoding="utf-8")
         tester = SKILL_TESTER_C.read_text(encoding="utf-8")
+        self.assertIn("BWLTable", skills)
+        self.assertIn("0x0203E790", skills)
         self.assertIn("GetInitialSkillList", skills)
-        self.assertNotIn("BWLTable", skills)
+        self.assertIn("unitBWL->skills", tester)
         self.assertIn("GetInitialSkillList_Pointer", tester)
-        self.assertNotIn("unitBWL->skills", tester)
+        self.assertNotIn("gLearnedSkillRam", skills)
+        self.assertNotIn("0x0203F540", tester)
 
     def test_skill_getters_do_not_wipe_ewram_on_read(self):
         skills = GET_SKILLS.read_text(encoding="utf-8")

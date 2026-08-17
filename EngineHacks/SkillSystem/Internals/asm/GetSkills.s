@@ -12,11 +12,9 @@
 	lPersonalSkillTable  = EALiterals+0x00
 	lClassSkillTable     = EALiterals+0x04
 	lGetInitialSkillList = EALiterals+0x08
-	lLearnedSkillRam     = EALiterals+0x0C
 
+	.set BWLTable, 0x0203E790 @ FE7 BWL_GetEntry table; FE8 0x0203E884
 	LEARNED_PID_MAX = 0x45
-	LEARNED_SLOT_COUNT = 6
-	LEARNED_SLOTS_SIZE = 0x1A4 @ 0x46 * 6
 
 GetSkills:
 	@ Arguments: r0 = Unit
@@ -53,45 +51,6 @@ clear_buf:
 	cmp r1, #8
 	blt clear_buf
 
-	@ Debugger override only. Never mass-clear this RAM: it sits
-	@ against DebuffTableRam+DebuffTableSize (0x0203F540).
-	ldr r1, lLearnedSkillRam
-	ldr r2, [r1]
-	ldr r3, LearnedSkillMagic
-	cmp r2, r3
-	bne no_override
-	ldr r0, [r4]
-	cmp r0, #0
-	beq no_override
-	ldrb r6, [r0, #4]
-	cmp r6, #0
-	beq no_override
-	cmp r6, #LEARNED_PID_MAX
-	bhi no_override
-	ldr r2, LearnedOverrideOff
-	add r1, r2
-	ldrb r2, [r1, r6]
-	cmp r2, #0
-	beq no_override
-
-	ldr r1, lLearnedSkillRam
-	add r1, #4
-	mov r2, #LEARNED_SLOT_COUNT
-	mul r2, r6
-	add r1, r2
-	mov r2, #0
-copy_override:
-	ldrb r3, [r1, r2]
-	strb r3, [r5, r2]
-	add r2, #1
-	cmp r2, #LEARNED_SLOT_COUNT
-	blt copy_override
-	mov r3, #0
-	strb r3, [r5, r2]
-	add r1, r5, r2
-	b end
-
-no_override:
 	@ personal skill first, if any
 
 	ldr  r6, [r4]
@@ -130,8 +89,33 @@ no_personal:
 	add  r5, #1
 
 no_class:
-	@ Learned skills from level-up lists. Do not use FE7 BWL+1..4.
+	@ Learned skills: unique units keep 4 slots in BWL (saved).
+	@ Generics have no BWL row; use the level-up list.
 
+	cmp r6, #0
+	beq end_learned
+	cmp r6, #LEARNED_PID_MAX
+	bhi generic_learned
+
+	ldr r0, =BWLTable
+	lsl r1, r6, #4
+	add r0, r1
+	add r0, #1
+	mov r2, #0
+copy_bwl:
+	ldrb r1, [r0, r2]
+	cmp r1, #0
+	beq end_learned
+	cmp r1, #0xFF
+	beq end_learned
+	strb r1, [r5]
+	add r5, #1
+	add r2, #1
+	cmp r2, #4
+	blt copy_bwl
+	b end_learned
+
+generic_learned:
 	ldr r3, lGetInitialSkillList
 
 	mov r0, r4 @ arg r0 = unit
@@ -150,6 +134,9 @@ lop_move_to_end:
 	add r1, #1
 	b lop_move_to_end
 
+end_learned:
+	mov r1, r5
+
 end:
 	ldr r0, =SkillsBuffer
 	sub r1, r0
@@ -163,12 +150,6 @@ end:
 BXR3:
 	bx r3
 
-	.align
-LearnedSkillMagic:
-	.word 0x534B4C53
-LearnedOverrideOff:
-	.word 4 + LEARNED_SLOTS_SIZE
-
 	.pool
 	.align
 
@@ -176,4 +157,3 @@ EALiterals:
 	@ POIN lPersonalSkillTable
 	@ POIN lClassSkillTable
 	@ POIN (GetInitialSkillList|1)
-	@ POIN gLearnedSkillRam

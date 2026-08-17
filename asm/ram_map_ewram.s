@@ -21,9 +21,6 @@
 
 .set DebuffTableSize, 0x440
 
-@ 4-byte magic + (0x46 PIDs * 6 slots) + 0x46 override flags
-.set LearnedSkillRamSize, (4 + (0x46 * 6) + 0x46)
-
 SET_DATA FreeEwramSpaceTop,    0x0203F7AC
 SET_DATA FreeEwramSpaceBottom, 0x02040000
 SET_DATA UsedFreeEwramSpaceTop, FreeEwramSpaceBottom
@@ -38,7 +35,6 @@ SET_DATA UsedFreeEwramSpaceTop, FreeEwramSpaceBottom
 SET_ARRAY gBattleHitArray, 0x0203F000, BattleHitArraySize
 SET_ARRAY gAnimRoundData,  0x0203F07C, AnimRoundDataSize
 SET_ARRAY DebuffTableRam,  0x0203F100, DebuffTableSize
-SET_ARRAY gLearnedSkillRam, 0x0203F540, LearnedSkillRamSize
 @ vanilla 0x0203E062 HP-per-round; 11+ rounds smash AIS ptrs if left in place
 SET_ARRAY gHpRoundData,    0x0203F730, HpRoundDataSize
 

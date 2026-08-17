@@ -3465,10 +3465,9 @@ void EditSupportsIdle(DebuggerProc * proc)
     }
 }
 
-#define LearnedSkillCount 6
+#define LearnedSkillCount 4
 #define LearnedSkillNameWidth 12
 extern const u16 SkillDescTable[];
-extern u8 * (*Skill_Getter_Pointer)(struct Unit * unit);
 extern u8 DrawSkillIcon;
 
 static void CallDrawSkillIcon(u16 * dest, int iconId, int extra)
@@ -3476,25 +3475,7 @@ static void CallDrawSkillIcon(u16 * dest, int iconId, int extra)
     ((void (*)(u16 *, int, int))(((int)&DrawSkillIcon) | 1))(dest, iconId, extra);
 }
 
-#define LEARNED_SKILL_RAM ((u8 *)0x0203F540)
-#define LEARNED_SKILL_MAGIC 0x534B4C53
-#define LEARNED_SLOTS_SIZE (0x46 * LearnedSkillCount)
-
-static void EnsureLearnedSkillRam(void)
-{
-    u8 * ram = LEARNED_SKILL_RAM;
-    u32 * magic = (u32 *)ram;
-    int i;
-    if (*magic == LEARNED_SKILL_MAGIC)
-    {
-        return;
-    }
-    for (i = 0; i < 4 + LEARNED_SLOTS_SIZE + 0x46; ++i)
-    {
-        ram[i] = 0;
-    }
-    *magic = LEARNED_SKILL_MAGIC;
-}
+#define BWL_TABLE ((u8 *)0x0203E790)
 
 static u8 * GetUnitLearnedSkillRam(struct Unit * unit)
 {
@@ -3508,24 +3489,7 @@ static u8 * GetUnitLearnedSkillRam(struct Unit * unit)
     {
         return NULL;
     }
-    EnsureLearnedSkillRam();
-    return LEARNED_SKILL_RAM + 4 + pid * LearnedSkillCount;
-}
-
-static void SetLearnedSkillOverride(struct Unit * unit, int on)
-{
-    int pid;
-    if (!unit || !unit->pCharacterData)
-    {
-        return;
-    }
-    pid = unit->pCharacterData->number;
-    if (pid < 1 || pid > 0x45)
-    {
-        return;
-    }
-    EnsureLearnedSkillRam();
-    LEARNED_SKILL_RAM[4 + LEARNED_SLOTS_SIZE + pid] = on ? 1 : 0;
+    return BWL_TABLE + pid * 0x10 + 1;
 }
 
 static void InvalidateSkillBuffer(void)
@@ -3568,13 +3532,18 @@ void SaveLearnedSkills(DebuggerProc * proc)
     {
         skills[i] = proc->tmp[i];
     }
-    SetLearnedSkillOverride(proc->unit, TRUE);
     InvalidateSkillBuffer();
 }
 
 u8 CanEditLearnedSkillsMenu(const struct MenuItemDef * def, int number)
 {
+    int pid;
     if (!gActiveUnit || !gActiveUnit->pCharacterData)
+    {
+        return greyed;
+    }
+    pid = gActiveUnit->pCharacterData->number;
+    if (pid < 1 || pid > 0x45)
     {
         return greyed;
     }
@@ -3595,16 +3564,16 @@ void EditSkillsInit(DebuggerProc * proc)
     SomeMenuInit(proc);
     LoadIconPalettes(4);
     InvalidateSkillBuffer();
-    skills = Skill_Getter_Pointer(proc->unit);
+    skills = GetUnitLearnedSkillRam(proc->unit);
     for (int i = 0; i < LearnedSkillCount; ++i)
     {
         proc->tmp[i] = 0;
     }
     if (skills)
     {
-        for (int i = 0; i < LearnedSkillCount && skills[i] && skills[i] != 0xFF; ++i)
+        for (int i = 0; i < LearnedSkillCount; ++i)
         {
-            proc->tmp[i] = skills[i];
+            proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
         }
     }
 
@@ -3656,6 +3625,7 @@ void EditSkillsIdle(DebuggerProc * proc)
     u16 keys = gKeyStatusPtr->repeatedKeys;
     if (keys & B_BUTTON)
     {
+        SaveLearnedSkills(proc);
         ClearTilesetRow(proc);
         Proc_Goto(proc, RestartLabel);
         BackPressSFX();

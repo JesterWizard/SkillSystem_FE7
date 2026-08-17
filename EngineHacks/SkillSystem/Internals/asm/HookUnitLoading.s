@@ -11,8 +11,6 @@
 @	lGetSkills        = EALiterals+0x04
 @	lChargeupTable    = EALiterals+0x08
 
-	@ Do not wipe BWL+1..4: on FE7 those bytes are favval/actAmt/statViewAmt.
-
 	.macro blh to, reg=r3
 		ldr \reg, =\to
 		mov lr, \reg
@@ -24,7 +22,12 @@ HookUnitLoading:
 	push {r4-r7, lr}
 	mov r5, r0
 
-	@ Table-defined learned skills are applied via GetInitialSkillList, not BWL.
+	@ Do not wipe BWL+1..4 here: that is the saved learned-skill blob.
+	@ Favval/act/statView writers are stubbed in SkillSystem.event instead.
+	mov r0, r5
+	ldr r3, lAutoloadSkills
+	bl BXR3
+
 	@ avoid skill forgetting issues after loading units that learn more than 4 skills
 	mov  r0, #0
 	ldr  r1, =0x202BBE6 @ fe7 -> FE8 0x0202BCDE
@@ -39,36 +42,6 @@ HookUnitLoading:
 
 BXR3:
 	bx r3
-
-	@ AddCharge:
-	@ push {r4}
-	@ mov r0, r5 @char data
-	@ ldr r2, lGetSkills
-	@ mov lr, r2
-	@ .short 0xf800
-	@ mov r4, r0 @ skill buffer
-	@ Main_loop: @ loop through skills checking if they're chargeable
-	@ ldrb r1, [r4]
-	@ cmp r1, #0
-	@ beq End_main
-	@   ldr r0, lChargeupTable
-	@   Loop:
-	@   ldrb r2,[r0]
-	@   add r0,#2
-	@   cmp r2,#0
-	@   beq Next
-	@   cmp r2,r1
-	@   bne Loop
-	@   sub r0,#0x1
-	@   ldrb r0,[r0]
-	@   add r0,#0x10
-	@   mov r2,#0x47
-	@   strb r0,[r5,r2]
-	@   Next:
-	@   add r4, #1
-	@   b Main_loop
-	@ End_main:
-	@ pop {r4}
 
 	.pool
 	.align

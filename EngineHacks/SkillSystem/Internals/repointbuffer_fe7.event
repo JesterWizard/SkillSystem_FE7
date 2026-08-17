@@ -1,7 +1,7 @@
 // FE7: vanilla gBattleHitArray is 6 x 4-byte rounds at 0x0203A4F0.
 // Astra (5) + counter + follow-up Astra (5) does not fit. Keep 4-byte
-// width; move the array and gAnimRoundData into unused EWRAM before
-// gLearnedSkillRam. Addresses: asm/ram_map_ewram.s.
+// width; move the array and gAnimRoundData into unused EWRAM.
+// Addresses: asm/ram_map_ewram.s.
 
 #define NewBattleBufferLocation 0x0203F000
 #define maxAtks 31

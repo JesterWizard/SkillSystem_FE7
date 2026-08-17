@@ -18,9 +18,11 @@ WRONG_BASE = 0x0203E7A0
 
 SOURCES = (
     INTERNALS / "addSkill.s",
+    INTERNALS / "asm" / "GetSkills.s",
 )
 LYNS = (
     INTERNALS / "addSkill.lyn.event",
+    INTERNALS / "asm" / "GetSkills.lyn.event",
 )
 
 ASSIGN_RE = re.compile(
@@ -49,6 +51,31 @@ class Fe7BwlSkillStorageTests(unittest.TestCase):
             data = lyn_to_bytes(path)
             self.assertIn(want, data, path.name)
             self.assertNotIn(wrong, data, path.name)
+
+    def test_debugger_writes_bwl_not_ewram_buffer(self):
+        debugger = (
+            ROOT / "EngineHacks" / "ExternalHacks" / "VeslyDebugger" / "Data" / "FE6_FE7.c"
+        ).read_text(encoding="utf-8")
+        ram_map = (ROOT / "Asm" / "ram_map_ewram.s").read_text(encoding="utf-8")
+        skill_sys = (INTERNALS / "SkillSystem.event").read_text(encoding="utf-8")
+        self.assertIn("0x0203E790", debugger)
+        self.assertIn("pid * 0x10 + 1", debugger)
+        self.assertNotIn("0x0203F540", debugger)
+        self.assertNotIn("gLearnedSkillRam", ram_map)
+        self.assertNotIn("LearnedSkillRamSize", ram_map)
+        self.assertIn("PidStatsAddActAmt", skill_sys)
+        self.assertIn("$9FFAC", skill_sys)
+        self.assertIn("PidStatsAddFavval", skill_sys)
+        self.assertNotIn("$A91D0", skill_sys)
+
+    def test_getters_stop_at_first_empty_bwl_slot(self):
+        skills = (INTERNALS / "asm" / "GetSkills.s").read_text(encoding="utf-8")
+        tester = (
+            INTERNALS / "NewSkillTester" / "_src" / "SkillTester.c"
+        ).read_text(encoding="utf-8")
+        self.assertIn("beq end_learned", skills)
+        self.assertNotIn("skip_bwl", skills)
+        self.assertIn("break;", tester)
 
 
 if __name__ == "__main__":

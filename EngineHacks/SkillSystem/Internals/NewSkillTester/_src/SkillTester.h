@@ -10,7 +10,7 @@ extern s8 AreAllegiancesEqual(int factionA, int factionB);
 extern s8 AreAllegiancesAllied(int factionA, int factionB);
 extern int AreUnitsAllied(int, int) __attribute__((long_call));
 extern int IsSameAllegience(int, int) __attribute__((long_call)); // forgive the typo
-extern BWLData* BWL_GetEntry(int charID);
+extern BWLData* BWL_GetEntry(int charID) __attribute__((long_call));
 //Using a function pointer GetInitialSkillList doesn't have the thumb bit set
 extern u8* (*GetInitialSkillList_Pointer) (Unit* unit, u8* skillBuffer);
 

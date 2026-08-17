@@ -271,7 +271,6 @@ SET_FUNC UnpackUiBarPalette, 0x80412DD
 
 .endif     
 .if FE7 == true 
-SET_DATA gLearnedSkillRam, 0x0203F540
 SET_FUNC UnpackUiBarPalette, 0x8049AF5
 SET_FUNC Text_GetCursor, 0x8005571
 SET_FUNC Text_SetCursor, 0x8005575
@@ -315,7 +314,7 @@ SET_FUNC ResetUnitSprites, 0x8024CF9
 SET_FUNC StartUiSMS, 0x8024D61 
 SET_FUNC SetupMapSpritesPalettes, 0x8024C99 
 SET_FUNC PidStatsAddActAmt, 0x809FF6D
-SET_FUNC PidStatsAddStatViewAmt, 0x80A91D1 
+SET_FUNC PidStatsAddStatViewAmt, 0x809FFAD 
 SET_FUNC PidStatsAddDeployAmt, 0x809FFED
 SET_FUNC PidStatsAddSquaresMoved, 0x80A003D
 SET_FUNC PidStatsAddExpGained, 0x80A009D
