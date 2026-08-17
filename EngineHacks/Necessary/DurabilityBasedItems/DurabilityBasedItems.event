@@ -1,60 +1,24 @@
-#include "DurabilityChest/Installer.event"
-#include "DurabilityShop/ShopDurability.event"
-#include "SetUnitItemDurability/Installer.event"
+// Shop/chest durability helpers stay FE8-addressed; skip until a later ticket.
+// FE7 item menus call GetItemName / GetItemUses / GetItemIconId, so getter
+// hooks cover inventory, stat screen, prep, and shop display.
 
 #include "ScrollNames.lyn.event"
 #include "ScrollDurability.lyn.event"
 #include "SkillBookIconDraw.lyn.event"
 
-PUSH 
+PUSH
 
-	ORG $174F8
+	ORG $171C0
 		jumpToHack(GetItemNameString)
-		
-	ORG $17518
+
+	ORG $17244
 		jumpToHack(GetItemDescStringIndex)
-		
-	ORG $16A54
-		jumpToHack(NewItemNameGetter1)
-		
-	ORG $16874
-		jumpToHack(NewItemNameGetter2)
-	
-	ORG $17594
+
+	ORG $17294
 		jumpToHack(ScrollDurabilityGetter)
-		
-	ORG $16A8C
-		jumpToHack(ScrollDurabilityGetter_StatScreen)
-	
-	ORG $16894
-		jumpToHack(ScrollDurabilityGetter_UnitMenu)
 
-	ORG $16AD4
-		jumpToHack(CheckIfSkillBookIcon)
-		
-	ORG $9A034
-		jumpToHack(CheckIfSkillBookIcon_Prep1)
-
-	ORG $9B7F4
-		jumpToHack(CheckIfSkillBookIcon_Prep2)
-
-	ORG $168C8
-		jumpToHack(CheckIfSkillBookIcon_Sell)
-		
-	ORG $9CD54
-		jumpToHack(CheckIfSkillBookIcon_Use)
-
-	ORG $17700
+	ORG $17400
 		jumpToHack(CheckIfSkillBookIcon_Generic)
-
-	ORG $169BC
-		jumpToHack(NewItemNameGetter3)
-		
-	ORG $169F0
-		callHack_r0(ScrollDurabilityGetter_DropItem)
-		
-	ORG $16A14
-		jumpToHack(CheckIfSkillBookIcon_DropItem)
 
 POP
 
@@ -89,11 +53,4 @@ DurabilityBasedItemIconList: //used for icons
 DurabilityIcon(SkillScroll,5)
 DurabilityIconEnd
 
-/*
-checklist
-Y - Durability 
-Y - Name
-Y - Desc
-Y - Icon
-*/
-
+ALIGN 4

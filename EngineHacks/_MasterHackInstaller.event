@@ -16,6 +16,8 @@
   ALIGN 4
   #include "SkillSystem/SkillSystemInstaller.event"
 
+  #include "Necessary/DurabilityBasedItems/DurabilityBasedItems.event"
+
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 

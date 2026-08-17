@@ -1,22 +1,13 @@
 .thumb
 .align
 
-@GetItemNameString 80174F4
+@ FE7 GetItemName 0x080171BC; hook at 171C0
 .global GetItemNameString
 .type GetItemNameString, %function
 
-@GetItemDescStringIndex 8017518
+@ FE7 GetItemDescId 0x08017244; hook at function start
 .global GetItemDescStringIndex
 .type GetItemDescStringIndex, %function
-
-.global NewItemNameGetter1
-.type NewItemNameGetter1, %function
-
-.global NewItemNameGetter2
-.type NewItemNameGetter2, %function
-
-.global NewItemNameGetter3
-.type NewItemNameGetter3, %function
 
 
 .macro blh to, reg=r3
@@ -24,12 +15,12 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ ReturnPoint1,0x8017507
-.equ String_GetFromIndex,0x800A241
+.equ ReturnPoint1,0x80171CF
+.equ String_GetFromIndex,0x08012C61
 .equ gCurrentTextString,0x202A5B4
-.equ ReturnPoint2,0x801750B
+.equ ReturnPoint2,0x80171D3
 
-GetItemNameString: @hook at 174F8
+GetItemNameString: @hook at 171C0
 
 push {r4-r7}
 mov r4,r0
@@ -42,7 +33,7 @@ add r1,r1,r0
 lsl r1,r1,#2
 ldr r0,=ItemTable
 add r1,r0
-ldrh r0,[r1] 
+ldrh r0,[r1]
 
 @r0 = name ID string
 
@@ -111,176 +102,7 @@ bx r3
 .align
 
 
-.equ ReturnPoint3,0x8016A61
-.equ ReturnPoint5,0x8016A5D
-
-NewItemNameGetter1: @hook at 16A54
-
-lsl r1,r1,#2
-ldr r0,=ItemTable
-add r6,r1,r0
-ldrh r0,[r6]
-
-@r0 = name ID string
-
-ldr r3,=DurabilityBasedItemNameList
-
-Loop2Start:
-ldrh r1,[r3]
-cmp r1,#0
-beq VanillaFunc2
-cmp r0,r1
-beq Loop2Exit
-add r3,#8
-b Loop2Start
-
-
-Loop2Exit:
-
-ldr r1,[r3,#4]
-
-mov r0,r9
-lsr r0,r0,#8 @just durability
-lsl r0,r0,#1 @*2
-
-add r0,r1
-ldrh r0,[r0] @r0 = text ID for skill desc text for current item
-
-blh String_GetFromIndex
-
-ldrh r0,[r3,#2]
-cmp r0,#0
-beq SkipColonTermination2
-
-@string is now loaded in memory to gCurrentTextString, now we go through and look for a colon (0x3A) byte by byte
-
-ldr r0,=gCurrentTextString
-
-LoopStart2:
-ldrb r1,[r0]
-cmp r1,#0
-beq LoopExit2
-cmp r1,#0x3A @ ":"
-beq FoundColon2
-add r0,#1
-b LoopStart2
-
-FoundColon2:
-@address in r0
-mov r1,#0
-strb r1,[r0]
-
-SkipColonTermination2:
-LoopExit2:
-ldr r3,=ReturnPoint3
-bx r3
-
-VanillaFunc2:
-ldr r3,=ReturnPoint5
-bx r3
-
-.ltorg
-.align
-
-
-
-.equ ReturnPoint4,0x8016881
-.equ ReturnPoint6,0x801687D
-
-NewItemNameGetter2: @ hook at 16874
-lsl r1,r1,#2
-ldr r0,=ItemTable
-add r4,r1,r0
-ldrh r0,[r4]
-
-@r0 = name ID string
-
-ldr r3,=DurabilityBasedItemNameList
-
-Loop3Start:
-ldrh r1,[r3]
-cmp r1,#0
-beq VanillaFunc3
-cmp r0,r1
-beq Loop3Exit
-add r3,#8
-b Loop3Start
-
-Loop3Exit:
-
-ldr r1,[r3,#4]
-
-mov r0,r6
-lsr r0,r0,#8 @just durability
-lsl r0,r0,#1 @*2
-
-add r0,r1
-ldrh r0,[r0] @r0 = text ID for skill desc text for current item
-
-blh String_GetFromIndex
-
-ldrh r1,[r3,#2]
-cmp r1,#0
-beq SkipColonTermination3
-
-@string is now loaded in memory to gCurrentTextString, now we go through and look for a colon (0x3A) byte by byte
-
-ldr r0,=gCurrentTextString
-
-LoopStart3:
-ldrb r1,[r0]
-cmp r1,#0
-beq LoopExit3
-cmp r1,#0x3A @ ":"
-beq FoundColon3
-add r0,#1
-b LoopStart3
-
-FoundColon3:
-@address in r0
-mov r1,#0
-strb r1,[r0]
-
-@For this specific instance, we also need to empty the text buffer
-@Keep going until we find an existing 0 in the buffer
-
-LoopStart3B:
-add r0,#1
-ldrb r1,[r0]
-cmp r1,#0
-beq LoopExit3B
-mov r1,#0
-strb r1,[r0]
-b LoopStart3B
-
-LoopExit3B:
-
-SkipColonTermination3:
-LoopExit3:
-ldr r3,=ReturnPoint4
-bx r3
-
-VanillaFunc3:
-ldr r3,=ReturnPoint6
-bx r3
-
-.ltorg
-.align
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-GetItemDescStringIndex: @hook at 17518
+GetItemDescStringIndex: @hook at 17244
 push {r4}
 mov r4,r0
 
@@ -318,77 +140,3 @@ bx r14
 
 .ltorg
 .align
-
-
-
-
-.equ ReturnPointDelta,0x80169CB
-.equ ReturnPointBravo,0x80169CF
-
-NewItemNameGetter3: @r6 = item halfword
-mov r0,#0xFF
-and r0,r6
-mov r1,#36
-mul r0,r1
-ldr r1,=ItemTable
-add r5,r0,r1
-ldrh r0,[r5]
-
-ldr r3,=DurabilityBasedItemNameList
-
-LoopDeltaStart:
-ldrh r1,[r3]
-cmp r1,#0
-beq LoopDeltaUseID
-cmp r0,r1
-beq LoopDeltaExit
-add r3,#8
-b LoopDeltaStart
-
-LoopDeltaExit:
-
-ldr r1,[r3,#4]
-
-mov r0,r6
-lsr r0,r0,#8 @just durability
-lsl r0,r0,#1 @*2
-
-add r0,r1
-ldrh r0,[r0] @r0 = text ID for skill desc text for current item
-
-blh String_GetFromIndex
-
-ldrh r1,[r3,#2] @boolean
-cmp r1,#0
-beq SkipDoingColonTerminatonDelta
-
-@string is now loaded in memory to gCurrentTextString, now we go through and look for a colon (0x3A) byte by byte
-
-ldr r0,=gCurrentTextString
-
-LoopStartDelta:
-ldrb r1,[r0]
-cmp r1,#0
-beq SkipDoingColonTerminatonDelta
-cmp r1,#0x3A @ ":"
-beq FoundColonDelta
-add r0,#1
-b LoopStartDelta
-
-FoundColonDelta:
-@address in r0
-mov r1,#0
-strb r1,[r0]
-
-SkipDoingColonTerminatonDelta:
-ldr r0,=gCurrentTextString
-ldr r3,=ReturnPointBravo
-bx r3
-
-LoopDeltaUseID:
-ldr r3,=ReturnPointDelta
-bx r3
-
-.ltorg
-.align
-

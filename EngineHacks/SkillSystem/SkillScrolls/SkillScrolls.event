@@ -10,18 +10,18 @@ SkillScrollIDLink:
 BYTE SkillScroll
 ALIGN 4
 
-// FE7 item jump tables index (itemId - 0x4A) for itemId in [0x4A, 0x9A].
-// Expand range through SkillScroll (0xBC => index 0x72) and install extended tables.
+// FE7 item jump tables: index = itemId - 0x4A, vanilla max item 0x9A (index 0x50).
+// Expand through SkillScroll (0x9F => index 0x55) and repoint the three tables.
 
 PUSH
 ORG $16B76
-SHORT 0x2872 // cmp r0, #0x72
+SHORT 0x2855 // cmp r0, #0x55
 
 ORG $26CFC
-SHORT 0x2872
+SHORT 0x2855
 
 ORG $2D030
-SHORT 0x2872
+SHORT 0x2855
 
 ORG $16B88
 POIN SkillScrollUsabilityTable
@@ -35,47 +35,51 @@ POP
 
 ALIGN 4
 SkillScrollUsabilityTable:
-#incbin "fe7_item_usability_table.bin" // 0x51 vanilla entries
+#incbin "fe7_item_usability_table.bin" // 0x51 vanilla entries (0x00..0x50)
 WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x51..0x54
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x55..0x58
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x59..0x5C
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x5D..0x60
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x61..0x64
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x65..0x68
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x69..0x6C
-WORD 0x08016CD0 0x08016CD0 0x08016CD0 0x08016CD0 // 0x6D..0x70
-WORD 0x08016CD0                                 // 0x71
-POIN (MultiScrollUsability|1)                   // 0x72 SkillScroll
+POIN (MultiScrollUsability|1)                   // 0x55 SkillScroll
 
 ALIGN 4
 SkillScrollTargetingTable:
 #incbin "fe7_item_targeting_table.bin"
 WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-WORD 0x08026E54
 POIN (MultiScrollTargeting|1)
 
 ALIGN 4
 SkillScrollEffectTable:
 #incbin "fe7_item_effect_table.bin"
 WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190 0x0802D190 0x0802D190 0x0802D190
-WORD 0x0802D190
 POIN (MultiScrollEffect|1)
 
-// Item 0xBC data (ItemTable @ 0xBE222C)
+// FE7 prep usability: CanUnitUseItemPrepScreen @ 0x2803C
+// index = itemId - 0x5A, vanilla max item 0x96 (index 0x3C).
+// Expand through SkillScroll (0x9F => index 0x45) and repoint the table.
+// Jump entries are entered with r4=item, r5=unit, stack={r4,r5,lr}
+// (same trampoline MultiScrollPrepUsability expects).
+
+PUSH
+ORG $2805A
+SHORT 0x2845 // cmp r0, #0x45
+
+ORG $2806C
+POIN SkillScrollPrepUsabilityTable
+POP
+
+ALIGN 4
+SkillScrollPrepUsabilityTable:
+#incbin "fe7_prep_usability_table.bin" // 0x3D vanilla entries (0x00..0x3C)
+WORD 0x0802818C 0x0802818C 0x0802818C 0x0802818C // 0x3D..0x40
+WORD 0x0802818C 0x0802818C 0x0802818C 0x0802818C // 0x41..0x44
+POIN (MultiScrollPrepUsability|1)                 // 0x45 SkillScroll
+
+// Prep effect: ApplyItemStatBoost (0x2CD28) is the prep booster apply+message
+// entry used by PrepItemUseBooster. Early-out to MultiScrollPrepEffect.
+PUSH
+ORG $2CD28
+jumpToHack(PrepScrollEffectDispatch)
+POP
+
+// Item 0x9F data (ItemTable @ 0xBE222C)
 PUSH
 ORG 0xBE222C + (0x24 * SkillScroll)
 SHORT 0xFFFF

@@ -13,8 +13,10 @@
 
 .equ GetUnit,                0x08018D0C
 .equ UnitRemoveInvalidItems, 0x08017688
+.equ GetItemIndex,           0x080171B4
 .equ gActionData,            0x0203A85C
 .equ DoItemAction_CommonEnd, 0x0802D235
+.equ ApplyItemStatBoost_Resume, 0x0802CD41
 .equ UNIT_SUPPORTS,          0x32
 .equ LEARNED_SKILL_COUNT_PLAYER, 7
 .equ LEARNED_SKILL_COUNT_OTHER,  6
@@ -33,6 +35,9 @@
 
 .global MultiScrollTargeting
 .type MultiScrollTargeting, %function
+
+.global PrepScrollEffectDispatch
+.type PrepScrollEffectDispatch, %function
 
 
 @-----------------------------------------------------------------------------
@@ -73,7 +78,8 @@ UsabilityReturn:
 
 
 @-----------------------------------------------------------------------------
-@ Prep usability — FE8 prep trampoline: r4/r5 swapped, stack={r4,r5,lr}
+@ Prep usability — FE7 CanUnitUseItemPrepScreen trampoline:
+@   r4=item, r5=unit, stack={r4,r5,lr}; handler pops and returns.
 @-----------------------------------------------------------------------------
 MultiScrollPrepUsability:
     mov r0, r5
@@ -173,6 +179,39 @@ MultiScrollPrepEffect:
     pop {r4-r7}
     pop {r1}
     bx r1
+
+.ltorg
+.align
+
+
+@-----------------------------------------------------------------------------
+@ Prep apply entry — replaces ApplyItemStatBoost start (0x2CD28).
+@ Vanilla: r0=unit, r1=slot. Sets r4/r6/r7 then Metis/stat-boost path.
+@-----------------------------------------------------------------------------
+PrepScrollEffectDispatch:
+    push {r4-r7, lr}
+    mov r4, r0
+    mov r7, r1
+
+    lsl r0, r7, #1
+    mov r1, r4
+    add r1, #0x1E
+    add r1, r0
+    ldrh r6, [r1]
+
+    mov r0, r6
+    blh GetItemIndex
+    ldr r1, =SkillScrollIDLink
+    ldrb r1, [r1]
+    cmp r0, r1
+    beq PrepScrollEffectDispatch_Scroll
+
+    mov r5, #0
+    ldr r1, =ApplyItemStatBoost_Resume
+    bx r1
+
+PrepScrollEffectDispatch_Scroll:
+    b MultiScrollPrepEffect
 
 .ltorg
 .align
