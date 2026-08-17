@@ -1,26 +1,29 @@
 .thumb
 .align
 
+@ FE7 Multi-Skill Scrolls
+@ Learned skills live in unit->supports[] (see Internals/addSkill.s):
+@   players: 7 slots, others: 6 (keep leader at [6]).
+
 .macro blh to, reg=r3
     ldr \reg, =\to
     mov lr, \reg
     .short 0xF800
 .endm
-.equ ActiveChar,0x3004690
-.equ RemoveUnitBlankItems,0x8017688
-.equ BG2Buffer, 0x02023C60
-.equ FillBgMap, 0x08001221
-.equ EnableBgSyncByIndex, 0x08001FBD
-.equ UnitDecreaseItemUse, 0x08018995
-.equ BWL_GetEntry, 0x80A4CFD
 
-
-
-.global MultiScrollPrepUsability
-.type MultiScrollPrepUsability, %function
+.equ GetUnit,                0x08018D0C
+.equ UnitRemoveInvalidItems, 0x08017688
+.equ gActionData,            0x0203A85C
+.equ DoItemAction_CommonEnd, 0x0802D235
+.equ UNIT_SUPPORTS,          0x32
+.equ LEARNED_SKILL_COUNT_PLAYER, 7
+.equ LEARNED_SKILL_COUNT_OTHER,  6
 
 .global MultiScrollUsability
 .type MultiScrollUsability, %function
+
+.global MultiScrollPrepUsability
+.type MultiScrollPrepUsability, %function
 
 .global MultiScrollEffect
 .type MultiScrollEffect, %function
@@ -28,181 +31,203 @@
 .global MultiScrollPrepEffect
 .type MultiScrollPrepEffect, %function
 
+.global MultiScrollTargeting
+.type MultiScrollTargeting, %function
 
+
+@-----------------------------------------------------------------------------
+@ Map usability — FE7 dispatcher: r3=unit, r2=item, stack={r4,lr}
+@-----------------------------------------------------------------------------
+MultiScrollUsability:
+    push {r4-r5}
+    mov r4, r3
+    mov r5, r2
+
+    lsr r1, r5, #8
+    mov r0, r4
+    blh SkillTester
+    cmp r0, #1
+    beq UsabilityFalse
+
+    mov r0, r4
+    bl CountLearnedSkills
+    mov r1, r4
+    bl GetLearnedSkillCap
+    cmp r0, r1
+    bge UsabilityFalse
+
+    mov r0, #1
+    b UsabilityReturn
+
+UsabilityFalse:
+    mov r0, #0
+
+UsabilityReturn:
+    pop {r4-r5}
+    pop {r4}
+    pop {r1}
+    bx r1
+
+.ltorg
+.align
+
+
+@-----------------------------------------------------------------------------
+@ Prep usability — FE8 prep trampoline: r4/r5 swapped, stack={r4,r5,lr}
+@-----------------------------------------------------------------------------
 MultiScrollPrepUsability:
-mov r0,r5
-mov r5,r4 @r5 = item
-mov r4,r0 @r4 = unit
+    mov r0, r5
+    mov r5, r4
+    mov r4, r0
 
-@do we have 4 learned skills?
-ldr r0,[r4]
-ldrb r0,[r0,#4]
-blh BWL_GetEntry
-add r0,#1
-mov r2,#0
+    lsr r1, r5, #8
+    mov r0, r4
+    blh SkillTester
+    cmp r0, #1
+    beq PrepUse_False
 
-PrepUse_LoopStart:
-cmp r2,#4
-beq PrepUse_LoopExit
-ldrb r1,[r0]
-cmp r1,#0
-beq PrepUse_LoopExit
-cmp r1,#255
-beq PrepUse_LoopExit
-add r2,#1
-add r0,#1
-b PrepUse_LoopStart
+    mov r0, r4
+    bl CountLearnedSkills
+    mov r1, r4
+    bl GetLearnedSkillCap
+    cmp r0, r1
+    bge PrepUse_False
 
-PrepUse_LoopExit:
-cmp r2,#4
-beq PrepUse_False
-b PrepUse_NormalVersion
+    mov r0, #1
+    b PrepUse_Return
 
 PrepUse_False:
-mov r0,#0
-b PrepUse_Return
-
-PrepUse_NormalVersion:
-ldr r0,=MultiScrollUsability
-mov r14,r0
-.short 0xF800
+    mov r0, #0
 
 PrepUse_Return:
-
-pop {r4-r5}
-pop {r1}
-bx r1
-
-.ltorg
-.align
-
-
-MultiScrollUsability:
-lsr r1, r5, #8 @ top 8 bits of item (normally durability) hold the scroll's skill id
-mov r0, r4
-
-ldr 	r3, =SkillTester @r0 = char ID, r1 = skill ID; returns true/false in r0
-mov 	lr, r3
-.short 	0xF800
-cmp r0,#1
-beq ReturnFalse
-
-mov r0,#1
-b GoBack
-
-ReturnFalse:
-mov r0,#0
-
-GoBack:
-pop {r4,r5}
-pop {r1}
-bx r1
+    pop {r4-r5}
+    pop {r1}
+    bx r1
 
 .ltorg
 .align
 
 
+@-----------------------------------------------------------------------------
+@ Map effect — DoItemAction mov-pc entry: r4=slot, r5=parent
+@-----------------------------------------------------------------------------
+MultiScrollEffect:
+    push {r4, r6-r7}            @ keep r5 = parent for common end
 
-MultiScrollEffect: @hybridized from some Tequila code
+    ldr r6, =gActionData
+    ldr r0, =GetUnit
+    mov lr, r0
+    ldrb r0, [r6, #0xC]
+    .short 0xF800
 
-@r4 = action struct, r6 = parent proc
+    ldrb r1, [r6, #0x12]
+    mov r6, r0
+    mov r4, r1
 
-push {r4-r7}
+    mov r2, r6
+    add r2, #0x1E
+    lsl r1, r4, #1
+    add r2, r1
+    ldrh r7, [r2]
+    lsr r7, r7, #8
 
-ldr        r0,Get_Char_Data
-mov        r14,r0
-ldrb    r0,[r4,#0xC]        @character using
-.short    0xF800
-ldrb    r1,[r4,#0x12]        @item slot
+    mov r0, #0
+    strh r0, [r2]
+    mov r0, r6
+    blh UnitRemoveInvalidItems
 
-mov r4,r0
-mov r5,r1
+    mov r0, r6
+    mov r1, r7
+    blh SkillAdder
 
-@char struct is in r0, item slot is in r1, use together to get item uses & char ID
-
-mov 		r2,r4 @get char struct
-add 		r2,#0x1E @get start of inventory data
-lsl 		r1,r1,#1 @multiply item slot by 2, for length of inventory entry
-add 		r2,r1 @r2 = offset of item entry
-
-ldrh r7,[r2] @get item halfword
-lsr r7,r7,#8 @keep only durability byte, which is skill ID
-
-@delete the item from the inventory
-
-mov r0,#0
-strh r0,[r2] @store 0x0000 to the item entry in question, thus removing it
-mov r0,r4 @r0 = char struct
-blh RemoveUnitBlankItems,r3 @move everything else up
-
-
-mov r0,r4 @r0 = char
-mov r2,r6 @r2 = parent proc
-mov r1,r7@r1 = skill ID
-
-@now learn the skill specified in item uses
-
-ldr 		r3, =prLearnNewSkill
-mov 		lr, r3
-.short 		0xF800
-
-
-pop {r4-r7}
-ldr        r0,GoBackLoc
-bx        r0
+    pop {r4, r6-r7}
+    ldr r0, =DoItemAction_CommonEnd
+    bx r0
 
 .ltorg
 .align
 
-Get_Char_Data:
-.long 0x08018d0c
-Battle_Struct_For_Items:
-.long 0x0802A4B4
-GoBackLoc:
-.long 0x0802FF76+1
 
-
+@-----------------------------------------------------------------------------
+@ Prep effect — r4=unit, r6=item, r7=slot; returns text id
+@-----------------------------------------------------------------------------
 MultiScrollPrepEffect:
+    mov r0, r4
+    mov r1, r6
+    lsr r1, r1, #8
+    blh SkillAdder
 
-@r4 = unit pointer
-@r6 = item used
-@r7 = item slot
+    mov r1, r7
+    mov r2, r4
+    add r2, #0x1E
+    lsl r1, r1, #1
+    add r2, r1
+    mov r0, #0
+    strh r0, [r2]
+    mov r0, r4
+    blh UnitRemoveInvalidItems
 
-mov r0,r4 @r0 = char
+    ldr r0, =SkillScrollMessageReturnLink
+    ldrh r0, [r0]
 
-mov r1,r6
-lsr r1,r1,#8 @r1 = skill ID
-
-@now learn the skill specified in item uses
-
-blh SkillAdder+1
-
-@This decrements uses by 1, we want to remove the item entirely upon use since uses is skill ID
-@mov r0,r4
-@mov r1,r7
-@blh UnitDecreaseItemUse
-mov r1,r7
-
-mov 		r2,r4 @get char struct
-add 		r2,#0x1E @get start of inventory data
-lsl 		r1,r1,#1 @multiply item slot by 2, for length of inventory entry
-add 		r2,r1 @r2 = offset of item entry
-
-@delete the item from the inventory
-
-mov r0,#0
-strh r0,[r2] @store 0x0000 to the item entry in question, thus removing it
-mov r0,r4 @r0 = char struct
-blh RemoveUnitBlankItems,r3 @move everything else up
-
-ldr r0,=SkillScrollMessageReturnLink
-ldrh r0,[r0]
-
-pop {r4-r7}
-pop {r1}
-bx r1
+    pop {r4-r7}
+    pop {r1}
+    bx r1
 
 .ltorg
 .align
 
 
+MultiScrollTargeting:
+    ldr r0, =0x08026E6D
+    bx r0
+
+.ltorg
+.align
+
+
+@-----------------------------------------------------------------------------
+@ Helpers
+@-----------------------------------------------------------------------------
+CountLearnedSkills:
+    push {r4-r5, lr}
+    mov r4, r0
+    bl GetLearnedSkillCap
+    mov r5, r0
+    add r4, #UNIT_SUPPORTS
+    mov r0, #0
+    mov r1, #0
+CountLoop:
+    cmp r1, r5
+    bge CountDone
+    ldrb r2, [r4, r1]
+    cmp r2, #0
+    beq CountDone
+    cmp r2, #0xFF
+    beq CountDone
+    add r0, #1
+    add r1, #1
+    b CountLoop
+CountDone:
+    pop {r4-r5}
+    pop {r1}
+    bx r1
+
+.ltorg
+.align
+
+
+GetLearnedSkillCap:
+    ldrb r1, [r0, #0x0B]
+    mov r2, #0xC0
+    and r1, r2
+    cmp r1, #0
+    bne CapOther
+    mov r0, #LEARNED_SKILL_COUNT_PLAYER
+    bx lr
+CapOther:
+    mov r0, #LEARNED_SKILL_COUNT_OTHER
+    bx lr
+
+.ltorg
+.align

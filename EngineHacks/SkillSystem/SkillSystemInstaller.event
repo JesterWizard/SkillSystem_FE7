@@ -5,3 +5,5 @@
 #include "skill_icons.event"
 
 #include "Skills/MasterSkillInstaller.event"
+
+#include "SkillScrolls/SkillScrolls.event"
