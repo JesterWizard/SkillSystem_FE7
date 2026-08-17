@@ -1,6 +1,8 @@
 #ifndef EXPANDED_MODULAR_SAVE_INTERNALS
 #define EXPANDED_MODULAR_SAVE_INTERNALS
 
+// FE7U hook sites (ported from FE8 EMS; verified against FE7 Decomp.txt)
+
 #include "SrcCore/MSCore.lyn.event"
 
 #ifndef LynJumpDefined
@@ -18,80 +20,77 @@ gMS_WMDataChunkId:        BYTE EMS_CHUNK_WMDATA
 #include "SrcCore/MSBWLHook.lyn.event"
 
 PUSH
-	// Checksum computation function now returns a constant
-	// Because we don't care (should we?)
-	ORG $0A6408
+	// ComputeSaveChecksum → always succeed (EMS owns layout)
+	ORG $0A1970
 		SHORT $202A $4770 // mov r0, #42; bx lr
 
-	// Load correct size values for block metadata
-	ORG $0A2FB0
-		LynJump(MS_SaveSizeHook)
+	// WriteSaveBlockInfo size literals (game / suspend / link)
+	ORG $09E7E4
+		SHORT EMS_GAME_BLOCK_SIZE
+	ORG $09E7F0
+		SHORT EMS_SUSPEND_BLOCK_SIZE
+	ORG $09E7FC
+		SHORT EMS_LINK_BLOCK_SIZE
 
-	// Replace GetSaveTargetAddress
+	// GetSaveDataLocation
 	ORG $09E870
 		LynJump(MS_GetSaveAddressBySlot)
 
-	// Replace CopySaveGame
-	ORG $0A4E08
+	// CopySaveGame
+	ORG $0A065C
 		LynJump(MS_CopyGameSave)
 
-	// Replace SaveGame
+	// SaveGame / LoadGame
 	ORG $0A0810
 		LynJump(MS_SaveGame)
-
-	// Replace LoadGame
-	ORG $0A08EE
+	// LoadGame entry is $0A08EC (push), not $0A08EE — hooking mid-prologue
+	// left an unmatched push and corrupted the stack on restart/load.
+	ORG $0A08EC
 		LynJump(MS_LoadGame)
 
-	// Replace SaveSuspendedGame
+	// SaveSuspendedGame / LoadSuspendedGame
 	ORG $0A1100
 		LynJump(MS_SaveSuspend)
-
-	// Replace LoadSuspendedGame
-	ORG $0A5C14
+	ORG $0A1258
 		LynJump(MS_LoadSuspend)
 
-	// Replace LoadSavedChapterState
-	ORG $0A522C
+	// LoadSavedChapterState / LoadSuspendedChapterState
+	ORG $0A09B4
 		LynJump(MS_LoadChapterStateFromGameSave)
-
-	// Replace LoadSuspendedChapterState
-	ORG $0A5DFC
+	ORG $0A13D8
 		LynJump(MS_LoadChapterStateFromSuspendSave)
 
-	// Replace LoadSavedBonusClaimFlags
-	ORG $0A524C
+	// LoadSavedBonusClaimFlags
+	ORG $0A09D4
 		LynJump(MS_GetClaimFlagsFromGameSave)
 
-	// Replace LoadSavedEid8A
-	ORG $0A5290
-		LynJump(MS_CheckEid8AFromGameSave)
-
-	// I don't want to load units from save for now
-	// So I'll just """disable""" save menu R-text info
-	ORG $0A8964
-		SHORT $E036
-
-	// Make BWL save look for the BWL chunk
-	ORG $0A460E
+	// BWL single-byte save hook (skill-system compat)
+	ORG $09FE76
 		SHORT $46C0 // nop for alignment
 		LynJump(MS_BWLSaveHook)
 
-	// In SaveNewGame
-	ORG $0A4E84
-		WORD $46C046C0 // nop nop; don't get target save address
-	ORG $0A4F34
-		WORD $46C046C0 // nop nop; don't save chapter state just yet
-	ORG $0A4F40
-		WORD $46C046C0 // nop nop; don't save bonus content claim flags just yet
-	ORG $0A4F44
-		SHORT $E022 // b later; don't save units just yet
-	ORG $0A412C
-		SHORT $E024 // b later; don't save bwl and chapter wins just yet
-	ORG $0A4F92
-		SHORT $E01B // b later; don't save other stuff just yet
-	ORG $0A4FCE
-		BL($0A0810) // now you can save the game! And do it by calling the save function
+	// SaveNewGame: keep RAM clears; skip vanilla SRAM chunk writes; finish with MS_SaveGame.
+	// ClearUnits / ClearConvoy already ran earlier in this function.
+	ORG $0A077C
+		WORD $46C046C0 // nop; skip chapter-state SRAM write
+	ORG $0A0782
+		SHORT $46C0
+		SHORT $46C0 // nop; skip SetBonusContentClaimFlags
+	ORG $0A0788
+		WORD $46C046C0 // nop; skip SaveBonusClaimFlags
+	ORG $0A078C
+		SHORT $E018 // b @$0A07C0; skip unit SRAM pack loop (units already cleared in WRAM)
+	ORG $0A07C0
+		WORD $46C046C0 // nop; skip vanilla SaveConvoy
+	// @$0A07C6 still calls SaveClearedBWL… (RAM clear; SRAM writes skipped below)
+	ORG $09F9B4
+		SHORT $E022 // b epilogue of SaveClearedBWL…; skip BWL/win SRAM writes
+	ORG $0A07D0
+		WORD $46C046C0 // nop; skip vanilla SavePermanentEids
+	ORG $0A07DE
+		BL($0A0810) // MS_SaveGame (via LynJump); returns @ $0A07E2
+	ORG $0A07E2
+		SHORT $E001 // b @$0A07E8 epilogue; skip UpdateLastUsed (done in MS_SaveGame)
 POP
 
 #endif // EXPANDED_MODULAR_SAVE_INTERNALS

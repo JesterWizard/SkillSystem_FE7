@@ -37,26 +37,11 @@ void MSa_LoadUnits(void* source, unsigned size) {
 		LoadSavedUnit(source + (0x24*i), GetUnit(i+1));
 }
 
+// FE7 bonus-claim flags live at 0x0203ECC0 (FE8 used 0x0203EDB4).
 void MSa_SaveBonusClaim(void* target, unsigned size) {
-	WriteAndVerifySramFast((void*)(0x0203EDB4), target, size);
+	WriteAndVerifySramFast((void*)(0x0203ECC0), target, size);
 }
 
 void MSa_LoadBonusClaim(void* source, unsigned size) {
-	ReadSramFast(source, (void*)(0x0203EDB4), size);
-}
-
-void MSa_SaveWMStuff(void* target, unsigned size) {
-	SaveWMStuff(target, &gGMData);
-}
-
-void MSa_LoadWMStuff(void* source, unsigned size) {
-	LoadWMStuff(source, &gGMData);
-}
-
-void MSa_SaveDungeonState(void* target, unsigned size) {
-	WriteAndVerifySramFast((void*)(0x30017AC), target, size);
-}
-
-void MSa_LoadDungeonState(void* source, unsigned size) {
-	ReadSramFast(source, (void*)(0x30017AC), size);
+	ReadSramFast(source, (void*)(0x0203ECC0), size);
 }

@@ -1,5 +1,5 @@
 // FE7: Expand supply convoy from 100 to 200 items (DEC-61)
-// Relocates gConvoyItemArray, patches size checks, and expands save/suspend I/O.
+// Runtime buffer + size checks. Save/suspend I/O is owned by EMS (DEC-68).
 
 #ifndef EXPANDED_CONVOY
 #define EXPANDED_CONVOY
@@ -9,11 +9,9 @@
 
 #include "Extensions/Hack Installation.txt"
 
+#ifndef EXPANDED_MODULAR_SAVE
 #include "asm/SaveLoadConvoy.lyn.event"
-
-// =========================
-// = Runtime size + buffer =
-// =========================
+#endif
 
 PUSH
 
@@ -35,7 +33,6 @@ PUSH
   ORG $2E728
     WORD (0x01000000 + ConvoyItemCount)
 
-  // Loop limits / fullness checks use count-1 (0xC7) or count (0xC8)
   ORG $2E74C
     BYTE $C7 // ShrinkConvoyItemList
   ORG $2E770
@@ -45,7 +42,6 @@ PUSH
   ORG $2E808
     BYTE $C7 // GetConvoyItemSlot
 
-  // GetConvoyItemCostSum
   ORG $17000
     BYTE $C7
   ORG $17030
@@ -53,7 +49,6 @@ PUSH
   ORG $1708C
     BYTE $C7
 
-  // Send-to-convoy / inventory-full prompts
   ORG $1D7CA
     BYTE $C7
   ORG $1D812
@@ -63,7 +58,6 @@ PUSH
   ORG $1D904
     BYTE $C7
 
-  // Prep / supply UI
   ORG $911E2
     BYTE $C7
   ORG $91266
@@ -75,27 +69,25 @@ PUSH
   ORG $972AA
     BYTE $C8
 
-  // Transfer/Stock screen: Give grey-out, count color, draw max (FE8 $9D676/$9D73E/$9D768)
   ORG $95FFE
-    BYTE $C8 // cmp convoyCount, #200 (grey Give when full)
+    BYTE $C8
   ORG $960C2
-    BYTE $C8 // cmp convoyCount, #200 (full stock number color)
+    BYTE $C8
   ORG $960EC
-    BYTE $C8 // mov r2, #200 (draw Stock n/200)
+    BYTE $C8
 
-  // Shop / bonus send paths
   ORG $AD58C
     BYTE $C8
   ORG $B0C08
     BYTE $C7
 
-  // SaveConvoy / LoadConvoy
-  // Extra 100 items are stored at 0x0E0067D0+ (link-arena SRAM), not by
-  // shifting suspend chunks. Those shifts overflowed into game slot 0.
+#ifndef EXPANDED_MODULAR_SAVE
+  // Fallback when EMS is not installed: hook vanilla convoy SRAM I/O.
   ORG $9E9C4
     jumpToHack(MSa_SaveConvoyExpanded)
   ORG $9E9DC
     jumpToHack(MSa_LoadConvoyExpanded)
+#endif
 
 POP
 

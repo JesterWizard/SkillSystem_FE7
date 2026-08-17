@@ -1,19 +1,15 @@
 .thumb
 .align 2
 
-@ FE7 expanded convoy save/load + sanitized item count (DEC-61)
-@ Extra 100 items live in a sidecar at 0x0E0067D0 so suspend I/O can
-@ keep vanilla chunk offsets. Shifting those chunks by +0xC8 overflowed
-@ suspend-2 into game slot 0 (SRAM 0x3F2C) and blanked the first save file.
+@ FE7 expanded convoy chunk save/load (DEC-61 + DEC-68)
+@ EMS passes r0 = chunk SRAM address, r1 = size (0x190).
 
 .equ GetConvoyItemArray,     0x0802E701
 .equ ClearConvoyItems,       0x0802E709
 .equ WriteAndVerifySramFast, 0x080BFBD9
 .equ ReadSramFastPtr,        0x03005E70
 .equ GetItemData,            0x080174AD
-.equ VanillaConvoySaveSize,  0xC8
-.equ ExtraConvoySaveSize,    0xC8
-.equ ExtraConvoySram,        0x0E0067D0
+.equ ConvoySaveSize,         0x190
 .equ ConvoyItemCount,        200
 .equ ItemData_Number,        0x06
 
@@ -21,26 +17,18 @@
 .type MSa_SaveConvoyExpanded, %function
 MSa_SaveConvoyExpanded:
 	push	{r4, r5, lr}
-	mov	r4, r0			@ vanilla convoy sram dest
+	mov	r4, r0			@ sram dest
+	mov	r5, r1			@ size
+	cmp	r5, #0
+	bne	1f
+	ldr	r5, =ConvoySaveSize
+1:
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r5, r0			@ convoy ram
 	mov	r1, r4
-	ldr	r2, =VanillaConvoySaveSize
+	mov	r2, r5
 	ldr	r3, =WriteAndVerifySramFast
 	bl	bx_r3
-	mov	r0, r4
-	bl	ExtraConvoySramAddr
-	cmp	r0, #0
-	beq	save_done
-	mov	r1, r0			@ extra dest
-	mov	r0, r5
-	ldr	r2, =VanillaConvoySaveSize
-	add	r0, r2			@ ram + 100 items
-	ldr	r2, =ExtraConvoySaveSize
-	ldr	r3, =WriteAndVerifySramFast
-	bl	bx_r3
-save_done:
 	pop	{r4, r5}
 	pop	{r0}
 	bx	r0
@@ -50,76 +38,27 @@ save_done:
 .type MSa_LoadConvoyExpanded, %function
 MSa_LoadConvoyExpanded:
 	push	{r4, r5, lr}
-	mov	r4, r0			@ vanilla convoy sram source
+	mov	r4, r0			@ sram source
+	mov	r5, r1			@ size
+	cmp	r5, #0
+	bne	1f
+	ldr	r5, =ConvoySaveSize
+1:
 	ldr	r3, =ClearConvoyItems
 	bl	bx_r3
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r5, r0
+	mov	r1, r0
 	ldr	r3, =ReadSramFastPtr
 	ldr	r3, [r3]
 	mov	r0, r4
-	mov	r1, r5
-	ldr	r2, =VanillaConvoySaveSize
+	mov	r2, r5
 	bl	bx_r3
-	mov	r0, r4
-	bl	ExtraConvoySramAddr
-	cmp	r0, #0
-	beq	load_sanitize
-	ldr	r3, =ReadSramFastPtr
-	ldr	r3, [r3]
-	mov	r1, r5
-	ldr	r2, =VanillaConvoySaveSize
-	add	r1, r2
-	ldr	r2, =ExtraConvoySaveSize
-	bl	bx_r3
-load_sanitize:
 	bl	SanitizeConvoyItems
 	pop	{r4, r5}
 	pop	{r0}
 	bx	r0
 
-@ r0 = vanilla convoy dest/src in SRAM. Return extra-SRAM ptr or 0.
-.align 2
-ExtraConvoySramAddr:
-	push	{r4, r5, lr}
-	ldr	r1, =0x0E000000
-	sub	r0, r0, r1		@ sram offset
-	adr	r4, ExtraConvoyOffsetTable
-	mov	r5, #0
-extra_idx_loop:
-	ldr	r1, [r4]
-	cmp	r0, r1
-	beq	extra_idx_found
-	add	r4, #4
-	add	r5, #1
-	cmp	r5, #5
-	blt	extra_idx_loop
-	mov	r0, #0
-	b	extra_idx_done
-extra_idx_found:
-	@ index * 0xC8
-	lsl	r0, r5, #6
-	lsl	r1, r5, #7
-	add	r0, r1
-	lsl	r1, r5, #3
-	add	r0, r1
-	ldr	r1, =ExtraConvoySram
-	add	r0, r1
-extra_idx_done:
-	pop	{r4, r5}
-	pop	{r1}
-	bx	r1
-
-	.align 2
-ExtraConvoyOffsetTable:
-	.word 0x46C4	@ game 0 convoy (0x3F2C + 0x798)
-	.word 0x5450	@ game 1 convoy (0x4CB8 + 0x798)
-	.word 0x61DC	@ game 2 convoy (0x5A44 + 0x798)
-	.word 0x19F8	@ suspend 0 convoy (0x00D4 + 0x1924)
-	.word 0x3924	@ suspend 1 convoy (0x2000 + 0x1924)
-
-@ Zero invalid item halfwords (keeps real items; drops 0xFFFF / bad IDs)
 .align 2
 .global SanitizeConvoyItems
 .type SanitizeConvoyItems, %function
@@ -127,14 +66,14 @@ SanitizeConvoyItems:
 	push	{r4, r5, r6, lr}
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r4, r0			@ ptr
-	mov	r5, #0			@ index
+	mov	r4, r0
+	mov	r5, #0
 sanitize_loop:
 	ldrh	r6, [r4]
 	cmp	r6, #0
 	beq	sanitize_next
 	mov	r0, #0xFF
-	and	r0, r6			@ item id
+	and	r0, r6
 	cmp	r0, #0
 	beq	sanitize_clear
 	ldr	r3, =GetItemData

@@ -157,6 +157,12 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+python "%base_dir%tests\test_expanded_modular_save.py"
+if errorlevel 1 (
+  echo ROM tests failed.
+  pause
+  exit /b 1
+)
 
 echo Closing existing NO$GBA
 taskkill /F /IM NO$GBA.EXE >nul 2>&1

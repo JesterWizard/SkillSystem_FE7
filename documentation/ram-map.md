@@ -121,6 +121,18 @@ IWRAM bump pool: `0x03007A00`–`0x03007E00` (`0x400` bytes).
 
 SRAM bump pool: none until EMS is resized.
 
+EMS block map (DEC-68; see `ExModularSave.event` / `ram_map_sram.s`):
+
+| Block | Offset | Size |
+|-------|--------|------|
+| meta | `0x0000` | `0xD4` |
+| suspend | `0x00D4` | `0x2E78` |
+| game 1–3 | `0x2F4C` / `0x434C` / `0x574C` | `0x1400` each |
+| link arena | `0x6B4C` | `0x8B4` |
+| save-based chapters | `0x7400` | `0xC00` |
+
+Game chunks include a `0x190` convoy (200 items), expanded unit packs, BWL support exp, and optional STR/MAG unit modules behind `USE_STRMAG_SPLIT`.
+
 ## TODO
 
 - Move GaidenMagic spell-menu bytes off `0x0203F080` so they no longer overlap `gAnimRoundData`.

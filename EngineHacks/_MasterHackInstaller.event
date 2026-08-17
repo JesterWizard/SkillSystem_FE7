@@ -24,12 +24,17 @@
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 
-  ALIGN 4
-  #include "Necessary/ExpandedConvoy/ExpandedConvoy.event"
-
   #ifdef USE_STRMAG_SPLIT
 	#include "Necessary/MSG/Extensions/Strmag.event"
 	#include "ExternalHacks/StrMagSplit/_MasterAsmInstaller.event"
   #endif // USE_STRMAG_SPLIT
+
+  // EMS owns save/suspend chunk layout (incl. 200-item convoy). Install
+  // after SkillSystem (BwlSupports) and StrMag unit-pack variants.
+  ALIGN 4
+  #include "Necessary/ExpandedModularSave/ExModularSave.event"
+
+  ALIGN 4
+  #include "Necessary/ExpandedConvoy/ExpandedConvoy.event"
 
 #include "ExternalHacks/VeslyDebugger/Installer.event"
