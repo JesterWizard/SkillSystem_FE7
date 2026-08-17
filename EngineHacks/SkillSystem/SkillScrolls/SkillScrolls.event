@@ -1,5 +1,7 @@
 
 #include "MultiSkillScrolls.lyn.event"
+#include "SkillLearnPopup.lyn.event"
+#include "../../Necessary/PopupRework/Extensions/PopupDefinitions.txt"
 
 ALIGN 4
 SkillScrollMessageReturnLink:
@@ -9,6 +11,77 @@ ALIGN 4
 SkillScrollIDLink:
 BYTE SkillScroll
 ALIGN 4
+
+// Modular skill-learned popup: [UnitName] learned [SkillIcon][SkillName]
+// Uses CreatePopup; components 0x0D/0x0E added via expanded FE7 jump tables.
+ALIGN 4
+SkillLearnedPopupDef:
+	Popup_SetSound(0x5A)
+	Popup_UnitName
+	Popup_StringId(LearnedSkillText)
+	WORD 0x0D 0                    // skill icon
+	Popup_SetColor(2)
+	WORD 0x0E 0                    // skill name
+	Popup_SetColor(0)
+	Popup_End
+
+// Blocking wrapper (FE8 LearnNewSkill style):
+// CALL_ROUTINE_2 advances to END, starts CreatePopup as blocking child, returns 0.
+// While popup holds lockCount, script does not run; when it ends, END runs and
+// unblocks the item-action parent. Do NOT use PROC_BLOCK — it never advances.
+ALIGN 4
+LearnScrollPopupProc:
+	SHORT 0x16 0 // CALL_ROUTINE_2
+	POIN (CallScrollLearnedPopup|1)
+	SHORT 0x00 0 0 0 // END
+
+// FE7 CreatePopup length/display only allow component ids 1..0xC / 1..0xB.
+// Extend both jump tables through 0x0E for skill icon + skill name.
+PUSH
+ORG $A7F4
+SHORT 0x280D // cmp r0, #0x0D  (ids 1..0x0E after subs #1)
+ORG $A804
+POIN SkillPopupLengthJumpTable
+
+ORG $A928
+SHORT 0x280D // cmp r0, #0x0D  (display uses bhi; allow through 0x0E)
+ORG $A938
+POIN SkillPopupDisplayJumpTable
+POP
+
+ALIGN 4
+SkillPopupLengthJumpTable:
+WORD 0x0800A900 // 01 space
+WORD 0x0800A8C4 // 02 item name
+WORD 0x0800A8D8 // 03 item+article cap
+WORD 0x0800A8EC // 04 item+article
+WORD 0x0800A8AC // 05 unit name
+WORD 0x0800A898 // 06 string id
+WORD 0x0800A8A4 // 07 string ptr
+WORD 0x0800A904 // 08 set color
+WORD 0x0800A854 // 09 item icon
+WORD 0x0800A874 // 0A wtype icon
+WORD 0x0800A842 // 0B number
+WORD 0x0800A838 // 0C sound
+POIN (PopupLen_SkillIcon|1) // 0D
+POIN (PopupLen_SkillName|1) // 0E
+
+ALIGN 4
+SkillPopupDisplayJumpTable:
+WORD 0x0800A9F8 // 01
+WORD 0x0800A9BC // 02
+WORD 0x0800A9CC // 03
+WORD 0x0800A9DC // 04
+WORD 0x0800A9A8 // 05
+WORD 0x0800A994 // 06
+WORD 0x0800A99E // 07
+WORD 0x0800A98A // 08
+WORD 0x0800A980 // 09
+WORD 0x0800A980 // 0A
+WORD 0x0800A968 // 0B
+WORD 0x0800AA00 // 0C sound (no-op display → loop)
+POIN (PopupDisp_SkillIcon|1) // 0D
+POIN (PopupDisp_SkillName|1) // 0E
 
 // FE7 item jump tables: index = itemId - 0x4A, vanilla max item 0x9A (index 0x50).
 // Expand through SkillScroll (0x9F => index 0x55) and repoint the three tables.

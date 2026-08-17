@@ -153,7 +153,8 @@ MultiScrollEffect:
 
     mov r0, r6
     mov r1, r7
-    blh SkillAdder
+    mov r2, r5                  @ parent: blocking CreatePopup (FE8 LearnNewSkill style)
+    blh LearnScrollSkill
 
     pop {r4, r6-r7}
     ldr r0, =DoItemAction_CommonEnd

@@ -3,8 +3,8 @@
  Weapon rank increased to [X]
 
 #0x3A LearnedSkillText
-//first text ID in the free block
-Learned  [X]
+// Used mid-popup: "[Unit] learned [icon][name]"
+ learned [X]
 
 
 
