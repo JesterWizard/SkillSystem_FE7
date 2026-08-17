@@ -2,30 +2,46 @@
 .align 2
 
 @ FE7 expanded convoy save/load + sanitized item count (DEC-61)
-@ Ghost "Stock N/200" with empty lists = non-zero junk in relocated RAM /
-@ over-read of old 0xC8 saves into the new 0x190 buffer.
+@ Extra 100 items live in a sidecar at 0x0E0067D0 so suspend I/O can
+@ keep vanilla chunk offsets. Shifting those chunks by +0xC8 overflowed
+@ suspend-2 into game slot 0 (SRAM 0x3F2C) and blanked the first save file.
 
 .equ GetConvoyItemArray,     0x0802E701
 .equ ClearConvoyItems,       0x0802E709
 .equ WriteAndVerifySramFast, 0x080BFBD9
 .equ ReadSramFastPtr,        0x03005E70
 .equ GetItemData,            0x080174AD
-.equ ConvoySaveSize,         0x190
+.equ VanillaConvoySaveSize,  0xC8
+.equ ExtraConvoySaveSize,    0xC8
+.equ ExtraConvoySram,        0x0E0067D0
 .equ ConvoyItemCount,        200
 .equ ItemData_Number,        0x06
 
 .global MSa_SaveConvoyExpanded
 .type MSa_SaveConvoyExpanded, %function
 MSa_SaveConvoyExpanded:
-	push	{r4, lr}
-	mov	r4, r0			@ sram dest
+	push	{r4, r5, lr}
+	mov	r4, r0			@ vanilla convoy sram dest
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r1, r4			@ dest
-	ldr	r2, =ConvoySaveSize
+	mov	r5, r0			@ convoy ram
+	mov	r1, r4
+	ldr	r2, =VanillaConvoySaveSize
 	ldr	r3, =WriteAndVerifySramFast
 	bl	bx_r3
-	pop	{r4}
+	mov	r0, r4
+	bl	ExtraConvoySramAddr
+	cmp	r0, #0
+	beq	save_done
+	mov	r1, r0			@ extra dest
+	mov	r0, r5
+	ldr	r2, =VanillaConvoySaveSize
+	add	r0, r2			@ ram + 100 items
+	ldr	r2, =ExtraConvoySaveSize
+	ldr	r3, =WriteAndVerifySramFast
+	bl	bx_r3
+save_done:
+	pop	{r4, r5}
 	pop	{r0}
 	bx	r0
 
@@ -34,23 +50,74 @@ MSa_SaveConvoyExpanded:
 .type MSa_LoadConvoyExpanded, %function
 MSa_LoadConvoyExpanded:
 	push	{r4, r5, lr}
-	mov	r4, r0			@ sram source
-	@ wipe relocated buffer before load so trailing slots stay clear
+	mov	r4, r0			@ vanilla convoy sram source
 	ldr	r3, =ClearConvoyItems
 	bl	bx_r3
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r5, r0			@ convoy ram
+	mov	r5, r0
 	ldr	r3, =ReadSramFastPtr
 	ldr	r3, [r3]
-	mov	r0, r4			@ source
-	mov	r1, r5			@ dest
-	ldr	r2, =ConvoySaveSize
+	mov	r0, r4
+	mov	r1, r5
+	ldr	r2, =VanillaConvoySaveSize
 	bl	bx_r3
+	mov	r0, r4
+	bl	ExtraConvoySramAddr
+	cmp	r0, #0
+	beq	load_sanitize
+	ldr	r3, =ReadSramFastPtr
+	ldr	r3, [r3]
+	mov	r1, r5
+	ldr	r2, =VanillaConvoySaveSize
+	add	r1, r2
+	ldr	r2, =ExtraConvoySaveSize
+	bl	bx_r3
+load_sanitize:
 	bl	SanitizeConvoyItems
 	pop	{r4, r5}
 	pop	{r0}
 	bx	r0
+
+@ r0 = vanilla convoy dest/src in SRAM. Return extra-SRAM ptr or 0.
+.align 2
+ExtraConvoySramAddr:
+	push	{r4, r5, lr}
+	ldr	r1, =0x0E000000
+	sub	r0, r0, r1		@ sram offset
+	adr	r4, ExtraConvoyOffsetTable
+	mov	r5, #0
+extra_idx_loop:
+	ldr	r1, [r4]
+	cmp	r0, r1
+	beq	extra_idx_found
+	add	r4, #4
+	add	r5, #1
+	cmp	r5, #5
+	blt	extra_idx_loop
+	mov	r0, #0
+	b	extra_idx_done
+extra_idx_found:
+	@ index * 0xC8
+	lsl	r0, r5, #6
+	lsl	r1, r5, #7
+	add	r0, r1
+	lsl	r1, r5, #3
+	add	r0, r1
+	ldr	r1, =ExtraConvoySram
+	add	r0, r1
+extra_idx_done:
+	pop	{r4, r5}
+	pop	{r1}
+	bx	r1
+
+	.align 2
+ExtraConvoyOffsetTable:
+	.word 0x46C4	@ game 0 convoy (0x3F2C + 0x798)
+	.word 0x5450	@ game 1 convoy (0x4CB8 + 0x798)
+	.word 0x61DC	@ game 2 convoy (0x5A44 + 0x798)
+	.word 0x19F8	@ suspend 0 convoy (0x00D4 + 0x1924)
+	.word 0x3924	@ suspend 1 convoy (0x2000 + 0x1924)
 
 @ Zero invalid item halfwords (keeps real items; drops 0xFFFF / bad IDs)
 .align 2
@@ -91,8 +158,6 @@ sanitize_next:
 	pop	{r0}
 	bx	r0
 
-@ Replacement GetConvoyItemCount: scrub junk, then count non-zero slots
-@ Also one-shot migrate from vanilla 0x0203A720 if the new buffer is empty.
 .align 2
 .global GetConvoyItemCountSanitized
 .type GetConvoyItemCountSanitized, %function
@@ -102,7 +167,6 @@ GetConvoyItemCountSanitized:
 	bl	CountConvoyItems
 	cmp	r0, #0
 	bne	count_done
-	@ New buffer empty — copy leftover vanilla convoy if present
 	ldr	r4, =0x0203A720
 	mov	r5, #100
 migrate_check:
@@ -118,14 +182,14 @@ migrate_check:
 do_migrate:
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
-	mov	r1, r0			@ dest
-	ldr	r0, =0x0203A720		@ src
+	mov	r1, r0
+	ldr	r0, =0x0203A720
 	mov	r2, #100
 migrate_copy:
 	ldrh	r3, [r0]
 	strh	r3, [r1]
 	mov	r3, #0
-	strh	r3, [r0]		@ clear old slot
+	strh	r3, [r0]
 	add	r0, #2
 	add	r1, #2
 	sub	r2, #1
@@ -144,7 +208,7 @@ CountConvoyItems:
 	ldr	r3, =GetConvoyItemArray
 	bl	bx_r3
 	mov	r1, r0
-	mov	r0, #0			@ count
+	mov	r0, #0
 	mov	r2, #ConvoyItemCount
 count_loop:
 	ldrh	r3, [r1]
