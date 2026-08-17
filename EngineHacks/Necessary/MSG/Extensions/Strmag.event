@@ -4,17 +4,26 @@
 
 #ifndef STRMAG_MSG
 	#define STRMAG_MSG
-	
-	#define prGetItemMagBonus    GetItemMagBonus
-	#define UNIT_MAGIC      0x3A // SByte
-	
+
+	// FE7 Mag at unit+0x47.
+	// Hook Pow at 0x18AD0 (frees vanilla body); Mag trampoline at 0x18AD8.
+	#define UNIT_MAGIC 0x47
+
 	PUSH
-	ORG 0x191B8
+	ORG 0x18AD0
+		jumpToHack(prPowGetter)
+	ORG 0x18AD8
 		prGotoMagGetter:
-			jumpToHack(prMagGetter)
+			jumpToHack(MagGetter)
 	POP
 
+	ALIGN 4
+	prPowGetter:
+		#incbin "PowGetter.dmp"
+
+	ALIGN 4
+	MagGetter:
 	prMagGetter:
-		SHORT 0xB500 0x4B04 0x469E 0x4B04 0x1C0A 0x1C01 0x2000 0xF800 0xBC02 0x4708; POIN prCallSequence pMagicModifiers
+		#incbin "MagGetter.dmp"
 
 #endif // STRMAG_MSG

@@ -15,50 +15,52 @@
 #include "3rdParty/InjectHPGetters.event"
 #include "3rdParty/Comparators.event"
 
+// FE7 GetUnit* entry points (mss_defs.s). jumpToHack frees the vanilla bodies;
+// MagGetter lives at Pow+8 (0x18AD8), same pattern as FE8 Mag at Pow+8.
 PUSH
-	ORG 0x19190
+	ORG 0x18AB0
 	prGotoMaxHPGetter:
 		jumpToHack(prMaxHPGetter)
 
-	ORG 0x19150
+	ORG 0x18A70
 	prGotoCurHPGetter:
 		jumpToHack(prCurHPGetter)
 
-	ORG 0x191B0
+	ORG 0x18AD0
 	prGotoPowGetter:
 		jumpToHack(prPowGetter)
 
-	ORG 0x191D0
+	ORG 0x18AF0
 	prGotoSklGetter:
 		jumpToHack(prSklGetter)
 
-	ORG 0x19210
+	ORG 0x18B30
 	prGotoSpdGetter:
 		jumpToHack(prSpdGetter)
 
-	ORG 0x19250
+	ORG 0x18B70
 	prGotoDefGetter:
 		jumpToHack(prDefGetter)
 
-	ORG 0x19270
+	ORG 0x18B90
 	prGotoResGetter:
 		jumpToHack(prResGetter)
 
-	ORG 0x19298
+	ORG 0x18BB8
 	prGotoLckGetter:
 		jumpToHack(prLckGetter)
 
-	ORG 0x189B8
+	ORG 0x18450
 	prGotoAidGetter:
 		jumpToHack(prAidGetter)
 	
 	// Replaces part of old spd getter
-	ORG 0x19224
+	ORG 0x18B44
 	prGotoMovGetter:
 		jumpToHack(prMovGetter)
 	
 	// Replaces part of old res getter
-	ORG 0x19284
+	ORG 0x18BA4
 	prGotoConGetter:
 		jumpToHack(prConGetter)
 POP

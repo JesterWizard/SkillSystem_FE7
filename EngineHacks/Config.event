@@ -18,6 +18,10 @@
 // See SkillSystem/Skills/EffectivenessSkills/Nullify/_README.txt.
 #define ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK
 
+// Independent Strength and Magic (Mag at unit+0x47).
+// Spirit Dust item ID defaults to Energy Ring in StrMagSplit/_MasterAsmInstaller.event.
+#define USE_STRMAG_SPLIT
+
 // If false, only the first inventory item with a passive skill applies.
 // Item ability 0x00800000 enables passive skills on an item.
 #define PASSIVE_SKILLS_STACK True

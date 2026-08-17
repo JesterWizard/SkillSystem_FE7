@@ -1,0 +1,37 @@
+// FE7 Mag level-up / promotion core (unit+0x47)
+// Full animated level-up UI tables remain FE8-oriented; growth writeback
+// and caps are handled here + Necessary/GrowthGetters.
+
+#ifndef _FE7_
+	ERROR "LevelUp FE7 core requires FE7"
+#endif
+
+PUSH
+
+	// Promo Mag bonus (replaces Res promo apply; routine also applies Res)
+	ORG 0x2989C
+	jumpToHack(Add_Promotion_Bonuses)
+
+	// Apply Mag gain after Luk in UpdateUnitFromBattle
+	ORG 0x29CA0
+	jumpToHack(LevelUpWriteBackMag)
+
+	// Cap Mag growth in CheckBattleUnitStatCaps (before Luk block)
+	ORG 0x29A50
+	jumpToHack(LevelupMagCap)
+
+POP
+
+ALIGN 4
+Add_Promotion_Bonuses:
+#incbin "AddPromotionBonuses.dmp"
+POIN MagClassTable
+
+ALIGN 4
+LevelUpWriteBackMag:
+#incbin "../../old/LevelUpWriteBackMag.dmp"
+
+ALIGN 4
+LevelupMagCap:
+#incbin "LevelupMagCap.dmp"
+POIN MagClassTable

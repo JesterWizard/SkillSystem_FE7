@@ -172,7 +172,7 @@ struct Unit
     /* 44 */ u8 ai2;
     /* 45 */ u8 ai2data;
     /* 46 */ u8 _u46;
-    /* 47 */ u8 _u47;
+    /* 47 */ s8 mag; // Str/Mag split (USE_STRMAG_SPLIT); was padding
 };
 
 struct UnitDefinition

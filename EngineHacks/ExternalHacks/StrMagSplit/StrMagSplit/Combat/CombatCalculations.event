@@ -1,0 +1,27 @@
+// FE7 str/mag split combat calculations
+// Mag stored at unit+0x47.
+
+#ifndef _FE7_
+	ERROR "CombatCalculations.event requires FE7"
+#endif
+
+PUSH
+
+	// 0x28B52: 3 halfwords then 4-aligned POIN at 0x28B58; routine returns to 0x28B60.
+	ORG 0x28B52
+	SHORT 0x4801 0x4700 0x0000 // ldr r0,[pc,#4]; bx r0; nop
+	POIN (Str_Or_Mag_Damage|1)
+
+	ORG 0x2860C
+	jumpToHack(Update_Magic)
+
+POP
+
+ALIGN 4
+Str_Or_Mag_Damage:
+#incbin "StrorMagDamage.dmp"
+	
+ALIGN 4
+Update_Magic:
+#incbin "UpdateMagic.dmp"
+POIN MagGetter
