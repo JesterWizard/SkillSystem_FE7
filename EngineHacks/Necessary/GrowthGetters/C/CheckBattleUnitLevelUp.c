@@ -67,7 +67,7 @@ int GetStatFromDefinition(int id, struct Unit* unit) { // unit required because 
 	case defStat: return unit->def; 
 	case resStat: return unit->res; 
 	case lukStat: return unit->lck; 
-	case magStat: return unit->_u3A; // mag 
+	case magStat: return unit->mag; // mag at unit+0x47
 	}
 	return 0; 
 } 

@@ -50,7 +50,7 @@ b TargetBehavior
 
 
 AtRange:
-mov r2,#0x3A
+mov r2,#0x47
 ldrb r0,[r5,r2]
 strb r0,[r5,#0x14]
 

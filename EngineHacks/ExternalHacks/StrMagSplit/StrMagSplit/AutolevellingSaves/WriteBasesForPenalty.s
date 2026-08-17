@@ -32,7 +32,7 @@ ldrb  r1, [r3, r1]      @r1 = Class base magic
 
 @Add base values and write
 add   r0, r1            @r0 = Char base magic + Class base magic
-mov   r1, #0x3A         @r1 = Unit magic offset
+mov   r1, #0x47         @r1 = Unit magic offset
 strb  r0, [r4, r1]      @Store base magic total
 
 @Cleanup

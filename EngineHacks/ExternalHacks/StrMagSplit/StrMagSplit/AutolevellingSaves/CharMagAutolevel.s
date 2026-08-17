@@ -16,7 +16,7 @@ ldrb	r0,[r0,#0x1]
 mov		r1,r5
 .short	0xF800
 mov		r1,r4
-add		r1,#0x3A
+add		r1,#0x47
 ldrb	r2,[r1]
 add		r2,r0,r2
 strb	r2,[r1]

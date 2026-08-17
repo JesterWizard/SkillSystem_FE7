@@ -15,7 +15,7 @@ Loop:
 mov		r0,r5
 mov		r3,r6
 bl		goto_r3
-add		r0,#0x3A
+add		r0,#0x47
 ldrb	r1,[r7,r5]
 strb	r1,[r0]
 add		r5,#0x1

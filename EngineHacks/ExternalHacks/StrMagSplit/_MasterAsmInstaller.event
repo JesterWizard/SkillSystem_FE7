@@ -14,15 +14,14 @@
 	// If left commented, the regular level up screen will be used with Mag and without Con. No graphical glitches.
 	// #define ExpandedLevelUpScreen
 	
-	//Spirit Dust item icon
+	//Spirit Dust item icon (FE7 item icon sheet)
 	#ifndef SpiritDustIcon
-		
 		#define SpiritDustIcon 0xAB
-		PUSH
-		ORG $0C5EA4 + ( SpiritDustIcon * 0x80 )
-		#incext Png2Dmp "SpiritDust.png"
-		POP
-	
+		// Icon write skipped until FE7 item-icon sheet offset is confirmed.
+		// PUSH
+		// ORG $0C5EA4 + ( SpiritDustIcon * 0x80 )
+		// #incext Png2Dmp "SpiritDust.png"
+		// POP
 	#endif // SpiritDustIcon
 	
 	#include "StrMagSplit/Installer.event"

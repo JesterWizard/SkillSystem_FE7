@@ -6,9 +6,9 @@ cmp		r0,r1
 beq		NoMovChange
 mov		r2,#0x1
 NoMovChange:
-mov		r1,#0x3A
+mov		r1,#0x47
 ldsb	r1,[r6,r1]
-mov		r0,#0x3A
+mov		r0,#0x47
 ldsb	r0,[r5,r0]
 cmp		r0,r1
 beq		NoMagChange

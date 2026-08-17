@@ -1,53 +1,27 @@
-//FE8 str/mag split combat calculations
-//By RobertFpy/Tequila
+// FE7 str/mag split combat calculations
+// Mag stored at unit+0x47.
 
-#define MagGetter 0x191B8
-#ifdef _FE8_
-	
-	PUSH
-	
-	//Staff accuracy
-	ORG $2CCE2
-	BL(MagGetter)
-	
-	//Healing amount
-	ORG $17012
-	BL(MagGetter)
-	
-	//Staff range
-	ORG $18A32
-	BL(MagGetter)
-	SHORT 0x1C01 0xE004 //mov r1,r0; b 
-	
-	//Determine whether to add str or mag to damage(Conflict with frenzy skill)
-	ORG $2AB4C
-	callHack_r3(Str_Or_Mag_Damage)
-
-	//Update magic in battle struct
-	ORG $2A5BC
-	callHack_r3(Update_Magic)
-		
-	//Prevent arena display glitches
-	ORG $583E0
-	jumpToHack(Arena_Fix1)
-	ORG $58438
-	jumpToHack(Arena_Fix2)
-	ORG $58414
-	jumpToHack(Arena_Fix3)
-	ORG $5849C
-	jumpToHack(Arena_Fix4)
-	
-	POP
-	
-	ALIGN 4
-	Str_Or_Mag_Damage:
-	#incbin "StrorMagDamage.dmp"
-		
-	ALIGN 4
-	Update_Magic:
-	#incbin "UpdateMagic.dmp"
-	POIN MagGetter
-	
-	#else
-	ERROR "You're not assembling FE8 events!"
+#ifndef _FE7_
+	ERROR "CombatCalculations.event requires FE7"
 #endif
+
+PUSH
+
+	// 0x28B52: 3 halfwords then 4-aligned POIN at 0x28B58; routine returns to 0x28B60.
+	ORG 0x28B52
+	SHORT 0x4801 0x4700 0x0000 // ldr r0,[pc,#4]; bx r0; nop
+	POIN (Str_Or_Mag_Damage|1)
+
+	ORG 0x2860C
+	jumpToHack(Update_Magic)
+
+POP
+
+ALIGN 4
+Str_Or_Mag_Damage:
+#incbin "StrorMagDamage.dmp"
+	
+ALIGN 4
+Update_Magic:
+#incbin "UpdateMagic.dmp"
+POIN MagGetter

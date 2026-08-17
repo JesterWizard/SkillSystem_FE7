@@ -1,33 +1,36 @@
 .thumb
 .org 0x0
 
-mov 	r0,#0x5A
-strh	r5,[r4,r0]
-mov		r7,#0x14
+@ FE7 trampoline from 0x28B52; return to 0x28B60.
 
-mov 	r0,#0x4C	@weaponAttributes
-ldr		r0,[r4,r0]
-mov		r5,#0x40	@Magic Sword
-tst		r5,r0
-bne		Magic		@IsMagicSword?
+mov 	r0, #0x4C
+ldr		r0, [r5, r0]
+mov		r1, #0x40
+tst		r1, r0
+bne		Magic
 
-mov r5, #0x2 @IsMagic
-tst r5, r0
-bne Magic
+mov		r1, #0x2
+tst		r1, r0
+bne		Magic
 
-b IsStr
+mov		r1, #0x14
+b		LoadStat
 
 Magic:
-mov		r7,#0x3A
+mov		r1, #0x47
 
-IsStr:
-ldrb	r7,[r6,r7]
-mov		r5,#0x5A
-ldrh	r0,[r4,r5]	@current damage
-add		r0,r7
-strh	r0,[r4,r5]
-b		End
+LoadStat:
+ldsb	r1, [r5, r1]
+mov		r0, #0x5A
+ldrh	r0, [r5, r0]
+add		r0, r1
+mov		r1, #0x5A
+strh	r0, [r5, r1]
 
-End:
-add		r4,#0x5A @for stone
-bx		r14
+ldr		r0, ReturnAddr
+bx		r0
+
+.align
+.ltorg
+ReturnAddr:
+.long 0x08028B61

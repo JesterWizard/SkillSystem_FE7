@@ -2,7 +2,7 @@
 .org 0x0
 
 mov		r2,r4
-add		r2,#0x3A
+add		r2,#0x47
 ldrb	r1,[r2]			@mag
 ldr		r0,[r4,#0x4]
 ldrb	r0,[r0,#0x4]

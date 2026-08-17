@@ -316,7 +316,7 @@
   mov     r0, r8
   blh     MagGetter
   mov     r1, r8  
-  mov     r3, #0x3A
+  mov     r3, #0x47
   ldsb    r3, [r1, r3]     
   str     r0, [sp]     
   ldr     r0, [r1, #0x4]  @class

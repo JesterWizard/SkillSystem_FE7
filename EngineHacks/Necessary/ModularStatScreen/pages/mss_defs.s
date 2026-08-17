@@ -36,7 +36,7 @@
 .equ CurHPGetter, 0x08018A70 //FE8 -> 0x08019150
 .equ MaxHPGetter, 0x08018AB0 //FE8 -> 0x08019190       
 .equ StrGetter, 0x08018AD0 //FE8 -> 0x080191b0
-.equ MagGetter, 0x08018AD0 //FE8 -> 0x080191b8 (vanilla FE7 has no mag getter)
+.equ MagGetter, 0x08018AD8 // Mag modular getter (USE_STRMAG_SPLIT); FE8 was 0x080191b8
 .equ SklGetter, 0x08018AF0 //FE8 -> 0x080191d0
 .equ SpdGetter, 0x08018B30 //FE8 -> 0x08019210
 .equ LuckGetter, 0x08018BB8 //FE8 -> 0x08019298

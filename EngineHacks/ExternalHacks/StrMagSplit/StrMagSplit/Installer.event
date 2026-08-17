@@ -1,27 +1,25 @@
-//Credits: Teq for the original FE7 version and WIP FE8 Version
+//Credits: Teq for the original FE7 version; FE7 Mag at unit+0x47 (DEC-62)
 
 #ifndef ItemUsabilityTable
 	#define ItemUsabilityTable 0x288B0
-#endif // ItemUsabilityTable
+#endif
 #ifndef ItemEffectTable
 	#define ItemEffectTable 0x2FC90
-#endif // ItemEffectTable
+#endif
 #ifndef PrepScreenUsabilityTable
 	#define PrepScreenUsabilityTable 0x29F34
-#endif // PrepScreenUsabilityTable
+#endif
 
 #define Mag_Booster_Item_Usability_Ptr "ItemUsabilityTable+4*(SpiritDust-0x4B)"
-#define Mag_Booster_Item_Effect_Ptr "ItemEffectTable+4*(SpiritDust-0x4B)" 
+#define Mag_Booster_Item_Effect_Ptr "ItemEffectTable+4*(SpiritDust-0x4B)"
 #define Mag_Booster_Prep_Screen_Usability_Ptr "PrepScreenUsabilityTable+4*(SpiritDust-0x5B)"
 
-#include "LevelUp/LevelUp.event"
-
+#include "LevelUp/LevelUpFE7.event"
 #include "Combat/CombatCalculations.event"
-
-#include "UnitViewer/UnitViewer.event"
-
-#include "PrepScreenMagBooster/PrepScreen.event"
-
 #include "AutolevellingSaves/AutolevelSave.event"
 
-#include "MagicSwordRework/MagicSwordRework.event"
+// Prep-screen Spirit Dust / UnitViewer / MagicSwordRework still use FE8
+// ORGs in their event files — enable after FE7 address ports.
+// #include "UnitViewer/UnitViewer.event"
+// #include "PrepScreenMagBooster/PrepScreen.event"
+// #include "MagicSwordRework/MagicSwordRework.event"

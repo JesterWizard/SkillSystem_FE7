@@ -1,47 +1,43 @@
 .thumb
-@Hook 0802C008
-@r2  keep  RAMUnit
-@r5  keep  ? preBattleUnit?
-@r12 keep  BattleUnit
+@ FE7 CheckBattleUnitStatCaps — Mag cap before Luk check.
+@ Hook at 0x29A50 (start of Luk cap block).
 
-mov r0, #0x3A  @mag
-ldsb r0, [r2, r0] @Unit->Mag
+mov r0, #0x47  @ mag
+ldsb r0, [r2, r0] @ Unit->Mag
 
 mov r3, r12
 add r3, #0x7A
 mov r1, #0x0
-ldsb r1, [r3, r1] @BattleUnit->ConGrow (Mag)
-add r0 ,r0, r1    @Unit->Mag + BattleUnit->ConGrow (Mag)
+ldsb r1, [r3, r1] @ BattleUnit->changeCon (Mag)
+add r0, r0, r1
 
-@get mag cap
+@ get mag cap
 mov r3, r12
 ldr r3, [r3, #0x4]
-ldrb r3, [r3, #0x4]  @BattleUnit->Class->ID
-lsl r3, #0x2 @ ClassID * 4
+ldrb r3, [r3, #0x4]  @ Class ID
+lsl r3, #0x2
 
 ldr r1, MagClassTable
 add r3, r1
 
-ldrb r1, [r3, #0x2] @MagClassTable[ClassID].MagicCap
-cmp r0 ,r1
-ble Exit
-    mov r0, #0x3A
-    ldrb r0, [r2, r0] @RAMUnit->Mag
-    sub r0 ,r1, r0    @MagCap - RAMUnit->Mag
-
+ldrb r1, [r3, #0x2] @ Mag cap
+cmp r0, r1
+ble ContinueLuk
+    mov r0, #0x47
+    ldrb r0, [r2, r0]
+    sub r0, r1, r0
     mov r3, r12
     add r3, #0x7A
     strb r0, [r3, #0x0]
 
-Exit:
-
-@Resend breaking code
+ContinueLuk:
+@ Original Luk cap check entry
 mov r0, #0x19
 ldsb r0, [r2, r0]
 mov r3, r12
 add r3, #0x79
 
-ldr r1, =0x0802C010|1
+ldr r1, =0x08029A59|1
 bx r1
 
 .ltorg

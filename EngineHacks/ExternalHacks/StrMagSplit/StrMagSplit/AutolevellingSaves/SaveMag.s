@@ -11,7 +11,7 @@ Loop:
 mov		r14,r6
 mov		r0,r5
 .short	0xF800
-add		r0,#0x3A
+add		r0,#0x47
 ldrb	r0,[r0]
 strb	r0,[r7,r5]
 add		r5,#0x1

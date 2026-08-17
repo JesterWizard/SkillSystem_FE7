@@ -19,4 +19,9 @@
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 
+  #ifdef USE_STRMAG_SPLIT
+	#include "Necessary/MSG/Extensions/Strmag.event"
+	#include "ExternalHacks/StrMagSplit/_MasterAsmInstaller.event"
+  #endif // USE_STRMAG_SPLIT
+
 #include "ExternalHacks/VeslyDebugger/Installer.event"

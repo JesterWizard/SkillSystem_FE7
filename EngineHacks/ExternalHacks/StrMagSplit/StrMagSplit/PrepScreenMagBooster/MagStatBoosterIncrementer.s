@@ -8,7 +8,7 @@ ldrb	r1,[r4,#0x1A]
 add		r2,r2,r1
 strb	r2,[r4,#0x1A]
 mov		r1,r4
-add		r1,#0x3A
+add		r1,#0x47
 ldrb	r2,[r1]
 ldrb	r3,[r0,#0x9]		@mag bonus
 add		r2,r2,r3
