@@ -37,4 +37,7 @@
   ALIGN 4
   #include "Necessary/ExpandedConvoy/ExpandedConvoy.event"
 
+ALIGN 4
+#include "ExternalHacks/HPBars/HPBars.event"
+
 #include "ExternalHacks/VeslyDebugger/Installer.event"

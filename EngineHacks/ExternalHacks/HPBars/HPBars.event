@@ -1,0 +1,40 @@
+// FE7 Warning and HP Bars (Tequila)
+// Map HP bars, effectiveness/crit warnings, and talk indicators.
+
+PUSH
+
+ORG $25C0C
+jumpToHack(HP_Bars)
+
+ORG $155A0 // load more graphics
+BYTE 0x18
+
+ORG $155BC
+POIN HPBarGraphic
+
+POP
+
+ALIGN 4
+#include "Warning_and_HP_Bars.lyn.event"
+
+ALIGN 4
+HPFramePointers:
+POIN HPFrames
+POIN HPFrames+8
+POIN HPFrames+16
+POIN HPFrames+24
+POIN HPFrames+32
+POIN HPFrames+40
+POIN HPFrames+48
+POIN HPFrames+56
+POIN HPFrames+64
+POIN HPFrames+72
+POIN HPFrames+80
+POIN HPFrames+88
+
+HPFrames:
+#incbin "HPFrames.bin"
+
+ALIGN 4
+HPBarGraphic:
+#incext Png2Dmp "FE7-Hp Bars graphics.png" --lz77
