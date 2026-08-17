@@ -1,0 +1,21 @@
+//Show Heal Amount (FE7)
+//By Tequila
+
+#ifndef FreeSpace
+	#define FreeSpace 0x1000000
+	ORG FreeSpace
+#endif
+
+PUSH
+
+ORG $232A0
+jumpToHack(FE7_Show_Heal_Amount)
+
+POP
+
+ALIGN 4
+ArrowTextIDLink:
+SHORT HealArrowText
+
+ALIGN 4
+#include "show_heal_amount.lyn.event"

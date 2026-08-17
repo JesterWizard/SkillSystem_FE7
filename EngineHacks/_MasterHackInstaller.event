@@ -40,4 +40,7 @@
 ALIGN 4
 #include "ExternalHacks/HPBars/HPBars.event"
 
+ALIGN 4
+#include "ExternalHacks/ShowHealAmount/show_heal_amount.event"
+
 #include "ExternalHacks/VeslyDebugger/Installer.event"

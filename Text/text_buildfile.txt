@@ -6,7 +6,19 @@
 // Used mid-popup: "[Unit] learned [icon][name]"
  learned [X]
 
+// FE7 dialogue Yes/No box (MenuCommand at 0xB94E1C/0xB94E40).
+#0x10EE
+Yes[X]
 
+#0x10EF
+No[X]
+
+// Other Yes/No prompts (erase data, shop-style, etc.)
+#0x843
+Yes[X]
+
+#0x844
+No[X]
 
 #0xd4c LikesText
 //first text ID in the free block
@@ -115,3 +127,6 @@ a skill when used.[X]
 #include "unitinfo_text.txt"
 
 #include "statscreen_text.txt"
+
+## HealArrowText
+->[X]
