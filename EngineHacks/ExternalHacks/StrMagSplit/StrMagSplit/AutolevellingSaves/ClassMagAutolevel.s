@@ -2,8 +2,9 @@
 .org 0x0
 
 @ FE7 UnitAutolevelCore Mag after Str; trampoline from 0x17AF2, return to 0x17AFC (Skl BL).
+@ Do not push lr: entry is bx from a mid-function hook, and we exit via bx ReturnAddr.
+@ A leftover stack word crashes when UnitAutolevelCore returns (Ch1 autoleveled enemies).
 
-push	{r14}
 ldr		r0, GetGrowthChance
 mov		r14, r0
 ldr		r0, [r4, #0x4]
