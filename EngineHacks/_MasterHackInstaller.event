@@ -24,6 +24,9 @@
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 
+  ALIGN 4
+  #include "Necessary/ExpandedConvoy/ExpandedConvoy.event"
+
   #ifdef USE_STRMAG_SPLIT
 	#include "Necessary/MSG/Extensions/Strmag.event"
 	#include "ExternalHacks/StrMagSplit/_MasterAsmInstaller.event"

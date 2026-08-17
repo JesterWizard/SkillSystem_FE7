@@ -1,0 +1,124 @@
+// FE7: Expand supply convoy from 100 to 200 items (DEC-61)
+// Relocates gConvoyItemArray, patches size checks, and expands save/suspend I/O.
+
+#ifndef EXPANDED_CONVOY
+#define EXPANDED_CONVOY
+
+#define ConvoyExpansionRAM 0x0203B200
+#define ConvoyItemCount    200
+
+#include "Extensions/Hack Installation.txt"
+
+#include "asm/SaveLoadConvoy.lyn.event"
+
+// =========================
+// = Runtime size + buffer =
+// =========================
+
+PUSH
+
+  // gConvoyItemArray pointer pools in bmcontainer
+  ORG $2E704
+    WORD ConvoyExpansionRAM
+  ORG $2E724
+    WORD ConvoyExpansionRAM
+  ORG $2E78C
+    WORD ConvoyExpansionRAM
+  ORG $2E7B0
+    WORD ConvoyExpansionRAM
+  ORG $2E7DC
+    WORD ConvoyExpansionRAM
+  ORG $2E800
+    WORD ConvoyExpansionRAM
+
+  // ClearSupplyItems CpuFill16 count (halfwords)
+  ORG $2E728
+    WORD (0x01000000 + ConvoyItemCount)
+
+  // Loop limits / fullness checks use count-1 (0xC7) or count (0xC8)
+  ORG $2E74C
+    BYTE $C7 // ShrinkConvoyItemList
+  ORG $2E770
+    jumpToHack(GetConvoyItemCountSanitized)
+  ORG $2E7B8
+    BYTE $C7 // AddItemToConvoy
+  ORG $2E808
+    BYTE $C7 // GetConvoyItemSlot
+
+  // GetConvoyItemCostSum
+  ORG $17000
+    BYTE $C7
+  ORG $17030
+    BYTE $C7
+  ORG $1708C
+    BYTE $C7
+
+  // Send-to-convoy / inventory-full prompts
+  ORG $1D7CA
+    BYTE $C7
+  ORG $1D812
+    BYTE $C7
+  ORG $1D872
+    BYTE $C7
+  ORG $1D904
+    BYTE $C7
+
+  // Prep / supply UI
+  ORG $911E2
+    BYTE $C7
+  ORG $91266
+    BYTE $C7
+  ORG $92F20
+    BYTE $C7
+  ORG $92F3A
+    BYTE $C7
+  ORG $972AA
+    BYTE $C8
+
+  // Transfer/Stock screen: Give grey-out, count color, draw max (FE8 $9D676/$9D73E/$9D768)
+  ORG $95FFE
+    BYTE $C8 // cmp convoyCount, #200 (grey Give when full)
+  ORG $960C2
+    BYTE $C8 // cmp convoyCount, #200 (full stock number color)
+  ORG $960EC
+    BYTE $C8 // mov r2, #200 (draw Stock n/200)
+
+  // Shop / bonus send paths
+  ORG $AD58C
+    BYTE $C8
+  ORG $B0C08
+    BYTE $C7
+
+  // SaveConvoy / LoadConvoy
+  ORG $9E9C4
+    jumpToHack(MSa_SaveConvoyExpanded)
+  ORG $9E9DC
+    jumpToHack(MSa_LoadConvoyExpanded)
+
+  // Suspend save/load chunk offsets after convoy (+0xC8)
+  // Vanilla convoy at $1924 size $C8 ended at $19EC; expanded ends at $1AB4.
+  ORG $A1234
+    WORD $1FE4 // was $1F1C
+  ORG $A1238
+    WORD $1FEC // was $1F24
+  ORG $A1240
+    WORD $1AB4 // was $19EC
+  ORG $A1244
+    WORD $1F14 // was $1E4C
+  ORG $A124C
+    WORD $1FD4 // was $1F0C
+
+  ORG $A1368
+    WORD $1AB4 // was $19EC
+  ORG $A136C
+    WORD $1F14 // was $1E4C
+  ORG $A1374
+    WORD $1FE4 // was $1F1C
+  ORG $A1378
+    WORD $1FEC // was $1F24
+  ORG $A1380
+    WORD $1FD4 // was $1F0C
+
+POP
+
+#endif // EXPANDED_CONVOY

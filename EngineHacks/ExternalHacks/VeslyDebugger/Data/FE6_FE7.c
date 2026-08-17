@@ -2076,6 +2076,17 @@ u8 StartArenaNow(struct MenuProc * menu, struct MenuItemProc * menuItem)
     Proc_Goto(proc, UnitActionLabel); // 0xb7
     return MENU_ACT_SKIPCURSOR | MENU_ACT_END | MENU_ACT_SND6A | MENU_ACT_CLEAR;
 }
+
+extern void StartBmSupply(struct Unit * unit, ProcPtr parent);
+
+u8 SupplyNow(struct MenuProc * menu, struct MenuItemProc * menuItem)
+{
+    DebuggerProc * proc;
+    proc = Proc_Find(DebuggerProcCmd);
+    Proc_Goto(proc, EndLabel);
+    StartBmSupply(gActiveUnit, NULL);
+    return MENU_ACT_SKIPCURSOR | MENU_ACT_END | MENU_ACT_SND6A | MENU_ACT_CLEAR;
+}
 u8 LevelupNow(struct MenuProc * menu, struct MenuItemProc * menuItem)
 {
     // SetupUnitFunc();

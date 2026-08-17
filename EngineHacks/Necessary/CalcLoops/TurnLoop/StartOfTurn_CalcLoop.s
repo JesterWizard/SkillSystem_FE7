@@ -24,7 +24,7 @@
 .equ GetPhaseAbleUnitCount, 0x8023810 
 .equ gCameraProc, 0x859A548 
 .equ ShouldMoveCamPos, 0x8015D70 
-.equ ConvoyPointer, 0x80315b4 
+.equ ConvoyPointer, 0x802E7B0 
 
 .equ DeployByte, 			0  @ 0x2c 
 .equ FuncCoun, 				1  @ 0x2d 

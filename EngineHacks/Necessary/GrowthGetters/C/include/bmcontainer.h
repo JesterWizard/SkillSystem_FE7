@@ -1,7 +1,7 @@
 #ifndef GUARD_BM_CONTAINER_H
 #define GUARD_BM_CONTAINER_H
 
-enum { CONVOY_ITEM_COUNT = 100 };
+enum { CONVOY_ITEM_COUNT = 200 };
 
 u16* GetConvoyItemArray(void);
 void ClearSupplyItems(void);

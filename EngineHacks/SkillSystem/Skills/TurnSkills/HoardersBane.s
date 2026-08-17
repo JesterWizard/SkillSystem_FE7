@@ -10,9 +10,9 @@
 .equ ProcStartBlocking, 0x80044F8 
 .equ ProcGoto, 0x8004720 
 .equ GetUnit, 0x8018d0c
-.equ HasConvoyAccess, 0x803161c 
-.equ ConvoySize, 0x80315bc 
-.equ ConvoyPointer, 0x80315b4 
+.equ HasConvoyAccess, 0x802E819
+.equ ConvoySize, 0x802E7B8
+.equ ConvoyPointer, 0x802E7B0 
 .equ GetItemAfterUse, 0x801672e
 .equ RemoveUnitBlankItems, 0x8017688 
 

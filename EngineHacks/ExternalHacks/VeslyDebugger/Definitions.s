@@ -288,6 +288,7 @@ SET_FUNC RunPotentialWaitEvents, 0x801CC4D
 SET_FUNC EnsureCameraOntoActiveUnitPosition, 0x801CC69
 SET_FUNC StartBmPromotion, 0x0802cc69 
 SET_FUNC StartArenaScreen, 0x80b267D
+SET_FUNC StartBmSupply, 0x080974CD
 SET_FUNC GetUnitEquippedWeapon, 0x8016765
 SET_FUNC InitBattleUnit, 0x80285D5
 SET_FUNC SetupMapBattleAnim, 0x806F30D
