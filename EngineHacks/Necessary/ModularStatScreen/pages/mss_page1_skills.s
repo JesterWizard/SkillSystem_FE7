@@ -34,7 +34,7 @@ draw_textID_at 13, 7, textID=TID_Skl, growth_func=4 @skl
 draw_textID_at 13, 9, textID=TID_Spd, growth_func=5 @spd
 draw_textID_at 13, 11, textID=TID_Luck, growth_func=6 @luck
 draw_textID_at 13, 13, textID=TID_Def, growth_func=7 @def
-draw_textID_at 13, 15, textID=TID_Res, growth_func=7 @res
+draw_textID_at 13, 15, textID=TID_Res, growth_func=8 @res
 
 b 	NoRescue
 .ltorg
@@ -66,22 +66,23 @@ ShowGrowths:
 ldr		r0,[sp,#0xC]
 ldr		r0,[r0,#4]		@str growth getter
 draw_growth_at 18, 3
-ldr		r0,=MagGrowthZero+1
+ldr		r0,[sp,#0xC]
+ldr		r0,[r0,#8]		@mag growth getter (USE_STRMAG_SPLIT)
 draw_growth_at 18, 5
 ldr		r0,[sp,#0xC]
-ldr		r0,[r0,#8]		@skl (no mag slot without USE_STRMAG_SPLIT)
+ldr		r0,[r0,#12]		@skl
 draw_growth_at 18, 7
 ldr		r0,[sp,#0xC]
-ldr		r0,[r0,#12]		@spd
+ldr		r0,[r0,#16]		@spd
 draw_growth_at 18, 9
 ldr		r0,[sp,#0xC]
-ldr		r0,[r0,#16]		@luk
+ldr		r0,[r0,#20]		@luk
 draw_growth_at 18, 11
 ldr		r0,[sp,#0xC]
-ldr		r0,[r0,#20]		@def
+ldr		r0,[r0,#24]		@def
 draw_growth_at 18, 13
 ldr		r0,[sp,#0xC]
-ldr		r0,[r0,#24]		@res
+ldr		r0,[r0,#28]		@res
 draw_growth_at 18, 15
 ldr		r0,[sp,#0xC]
 ldr		r0,[r0]			@hp
@@ -248,12 +249,6 @@ mov		r0, #0
 pop		{r4}
 pop		{r1}
 bx		r1
-
-.global MagGrowthZero
-MagGrowthZero:
-mov		r0, #0
-mov		r1, #0
-bx		r14
 
 .include "GetTalkee.s"
 .include "../asm/old/alternateicondraw.s"

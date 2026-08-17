@@ -79,10 +79,12 @@
 .equ gGenericBuffer, 0x2020140
 .equ gBg0MapBuffer, 0x2022C60
 .equ gCurrentTextString, 0x202A5B4 
-.equ Const_2022D40, 0x2022CF8
-.equ Const_2023D40, 0x20234F8
-.equ Const_2003D2C, 0x200323C
-.equ Const_200472C, 0x2003C3C
+.equ Const_2022D40, 0x2022CF8 //FE8 -> 0x2022D40  @ BG0 screen
+@ Growth-toggle refresh: FE8 0x2023D40 is BG2. FE7 BG2 is 0x2023CF8;
+@ 0x20234F8 is BG1 (page frame) — writing there erases the container on Select.
+.equ Const_2023D40, 0x2023CF8 //FE8 -> 0x2023D40  @ BG2 screen
+.equ Const_2003D2C, 0x200323C //FE8 -> 0x2003D2C
+.equ Const_200472C, 0x2003C3C //FE8 -> 0x200472C
 
 @With this in mind, any unlabeled RAM addresses beginning with 0x200 can reasonably be assumed to be offsets within the tilemap
 

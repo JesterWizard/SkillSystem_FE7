@@ -79,10 +79,13 @@
 .equ gGenericBuffer, 0x2020140 //FE8 -> 0x2020188
 .equ gBg0MapBuffer, 0x2022C60 //FE8 -> 0x2022CA8
 .equ gCurrentTextString, 0x202A5B4 //FE8 -> 0x202A6AC 
-.equ Const_2022D40, 0x2022CF8 //FE8 -> 0x2022D40
-.equ Const_2023D40, 0x20234F8 //FE8 -> 0x2023D40
-.equ Const_2003D2C, 0x200323C //FE8 -> 0x2003D2C
-.equ Const_200472C, 0x2003C3C //FE8 -> 0x200472C
+.equ Const_2022D40, 0x2022CF8 //FE8 -> 0x2022D40  @ BG0 screen (vanilla 08081268)
+@ Growth-toggle refresh copies BG2 page → BG2 screen. FE8's 0x2023D40 is BG2;
+@ FE7 BG2 screen is 0x2023CF8. 0x20234F8 is BG1 (page frame) — writing there
+@ erases the personal-data container on Select.
+.equ Const_2023D40, 0x2023CF8 //FE8 -> 0x2023D40  @ BG2 screen (vanilla 08081278)
+.equ Const_2003D2C, 0x200323C //FE8 -> 0x2003D2C  @ BG0 page buffer
+.equ Const_200472C, 0x2003C3C //FE8 -> 0x200472C  @ BG2 page buffer
 
 @With this in mind, any unlabeled RAM addresses beginning with 0x200 can reasonably be assumed to be offsets within the tilemap
 

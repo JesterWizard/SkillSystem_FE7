@@ -1,9 +1,11 @@
 .thumb
 .org 0x0
 
-@ mov		r1,#0x80
+@ Hooked from 080813EE (FE8: 08088896) after R|Select key mask matches.
+@ r0 = NewPresses & 0x104. R bit (0x100) → help text; else Select → toggle growths.
+
+mov		r1,#0x80
 lsl		r1,r1,#0x1
-ldrh    r1, [r1, #0x8]
 tst		r0,r1
 beq		SelectButton
 ldr		r0,Func1
@@ -17,7 +19,7 @@ bx		r1
 SelectButton:
 ldr		r1,StatScreenStruct
 ldrb	r0,[r1]
-cmp		r0,#0x0				@stat screen
+cmp		r0,#0x0				@stat screen page 1
 bne		NotStatScreen
 ldr		r2,[r1,#0xC]
 ldrb	r2,[r2,#0xB]
@@ -35,21 +37,17 @@ ldr		r1,Func2
 mov		r14,r1
 .short	0xF800
 NotStatScreen:
-add		sp,#0x4
-pop		{r4-r7}
+@ FE7 key handler pushes {r4,r5,r6,lr} only (no local stack frame).
+pop		{r4-r6}
 pop		{r0}
 bx		r0
 
 .align
 Func1:
-//FE8 -> .long 0x08004720
-.long 0x08004720
+.long 0x08004720			@ Goto6CLabel (FE8: 0x08002F24)
 Func2:
-//FE8 -> .long 0x080878CC
-.long 0x080804C8
+.long 0x080804C8			@ redraw current stat page (FE8: 0x080878CC)
 StatScreenStruct:
-//FE8 -> .long 0x0200310C
-.long 0x0200310C
+.long 0x0200310C			@ FE8: 0x02003BFC
 ReturnRButton:
-//FE8 -> .long 0x080888A0+1
-.long 0x080813F8+1
+.long 0x080813F8+1			@ FE8: 0x080888A0+1

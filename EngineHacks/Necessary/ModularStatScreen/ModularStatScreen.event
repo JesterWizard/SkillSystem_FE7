@@ -40,11 +40,17 @@
       BYTE Trv_Icon_X 0x21 Trv_Icon_Y
 
       // Display growths hack
+      // BYTE 0x82 → mov r0,#0x82; lsl #1 → mask 0x104 (R|Select).
+      // Button_Branch then splits R (help) vs Select (toggle growths).
 
     #ifdef PRESS_SELECT_TO_VIEW_GROWTHS
       ORG $813E2 //FE8 -> $8888C
       BYTE 0x82
     #endif
+
+    ORG $813EE //FE8 -> $88896
+      SHORT 0x46C0
+      jumpToHack(Button_Branch)
 
     // Remember whether we were looking at growths or stats
 
@@ -80,6 +86,10 @@
   ALIGN 4
   DontBlinkLeft:
   #incbin "asm/DontBlinkLeft.dmp"
+
+  ALIGN 4
+  Button_Branch:
+    #incbin "asm/ButtonBranch.dmp"
 
   ALIGN 4
   Load_Page:
