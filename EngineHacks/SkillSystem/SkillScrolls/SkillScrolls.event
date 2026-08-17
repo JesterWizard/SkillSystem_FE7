@@ -43,7 +43,7 @@ ALIGN 4
 SkillScrollTargetingTable:
 #incbin "fe7_item_targeting_table.bin"
 WORD 0x08026E54 0x08026E54 0x08026E54 0x08026E54
-POIN 0x08026EC8                              // 0x55 SkillScroll (same self-target stub as vulnerary)
+POIN (MultiScrollTargeting|1)                    // 0x55 SkillScroll (Use menu gates on this)
 
 ALIGN 4
 SkillScrollEffectTable:
@@ -103,10 +103,10 @@ BYTE 0x11
 SHORT 10000
 BYTE 0
 BYTE 0
+BYTE 0x21                           // weaponEffectId: nonzero so Item Use menu shows Use
 BYTE 0
 BYTE 0
-BYTE 0
-BYTE 0
+BYTE 1
 
 #undef ItemTable
 #define ItemTable ExpandedItemTable

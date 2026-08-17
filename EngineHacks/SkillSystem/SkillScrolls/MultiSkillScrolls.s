@@ -41,7 +41,10 @@
 
 
 @-----------------------------------------------------------------------------
-@ Map usability — FE7 dispatcher: r3=unit, r2=item, stack={r4,lr}
+@ Map usability — FE7 CanUnitUseItem @ 0x08016B68:
+@   push {r4,lr}; r3=unit, r2=item; mov pc, handler
+@ Handler must pop that {r4,lr} itself (vanilla ends at 0x08016D02).
+@ Use is shown when r0!=0; disabled (hidden) when already has skill or full.
 @-----------------------------------------------------------------------------
 MultiScrollUsability:
     push {r4-r5}
@@ -56,9 +59,12 @@ MultiScrollUsability:
 
     mov r0, r4
     bl CountLearnedSkills
-    mov r1, r4
+    mov r1, r0              @ count
+    mov r0, r4
+    push {r1}
     bl GetLearnedSkillCap
-    cmp r0, r1
+    pop {r1}
+    cmp r1, r0              @ count >= cap?
     bge UsabilityFalse
 
     mov r0, #1
@@ -69,7 +75,8 @@ UsabilityFalse:
 
 UsabilityReturn:
     pop {r4-r5}
-    pop {r1}
+    pop {r4}            @ CanUnitUseItem's saved r4
+    pop {r1}            @ CanUnitUseItem's lr
     bx r1
 
 .ltorg
@@ -93,9 +100,12 @@ MultiScrollPrepUsability:
 
     mov r0, r4
     bl CountLearnedSkills
-    mov r1, r4
+    mov r1, r0              @ count
+    mov r0, r4
+    push {r1}
     bl GetLearnedSkillCap
-    cmp r0, r1
+    pop {r1}
+    cmp r1, r0              @ count >= cap?
     bge PrepUse_False
 
     mov r0, #1
@@ -217,10 +227,36 @@ PrepScrollEffectDispatch_Scroll:
 
 
 MultiScrollTargeting:
-@ Same self-target path as vulnerary (0x08026EC8). Do not bx into the
-@ jump-table stub bytes at 0x08026E6C — that softlocks with a stuck portrait.
-    ldr r0, =0x08026EC9
-    bx r0
+@ FE7 Item Use menu calls 0x08026CD0, which mov-pc's here with:
+@   r4=unit, r5=item, stack={r4,r5,lr}
+@ Return 1 → Use enabled; 0 → Use grayed.
+@ (Byte item+0x1E must also be nonzero or Use is hidden entirely.)
+    lsr r1, r5, #8
+    mov r0, r4
+    blh SkillTester
+    cmp r0, #1
+    beq TargetingFalse
+
+    mov r0, r4
+    bl CountLearnedSkills
+    mov r1, r0              @ count
+    mov r0, r4
+    push {r1}
+    bl GetLearnedSkillCap
+    pop {r1}
+    cmp r1, r0              @ count >= cap?
+    bge TargetingFalse
+
+    mov r0, #1
+    b TargetingReturn
+
+TargetingFalse:
+    mov r0, #0
+
+TargetingReturn:
+    pop {r4-r5}
+    pop {r1}
+    bx r1
 
 .ltorg
 .align

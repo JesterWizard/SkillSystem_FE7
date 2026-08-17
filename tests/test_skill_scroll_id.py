@@ -68,9 +68,9 @@ class SkillScrollIdTests(unittest.TestCase):
         src = _text(SCROLLS)
         self.assertRegex(src, r"SHORT 0x2855")
         self.assertNotRegex(src, r"SHORT 0x2872")
-        # Usability + effect + prep usability. Targeting reuses vulnerary stub.
-        self.assertEqual(src.count("POIN (MultiScroll"), 3)
-        self.assertRegex(src, r"POIN 0x08026EC8")
+        # Usability + effect + prep usability + targeting (Use menu gate).
+        self.assertEqual(src.count("POIN (MultiScroll"), 4)
+        self.assertRegex(src, r"BYTE 0x21")
 
     def test_hack_rom_preserves_lord_mov_costs(self):
         if not HACK_ROM.is_file() or not CLEAN_ROM.is_file():
@@ -103,10 +103,10 @@ class SkillScrollIdTests(unittest.TestCase):
         self.assertEqual(entry[2:4], b"\xff\xff")
         self.assertEqual(entry[6], SKILL_SCROLL)
 
-        # Usability / effect: custom thumb handlers. Targeting: vulnerary stub.
+        # Usability / effect / targeting: custom thumb handlers.
         expected = {
             USE_TABLE_PTR: "thumb",
-            TARGET_TABLE_PTR: 0x08026EC8,
+            TARGET_TABLE_PTR: "thumb",
             EFFECT_TABLE_PTR: "thumb",
         }
         for ptr_off, want in expected.items():
@@ -120,6 +120,10 @@ class SkillScrollIdTests(unittest.TestCase):
             else:
                 self.assertEqual(dest, want, f"scroll targeting at 0x{slot:08X}")
 
+        # Item Use menu hides Use when weaponEffectId (item+0x1E) is 0.
+        self.assertNotEqual(entry[0x1E], 0)
+        self.assertEqual(entry[0x21], 1)
+
         # MakeNewItem (debugger Give Item) must not still embed vanilla ItemTable.
         self.assertNotEqual(
             rom[MAKE_NEW_ITEM_TABLE_LIT : MAKE_NEW_ITEM_TABLE_LIT + 4],
@@ -127,6 +131,19 @@ class SkillScrollIdTests(unittest.TestCase):
         )
         make_new_table = struct.unpack_from("<I", rom, MAKE_NEW_ITEM_TABLE_LIT)[0]
         self.assertEqual(make_new_table, table)
+
+    def test_map_usability_pops_canunituseitem_frame(self):
+        """CanUnitUseItem mov-pc entries must pop {r4,lr} after their own saves."""
+        if not HACK_ROM.is_file():
+            self.skipTest("FE7_Hack.gba missing")
+        rom = HACK_ROM.read_bytes()
+        use_table = struct.unpack_from("<I", rom, USE_TABLE_PTR)[0]
+        slot = (use_table & 0x01FFFFFF) + 4 * CMP_INDEX
+        dest = struct.unpack_from("<I", rom, slot)[0]
+        off = (dest - 0x08000000) & ~1
+        code = rom[off : off + 0x40]
+        # pop {r4,r5}; pop {r4}; pop {r1}; bx r1
+        self.assertIn(bytes.fromhex("30bc10bc02bc0847"), code)
 
 
 if __name__ == "__main__":
