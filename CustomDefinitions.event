@@ -7,6 +7,8 @@
 #define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0xC9A200 + (148* chapter) + 4; SHORT object; BYTE palette config; POP"
 #define ChapterTileAnims(chapter, anim1, anim2) "PUSH; ORG 0xC9A200 + (148* chapter) + 9; BYTE anim1 anim2; POP"
 
+// Vanilla ItemTable @ 0x8BE222C. SkillScrolls.event redefines this to
+// ExpandedItemTable so item 0x9F does not overwrite movement-cost data.
 #ifndef ItemTable
   #define ItemTable 0x8BE222C //FE7
 #endif

@@ -79,10 +79,15 @@ ORG $2CD28
 jumpToHack(PrepScrollEffectDispatch)
 POP
 
-// Item 0x9F data (ItemTable @ 0xBE222C)
-PUSH
-ORG 0xBE222C + (0x24 * SkillScroll)
-SHORT 0xFFFF
+// Item 0x9F sits past the vanilla item table. Writing it at
+// 0xBE222C + 0x24*0x9F overwrites Lord movement-cost data at 0xBE3888
+// (plains become impassable → Mov 0 on the map). Keep 0x9F, but host the
+// expanded table in FreeSpace and repoint GetItemData.
+ALIGN 4
+ExpandedItemTable:
+#incbin "fe7_item_table_through_9A.bin" // items 0x00..0x9A
+FILL ((SkillScroll - 0x9B) * 0x24)      // 0x9B..0x9E
+SHORT 0xFFFF                            // 0x9F SkillScroll
 SHORT 0xFFFF
 SHORT SkillScrollDesc
 BYTE SkillScroll
@@ -103,4 +108,15 @@ BYTE 0
 BYTE 0
 BYTE 0
 BYTE 0
+
+#undef ItemTable
+#define ItemTable ExpandedItemTable
+
+PUSH
+// GetItemData (0x080174AC) ItemTable literal
+ORG $174BC
+POIN ExpandedItemTable
+// Adjacent helper that also embeds ItemTable
+ORG $17360
+POIN ExpandedItemTable
 POP
