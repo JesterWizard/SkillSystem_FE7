@@ -106,7 +106,13 @@
 #define FIXED_GROWTHS_FLAG_ID 0xEF
 
 #define STAT_BRACKETING_EXISTS False
-#define BRACKETED_GROWTHS_FLAG_ID 0xED
+#define BRACKETED_GROWTHS_FLAG_ID 0xED // 0xEE hides battle anim damage numbers
+
+// If uncommented, damage/heal numbers display over participants during battle animations.
+#define BATTLE_ANIMATION_NUMBERS
+
+// Flag that hides battle animation numbers when set (same default as FE8 Skill System).
+#define BATTLE_ANIMATION_NUMBERS_FLAG 0xEE
 
 #define FORCE_WHEN_BELOW_AVERAGE_BY_AMOUNT 3
 #define PREVENT_WHEN_ABOVE_AVERAGE_BY_AMOUNT 5
