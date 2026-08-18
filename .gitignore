@@ -21,7 +21,6 @@ $RECYCLE.BIN/
 
 # rom stuff
 *.gba
-*.ups
 *.sav
 *.sgm
 *.ss1
