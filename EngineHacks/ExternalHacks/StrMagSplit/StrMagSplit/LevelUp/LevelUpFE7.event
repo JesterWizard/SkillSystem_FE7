@@ -1,10 +1,11 @@
 // FE7 Mag level-up / promotion core (unit+0x47)
-// Full animated level-up UI tables remain FE8-oriented; growth writeback
-// and caps are handled here + Necessary/GrowthGetters.
+// Map LU: Mag between Str and Skl; Con removed.
 
 #ifndef _FE7_
 	ERROR "LevelUp FE7 core requires FE7"
 #endif
+
+#define StatNameLevelUp(X,Y,NamePointer) "BYTE X Y 0 0 ; POIN NamePointer NamePointer"
 
 PUSH
 
@@ -20,7 +21,39 @@ PUSH
 	ORG 0x29A50
 	jumpToHack(LevelupMagCap)
 
+	// Map level-up: Mag between Str and Skl, Con removed, Spd in Con's slot
+	ORG 0x741F4
+	jumpToHack(GetManimLevelUpStatGainMag)
+	ORG 0x7436C
+	jumpToHack(GetManimLevelUpStatGainMag+0x5E)
+	ORG 0x740C4
+	POIN MagManimLevelUpLabels
+	ORG 0x7412C
+	POIN MagManimLevelUpLabels
+	ORG 0x741EC
+	POIN MagManimLevelUpLabels
+	ORG 0x74E98
+	POIN MagManimLevelUpLabels
+
 POP
+
+ALIGN 4
+MagManimLevelUpLabels:
+	StatNameLevelUp(9, 0, 0x8CC26D4)  // Lv
+	StatNameLevelUp(1, 4, 0x8CC26DC)  // HP
+	StatNameLevelUp(1, 6, 0x8CC26E0)  // Str
+	StatNameLevelUp(1, 8, 0x8CC26E4)  // Mag
+	StatNameLevelUp(1, 10, 0x8CC26E8) // Skl
+	StatNameLevelUp(9, 4, 0x8CC26EC)  // Spd
+	StatNameLevelUp(9, 6, 0x8CC26F8)  // Lck
+	StatNameLevelUp(9, 8, 0x8CC26F0)  // Def
+	StatNameLevelUp(9, 10, 0x8CC26F4) // Res
+	BYTE 0xFF 0xFF 0 0
+	WORD 0 0
+
+ALIGN 4
+GetManimLevelUpStatGainMag:
+#incbin "ManimLevelUpMag.dmp"
 
 ALIGN 4
 Add_Promotion_Bonuses:

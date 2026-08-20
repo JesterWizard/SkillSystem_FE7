@@ -76,6 +76,27 @@ static void DrawUiFrameNew(u16 * tilemap, int x, int y, int width, int height, i
     PutUiWindowFrame(x, y, width, height, style);
 }
 
+#ifdef FE7
+// Skill System Mag lives at unit+0x47 (DEC-62), not FE8's _u3A.
+static inline s8 GetUnitMag(struct Unit * unit)
+{
+    return *(s8 *)((u8 *)unit + 0x47);
+}
+static inline void SetUnitMag(struct Unit * unit, s8 mag)
+{
+    *(s8 *)((u8 *)unit + 0x47) = mag;
+}
+#else
+static inline s8 GetUnitMag(struct Unit * unit)
+{
+    return unit->_u3A;
+}
+static inline void SetUnitMag(struct Unit * unit, s8 mag)
+{
+    unit->_u3A = mag;
+}
+#endif
+
 #define tmpSize 15
 
 #define InitProcLabel 0
@@ -440,7 +461,7 @@ void SaveStats(DebuggerProc * proc)
     unit->def = proc->tmp[5];
     unit->res = proc->tmp[6];
     unit->lck = proc->tmp[7];
-    unit->_u3A = proc->tmp[8];
+    SetUnitMag(unit, proc->tmp[8]);
 }
 
 void SaveItems(DebuggerProc * proc)
@@ -879,7 +900,7 @@ void EditStatsInit(DebuggerProc * proc)
     proc->tmp[5] = unit->def;
     proc->tmp[6] = unit->res;
     proc->tmp[7] = unit->lck;
-    proc->tmp[8] = unit->_u3A;
+    proc->tmp[8] = GetUnitMag(unit);
 
     int x = NUMBER_X - StatWidth - 1;
     int y = Y_HAND - 2;
@@ -920,6 +941,9 @@ void EditStatsInit(DebuggerProc * proc)
     c++;
 #ifdef FE8
     Text_DrawString(&th[c], GetStringFromIndexSafe(0x4FF));
+    c++;
+#else
+    Text_DrawString(&th[c], MagText);
     c++;
 #endif
 

@@ -231,22 +231,11 @@ bx		r14
 Const2_2028E70:
 .long 0x02028D70
 
-@ Mag as Pow if the unit has a magic weapon rank, otherwise 0.
+@ Mag at unit+0x47 via MSG MagGetter.
 .global MagDisplayGetter
 MagDisplayGetter:
-push	{r4,r14}
-mov		r4, r0
-blh		MagCheck
-cmp		r0, #0
-beq		MagDispZero
-mov		r0, r4
-blh		StrGetter
-pop		{r4}
-pop		{r1}
-bx		r1
-MagDispZero:
-mov		r0, #0
-pop		{r4}
+push	{r14}
+blh		MagGetter
 pop		{r1}
 bx		r1
 

@@ -335,12 +335,20 @@
 .endm
 
 .macro draw_mag_bar_at, bar_x, bar_y
-  @ Vanilla FE7 has no mag byte; MagDisplayGetter returns Pow for magic ranks, else 0.
   mov     r0, r8
-  blh     MagDisplayGetter
-  mov     r3, r0
+  blh     MagGetter
+  mov     r1, r8
+  mov     r3, #0x47
+  ldsb    r3, [r1, r3]
   str     r0, [sp]
-  mov     r0, #0x1e
+  ldr     r0, [r1, #0x4]  @class
+  ldrb    r0, [r0, #0x4]  @class id
+  lsl     r0, #0x2
+  ldr     r1, =MagClassTable
+  add     r0, r1
+  ldrb    r0, [r0, #0x2]
+  lsl     r0, r0, #0x18
+  asr     r0, r0, #0x18
   str     r0, [sp, #0x4]
   mov     r0, #0x1
   mov     r1, #(\bar_x-11)
