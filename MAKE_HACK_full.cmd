@@ -66,6 +66,15 @@ echo Dumping FE7 text table
 python "%base_dir%Tools\dump_fe7_text_table.py" --rom "%source_rom%" --out "%base_dir%Text\NewTextTable.dmp"
 
 echo:
+echo Running source tests
+python "%base_dir%tests\run_tests.py" --pre-assemble
+if errorlevel 1 (
+  echo Source tests failed.
+  pause
+  exit /b 1
+)
+
+echo:
 echo Assembling
 
 cd "%base_dir%EventAssembler"
@@ -97,67 +106,7 @@ if not "%assemble_error%"=="0" (
 
 echo:
 echo Running ROM tests
-python "%base_dir%tests\test_get_string_table.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_hook_unit_loading.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_skill_definitions.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_skill_table_defines.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_growth_toggle_bg.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_durability_based_items.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_icon_rework.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_skill_scroll_id.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_prep_skill_scroll.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_expanded_convoy.py"
-if errorlevel 1 (
-  echo ROM tests failed.
-  pause
-  exit /b 1
-)
-python "%base_dir%tests\test_expanded_modular_save.py"
+python "%base_dir%tests\run_tests.py" --rom
 if errorlevel 1 (
   echo ROM tests failed.
   pause

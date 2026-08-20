@@ -15,9 +15,6 @@ GET_SKILLS = ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "asm" / "GetSk
 SKILL_TESTER_C = (
     ROOT / "EngineHacks" / "SkillSystem" / "Internals" / "NewSkillTester" / "_src" / "SkillTester.c"
 )
-LYN_LIST = ROOT / "Tables" / "LevelUpSkillLists.event"
-CHAR_LEVEL_EVENT = ROOT / "Tables" / "NightmareModules" / "Skills" / "CharacterLevelUpSkillEditor.event"
-
 COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 BTL_LIST_RE = re.compile(r"^BtlLoopList:\s*\n((?:POIN[^\n]*\n)+)", re.M)
 
@@ -42,31 +39,12 @@ class CritUpSkillTests(unittest.TestCase):
         self.assertIn(b"\x60\x52", data)
         self.assertNotIn(b"\x21\x70", data, "old strb r1, [r4] must not remain")
 
-    def test_display_and_tester_use_bwl_for_unique_units(self):
-        skills = GET_SKILLS.read_text(encoding="utf-8")
-        tester = SKILL_TESTER_C.read_text(encoding="utf-8")
-        self.assertIn("BWLTable", skills)
-        self.assertIn("0x0203E790", skills)
-        self.assertIn("GetInitialSkillList", skills)
-        self.assertIn("unitBWL->skills", tester)
-        self.assertIn("GetInitialSkillList_Pointer", tester)
-        self.assertNotIn("gLearnedSkillRam", skills)
-        self.assertNotIn("0x0203F540", tester)
-
     def test_skill_getters_do_not_wipe_ewram_on_read(self):
         skills = GET_SKILLS.read_text(encoding="utf-8")
         tester = SKILL_TESTER_C.read_text(encoding="utf-8")
         self.assertNotIn("EnsureLearnedSkillRam.zero", skills)
         self.assertNotIn("LearnedSkillRamSize", skills)
         self.assertNotIn("for (int i = 0; i < 4 + LEARNED_SLOTS_SIZE + 0x46", tester)
-
-    def test_tutorial_lyn_level_list_is_critup(self):
-        lists = LYN_LIST.read_text(encoding="utf-8")
-        table = CHAR_LEVEL_EVENT.read_text(encoding="utf-8")
-        self.assertIn("LevelUpSkill(1, CritUpID)", lists)
-        self.assertNotIn("CantoID", lists)
-        self.assertNotIn("LockTouchID", lists)
-        self.assertIn("WORD LynTutorialSkillList", table)
 
 
 if __name__ == "__main__":

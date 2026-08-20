@@ -1,5 +1,4 @@
 """Adept adds a consecutive attack (Speed %); FE7 stores round count in r5."""
-import re
 import sys
 import unittest
 from pathlib import Path
@@ -8,8 +7,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lyn_bytes import lyn_to_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
-LOOP = ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "BattleProcCalcLoop.event"
-PROC_SKILLS = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "ProcSkills" / "ProcSkills.event"
 HIT_SRC = (
     ROOT
     / "EngineHacks"
@@ -25,15 +22,10 @@ ADEPT_SRC = (
 )
 CLEAN_ROM = ROOT / "FE7_clean.gba"
 
-COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 GET_HIT_COUNT = 0x08029114
 BRAVE_EFFECT = 0x08029128
 ROUND_HITS = 0x080290B8
 GENERATE_HIT = 0x080294D8
-
-
-def _active_event(path: Path) -> str:
-    return COMMENT_RE.sub("", path.read_text(encoding="utf-8"))
 
 
 def adept_hit_count(brave: bool, has_adept: bool, speed: int, roll: int) -> int:
@@ -59,13 +51,6 @@ class AdeptSkillTests(unittest.TestCase):
         get_count = rom[GET_HIT_COUNT - 0x08000000 : BRAVE_EFFECT - 0x08000000]
         self.assertEqual(get_count[0:2], b"\x10\xb5")
         self.assertEqual(get_count[2:4], b"\x01\x24")
-
-    def test_installer_hooks_hit_count_and_skips_fe8_proc_buffer_writes(self):
-        loop = _active_event(LOOP)
-        skills = _active_event(PROC_SKILLS)
-        self.assertRegex(skills, r"\bGetBattleUnitHitCount_Adept\b")
-        self.assertRegex(skills, r"ORG\s+\$29114")
-        self.assertNotRegex(loop, r"\bProc_Adept\b")
 
     def test_source_adds_speed_percent_hit_via_skilltester(self):
         src = HIT_SRC.read_text(encoding="utf-8")

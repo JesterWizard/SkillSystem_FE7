@@ -17,7 +17,7 @@ Do not write all tests first, then all code.
 
 ## How to test here
 
-- Runner: `python tests/<name>.py` (`unittest`). `MAKE_HACK_full.cmd` runs these after assemble.
+- Runner: `python tests/run_tests.py` (combined list). `MAKE_HACK_full.cmd` runs source tests before assemble and ROM tests after. `python tests/<name>.py` still works for one file.
 - Prefer characterization of public effects: built ROM vs `FE7_clean.gba`, dump/tool stdout, Event Assembler output.
 - Skip (do not fail) if `FE7_clean.gba` or `FE7_Hack.gba` is missing.
 - Do not assert on private asm labels or “how” a hack is wired unless that wiring is the bug (e.g. a literal pool next to a patched pointer).
