@@ -10,6 +10,9 @@
 // Attack speed needed to double. Used if CanUnitDoubleCalcLoop is included.
 #define AS_DOUBLING_THRESHOLD 4
 
+// If uncommented, Lyn Mode / in-chapter tutorial events are stubbed out.
+#define DISABLE_TUTORIALS
+
 // Bly extra narrow serif (*) / menu (^) glyphs in unused 0x81+ font slots.
 // Comment out to skip install. This is not the UTF-8 font rewrite.
 #define NARROW_FONT

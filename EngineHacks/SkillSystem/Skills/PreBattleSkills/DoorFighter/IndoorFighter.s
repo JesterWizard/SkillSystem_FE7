@@ -24,8 +24,14 @@ beq GoBack
 
 ldrb r0,[r4,#0x10] @r0=x pos
 ldrb r1,[r4,#0x11] @r1=y pos
+cmp r0,#0xFF
+beq GoBack
+cmp r1,#0xFF
+beq GoBack
 ldr		r2,=gMapTerrain	@Load the location in the table of tables of the map you want
 ldr		r2,[r2]			@Offset of map's table of row pointers
+cmp		r2,#0
+beq		GoBack
 lsl		r1,#0x2			@multiply y coordinate by 4
 add		r2,r1			@so that we can get the correct row pointer
 ldr		r2,[r2]			@Now we're at the beginning of the row data

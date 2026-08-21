@@ -52,8 +52,15 @@ bool NihilTester(Unit* unit, u8 skillID) {
 /*Main functions*/
 
 SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
-    int unitNum = unit->pCharacterData->number;
-    int count = 0, temp = 0;
+    int unitNum = 0, count = 0, temp = 0;
+
+    if (!unit || !unit->pCharacterData || !unit->pClassData) {
+        buffer->lastUnitChecked = unit ? unit->index : 0;
+        buffer->skills[0] = 0;
+        return buffer;
+    }
+
+    unitNum = unit->pCharacterData->number;
     buffer->lastUnitChecked = unit->index;
 
     //Personal skill
@@ -99,19 +106,21 @@ SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
     //Equipped weapon skills
     //If unit is in combat, use the equipped weapon short
     if (unit->index == gBattleActor.unit.index && IsBattleReal()) {
-        temp = GetItemData(gBattleActor.weaponBefore & 0xFF)->skill;
+        temp = gBattleActor.weaponBefore;
     }
     else if (unit->index == gBattleTarget.unit.index && IsBattleReal()) {
-        temp = GetItemData(gBattleTarget.weaponBefore & 0xFF)->skill;
+        temp = gBattleTarget.weaponBefore;
     }
     //Otherwise, get the equipped weapon via a vanilla function
     else {
-        temp = GetItemData(GetUnitEquippedWeapon(unit) & 0xFF)->skill;
+        temp = GetUnitEquippedWeapon(unit);
     }
 
-    //Check if equipped weapon skill is valid
-    if (IsSkillIDValid(temp)) {
-        buffer->skills[count++] = temp;
+    {
+        const ItemData* itemData = GetItemData(temp & 0xFF);
+        if (itemData && IsSkillIDValid(itemData->skill)) {
+            buffer->skills[count++] = itemData->skill;
+        }
     }
 
     //Add terminator to end of list
@@ -186,6 +195,7 @@ bool CheckSkillBuffer(Unit* unit, u8 skillID) {
 bool SkillTester(Unit* unit, u8 skillID) {
     if (skillID == 0)   {return TRUE;}
     if (skillID == 255) {return FALSE;}
+    if (!unit || !unit->pCharacterData || !unit->pClassData) {return FALSE;}
 
     int index = unit->index;
 
@@ -207,6 +217,11 @@ bool SkillTester(Unit* unit, u8 skillID) {
         return !NihilTester(unit, skillID);
     }
 
+    //Catch 'Em All: treat the unit as having every skill
+    if (IsSkillIDValid(CatchEmAllIDLink) && IsSkillInBuffer(buffer, CatchEmAllIDLink)) {
+        return !NihilTester(unit, skillID);
+    }
+
     return FALSE;
 }
 
@@ -218,7 +233,8 @@ bool NewAuraSkillCheck(Unit* unit, u8 skillID, int allyOption, int maxRange) {
     if (skillID == 255) {return FALSE;}
 
     AuraSkillBuffer* auraBuffer = gAuraSkillBuffer;
-    for (int i = 0; auraBuffer[i].skillID; ++i) {
+    int limit = gSkillTestConfig.auraSkillBufferLimit;
+    for (int i = 0; i < limit && auraBuffer[i].skillID; ++i) {
         if (auraBuffer[i].distance <= maxRange && auraBuffer[i].skillID == skillID) {
 
             //NOTE: This is checking bits

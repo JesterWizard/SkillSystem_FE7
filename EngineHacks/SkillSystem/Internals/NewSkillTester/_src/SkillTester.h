@@ -44,6 +44,7 @@ extern u8 PersonalSkillTable[];
 extern u8 ClassSkillTable[];
 
 extern u8 NihilIDLink;
+extern u8 CatchEmAllIDLink;
 extern u32 PassiveSkillBit;
 
 extern SkillTestConfig gSkillTestConfig;

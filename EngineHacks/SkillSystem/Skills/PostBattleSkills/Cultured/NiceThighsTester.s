@@ -2,7 +2,7 @@
 .align 4
 
 .equ NiceThighsID, SkillTester+4
-.equ GetUnit, 0x8019431
+.equ GetUnit, 0x8018D0D
 .equ UnitMap, 0x202E3DC
 
 push {r4-r7,r14}

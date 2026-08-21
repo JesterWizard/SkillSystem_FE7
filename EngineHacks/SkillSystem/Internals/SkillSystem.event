@@ -157,13 +157,16 @@ ALIGN 4
 NihilIDLink:
 WORD NihilID
 
+ALIGN 4
+CatchEmAllIDLink:
+WORD CatchEmAllID
+
 
 ALIGN 4
 NegatedSkills: //comment or uncomment skills to your liking, this should come with an updated list of skills that work with nihil and are meant to
 //Confirmed working and grouped by type for easier adding/removing from the NegatedSkills list
 //please note that I have only tested one or two skills of each group so if there is any issue with any of them please let me know
-//FILL 0xFF
-/*
+FILL 256
 
 NegatedSkillEntry(VantageID)
 NegatedSkillEntry(VantagePlusID)
@@ -235,7 +238,7 @@ NegatedSkillEntry(TantivyID)
 NegatedSkillEntry(FocusID)
 NegatedSkillEntry(FieryBloodID)
 NegatedSkillEntry(WindDiscipleID)
-NegatedSkillEntry(HawkeyeID)
+//NegatedSkillEntry(HawkeyeID)
 NegatedSkillEntry(LightWeightID)
 NegatedSkillEntry(KillingMachineID)
 NegatedSkillEntry(CriticalForceID)
@@ -335,7 +338,6 @@ NegatedSkillEntry(EnrageID)
 NegatedSkillEntry(DeadeyeID)
 NegatedSkillEntry(DragonFangID)
 NegatedSkillEntry(FortuneID)
-*/
 
 /*
 //NOT WORKING (or they should not be affected by nihil)
@@ -354,7 +356,6 @@ BYTE RightfulArchID RightfulKingID RightfulGodID//Rightful skills shouldn't real
 BYTE SaviorID//works, but changes are not displayed in the pre-battle numbers (they ARE updated when the combat begins tho)
 BYTE ForeignPrincessID
 */
-BYTE 0x00 //terminator
 
 ALIGN 4
 SkillAdder: //given chardata in r0, skill in r1, add skill if possible

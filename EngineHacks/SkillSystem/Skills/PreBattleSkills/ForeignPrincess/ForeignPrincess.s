@@ -14,6 +14,8 @@ push {r4-r5,r14}
 mov r4,r0 @attacker
 mov r5,r1 @defender
 
+cmp r5,#0
+beq GoBack
 
 @are we in link arena mode?
 ldr r0,=CheckGameLinkArenaBit

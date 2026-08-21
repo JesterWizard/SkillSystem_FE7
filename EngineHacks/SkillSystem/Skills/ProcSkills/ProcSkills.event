@@ -73,6 +73,12 @@ Proc_Astra:
 POIN SkillTester
 WORD AstraID
 
+ALIGN 4
+Proc_Lethality:
+#include "Lethality/proc_lethality.lyn.event"
+POIN SkillTester
+WORD LethalityID
+
 /*
 ALIGN 4
 Proc_Devil:

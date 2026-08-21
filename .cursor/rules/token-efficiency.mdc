@@ -1,0 +1,32 @@
+---
+description: Cut chat tokens without dropping facts, paths, or citations the work needs
+alwaysApply: true
+---
+
+# Token efficiency
+
+This rule is always on. Keep replies short. Keep required context. Do not spend tokens restating process.
+
+## Keep (required context)
+
+- Paths, symbols, skill IDs, offsets, error strings — exact
+- Code citations for the lines you change or that prove the answer
+- One-sentence outcome: what changed or what the answer is
+- Ambiguity that would make a wrong edit: ask one targeted question
+
+## Cut (noise)
+
+- Recap of the user request, tool narration, “I will now”, option lists, hedging
+- Repeating instructions already in other rules/skills
+- Whole-file dumps, long logs, unused search hits
+- Extra files “for context” after the edit site is known
+
+## Explore
+
+User pointers first (`@` files, open tabs, named paths). Then one tight Grep if needed. Read only the slice you will use (`offset`/`limit`). No explore-agent tours. No synonym/repo-wide searches. Stop searching when you can act.
+
+## Reply shape
+
+Lead with the answer or the change. Then only the citations/facts that support it. Simple questions: 1–2 sentences. Code, comments, commits, and docs stay normal prose — compress chat, not artifacts.
+
+For extra compression in a session, the user can say `caveman` / `/caveman`.

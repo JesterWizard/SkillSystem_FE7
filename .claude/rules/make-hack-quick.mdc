@@ -1,0 +1,14 @@
+---
+description: After finishing work, assemble with MAKE_HACK_quick.cmd before returning control
+alwaysApply: true
+---
+
+# Assemble before handing back
+
+When the task is done (code/tests/docs shipped), **before** the final user-facing reply:
+
+1. Run `.\MAKE_HACK_quick.cmd` from the repo root (long-running; wait for it).
+2. Success: tell the user `FE7_Hack.gba` is ready to test.
+3. Failure: fix the error, re-run the script, repeat until it succeeds or you are blocked on a missing `FE7_clean.gba`/tool.
+
+Do not skip this after EngineHacks, Event Assembler, or test changes. Docs-only replies do not need a build.

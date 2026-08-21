@@ -9,8 +9,8 @@
 
 //AI Skills
 #define ProvokeID 43
-#define ShadeID 44
-#define ShadePlusID 45
+#define ShadeID SKILL_OFF
+#define ShadePlusID SKILL_OFF
 
 //Aura Skills
 #define AnathemaID 149
@@ -144,7 +144,7 @@
 #define NatureRushID 146
 
 //Mug-Loading Skills
-#define RandomMugID 130
+#define RandomMugID SKILL_OFF
 #define IdentityProblemsID SKILL_OFF
 
 //Post-Battle Skills
@@ -215,7 +215,7 @@
 #define FrenzyID SKILL_OFF
 #define EyesOfHawkID SKILL_OFF
 #define HeavyStrikesID SKILL_OFF
-#define HolyAuraID SKILL_OFF
+#define HolyAuraID 171
 #define InsightID SKILL_OFF
 #define KnightAspirantID 221
 #define LifeAndDeathID 173
@@ -278,7 +278,7 @@
 #define DragonSkinID SKILL_OFF
 #define StunningSmileID SKILL_OFF
 #define KeenFighterID 211
-#define SteadyBrawlerID SKILL_OFF
+#define SteadyBrawlerID 44
 
 //Proc Skills
 #define AdeptID 14
@@ -345,16 +345,16 @@
 #define AdvantageChaserID SKILL_OFF
 
 //Stat Modifier Skills
-#define DefiantStrID SKILL_OFF
-#define DefiantMagID SKILL_OFF
-#define DefiantSklID SKILL_OFF
-#define DefiantSpdID SKILL_OFF
-#define DefiantLckID SKILL_OFF
-#define DefiantDefID SKILL_OFF
-#define DefiantResID SKILL_OFF
+#define DefiantStrID 70
+#define DefiantMagID 71
+#define DefiantSklID 72
+#define DefiantSpdID 73
+#define DefiantLckID 74
+#define DefiantDefID 75
+#define DefiantResID 76
 #define ResolveID 153
-#define FortressDefenseID SKILL_OFF
-#define FortressResistanceID SKILL_OFF
+#define FortressDefenseID 77
+#define FortressResistanceID 78
 #define HeroesLifeAndDeathID 154
 #define PushStrID SKILL_OFF
 #define PushMagID SKILL_OFF
@@ -374,15 +374,15 @@
 #define StrongConstitutionID SKILL_OFF
 
 //Unit Menu Skills
-#define RallyStrID 70
-#define RallyMagID 71
-#define RallySklID 72
-#define RallySpdID 73
-#define RallyLukID 76
-#define RallyDefID 74
-#define RallyResID 75
-#define RallyMovID 77
-#define RallySpectrumID 78
+#define RallyStrID SKILL_OFF
+#define RallyMagID SKILL_OFF
+#define RallySklID SKILL_OFF
+#define RallySpdID SKILL_OFF
+#define RallyLukID SKILL_OFF
+#define RallyDefID SKILL_OFF
+#define RallyResID SKILL_OFF
+#define RallyMovID SKILL_OFF
+#define RallySpectrumID SKILL_OFF
 #define CaptureID 63
 #define DanceID 55
 #define GambleID 60
@@ -438,8 +438,8 @@
 #define AmischeID SKILL_OFF
 #define TriangleAttackID 6
 #define ShrewdPotentialID SKILL_OFF
-#define TempestID SKILL_OFF
-#define SerenityID SKILL_OFF
+#define TempestID 45
+#define SerenityID 130
 
 //Display-Only Skills
 #define CunningID 4

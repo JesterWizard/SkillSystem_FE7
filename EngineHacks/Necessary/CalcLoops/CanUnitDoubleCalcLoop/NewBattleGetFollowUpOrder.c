@@ -20,7 +20,19 @@ s8 NewBattleGetFollowUpOrder(struct BattleUnit** outAttacker, struct BattleUnit*
 
 
 void NewBattleUnwind(void); 
-extern int SkillTester(struct Unit* unit, int id); 
+extern int SkillTester(struct Unit* unit, int id);
+
+// FE7 stores a round as u16 attributes, u8 info, s8 hpChange.
+// gbafe.h uses the FE8 19/5/8 bitfields, so NewBattleUnwind uses this instead.
+struct Fe7BattleHit {
+	u16 attributes;
+	u8 info;
+	s8 hpChange;
+};
+extern struct Fe7BattleHit* gpCurrentRound;
+#define FE7_HIT_INFO_BEGIN 0x01
+#define FE7_HIT_INFO_END   0x80
+
 extern int AssassinateID_Link; 
 extern int DesperationID_Link; 
 extern int RecklessFighterID_Link; 
@@ -198,7 +210,7 @@ void NewBattleUnwind(void) {
 			defender = &gBattleActor; 
 		} 
 
-        gBattleHitIterator->info |= BATTLE_HIT_INFO_BEGIN;
+        gpCurrentRound->info |= FE7_HIT_INFO_BEGIN;
 
         if (!BattleGenerateRoundHits(attacker, defender)) { // attacker hits defender 
 			// if the initial hit doesn't kill:
@@ -206,33 +218,33 @@ void NewBattleUnwind(void) {
 				int atkrDouble = CanUnitDouble(attacker, defender);
 				int desperationEnds = false; // names? idk
 				if (atkrDouble) {
-					gBattleHitIterator->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
+					gpCurrentRound->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
 					desperationEnds = BattleGenerateRoundHits(attacker, defender);
 				}
 				if (!desperationEnds) {
 					//int followUpHits = BattleGetFollowUpOrder(&attacker, &defender);
-					gBattleHitIterator->attributes |= BATTLE_HIT_ATTR_RETALIATE; 
+					gpCurrentRound->attributes |= BATTLE_HIT_ATTR_RETALIATE; 
 					int countered = BattleGenerateRoundHits(&gBattleTarget, &gBattleActor); // defender (potentially) counter attacks 
 					if (!countered) {
 						if (!atkrDouble && (CanUnitDouble(&gBattleTarget, &gBattleActor))) {
-							gBattleHitIterator->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
+							gpCurrentRound->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
 							BattleGenerateRoundHits(&gBattleTarget, &gBattleActor);
 						}
 					}
 				}
 			}
 			else {
-				gBattleHitIterator->attributes |= BATTLE_HIT_ATTR_RETALIATE;
+				gpCurrentRound->attributes |= BATTLE_HIT_ATTR_RETALIATE;
 				int countered = BattleGenerateRoundHits(defender, attacker); // defender (potentially) counter attacks 
 				if (!countered) {
 					//if not the counter attack, follow up attack 
 					
 					int followUpHits = BattleGetFollowUpOrder(&attacker, &defender);
 					if (followUpHits) {
-						gBattleHitIterator->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
+						gpCurrentRound->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
 						int atkrDouble = BattleGenerateRoundHits(attacker, defender); 
 						if ((!atkrDouble) && (followUpHits == BothFollowUp)) { 
-							gBattleHitIterator->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
+							gpCurrentRound->attributes = BATTLE_HIT_ATTR_FOLLOWUP;
 							BattleGenerateRoundHits(defender, attacker);
 						}
 					}
@@ -241,7 +253,7 @@ void NewBattleUnwind(void) {
         }
     } while (FALSE);
 
-    gBattleHitIterator->info |= BATTLE_HIT_INFO_END;
+    gpCurrentRound->info |= FE7_HIT_INFO_END;
 	
 	asm("mov r0, #0"); // This is what a hook for Barricade did  
 	asm("mov r11, r0"); // for some reason it sets r11 to 0. r11 is not used by this function. 

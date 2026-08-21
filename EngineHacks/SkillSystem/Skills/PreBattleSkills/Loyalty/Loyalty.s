@@ -1,6 +1,7 @@
 .thumb
 .equ UnitRangeCheck, SkillTester+4
 .equ LoyaltyID, UnitRangeCheck+4
+.equ GetUnit, 0x8018D0D //FE8 -> 0x8019431
 
 push {r4-r7, lr}
 mov r4, r0 @atkr
@@ -31,14 +32,19 @@ ldrb r2,[r0]
 cmp r2,#0x0
 beq End
 add r0,#0x1
-
-mov r3,#0x48
-ldr r5,CharData
-sub r2,#0x1
-mul r3,r2
-add r5,r3
+push {r0}
+ldr r3,=GetUnit
+mov lr, r3
+mov r0, r2
+.short 0xf800
+mov r5, r0
+pop {r0}
+cmp r5,#0
+beq Loop
 mov r3,#0x4
 ldr r5,[r5,r3]
+cmp r5,#0
+beq Loop
 ldrb r3,[r5,r3]
 cmp r3,#0x1
 beq Final
@@ -46,11 +52,7 @@ cmp r3,#0x2
 beq Final
 cmp r3,#0x3
 beq Final
-cmp r3,#0x4
-beq Final
-cmp r3,#0x3B
-beq Final
-cmp r3,#0x3C
+cmp r3,#0x2D @Lyn (not tutorial)
 beq Final
 b Loop
 
@@ -67,15 +69,10 @@ add r2, #15
 strh r2, [r4,r1]
 
 
-
 End:
 pop {r4-r7, r15}
 .align
 .ltorg
-CharData:
-.long 0x202BD50 //FE8 -> 0x202be4c
-MovementPoin:
-.long 0x8BE3C16 //FE8 -> 0x880bb96
 SkillTester:
 @Poin SkillTester
 @WORD LoyaltyID

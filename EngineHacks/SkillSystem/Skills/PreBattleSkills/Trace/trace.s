@@ -4,12 +4,19 @@
 .equ PersonalSkillTable, 0x8D006CC
 @ lPersonalSkillTable  = EALiterals+0x00
 
-push	{r4, lr}
+push	{r4, r5, lr}
 mov	r4, r0 @attacker
 mov	r5, r1 @defender
+cmp	r5, #0
+beq	End
 ldr	r0,=#0x203A3F0 //FE8 -> #0x203A4EC
 cmp	r4,r0
 bne	End
+
+@stat screen / UI stats have no live defender
+ldr	r1, [r5, #4]
+cmp	r1, #0
+beq	End
 
 @For the attacker:
 @check skill
@@ -94,7 +101,9 @@ StoreDefender:
 strb	r3,[r1,r2]
 
 End:
-pop	{r4, r15}
+pop	{r4, r5}
+pop	{r0}
+bx	r0
 .align
 .ltorg
 SkillTester:

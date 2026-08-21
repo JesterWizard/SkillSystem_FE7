@@ -11,7 +11,7 @@ PostCombatLoop:
 
 PostCombatSkills: //I like having savage blow as the first one because it makes the activation sound play first
 POIN /* Despoil */ Lifetaker Fury /*PoisonStrike GrislyWound*/
-POIN /* Canto */ /* CantoPlus */ Galeforce FailGale ReMove Powerstaff
+POIN /* Canto */ /* CantoPlus */ Galeforce FailGale ReMove Powerstaff CulturedPostCombat
 WORD 0 //Terminator
 
 PROTECT $1CC54 $1CC60

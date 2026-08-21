@@ -8,6 +8,10 @@
 
 #include "Config.event"
 
+#ifdef DISABLE_TUTORIALS
+  #include "Necessary/DisableTutorials.event"
+#endif
+
   // Keep-list: Skill System, Vesly debugger, and skill-plumbing Necessary modules.
 
   #include "Necessary/ModularStatScreen/ModularStatScreen.event"

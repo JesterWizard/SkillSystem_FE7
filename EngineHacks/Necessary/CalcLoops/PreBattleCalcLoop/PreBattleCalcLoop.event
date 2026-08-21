@@ -16,6 +16,7 @@ POIN BtlLoopList
 
 ALIGN 4
 BtlLoopList:
+POIN InitializePreBattleLoop
 POIN BC_DefRes BC_Power BC_ASpd BC_Hit BC_Avo BC_Crit CritUpSkill BC_Dodge BC_Support BC_WRank BC_Status //these are the existing battle calculation routines
 POIN FaireCheck
 POIN BreakerCheck MageSlayer
@@ -29,7 +30,7 @@ POIN DancingBlade
 POIN ElbowRoom NaturalCover FieryBlood LifeAndDeath WindDisciple Perfectionist Puissance EyesOfHawk LightWeight Trample Opportunist BattleVeteran SilentPride Thunderstorm HeavyStrikes Charge Vanity KnightAspirant Outrider AssassinateDamageBonus ArcaneBlade
 POIN Prescience
 POIN Insight Vigilance DefiantAvo DefiantCrit TowerShield ShortShield IndoorFighter OutdoorFighter Deadeye Fortune ChaosStyle StunningSmile HeavyBlade
-POIN BlueFlame DoubleLion Thighdeology Thotslayer ForeignPrincess /* ChargePlus */
+POIN BlueFlame DoubleLion Thighdeology Thotslayer ForeignPrincess ChargePlus HolyAura Cultured SteadyBrawler
 POIN Frenzy
 POIN KeenFighter
 POIN TowerShieldPlus
@@ -46,7 +47,8 @@ POIN 0
 
 ALIGN 4
 AuraSkillTable:
-FILL 0
+FILL 256
+AuraSkillEntry(NiceThighsID)
 
 PUSH
 ORG 0x28484 //FE7 -> FE8 0x2a3f8

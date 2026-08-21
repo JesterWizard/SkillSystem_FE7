@@ -4,5 +4,5 @@
 //
 ALIGN 4
 LynTutorialSkillList:
-// LevelUpSkill(1, CritUpID)
+LevelUpSkill(0xFF, ChargePlusID)
 LevelUpSkillListEnd
