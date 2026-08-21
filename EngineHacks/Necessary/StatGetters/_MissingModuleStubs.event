@@ -1,0 +1,99 @@
+#ifndef MODULAR_GETTER_MISSING_MODULE_STUBS_EVENT
+#define MODULAR_GETTER_MISSING_MODULE_STUBS_EVENT
+
+// Pass-through stubs for stat-modifier routines whose backing modules are not
+// installed in this build.
+//
+// The per-stat modifier chains in this directory are the upstream Skill System
+// ones and reference every routine upstream ships. This build's keep-list
+// (see EngineHacks/_MasterHackInstaller.event) leaves out:
+//
+//   * Necessary/Debuffs/Debuffs.event -- supplies GetUnitDebuffEntry and the
+//     *RallyOffset_Link / DebuffStatBitOffset_* storage, which the real
+//     RallyStat / DebuffStat / HalfStatFunctions routines read. It also ORGs
+//     ~a dozen vanilla sites and adds per-unit extra data, so enabling it is a
+//     separate decision, not a side effect of wiring up the getters.
+//   * SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event -- VigorDanceCheck.
+//   * The Capture skill -- Is_Capture_Set.
+//
+// A modifier routine is called with r0 = running stat value, r1 = unit, and
+// must return both untouched to pass the value through, so `bx lr` is the
+// correct no-op. This matches prArmorMarchCheck in
+// SkillSystem/Skills/StatModifierSkills/StatModifierSkills.event.
+//
+// These stubs keep the chains assembling so the modifiers that ARE installed
+// (Defiant, Push, Resolve, Fury, Fortress, Life and Death, equip bonuses and
+// item passives) actually run. The stubbed features were already inert -- with
+// no installer they had no effect on any stat -- so this is not a regression.
+// Define MSG_HAS_DEBUFFS to use the real routines once Debuffs.event is in.
+
+#define prPassThrough "SHORT 0x4770" // bx lr
+
+#ifndef MSG_HAS_DEBUFFS
+
+ALIGN 4
+HalfHpFunc:   prPassThrough
+ALIGN 4
+HalfStrFunc:  prPassThrough
+ALIGN 4
+HalfMagFunc:  prPassThrough
+
+ALIGN 4
+prRallyStr:   prPassThrough
+ALIGN 4
+prRallyMag:   prPassThrough
+ALIGN 4
+prRallySkl:   prPassThrough
+ALIGN 4
+prRallySpd:   prPassThrough
+ALIGN 4
+prRallyDef:   prPassThrough
+ALIGN 4
+prRallyRes:   prPassThrough
+ALIGN 4
+prRallyLuk:   prPassThrough
+ALIGN 4
+prRallyMov:   prPassThrough
+
+ALIGN 4
+prDebuffStr:  prPassThrough
+ALIGN 4
+prDebuffMag:  prPassThrough
+ALIGN 4
+prDebuffSkl:  prPassThrough
+ALIGN 4
+prDebuffSpd:  prPassThrough
+ALIGN 4
+prDebuffDef:  prPassThrough
+ALIGN 4
+prDebuffRes:  prPassThrough
+ALIGN 4
+prDebuffLuk:  prPassThrough
+ALIGN 4
+prDebuffMov:  prPassThrough
+
+// Upstream MaxMovCap clamps Mov to the debuff module's cap; without that
+// storage there is nothing to clamp against, so pass the value through.
+ALIGN 4
+MaxMovCap:    prPassThrough
+
+#endif // MSG_HAS_DEBUFFS
+
+#ifndef MSG_HAS_VIGOR_DANCE
+ALIGN 4
+VigorDanceCheck: prPassThrough
+#endif // MSG_HAS_VIGOR_DANCE
+
+#ifndef MSG_HAS_CAPTURE
+// Is_Capture_Set is a ROUTINE, not a flag word. HalveIfCapturing.s does
+// `ldr r3,Is_Capture_Set; mov lr,r3; .short 0xf800` -- it *calls* the pointer
+// and branches on the returned r0. A `WORD 0` stub here made prHalveIfCapturing
+// jump into the freespace data that follows and run it as code, which is what
+// hung the stat screen (black screen) on every stat whose chain contains it.
+// Return 0 = "not capturing".
+ALIGN 4
+Is_Capture_Set:
+SHORT 0x2000 0x4770 // movs r0, #0 ; bx lr
+#endif // MSG_HAS_CAPTURE
+
+#endif // MODULAR_GETTER_MISSING_MODULE_STUBS_EVENT

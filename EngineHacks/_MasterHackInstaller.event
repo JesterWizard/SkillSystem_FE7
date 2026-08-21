@@ -32,8 +32,14 @@
   #include "Necessary/GrowthGetters/GrowthGetters.event"
   #include "Necessary/CalcLoops/CalcLoops.event"
 
+  // Modular Stat Getters: hooks the vanilla GetUnit* entry points so the
+  // per-stat modifier chains (Defiant, Rally, Push, Resolve, Fury, debuffs,
+  // item passives) actually run. Must come after the skill system, which
+  // defines the prDefiant*/prPush*/prResolve routines the chains point at.
+  ALIGN 4
+  #include "Necessary/StatGetters/_InstallStatGetters.event"
+
   #ifdef USE_STRMAG_SPLIT
-	#include "Necessary/MSG/Extensions/Strmag.event"
 	#include "ExternalHacks/StrMagSplit/_MasterAsmInstaller.event"
   #endif // USE_STRMAG_SPLIT
 

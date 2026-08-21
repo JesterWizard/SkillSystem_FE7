@@ -24,16 +24,11 @@ ldr r1, ChargePlusID
 cmp r0, #0
 beq GoBack
 
-ldr r1, [r4,#4]
-cmp r1, #0
-beq GoBack
-ldrb r0, [r1,#0x12]
-mov r1, #0x1D
-ldrsb r1, [r4, r1]
-add r0, r1
+mov r0, #0x1D
+ldrsb r0, [r4, r0] @unit's total movement (already accounts for class + bonuses; not a delta to add)
 cmp r0, #0
 ble GoBack
-mov r6, r1 @unit movement
+mov r6, r0 @unit movement
 
 ldr r3, =0x203A85C
 ldrb r1, [r3, #0x10] @spaces moved this turn (ActionData+0x10)

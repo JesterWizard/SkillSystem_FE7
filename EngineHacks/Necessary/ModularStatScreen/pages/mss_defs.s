@@ -395,6 +395,53 @@
   draw_bar_at \bar_x, \bar_y, ResGetter, 0x18, 5
 .endm
 
+@ total (via getter, includes all modifiers e.g. Defiant/rally/equip) vs raw base stat byte on unit; green if boosted
+.macro draw_stat_number_at, tile_x, tile_y, getter, offset
+  mov     r0, r8
+  blh     \getter
+  mov     r6, r0
+  mov     r1, r8
+  mov     r3, #\offset
+  ldsb    r3, [r1, r3]
+  cmp     r6, r3
+  beq     StatNotBoosted_\@
+  mov     r1, #Green
+  b       FromStatBoosted_\@
+  StatNotBoosted_\@:
+  mov     r1, #Blue
+  FromStatBoosted_\@:
+  mov     r0, r6
+  draw_number_at \tile_x, \tile_y, colour=-1
+.endm
+
+.macro draw_str_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, StrGetter, 0x14
+.endm
+
+.macro draw_mag_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, MagGetter, 0x47
+.endm
+
+.macro draw_skl_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, SklGetter, 0x15
+.endm
+
+.macro draw_spd_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, SpdGetter, 0x16
+.endm
+
+.macro draw_luck_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, LuckGetter, 0x19
+.endm
+
+.macro draw_def_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, DefGetter, 0x17
+.endm
+
+.macro draw_res_number_at, tile_x, tile_y
+  draw_stat_number_at \tile_x, \tile_y, ResGetter, 0x18
+.endm
+
 .macro draw_growth_at, bar_x, bar_y
   mov     r14, r0        @r0 = growth getter to bl to
   mov     r0, r8
@@ -491,7 +538,7 @@
   mov     r1, #Blue
   FromMoveBoosted:
   add     r0, r0, r3
-  draw_number_at \tile_x, \tile_y
+  draw_number_at \tile_x, \tile_y, colour=-1
 .endm
 
 .macro draw_con_bar_at, bar_x, bar_y
@@ -569,7 +616,7 @@
   mov     r1, #Blue
   FromConBoosted:
   add     r0, r0, r3
-  draw_number_at \tile_x, \tile_y
+  draw_number_at \tile_x, \tile_y, colour=-1
 .endm
 
 .macro draw_con_bar_with_getter_at, bar_x, bar_y
@@ -600,12 +647,14 @@
   blh     DrawBar, r4
 .endm
 
-.macro draw_number_at, num_x, num_y, routine=0, colour=2 @r0 is number and r1 is colour
+.macro draw_number_at, num_x, num_y, routine=0, colour=2 @r0 is number and r1 is colour. colour=-1 keeps r1 as already set by caller
   .if \routine
   mov     r0, r8
   blh \routine
   .endif
+  .if \colour >= 0
   mov     r1, #\colour @defaults to blue
+  .endif
   mov     r2, r0
   ldr     r0, =(tile_origin+(0x20*2*\num_y)+(2*\num_x))
   blh     DrawDecNumber

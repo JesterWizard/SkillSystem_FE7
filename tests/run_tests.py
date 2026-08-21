@@ -183,8 +183,9 @@ def main(argv: list[str] | None = None) -> int:
         phase, title = "all", "All tests"
 
     os.chdir(ROOT)
-    if str(TEST_DIR) not in sys.path:
-        sys.path.insert(0, str(TEST_DIR))
+    for path in (str(ROOT), str(TEST_DIR)):
+        if path not in sys.path:
+            sys.path.insert(0, path)
 
     suite = load_suite(phase)
     result = ListResult()

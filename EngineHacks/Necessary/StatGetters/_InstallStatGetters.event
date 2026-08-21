@@ -12,10 +12,18 @@
 
 #include "_Common.event"
 
-#include "_asm/Bitpack.lyn.event" 
-#include "_asm/HalfStatFunctions.lyn.event" 
-#include "_asm/RallyStat.lyn.event" 
-#include "_asm/DebuffStat.lyn.event" 
+#include "_asm/Bitpack.lyn.event"
+
+// The real half/rally/debuff routines read storage that only
+// Necessary/Debuffs/Debuffs.event provides; without it they do not link.
+// _MissingModuleStubs.event supplies pass-through no-ops instead.
+#ifdef MSG_HAS_DEBUFFS
+	#include "_asm/HalfStatFunctions.lyn.event"
+	#include "_asm/RallyStat.lyn.event"
+	#include "_asm/DebuffStat.lyn.event"
+#endif // MSG_HAS_DEBUFFS
+
+#include "_MissingModuleStubs.event"
 
 #include "MaxHP.event"
 #include "CurHP.event"

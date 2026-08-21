@@ -6,24 +6,16 @@
 	#define STRMAG_MSG
 
 	// FE7 Mag at unit+0x47.
-	// Hook Pow at 0x18AD0 (frees vanilla body); Mag trampoline at 0x18AD8.
 	#define UNIT_MAGIC 0x47
 
-	PUSH
-	ORG 0x18AD0
-		jumpToHack(prPowGetter)
-	ORG 0x18AD8
-		prGotoMagGetter:
-			jumpToHack(MagGetter)
-	POP
+	// Magic.event reads the equipped-item mag bonus through this name; the
+	// routine itself is installed by StrMagSplit/_MasterAsmInstaller.event.
+	#define prGetItemMagBonus GetItemMagBonus
 
-	ALIGN 4
-	prPowGetter:
-		#incbin "PowGetter.dmp"
-
-	ALIGN 4
-	MagGetter:
-	prMagGetter:
-		#incbin "MagGetter.dmp"
+	// Pow (0x18AD0) and Mag (0x18AD8) are hooked by InstallCore.event, which
+	// points them at pPowerModifiers / pMagicModifiers. The PowGetter.dmp /
+	// MagGetter.dmp stubs that used to be installed here were bare base-stat
+	// reads (push {lr}; mov r1,#0x14; ldrsb r0,[r0,r1]; pop {r1}; bx r1) with
+	// no modifier chain, so every Str/Mag modifier was silently inert.
 
 #endif // STRMAG_MSG

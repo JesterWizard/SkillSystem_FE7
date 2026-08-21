@@ -1,0 +1,168 @@
+"""Real-CPU register/memory verification harness for hand-written Thumb skill ASM.
+
+Hand-tracing a Thumb instruction stream (which struct offset lands in which
+register) is exactly how the ChargePlus movement bug slipped through: the
+add-into-r0-then-copy-r1 sequence *looked* right on paper but doubled the
+movement value in practice. This harness assembles a .s file with the
+project's real devkitARM toolchain and executes it under a Unicorn ARM7TDMI
+(Thumb) emulator against synthetic struct memory, so a test can assert what
+a register actually contains at a given point, instead of trusting a read of
+the source.
+
+Usage sketch (see Tests/test_chargeplus_execution.py):
+
+    code = assemble(SRC_PATH)
+    offsets = symbol_offsets(SRC_PATH)
+    h = Harness(code)
+    h.seed(ATTACKER_ADDR + 0x1D, struct.pack("b", 5))     # unit movement
+    h.seed(ACTIONDATA_ADDR + 0x10, struct.pack("B", 5))   # spaces moved
+    h.run(offsets["GoBack"], regs={"r0": ATTACKER_ADDR, "r1": DEFENDER_ADDR})
+    assert h.read(ATTACKER_ADDR + 0x4C, 4)[3] & 0x20  # brave bit
+"""
+from __future__ import annotations
+
+import subprocess
+import tempfile
+from pathlib import Path
+
+from unicorn import Uc, UcError, UC_ARCH_ARM, UC_MODE_THUMB
+from unicorn.arm_const import (
+    UC_ARM_REG_R0,
+    UC_ARM_REG_R1,
+    UC_ARM_REG_R2,
+    UC_ARM_REG_R3,
+    UC_ARM_REG_R4,
+    UC_ARM_REG_R5,
+    UC_ARM_REG_R6,
+    UC_ARM_REG_R7,
+    UC_ARM_REG_LR,
+    UC_ARM_REG_SP,
+)
+
+DEVKITARM = Path(r"C:\devkitPro\devkitARM\bin")
+AS = DEVKITARM / "arm-none-eabi-as.exe"
+OBJCOPY = DEVKITARM / "arm-none-eabi-objcopy.exe"
+NM = DEVKITARM / "arm-none-eabi-nm.exe"
+
+REG_MAP = {
+    "r0": UC_ARM_REG_R0,
+    "r1": UC_ARM_REG_R1,
+    "r2": UC_ARM_REG_R2,
+    "r3": UC_ARM_REG_R3,
+    "r4": UC_ARM_REG_R4,
+    "r5": UC_ARM_REG_R5,
+    "r6": UC_ARM_REG_R6,
+    "r7": UC_ARM_REG_R7,
+    "lr": UC_ARM_REG_LR,
+    "sp": UC_ARM_REG_SP,
+}
+
+CODE_BASE = 0x08000000
+STACK_BASE = 0x03000000
+STACK_SIZE = 0x1000
+PAGE = 0x1000
+
+# Every skill .s in this codebase calls the shared SkillTester routine via a
+# hand-spliced trampoline (`ldr r0, SkillTester; mov lr, r0; mov r0, r4;
+# ldr r1, <SkillID>; .short 0xf800`), because SkillTester's real address is
+# only known once FEBuilder inserts this blob into the final ROM. Real
+# ARM7TDMI decodes that lone `0xf800` halfword as a valid (if unusual) 16-bit
+# BL-second-half; Unicorn's default core instead reads it as the start of a
+# 32-bit Thumb-2 instruction and raises UC_ERR_INSN_INVALID. Since this
+# harness doesn't model the external SkillTester routine anyway, the whole
+# 5-halfword trampoline is patched out before loading and replaced with
+# NOPs + `movs r0, #<skill_present>`, matching the call's only externally
+# visible effect (r0 becomes truthy/falsy).
+SKILLTESTER_CALL = b"\x00\xf8"  # the raw `.short 0xf800`, little-endian
+NOP = 0x46C0  # `mov r8, r8`, the standard Thumb NOP idiom
+TRAMPOLINE_HALFWORDS = 5  # ldr/mov/mov/ldr/short-f800
+
+
+def assemble(src: Path) -> bytes:
+    """Assemble src with the project's ARM toolchain; return raw .text bytes."""
+    with tempfile.TemporaryDirectory() as tmp:
+        elf = Path(tmp) / (src.stem + ".elf")
+        binf = Path(tmp) / (src.stem + ".bin")
+        subprocess.run(
+            [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
+             f"-I{src.parent}", str(src), "-o", str(elf)],
+            check=True, capture_output=True, text=True,
+        )
+        subprocess.run(
+            [str(OBJCOPY), "-O", "binary", str(elf), str(binf)],
+            check=True, capture_output=True, text=True,
+        )
+        return binf.read_bytes()
+
+
+def symbol_offsets(src: Path) -> dict[str, int]:
+    """Label -> byte offset within the assembled .text, via nm (not hand-counted)."""
+    with tempfile.TemporaryDirectory() as tmp:
+        elf = Path(tmp) / (src.stem + ".elf")
+        subprocess.run(
+            [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
+             f"-I{src.parent}", str(src), "-o", str(elf)],
+            check=True, capture_output=True, text=True,
+        )
+        out = subprocess.run(
+            [str(NM), str(elf)], check=True, capture_output=True, text=True,
+        ).stdout
+    offsets: dict[str, int] = {}
+    for line in out.splitlines():
+        parts = line.split()
+        if len(parts) == 3:
+            addr_hex, _kind, name = parts
+            offsets[name] = int(addr_hex, 16)
+    return offsets
+
+
+def _patch_skilltester_trampoline(code: bytes, skill_present: bool) -> bytes:
+    idx = code.find(SKILLTESTER_CALL)
+    if idx == -1:
+        return code  # no SkillTester call in this snippet; nothing to patch
+    span_start = idx - 2 * (TRAMPOLINE_HALFWORDS - 1)
+    if span_start < 0:
+        raise ValueError("`.short 0xf800` found without a full 5-halfword trampoline before it")
+    patched = bytearray(code)
+    for i in range(TRAMPOLINE_HALFWORDS - 1):
+        patched[span_start + 2 * i: span_start + 2 * i + 2] = NOP.to_bytes(2, "little")
+    movs_r0 = 0x2000 | (1 if skill_present else 0)  # `movs r0, #imm8`
+    patched[idx: idx + 2] = movs_r0.to_bytes(2, "little")
+    return bytes(patched)
+
+
+class Harness:
+    """Executes assembled Thumb code against caller-seeded struct memory."""
+
+    def __init__(self, code: bytes, skill_present: bool = True):
+        code = _patch_skilltester_trampoline(code, skill_present)
+        self.uc = Uc(UC_ARCH_ARM, UC_MODE_THUMB)
+        code_size = ((len(code) + PAGE - 1) // PAGE) * PAGE or PAGE
+        self.uc.mem_map(CODE_BASE, code_size)
+        self.uc.mem_write(CODE_BASE, code)
+        self.uc.mem_map(STACK_BASE, STACK_SIZE)
+        self.uc.reg_write(UC_ARM_REG_SP, STACK_BASE + STACK_SIZE - 0x100)
+
+    def map_page(self, addr: int, size: int = 4):
+        base = addr & ~(PAGE - 1)
+        top = (addr + max(size, 1) + PAGE - 1) & ~(PAGE - 1)
+        try:
+            self.uc.mem_map(base, top - base)
+        except UcError:
+            pass  # already mapped (or overlaps a mapped page); fine either way
+
+    def seed(self, addr: int, data: bytes):
+        self.map_page(addr, len(data))
+        self.uc.mem_write(addr, data)
+
+    def read(self, addr: int, size: int) -> bytes:
+        return bytes(self.uc.mem_read(addr, size))
+
+    def run(self, stop_offset: int, regs: dict[str, int], entry_offset: int = 0,
+             timeout_us: int = 200_000) -> dict[str, int]:
+        for name, value in regs.items():
+            self.uc.reg_write(REG_MAP[name], value)
+        entry = CODE_BASE + entry_offset
+        stop = CODE_BASE + stop_offset
+        self.uc.emu_start(entry | 1, stop, timeout=timeout_us)
+        return {name: self.uc.reg_read(reg) for name, reg in REG_MAP.items()}

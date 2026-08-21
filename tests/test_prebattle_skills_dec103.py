@@ -184,10 +184,10 @@ class PreBattleDec103Tests(unittest.TestCase):
             / "EngineHacks/SkillSystem/Skills/PreBattleSkills/ChargePlus/ChargePlus.s"
         )
         code = _asm_code(src)
-        self.assertIn("0x12", code)
         self.assertIn("0x1D", code)
         self.assertIn("0x203A85C", code)
         self.assertIn("#0x10", code)
+        self.assertRegex(code, r"mov\s+r6,\s*r0")
         self.assertRegex(code, r"cmp\s+r1,\s*r6")
         self.assertRegex(code, r"bne\s+GoBack")
         self.assertIn("0x20", code)
