@@ -16,7 +16,7 @@ set "target_rom=%~dp0FE7_Hack.gba"
 
 @rem defining tools
 
-set "textprocess=%~dp0Tools\TextProcess\text-process-classic"
+set "textprocess_py=%~dp0Tools\TextProcess\text-process-classic.py"
 set "ups=%~dp0Tools\ups\ups"
 set "parsefile=%~dp0EventAssembler\Tools\ParseFileUTF8.exe"
 set "tmx2ea=%~dp0Tools\tmx2ea\tmx2ea"
@@ -40,7 +40,7 @@ if /I not [%1]==[quick] (
   echo Processing text
 
   cd "%base_dir%Text"
-  echo: | ("%textprocess%" text_buildfile.txt --parser-exe "%parsefile%" --installer "InstallTextData.event" --definitions "TextDefinitions.event")
+  echo: | (python "%textprocess_py%" text_buildfile.txt --parser-exe "%parsefile%" --installer "InstallTextData.event" --definitions "TextDefinitions.event")
 
   echo:
   echo Processing maps

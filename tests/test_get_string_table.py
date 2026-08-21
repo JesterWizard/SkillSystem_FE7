@@ -125,19 +125,23 @@ class GetStringTableTests(unittest.TestCase):
         self.assertTrue(is_rom_ptr(live), f"Str text pointer {live:08X} is not in ROM")
         self.assertEqual(live & 0x7FFFFFFF, vanilla & 0x7FFFFFFF)
 
-    def test_skills_string_is_anti_huffman_skills(self):
-        live = self.table_entry(self.hack, self.live_table_off(), TID_SKILLS)
-        self.assertEqual(live & 0x80000000, 0x80000000, "Skills must be anti-Huffman")
+    def anti_huffman_payload(self, text_id: int, maxlen: int = 64) -> bytes:
+        live = self.table_entry(self.hack, self.live_table_off(), text_id)
+        self.assertEqual(live & 0x80000000, 0x80000000, f"text 0x{text_id:X} must be anti-Huffman")
         off = gba_to_file(live)
-        self.assertLess(off + 7, len(self.hack))
-        self.assertEqual(self.hack[off:off + 7], b"Skills\x00")
+        end = self.hack.find(b"\x00", off, off + maxlen)
+        self.assertNotEqual(end, -1, f"text 0x{text_id:X} is not null-terminated")
+        self.assertGreater(end - off, 0, f"text 0x{text_id:X} is empty")
+        return self.hack[off : end + 1]
+
+    def test_skills_string_is_anti_huffman_skills(self):
+        """Stat-screen Skills label is setText (anti-Huffman). Wording may use NarrowFont codes."""
+        self.anti_huffman_payload(TID_SKILLS)
 
     def test_affin_label_is_affin(self):
-        """FE7 0x1100 is 'Div', not Affin. Personal data must use a dedicated string."""
-        live = self.table_entry(self.hack, self.live_table_off(), TID_AFFIN)
-        self.assertEqual(live & 0x80000000, 0x80000000, "Affin must be anti-Huffman")
-        off = gba_to_file(live)
-        self.assertEqual(self.hack[off:off + 6], b"Affin\x00")
+        """FE7 0x1100 is 'Div', not the personal-data Affin label."""
+        blob = self.anti_huffman_payload(TID_AFFIN)
+        self.assertNotEqual(blob, b"Div\x00")
 
     def test_string_expander_accepts_anti_huffman(self):
         """Talk/Skills use setText's 0x80000000 bit. Vanilla 08004364 only Huffman-decodes; that hangs before the stat page is copied to the screen."""

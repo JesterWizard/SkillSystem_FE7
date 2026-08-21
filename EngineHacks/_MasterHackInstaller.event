@@ -46,4 +46,7 @@ ALIGN 4
 ALIGN 4
 #include "ExternalHacks/AnimNumbers/AnimNumbers.event"
 
+ALIGN 4
+#include "ExternalHacks/NarrowFont/NarrowFontInstaller.event"
+
 #include "ExternalHacks/VeslyDebugger/Installer.event"
