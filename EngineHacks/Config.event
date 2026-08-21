@@ -14,6 +14,9 @@
 // Comment out to skip install. This is not the UTF-8 font rewrite.
 #define NARROW_FONT
 
+// If uncommented, will use allegiance-based statscreen palettes.
+#define STATSCREEN_ALLEGIANCE
+
 // =================================
 // = SKILL BEHAVIOUR CONFIGURATION =
 // =================================

@@ -11,6 +11,10 @@
   // Keep-list: Skill System, Vesly debugger, and skill-plumbing Necessary modules.
 
   #include "Necessary/ModularStatScreen/ModularStatScreen.event"
+
+  ALIGN 4
+  #include "ExternalHacks/StatScreenAllegiance/StatScreenAllegiance.event"
+
   #include "Necessary/Routines/Installer.event"
 
   ALIGN 4

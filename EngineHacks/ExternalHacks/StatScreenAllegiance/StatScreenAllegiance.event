@@ -1,0 +1,26 @@
+#ifdef STATSCREEN_ALLEGIANCE
+
+// Statscreen palette based on allegiance
+// Hack by circleseverywhere, ported to FE7
+
+#ifdef _FE7_
+
+{
+  PUSH
+  // 0x81132 is 2-mod-4, so jumpToHack's adjacent POIN is unaligned.
+  // ldr r3, [pc, #4]; bx r3; nop; POIN — literal at 0x81138.
+  ORG $81132
+  SHORT 0x4B01 0x4718 0x46C0
+  POIN StatscreenAlleg|1
+  POP
+
+  ALIGN 4
+  StatscreenAlleg:
+  #incbin "asm/statscreenAlleg.dmp"
+}
+
+#else // _FE7_
+  ERROR Statscreen palette based on allegiance hack is for FE7
+#endif // _FE7_
+
+#endif // STATSCREEN_ALLEGIANCE
