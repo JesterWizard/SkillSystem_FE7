@@ -5,3 +5,4 @@
 #include "BattleProcCalcLoop/BattleProcCalcLoop.event"
 #include "HPRestorationCalcLoop/HPRestorationCalcLoop.event"
 #include "CanUnitDoubleCalcLoop/CanUnitDoubleCalcLoop.event"
+#include "WTACalcLoop/WTACalcLoop.event"

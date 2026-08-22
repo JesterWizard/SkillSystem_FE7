@@ -7,11 +7,11 @@
     .short 0xF800
 .endm
 
-.equ ApplyReaver, 0x0802A11E
+.equ ApplyReaver, 0x0802A121
 
 .global WTACalcLoop
 .type WTACalcLoop, %function
-WTACalcLoop: @ Autohook to 0x0802C830. Loop through all functions under label WTACalcFunctions.
+WTACalcLoop: @ Autohook to 0x0802A1E0 (FE8 0x0802C830). Loop through all functions under label WTACalcFunctions.
 @ r4 = attack struct, r5 = defense struct.
 @ Assumed parameters for all functions: r0 = attack struct, r1 = defense struct.
 and r0, r6

@@ -2,7 +2,7 @@
 	/* WTA calculation loop*/
 
 PUSH
-	ORG $2c830
+	ORG $2A1E0 // FE8 -> $2C830 (defender reaver check in BattleApplyWeaponTriangleEffect)
 		ALIGN 4
 		SHORT $4778 $46C0
 		WORD $E59FC000 $E12FFF1C
@@ -21,4 +21,4 @@ POIN Poise
 #endif // REAVER_SPLIT
 WORD 0 // Terminator
 
-PROTECT 0x2C830 0x2C840
+PROTECT 0x2A1E0 0x2A1F0
