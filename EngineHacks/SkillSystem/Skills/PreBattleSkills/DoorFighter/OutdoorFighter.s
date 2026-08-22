@@ -3,7 +3,7 @@
 
 .equ OutdoorFighterID,SkillTester+4
 .equ OutdoorTerrainList,OutdoorFighterID+4
-.equ gMapTerrain,0x202EBB0 //FE8 -> 0x202E4DC
+.equ gMapTerrain,0x202E3E0 //FE8 -> 0x202E4DC
 
 @inOutdoor/outOutdoor fighter func
 
