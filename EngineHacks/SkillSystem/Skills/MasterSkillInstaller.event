@@ -30,7 +30,7 @@ POP
 #include "PostBattleSkills/PostBattleSkills.event"
 #include "PreBattleSkills/PreBattleSkills.event"
 #include "ProcSkills/ProcSkills.event"
-//#include "RangeSkills/RangeSkills.event"
+#include "RangeSkills/RangeSkills.event"
 #include "RoundsSkills/RoundsSkills.event"
 //#include "StandaloneSkills/StandaloneSkills.event"
 #include "StandaloneSkills/Bargain/Bargain.event"

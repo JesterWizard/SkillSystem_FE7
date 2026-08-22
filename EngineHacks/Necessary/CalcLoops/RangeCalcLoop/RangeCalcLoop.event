@@ -1,13 +1,32 @@
 #define RangeSkill(SkillID, routine) "WORD SkillID; POIN routine|1"
 #define RangeSkillListEnd "WORD 0 0"
 
+PUSH
+ORG $1736C
+jumpToHack(GetItemMinRangeHook)
+ORG $17384
+jumpToHack(GetItemMaxRangeHook)
+ORG $16EBC
+jumpToHack(GetUnitItemReachBits)
+ORG $16F10
+jumpToHack(GetUnitStaffReachBits)
+ORG $16FCC
+jumpToHack(GetUnitStaffReachBitsAll)
+ORG $167C8
+jumpToHack(IsItemCoveringRangeHook)
+ORG $184B4
+jumpToHack(MagOn2Hook)
+ORG $23A74
+jumpToHack(StaffRange1FillHook)
+POP
+
 ALIGN 4
 RangeSkillsCheck:
-#incbin "RangeLoop/RangeSkillLoop.dmp"
+#include "RangeLoop/RangeSkillLoop.lyn.event"
 POIN SkillTester
 POIN RangeSkillList
 
-//SkillID of 0 will have the routine run unconditionally
+// SkillID of 0 will have the routine run unconditionally
 
 ALIGN 4
 RangeSkillList:
@@ -17,3 +36,8 @@ RangeSkill(PointBlankID, PointBlankBonus)
 RangeSkill(TomeRangeUpID, TomeRangeBonus)
 RangeSkillListEnd
 
+PROTECT 0x1736C 0x17398
+PROTECT 0x16EBC 0x16FC8
+PROTECT 0x167C8 0x167F4
+PROTECT 0x184B4 0x184DC
+PROTECT 0x23A74 0x23A7C

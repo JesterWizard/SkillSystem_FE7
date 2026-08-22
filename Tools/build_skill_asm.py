@@ -16,6 +16,9 @@ SKILL_ROOT = ROOT / "EngineHacks" / "SkillSystem"
 # them, so edits to the page .s files (or to the shared mss_defs.s they all
 # include) silently never reached the ROM. Build them here instead.
 MSS_PAGES_DIR = ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "pages"
+RANGE_LOOP_DIR = ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "RangeCalcLoop" / "RangeLoop"
+RANGE_LOOP_ASM = [RANGE_LOOP_DIR / "RangeSkillLoop.s"]
+
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
     MSS_PAGES_DIR / "mss_page1_skills.s",
@@ -167,12 +170,14 @@ def main() -> int:
 
     sources = discover_sources()
     mss_pages = [p for p in MSS_PAGES if p.is_file()]
+    range_loop = [p for p in RANGE_LOOP_ASM if p.is_file()]
+    extra = mss_pages + range_loop
     if args.force:
-        for src in sources + mss_pages:
+        for src in sources + extra:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
             src.with_suffix(".dmp").unlink(missing_ok=True)
 
-    print(f"Building {len(sources)} skill asm files and {len(mss_pages)} stat screen pages")
+    print(f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, {len(range_loop)} range-loop files")
     errors = []
     for src in sources:
         try:
@@ -183,6 +188,12 @@ def main() -> int:
     for src in mss_pages:
         try:
             build_one(src, MSS_PAGE_DEPS)
+        except subprocess.CalledProcessError as exc:
+            errors.append((src, exc))
+            print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
+    for src in range_loop:
+        try:
+            build_one(src)
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)

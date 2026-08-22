@@ -13,3 +13,35 @@ PointBlankBonus:
 ALIGN 4
 TomeRangeBonus:
 #include "TomeRange/TomeRange.lyn.event"
+
+ALIGN 4
+#include "ItemRangeGetter.lyn.event"
+POIN ItemTable
+POIN 0x080184B5
+POIN RangeSkillsCheck|1
+
+ALIGN 4
+#include "GetItemRangeHooks.lyn.event"
+POIN ItemRangeGetter|1
+WORD 0x03004690
+WORD 0x02033E40
+
+ALIGN 4
+#include "MagOn2Hook.lyn.event"
+POIN SkillTester
+WORD StaffSavantID
+
+ALIGN 4
+#include "GetUnitItemReachBits.lyn.event"
+POIN ItemRangeGetter|1
+POIN 0x08016381
+
+ALIGN 4
+#include "GetUnitStaffReachBits.lyn.event"
+POIN ItemRangeGetter|1
+POIN 0x080163D5
+POIN 0x0801A2D5
+POIN 0x080239B1
+POIN 0x0804ACE5
+WORD 0x02033E40
+WORD 0x03004690
