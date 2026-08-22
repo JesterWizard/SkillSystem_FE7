@@ -99,7 +99,7 @@ class StatScreenBoostColorTests(unittest.TestCase):
                 self.assertRegex(src, rf"draw_{stat}_bar_at\s+{x},\s*{y}")
                 self.assertNotRegex(src, rf"draw_{stat}_number_at")
 
-        self.assertRegex(src, r"draw_move_bar_at\s+16,\s*17")
+        self.assertRegex(src, r"draw_move_bar_with_getter_at\s+16,\s*17")
         self.assertNotRegex(src, r"draw_move_number_at")
         self.assertRegex(src, r"draw_con_bar_at\s+24,\s*3")
         self.assertNotRegex(src, r"draw_con_number_at")

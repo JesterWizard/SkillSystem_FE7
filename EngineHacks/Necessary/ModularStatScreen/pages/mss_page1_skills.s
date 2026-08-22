@@ -134,7 +134,7 @@ draw_luck_bar_at 16, 11
 draw_def_bar_at 16, 13
 draw_res_bar_at 16, 15
 draw_textID_at 13, 17, TID_Move @move
-draw_move_bar_at 16, 17
+draw_move_bar_with_getter_at 16, 17
 
 b		NextColumn
 .ltorg

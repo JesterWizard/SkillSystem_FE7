@@ -1,0 +1,88 @@
+#ifndef MSG_INJECT_MOV_GETTERS_FE7_EVENT
+#define MSG_INJECT_MOV_GETTERS_FE7_EVENT
+
+#include "EAstdlib.event"
+#include "Extensions/Hack Installation.txt"
+
+// FE7 inlines class Mov + unit bonus instead of calling GetUnitMov, so skills
+// in pMovModifiers (Celerity, Poise, ...) reach the stat screen but never the
+// movement map.
+//
+// 0x19BB4 / 0x3C0A0: MakeMoveMap(unit) bodies (events / AI).
+// 0x1B090: PlayerPhase range when a unit is selected.
+// 0x1C4D8 / 0x3144A: the two callers of MakeMoveMapWithMov(unit, mov) that
+//   recompute gActiveUnit's remaining Mov -- these are the blue range you
+//   actually walk on, and the reason Celerity showed on the stat screen but
+//   not on the field. They read gActiveUnit through 0x03004690 and the Mov
+//   already spent from 0x0203A85C+0x10.
+//
+// The other MakeMoveMap* callers pass a constant (0x7C = whole map) or take
+// Mov as a parameter, so they need no patch.
+//
+// BL(prGotoMovGetter) costs r0-r3, so each patch calls the getter FIRST and
+// rebuilds the fill call's other arguments afterwards. Patching only the
+// arithmetic in place leaves the getter result sitting in the register that
+// held x (or the unit pointer) and the map is filled from garbage.
+// r4 is the unit at every site and prCallSequence pushes r4-r7, so it survives.
+//
+// Do not include the FE8 InjectMovGetters.event: its ORGs (e.g. $87300)
+// land on FE7 sprite code.
+
+PUSH
+	// r0 = x, r1 = y, r2 = mov, r3 = unit[0x0B], then BL fill at $19BCE.
+	ORG $19BB4
+	SHORT 0x1C20			// mov  r0, r4
+	BL(prGotoMovGetter)
+	SHORT 0x1C02			// mov  r2, r0
+	SHORT 0x2010 0x5620		// mov  r0, #0x10; ldrsb r0, [r4, r0]
+	SHORT 0x2111 0x5661		// mov  r1, #0x11; ldrsb r1, [r4, r1]
+	SHORT 0x46C0 0x46C0 0x46C0
+
+	// Same shape as $19BB4; BL fill at $3C0BA.
+	ORG $3C0A0
+	SHORT 0x1C20			// mov  r0, r4
+	BL(prGotoMovGetter)
+	SHORT 0x1C02			// mov  r2, r0
+	SHORT 0x2010 0x5620		// mov  r0, #0x10; ldrsb r0, [r4, r0]
+	SHORT 0x2111 0x5661		// mov  r1, #0x11; ldrsb r1, [r4, r1]
+	SHORT 0x46C0 0x46C0 0x46C0
+
+	// r0 = unit, r1 = mov, then BL fill at $1B09E. The vanilla
+	// "mov r0, r4" at $1B09C is left in place to restore r0.
+	ORG $1B090
+	SHORT 0x1C20			// mov  r0, r4
+	BL(prGotoMovGetter)
+	SHORT 0x1C01			// mov  r1, r0
+	SHORT 0x46C0 0x46C0
+
+	// gActiveUnit's remaining range: MakeMoveMapWithMov(unit, mov - spent).
+	// r5 already holds &gActiveUnit and survives the call (prCallSequence
+	// pushes r4-r7), so r0 is just reloaded from it afterwards.
+	// The ldr r2 keeps its literal: PC-relative loads round the base down to
+	// a word, so #88 still resolves to $0203A85C one halfword earlier.
+	ORG $1C4D8
+	SHORT 0x6828			// ldr  r0, [r5]      ; gActiveUnit
+	BL(prGotoMovGetter)
+	SHORT 0x1C01			// mov  r1, r0
+	SHORT 0x4A16			// ldr  r2, [pc, #88] ; $0203A85C
+	SHORT 0x7C12			// ldrb r2, [r2, #0x10] ; Mov already spent
+	SHORT 0x1A89			// sub  r1, r1, r2
+	SHORT 0x0609 0x1609		// sign-extend to a byte
+	SHORT 0x6828			// ldr  r0, [r5]      ; restore the unit
+
+	// Same computation, but here the unit is only in r0, so it goes on the
+	// stack across the call. The vanilla lsls/asrs sign-extend is dropped to
+	// make room: MakeMoveMapWithMov truncates r1 to a byte and re-extends it
+	// itself ($19BE4/$19C00), so the result is unchanged.
+	ORG $3144A
+	SHORT 0xB401			// push {r0}          ; gActiveUnit
+	BL(prGotoMovGetter)
+	SHORT 0x1C01			// mov  r1, r0
+	SHORT 0x4A06			// ldr  r2, [pc, #24] ; $0203A85C
+	SHORT 0x7C12			// ldrb r2, [r2, #0x10] ; Mov already spent
+	SHORT 0x1A89			// sub  r1, r1, r2
+	SHORT 0xBC01			// pop  {r0}          ; restore the unit
+	SHORT 0x46C0
+POP
+
+#endif // MSG_INJECT_MOV_GETTERS_FE7_EVENT

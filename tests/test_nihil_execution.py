@@ -1,9 +1,8 @@
 """Execute NewSkillTester NihilTester/SkillTester under Unicorn.
 
 Nihil is not a pre-battle stat writer — it is SkillTester returning false when
-the opponent's buffer has Nihil and NegatedSkills[skillID] is set, during a
-real or forecast battle. Old list-walking nihilTester*.s is unused; this is
-the C path installed from SkillTester.lyn.event.
+the opponent has Nihil and NegatedSkills[skillID] is set, during a real or
+forecast battle. This is the C path installed from SkillTester.lyn.event.
 """
 import struct
 import sys

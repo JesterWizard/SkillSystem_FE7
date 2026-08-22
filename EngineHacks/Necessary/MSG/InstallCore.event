@@ -83,6 +83,8 @@ PUSH
 	#endif // USE_STRMAG_SPLIT
 POP
 
+#include "3rdParty/InjectMovGetters_FE7.event"
+
 #include "Core.lyn.event" 
 /*
 prCallSequence:
