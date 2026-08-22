@@ -154,6 +154,62 @@ SkillBuffer* MakeSkillBuffer(Unit* unit, SkillBuffer* buffer) {
         }
     }
 
+    // Trace: during forecast/combat, treat this unit as also having the
+    // opponent's first listed skill (personal, else class, else learned).
+    // The copy lives only in this buffer, so it vanishes when the battle
+    // structs do (B out of forecast, or combat end).
+    if (IsBattleReal()) {
+        u8 traceId = TraceIDLink;
+        bool hasTrace = FALSE;
+        for (int i = 0; i < count; ++i) {
+            if (buffer->skills[i] == traceId) {
+                hasTrace = TRUE;
+                break;
+            }
+        }
+        if (hasTrace) {
+            Unit* opponent = NULL;
+            if (unit->index == gBattleTarget.unit.index) {
+                opponent = &gBattleActor.unit;
+            }
+            else if (unit->index == gBattleActor.unit.index) {
+                opponent = &gBattleTarget.unit;
+            }
+            if (opponent && opponent->pCharacterData && opponent->pClassData) {
+                u8 copied = PersonalSkillTable[opponent->pCharacterData->number];
+                if (!IsSkillIDValid(copied)) {
+                    copied = ClassSkillTable[opponent->pClassData->number];
+                }
+                if (!IsSkillIDValid(copied)) {
+                    int learnedLimit = gSkillTestConfig.genericLearnedSkillLimit;
+                    if ((opponent->index & 0xC0) != 0 && learnedLimit > 6) {
+                        learnedLimit = 6;
+                    }
+                    copied = 0;
+                    for (int i = 0; i < learnedLimit; ++i) {
+                        if (!IsSkillIDValid(opponent->supports[i])) {
+                            break;
+                        }
+                        copied = opponent->supports[i];
+                        break;
+                    }
+                }
+                if (IsSkillIDValid(copied) && copied != traceId && count < 10) {
+                    bool already = FALSE;
+                    for (int i = 0; i < count; ++i) {
+                        if (buffer->skills[i] == copied) {
+                            already = TRUE;
+                            break;
+                        }
+                    }
+                    if (!already) {
+                        buffer->skills[count++] = copied;
+                    }
+                }
+            }
+        }
+    }
+
     //Add terminator to end of list
     buffer->skills[count++] = 0;
 

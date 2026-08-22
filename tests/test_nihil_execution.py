@@ -64,6 +64,7 @@ STUB = """
 	SET_DATA NegatedSkills, 0x0203F000
 	SET_DATA NihilIDLink, 0x0203F100
 	SET_DATA CatchEmAllIDLink, 0x0203F104
+	SET_DATA TraceIDLink, 0x0203F108
 	SET_DATA PersonalSkillTable, 0x0203F200
 	SET_DATA ClassSkillTable, 0x0203F300
 	SET_DATA gSkillTestConfig, 0x0203F400

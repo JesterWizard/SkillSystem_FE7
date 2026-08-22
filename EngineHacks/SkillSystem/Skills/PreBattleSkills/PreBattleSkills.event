@@ -286,13 +286,6 @@ POIN SkillTester
 WORD TowerShieldPlusID
 
 ALIGN 4
-TraceSkill:
-#include "Trace/trace.lyn.event"
-POIN SkillTester
-WORD TraceID
-POIN Skill_Getter
-
-ALIGN 4
 Vanity:
 #include "Vanity/Vanity.lyn.event"
 POIN SkillTester

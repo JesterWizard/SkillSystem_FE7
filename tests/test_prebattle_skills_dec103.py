@@ -136,7 +136,6 @@ class PreBattleDec103Tests(unittest.TestCase):
         for rel in (
             Path("EngineHacks/SkillSystem/Skills/PreBattleSkills/Cultured/Cultured.s"),
             Path("EngineHacks/SkillSystem/Skills/PreBattleSkills/Thotslayer/Thotslayer.s"),
-            Path("EngineHacks/SkillSystem/Skills/PreBattleSkills/Trace/trace.s"),
             Path("EngineHacks/SkillSystem/Skills/PreBattleSkills/ChargePlus/ChargePlus.s"),
             Path("EngineHacks/SkillSystem/Skills/PreBattleSkills/SteadyBrawler/SteadyBrawler.s"),
         ):
@@ -242,9 +241,10 @@ class PreBattleDec103Tests(unittest.TestCase):
             "Loyalty",
             "Thighdeology",
             "LethalitySkill",
-            "TraceSkill",
         ):
             self.assertRegex(loop, rf"\b{name}\b")
+        self.assertNotIn("TraceSkill", loop)
+        self.assertIn("TraceIDLink", TESTER.read_text(encoding="utf-8"))
         self.assertIn("AuraSkillEntry(NiceThighsID)", loop)
         self.assertRegex(loop, r"AuraSkillTable:\s*\nFILL 256".replace(r"\n", r"\r?\n"))
 

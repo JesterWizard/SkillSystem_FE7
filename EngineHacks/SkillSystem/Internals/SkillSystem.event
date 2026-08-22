@@ -161,6 +161,10 @@ ALIGN 4
 CatchEmAllIDLink:
 WORD CatchEmAllID
 
+ALIGN 4
+TraceIDLink:
+WORD TraceID
+
 
 ALIGN 4
 NegatedSkills: //comment or uncomment skills to your liking, this should come with an updated list of skills that work with nihil and are meant to

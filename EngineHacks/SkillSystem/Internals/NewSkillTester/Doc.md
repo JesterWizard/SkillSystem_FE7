@@ -61,6 +61,8 @@ Checks a unit for skills, stores found skills in the given buffer, then returns 
 If the unit is in battle, the equipped weapon data is gotten from the battle unit struct.  
 Stores the RAM unitID of the last unit checked in `SkillBuffer.lastUnitChecked` for future reference.  
 
+During a real or forecast battle (`BATTLE_CONFIG_REAL` or `BATTLE_CONFIG_SIMULATE`), if the unit has Trace, the opponent's first listed skill (personal, else class, else first learned) is appended to this buffer. The copy is not written to the live unit, so it is gone when the forecast closes or combat ends. Trace itself is not copied.
+
 If a unit does not have BWL data (And is thus considered generic), their learned skills will be collected from the learned skills lists.  
 The limit of learned generic skills can be configred in `Root/EngineHacks/SkillSystem/Internals/Skillsystem.event`.  
 
