@@ -10,6 +10,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_ROOT = ROOT / "EngineHacks" / "SkillSystem"
+
+# Modular Stat Screen pages live outside SKILL_ROOT and are included by
+# ModularStatScreen.event as pre-generated .lyn.event files. Nothing rebuilt
+# them, so edits to the page .s files (or to the shared mss_defs.s they all
+# include) silently never reached the ROM. Build them here instead.
+MSS_PAGES_DIR = ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "pages"
+MSS_PAGES = [
+    MSS_PAGES_DIR / "signed_bonus_number.s",
+    MSS_PAGES_DIR / "mss_page1_skills.s",
+    MSS_PAGES_DIR / "mss_page2_original.s",
+    MSS_PAGES_DIR / "mss_page3_original.s",
+    MSS_PAGES_DIR / "mss_leftstatscreen.s",
+]
+# .s files the pages pull in with .include; mtime changes here restale every page.
+MSS_PAGE_DEPS = [MSS_PAGES_DIR / "mss_defs.s", MSS_PAGES_DIR / "GetTalkee.s"]
 AS = Path(r"C:\devkitPro\devkitARM\bin\arm-none-eabi-as.exe")
 LYN = ROOT / "EventAssembler" / "Tools" / "lyn.exe"
 
@@ -100,11 +115,15 @@ def stale(src: Path, *outputs: Path) -> bool:
     return False
 
 
-def build_one(src: Path) -> None:
+def build_one(src: Path, deps: list[Path] | None = None) -> None:
     obj = src.with_suffix(".o")
     lyn = src.with_suffix(".lyn.event")
     dmp = src.with_suffix(".dmp")
-    if not stale(src, lyn):
+    fresh = not stale(src, lyn)
+    for dep in deps or ():
+        if dep.is_file() and stale(dep, lyn):
+            fresh = False
+    if fresh:
         dmp.unlink(missing_ok=True)
         return
     _assemble(src, obj)
@@ -147,16 +166,23 @@ def main() -> int:
         print(f"Converted {n} event files from dmp incbin to lyn include")
 
     sources = discover_sources()
+    mss_pages = [p for p in MSS_PAGES if p.is_file()]
     if args.force:
-        for src in sources:
+        for src in sources + mss_pages:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
             src.with_suffix(".dmp").unlink(missing_ok=True)
 
-    print(f"Building {len(sources)} skill asm files")
+    print(f"Building {len(sources)} skill asm files and {len(mss_pages)} stat screen pages")
     errors = []
     for src in sources:
         try:
             build_one(src)
+        except subprocess.CalledProcessError as exc:
+            errors.append((src, exc))
+            print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
+    for src in mss_pages:
+        try:
+            build_one(src, MSS_PAGE_DEPS)
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)

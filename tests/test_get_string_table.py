@@ -79,6 +79,16 @@ def is_rom_ptr(ptr: int) -> bool:
     return 0x08000000 <= body < 0x0A000000
 
 
+def lyn_word(path: Path, value: int) -> bool:
+    """Is `value` present as a 32-bit literal in the bytes this lyn blob emits?
+
+    Grepping the text for "$83FC9FC" only works while lyn happens to emit that
+    blob as WORDs; it switches to SHORT/BYTE depending on alignment, which
+    silently turns these assertions into "not found".
+    """
+    return struct.pack("<I", value) in lyn_to_bytes(path)
+
+
 def read_event_text(path: Path) -> str:
     raw = path.read_bytes()
     if raw.startswith(b"\xff\xfe") or raw[:2] == b"A\x00":
@@ -171,11 +181,9 @@ class GetStringTableTests(unittest.TestCase):
 
     def test_page1_affinity_uses_icon_sheet_2(self):
         """IconRework: AffinityGetter is sheet-local; DrawIcon must OR sheet 2."""
-        text = read_event_text(PAGE1_LYN)
-        self.assertIn("$8026B24", text)
-        self.assertIn(
-            "$2092102",
-            text,
+        self.assertTrue(lyn_word(PAGE1_LYN, 0x08026B24))
+        self.assertTrue(
+            lyn_word(PAGE1_LYN, 0x02092102),
             "page 1 must OR IconRework sheet 2 before DrawIcon for affinity",
         )
 
@@ -187,8 +195,7 @@ class GetStringTableTests(unittest.TestCase):
 
     def test_left_panel_reapplies_vanilla_window_tsa(self):
         """Vanilla 083FC9FC is the left-window TSA that sits behind LV/E/HP."""
-        text = read_event_text(LEFT_LYN)
-        self.assertIn("$83FC9FC", text)
+        self.assertTrue(lyn_word(LEFT_LYN, 0x083FC9FC))
 
     def test_left_panel_uses_vanilla_mms_box_oam(self):
         """FE6 SSS_MMSBoxOAM needs FE6 tiles at 0x6000000. Vanilla 08CC1E58 is the dark LV/HP box."""
@@ -200,25 +207,21 @@ class GetStringTableTests(unittest.TestCase):
 
     def test_items_page_uses_vanilla_item_box_tsa(self):
         """SSS_StatsBoxTSA is the FE6 equipment box. FE7 item names sit on 083FCAC0."""
-        text = read_event_text(PAGE2_LYN)
-        self.assertIn("$83FCAC0", text)
-        self.assertNotIn("SSS_StatsBoxTSA", text)
+        self.assertTrue(lyn_word(PAGE2_LYN, 0x083FCAC0))
+        self.assertNotIn("SSS_StatsBoxTSA", read_event_text(PAGE2_LYN))
 
     def test_items_page_loads_vanilla_equipment_label_gfx(self):
         """Vanilla 083FD62C at 0x6004E00 is the tileset with the baked-in Equipment label."""
-        text = read_event_text(PAGE2_LYN)
-        self.assertIn("$83FD62C", text)
+        self.assertTrue(lyn_word(PAGE2_LYN, 0x083FD62C))
 
     def test_weapon_page_uses_vanilla_wep_support_tsa(self):
         """FE6 WepSupport TSA draws a divider with the wrong tileset under the 2x2 ranks."""
-        text = read_event_text(PAGE3_LYN)
-        self.assertIn("$83FCB30", text)
+        self.assertTrue(lyn_word(PAGE3_LYN, 0x083FCB30))
 
     def test_items_page_range_text_uses_fe7_handle(self):
         """FE8 0x2003CB4 is page BG2 on FE7. Vanilla writes Rng into StatScreenStruct+0xB8."""
-        text = read_event_text(PAGE2_LYN)
-        self.assertNotIn("$2003CB4", text)
-        self.assertIn("$20031C4", text)
+        self.assertFalse(lyn_word(PAGE2_LYN, 0x02003CB4))
+        self.assertTrue(lyn_word(PAGE2_LYN, 0x020031C4))
 
     def test_get_skills_skips_invalid_id_0xff(self):
         """Lyn Lord's class skill is 0xFF (none). Listing it draws a bogus weapon icon."""

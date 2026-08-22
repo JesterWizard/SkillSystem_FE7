@@ -1,17 +1,24 @@
-"""Core-7 stats (STR/MAG/SKL/SPD/LCK/DEF/RES) show boosted totals in green on the
-stat screen, the same way MOV/CON already do.
+"""DrawBar prints each core stat's base digit and the small +/- bonus.
 
-draw_*_bar_at (via vanilla DrawBar, 0x0807FD28) already prints the stat's total
-value as a plain-colour number at (bar_x, bar_y) before drawing the fill graphic
-on the row below. draw_*_number_at is called immediately after, at the same
-tile, to redraw that number in green when boosted (current total != base stat
-byte) or blue otherwise -- overwriting DrawBar's plain digit, not duplicating it.
+The page must not also call draw_*_number_at: that duplicated digits (9 -> 99)
+and recoloured the big number. Buff/debuff colour lives only on the small +/-
+from DrawSignedBonusNumber (hooked at 0x08006240).
+
+Negative modifiers get a red '-' instead of vanilla's hardcoded green '+'.
+What that routine puts in the colour register is asserted by
+test_stat_screen_signed_bonus_execution.py. The checks here are structural:
+macros still exist, helpers stay page-local, and the build regenerates pages.
 
 Regression: draw_number_at used to unconditionally clobber r1 with its default
 colour, silently discarding any Green/Blue the caller had just set in r1 -- this
 is why draw_move_number_at/draw_con_number_at were dead code. colour=-1 now
 skips that clobber.
+
+Regression: nothing rebuilt pages/*.lyn.event, so edits to these .s files never
+reached the ROM at all. Tools/build_skill_asm.py now covers them.
 """
+import re
+import sys
 import unittest
 from pathlib import Path
 
@@ -19,14 +26,13 @@ ROOT = Path(__file__).resolve().parents[1]
 MSS_DEFS = (
     ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "pages" / "mss_defs.s"
 )
-PAGE1_SKILLS = (
-    ROOT
-    / "EngineHacks"
-    / "Necessary"
-    / "ModularStatScreen"
-    / "pages"
-    / "mss_page1_skills.s"
+PAGES = ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "pages"
+PAGE1_SKILLS = PAGES / "mss_page1_skills.s"
+MSS_EVENT = (
+    ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "ModularStatScreen.event"
 )
+
+SIGNED_HELPERS = ("SetFontRedPalette", "RestoreFontPalette")
 
 CORE_STATS = {
     "str": ("StrGetter", "0x14"),
@@ -58,7 +64,7 @@ class StatScreenBoostColorTests(unittest.TestCase):
                 macro = _macro(src, f"{name},")
                 self.assertIn("#Green", macro)
                 self.assertIn("#Blue", macro)
-                self.assertRegex(macro, r"draw_number_at\s+\\tile_x,\s*\\tile_y,\s*colour=-1")
+                self.assertRegex(macro, r"draw_number_at\s+\\tile_x\s*\+\s*1,\s*\\tile_y,\s*colour=-1")
 
     def test_core_stat_number_macros_compare_total_to_base(self):
         src = MSS_DEFS.read_text(encoding="utf-8")
@@ -66,7 +72,7 @@ class StatScreenBoostColorTests(unittest.TestCase):
         self.assertIn("#Green", generic)
         self.assertIn("#Blue", generic)
         self.assertRegex(generic, r"cmp\s+r6,\s*r3")
-        self.assertRegex(generic, r"draw_number_at\s+\\tile_x,\s*\\tile_y,\s*colour=-1")
+        self.assertRegex(generic, r"draw_number_at\s+\\tile_x\s*\+\s*1,\s*\\tile_y,\s*colour=-1")
 
         for stat, (getter, offset) in CORE_STATS.items():
             with self.subTest(stat=stat):
@@ -74,7 +80,10 @@ class StatScreenBoostColorTests(unittest.TestCase):
                 self.assertIn(getter, macro)
                 self.assertIn(offset, macro)
 
-    def test_page_redraws_boosted_number_at_same_tile_as_bar(self):
+    def test_page_lets_drawbar_print_the_big_number_alone(self):
+        # DrawBar already prints the base digit and the small +/- bonus.
+        # A second draw_*_number_at call wrote another copy one column over
+        # (9 -> 99) and recoloured the big number. The page must not do that.
         src = PAGE1_SKILLS.read_text(encoding="utf-8")
         pairs = [
             ("str", 16, 3),
@@ -88,12 +97,81 @@ class StatScreenBoostColorTests(unittest.TestCase):
         for stat, x, y in pairs:
             with self.subTest(stat=stat):
                 self.assertRegex(src, rf"draw_{stat}_bar_at\s+{x},\s*{y}")
-                self.assertRegex(src, rf"draw_{stat}_number_at\s+{x},\s*{y}")
+                self.assertNotRegex(src, rf"draw_{stat}_number_at")
 
         self.assertRegex(src, r"draw_move_bar_at\s+16,\s*17")
-        self.assertRegex(src, r"draw_move_number_at\s+16,\s*17")
+        self.assertNotRegex(src, r"draw_move_number_at")
         self.assertRegex(src, r"draw_con_bar_at\s+24,\s*3")
-        self.assertRegex(src, r"draw_con_number_at\s+24,\s*3")
+        self.assertNotRegex(src, r"draw_con_number_at")
+
+
+class NegativeModifierColourTests(unittest.TestCase):
+    """A signed three-way compare, not equal/not-equal, in every number macro."""
+
+    def test_number_macros_branch_three_ways(self):
+        src = MSS_DEFS.read_text(encoding="utf-8")
+        for name in ("draw_stat_number_at", "draw_move_number_at", "draw_con_number_at"):
+            with self.subTest(macro=name):
+                macro = _macro(src, f"{name},")
+                self.assertRegex(macro, r"blt\s+\w*Debuffed",
+                                 "below base must take its own branch")
+                self.assertRegex(macro, r"bgt\s+\w*Boosted",
+                                 "above base must take its own branch")
+                self.assertNotRegex(
+                    macro,
+                    r"beq\s+\w*NotBoosted",
+                    "the old equal/not-equal split coloured debuffs green",
+                )
+                self.assertIn("#RedColour", macro)
+                self.assertIn("SetFontRedPalette", macro)
+                self.assertIn("RestoreFontPalette", macro)
+
+    def test_growth_bonus_uses_the_signed_replacement(self):
+        src = MSS_DEFS.read_text(encoding="utf-8")
+        macro = _macro(src, "draw_growth_at,")
+        self.assertIn("DrawStatScreenBonusNumber", macro)
+        # After ORG $6240 jumpToHack, this is DrawSignedBonusNumber.
+
+    def test_red_reaches_a_palette_bank_the_base_font_does_not_have(self):
+        # The five base text colours all live in palette bank 0; red only
+        # exists in the growth palettes HP_Name_Color loads into banks 8 and 9.
+        src = MSS_DEFS.read_text(encoding="utf-8")
+        self.assertRegex(src, r"\.equ RedPalBank, 9")
+        self.assertRegex(src, r"\.equ Glyph_Minus, 20")
+        self.assertRegex(src, r"\.equ Glyph_Plus, 21")
+
+    def test_signed_helpers_are_not_exported(self):
+        # mss_defs.s is included by every page, so each installed page carries
+        # its own copy. Exporting them would define the same label four times
+        # over inside ModularStatScreen.event.
+        src = MSS_DEFS.read_text(encoding="utf-8")
+        for name in SIGNED_HELPERS:
+            with self.subTest(helper=name):
+                self.assertRegex(src, rf"(?m)^{name}:")
+                self.assertNotIn(f".global {name}", src)
+
+
+class StatScreenPagesAreBuiltTests(unittest.TestCase):
+    """Every page the installer includes must be regenerated by the build."""
+
+    def test_installed_pages_are_covered_by_build_skill_asm(self):
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from Tools.build_skill_asm import MSS_PAGES, MSS_PAGE_DEPS
+
+        installed = set(re.findall(r'#include\s+"pages/(\w+)\.lyn\.event"',
+                                   MSS_EVENT.read_text(encoding="utf-8")))
+        self.assertTrue(installed, "no pages included by ModularStatScreen.event")
+        built = {p.stem for p in MSS_PAGES}
+        self.assertEqual(
+            installed - built,
+            set(),
+            "these pages are installed but nothing rebuilds their .lyn.event",
+        )
+        self.assertIn(
+            MSS_DEFS, MSS_PAGE_DEPS,
+            "mss_defs.s is .included by every page; edits to it must restale them",
+        )
 
 
 if __name__ == "__main__":

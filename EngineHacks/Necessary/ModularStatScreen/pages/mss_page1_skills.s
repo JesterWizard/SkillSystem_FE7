@@ -98,7 +98,6 @@ NextColumn:
 
 draw_textID_at 21, 3, textID=TID_Con @con
 draw_con_bar_at 24, 3
-draw_con_number_at 24, 3
 
 draw_textID_at 21, 5, textID=TID_Aid @aid
 draw_number_at 25, 5, 0x8018450, 2 @aid getter
@@ -128,22 +127,14 @@ b skipliterals
 
 ShowStats3:
 draw_str_bar_at 16, 3
-draw_str_number_at 16, 3
 draw_mag_bar_at 16, 5
-draw_mag_number_at 16, 5
 draw_skl_bar_at 16, 7
-draw_skl_number_at 16, 7
 draw_spd_bar_at 16, 9
-draw_spd_number_at 16, 9
 draw_luck_bar_at 16, 11
-draw_luck_number_at 16, 11
 draw_def_bar_at 16, 13
-draw_def_number_at 16, 13
 draw_res_bar_at 16, 15
-draw_res_number_at 16, 15
 draw_textID_at 13, 17, TID_Move @move
 draw_move_bar_at 16, 17
-draw_move_number_at 16, 17
 
 b		NextColumn
 .ltorg

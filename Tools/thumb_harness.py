@@ -78,14 +78,21 @@ NOP = 0x46C0  # `mov r8, r8`, the standard Thumb NOP idiom
 TRAMPOLINE_HALFWORDS = 5  # ldr/mov/mov/ldr/short-f800
 
 
-def assemble(src: Path) -> bytes:
+def _include_flags(src: Path, include_dirs=None) -> list[str]:
+    """-I for the source's own directory, plus any extra dirs it .includes from
+    (stat screen page wrappers live outside pages/ but include mss_defs.s)."""
+    dirs = [src.parent, *(include_dirs or ())]
+    return [f"-I{d}" for d in dirs]
+
+
+def assemble(src: Path, include_dirs=None) -> bytes:
     """Assemble src with the project's ARM toolchain; return raw .text bytes."""
     with tempfile.TemporaryDirectory() as tmp:
         elf = Path(tmp) / (src.stem + ".elf")
         binf = Path(tmp) / (src.stem + ".bin")
         subprocess.run(
             [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
-             f"-I{src.parent}", str(src), "-o", str(elf)],
+             *_include_flags(src, include_dirs), str(src), "-o", str(elf)],
             check=True, capture_output=True, text=True,
         )
         subprocess.run(
@@ -95,13 +102,13 @@ def assemble(src: Path) -> bytes:
         return binf.read_bytes()
 
 
-def symbol_offsets(src: Path) -> dict[str, int]:
+def symbol_offsets(src: Path, include_dirs=None) -> dict[str, int]:
     """Label -> byte offset within the assembled .text, via nm (not hand-counted)."""
     with tempfile.TemporaryDirectory() as tmp:
         elf = Path(tmp) / (src.stem + ".elf")
         subprocess.run(
             [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
-             f"-I{src.parent}", str(src), "-o", str(elf)],
+             *_include_flags(src, include_dirs), str(src), "-o", str(elf)],
             check=True, capture_output=True, text=True,
         )
         out = subprocess.run(

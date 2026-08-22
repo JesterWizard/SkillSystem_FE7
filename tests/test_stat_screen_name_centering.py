@@ -3,10 +3,15 @@
 Character name: tile (4, 10), GetStringTextCenteredPos(0x38), no +3.
 Class name: tile (1, 13), xOffset 0 (left-aligned).
 """
+import struct
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
 MSS_DEFS = (
     ROOT
     / "EngineHacks"
@@ -62,15 +67,23 @@ class StatScreenNameCenteringTests(unittest.TestCase):
                 self.assertNotIn("Text_GetStringTextCenteredPos", macro)
 
     def test_lyn_matches_vanilla_name_literals(self):
-        text = LEFT_LYN.read_text(encoding="utf-8")
+        # Decode the emitted bytes rather than grepping the text: lyn picks
+        # WORD or SHORT/BYTE per blob depending on alignment, so neither the
+        # instructions nor the pool literals are reliably spelled out as one
+        # token.
+        blob = lyn_to_bytes(LEFT_LYN)
+        halfwords = {
+            struct.unpack_from("<H", blob, i)[0]
+            for i in range(0, len(blob) - 1, 2)
+        }
         # Thumb: mov r0, #0x38 is 0x2038; add r3, #3 is 0x3303.
-        # Tile (4,10) map offset 0x288; class (1,13) is 0x342.
-        self.assertIn("2038", text)
-        self.assertIn("$288", text)
-        self.assertIn("$342", text)
-        self.assertNotIn("3303", text)
-        self.assertNotIn("2030", text)
-        self.assertNotIn("2040", text)
+        self.assertIn(0x2038, halfwords)
+        self.assertNotIn(0x3303, halfwords)
+        self.assertNotIn(0x2030, halfwords)
+        self.assertNotIn(0x2040, halfwords)
+        # Literal pool: tile (4,10) map offset 0x288, class (1,13) is 0x342.
+        self.assertIn(struct.pack("<I", 0x288), blob)
+        self.assertIn(struct.pack("<I", 0x342), blob)
 
 
 if __name__ == "__main__":

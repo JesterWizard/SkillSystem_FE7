@@ -60,8 +60,13 @@
     ORG $81414 //FE8 -> $888BC //Stores byte to store 1 before stat screen struct
       callHack_r3(Store_Page)
 
-  ORG $7FA8C //FE8 -> $86E44
+    ORG $7FA8C //FE8 -> $86E44
   jumpToHack(MSS_leftpage)
+
+    // DrawBar (0x0807FD28) calls this for the small +/- next to each stat.
+    // Vanilla 0x08006240 can only print a green '+'; negatives become '+7'.
+    ORG $6240
+      jumpToHack(DrawSignedBonusNumber)
 
   POP
   
@@ -78,6 +83,7 @@
   Display_Growth_Options_Link:
   WORD Growth_Options
 
+  #include "pages/signed_bonus_number.lyn.event"
   #include "pages/mss_page1_skills.lyn.event"
   #include "pages/mss_page2_original.lyn.event"
   #include "pages/mss_page3_original.lyn.event"

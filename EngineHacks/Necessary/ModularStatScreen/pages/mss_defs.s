@@ -96,6 +96,22 @@
 .equ Grey, 1
 .equ White, 0
 
+@ Red is not one of the five base text colours -- the font's colour tables only
+@ reach palette bank 0, which holds white/grey/blue/yellow/green. HP_Name_Color
+@ copies New_Palettes into BG palette banks 8 and 9 on every stat screen draw
+@ (see asm/HPNameColor.s), and bank 9 colour 4 is the dark red the growth
+@ display already uses for debuffs (GrowthColorsTable.event index 14).
+@ Reaching it means temporarily retargeting the active font's tileref at
+@ gActiveFontPtr+0x10, exactly as Get_Palette_Index does for growth colours.
+.equ RedPalBank, 9
+.equ RedColour, 4
+.equ gActiveFontPtr, 0x02028D70 //FE8 -> 0x02028E70
+
+@ Glyph IDs for DrawSpecialUiChar. 21 is the '+' vanilla
+@ DrawStatScreenBonusNumber hardcodes; 20 is the matching '-'.
+.equ Glyph_Plus, 21
+.equ Glyph_Minus, 20
+
 @ FE7 stat-screen labels. FE8 0x4Ex/0x4Fx IDs are character names in FE7.
 .equ TID_HP,    0x10F4
 .equ TID_Str,   0x10F8
@@ -395,7 +411,9 @@
   draw_bar_at \bar_x, \bar_y, ResGetter, 0x18, 5
 .endm
 
-@ total (via getter, includes all modifiers e.g. Defiant/rally/equip) vs raw base stat byte on unit; green if boosted
+@ total (via getter, includes all modifiers e.g. Defiant/rally/equip) vs raw base
+@ stat byte on unit: green above base, red below it, blue when unmodified.
+@ r5 flags whether the font palette still needs restoring after the draw.
 .macro draw_stat_number_at, tile_x, tile_y, getter, offset
   mov     r0, r8
   blh     \getter
@@ -403,15 +421,28 @@
   mov     r1, r8
   mov     r3, #\offset
   ldsb    r3, [r1, r3]
+  mov     r5, #0
   cmp     r6, r3
-  beq     StatNotBoosted_\@
+  blt     StatDebuffed_\@
+  bgt     StatBoosted_\@
+  mov     r1, #Blue
+  b       FromStatBoosted_\@
+  StatBoosted_\@:
   mov     r1, #Green
   b       FromStatBoosted_\@
-  StatNotBoosted_\@:
-  mov     r1, #Blue
+  StatDebuffed_\@:
+  bl      SetFontRedPalette
+  str     r0, [sp, #0x20]
+  mov     r5, #1
+  mov     r1, #RedColour
   FromStatBoosted_\@:
   mov     r0, r6
-  draw_number_at \tile_x, \tile_y, colour=-1
+  draw_number_at \tile_x+1, \tile_y, colour=-1
+  cmp     r5, #0
+  beq     StatNumberDone_\@
+  ldr     r0, [sp, #0x20]
+  bl      RestoreFontPalette
+  StatNumberDone_\@:
 .endm
 
 .macro draw_str_number_at, tile_x, tile_y
@@ -454,7 +485,7 @@
   blh     DrawDecNumber
   ldr     r0, [sp, #0x10]    @difference from earlier
   ldr     r1, =(tile_origin+(0x20*2*\bar_y)+(2*(\bar_x+1)))
-  blh     DrawStatScreenBonusNumber
+  blh     DrawStatScreenBonusNumber  @ hooked: green '+N' or red '-N'
 .endm
 
 .macro draw_move_bar_at, bar_x, bar_y
@@ -530,15 +561,30 @@
   ldsb    r3, [r0, r3]  
   mov     r0, #0x1D     @bonus
   ldsb    r0, [r1, r0]   
+  mov     r5, #0
   cmp     r0, #0
-  beq     MoveNotBoosted
-  mov     r1, #Green
-  b       FromMoveBoosted
-  MoveNotBoosted:
+  blt     MoveDebuffed_\@
+  bgt     MoveBoosted_\@
   mov     r1, #Blue
-  FromMoveBoosted:
+  b       FromMoveBoosted_\@
+  MoveBoosted_\@:
+  mov     r1, #Green
+  b       FromMoveBoosted_\@
+  MoveDebuffed_\@:
+  mov     r6, r0
+  bl      SetFontRedPalette
+  str     r0, [sp, #0x20]
+  mov     r0, r6
+  mov     r5, #1
+  mov     r1, #RedColour
+  FromMoveBoosted_\@:
   add     r0, r0, r3
-  draw_number_at \tile_x, \tile_y, colour=-1
+  draw_number_at \tile_x+1, \tile_y, colour=-1
+  cmp     r5, #0
+  beq     MoveNumberDone_\@
+  ldr     r0, [sp, #0x20]
+  bl      RestoreFontPalette
+  MoveNumberDone_\@:
 .endm
 
 .macro draw_con_bar_at, bar_x, bar_y
@@ -608,15 +654,30 @@
   add     r3, r3, r0     
   mov     r0, #0x1A     
   ldsb    r0, [r1, r0]   
+  mov     r5, #0
   cmp     r0, #0
-  beq     ConNotBoosted
-  mov     r1, #Green
-  b       FromConBoosted
-  ConNotBoosted:
+  blt     ConDebuffed_\@
+  bgt     ConBoosted_\@
   mov     r1, #Blue
-  FromConBoosted:
+  b       FromConBoosted_\@
+  ConBoosted_\@:
+  mov     r1, #Green
+  b       FromConBoosted_\@
+  ConDebuffed_\@:
+  mov     r6, r0
+  bl      SetFontRedPalette
+  str     r0, [sp, #0x20]
+  mov     r0, r6
+  mov     r5, #1
+  mov     r1, #RedColour
+  FromConBoosted_\@:
   add     r0, r0, r3
-  draw_number_at \tile_x, \tile_y, colour=-1
+  draw_number_at \tile_x+1, \tile_y, colour=-1
+  cmp     r5, #0
+  beq     ConNumberDone_\@
+  ldr     r0, [sp, #0x20]
+  bl      RestoreFontPalette
+  ConNumberDone_\@:
 .endm
 
 .macro draw_con_bar_with_getter_at, bar_x, bar_y
@@ -1510,3 +1571,42 @@
     mov    r0, r7 @ Next "blank" TextHandle.
   SkipGaidenDraw:
 .endm
+
+@ ============================================================================
+@ Shared helpers for signed (positive and negative) stat display.
+@
+@ These are real routines, not macros: they are emitted once per page object at
+@ the point mss_defs.s is included, ahead of the page's own entry symbol. The
+@ page is installed by symbol (jumpToHack(MSS_page1)), so sitting in front of it
+@ is harmless, and it keeps the per-call literal pool pressure down -- these
+@ macros are expanded seven or eight times per page.
+@ ============================================================================
+
+.thumb
+.align 2
+
+@ Point the active font at the red palette bank. Returns the previous tileref in
+@ r0; hand it back to RestoreFontPalette once the text has been drawn.
+@ local to each page object -- lyn must not export it, or the four
+@ pages installed side by side would each define the same symbol.
+SetFontRedPalette:
+  ldr     r1, =gActiveFontPtr
+  ldr     r1, [r1]
+  ldrh    r0, [r1, #0x10]
+  mov     r2, #RedPalBank
+  lsl     r2, r2, #0xC
+  add     r2, r2, r0
+  strh    r2, [r1, #0x10]
+  bx      lr
+
+@ r0 = tileref returned by SetFontRedPalette.
+@ local to each page object -- lyn must not export it, or the four
+@ pages installed side by side would each define the same symbol.
+RestoreFontPalette:
+  ldr     r1, =gActiveFontPtr
+  ldr     r1, [r1]
+  strh    r0, [r1, #0x10]
+  bx      lr
+
+.align 2
+.ltorg

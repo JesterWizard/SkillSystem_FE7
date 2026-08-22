@@ -9,10 +9,15 @@ Page1's growth-toggle path only updates BG0 + BG2. If Const_2023D40 is
 mistakenly 0x20234F8 (BG1), Select overwrites the frame with BG2 tiles.
 """
 import re
+import struct
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lyn_bytes import lyn_to_bytes
 MSS_DEFS = (
     ROOT
     / "EngineHacks"
@@ -58,15 +63,18 @@ class GrowthToggleBgTests(unittest.TestCase):
         )
 
     def test_page1_lyn_refresh_targets_bg0_and_bg2(self):
-        text = PAGE1_LYN.read_text(encoding="utf-8", errors="replace")
+        # Decode the emitted bytes rather than grepping the text: lyn picks
+        # WORD or SHORT/BYTE per blob depending on alignment, so the literal
+        # is not reliably spelled out as one token.
+        blob = lyn_to_bytes(PAGE1_LYN)
         self.assertIn(
-            "2023CF8",
-            text.upper(),
+            struct.pack("<I", BG2_SCREEN),
+            blob,
             "page1 lyn must copy onto BG2 screen 0x2023CF8",
         )
         self.assertNotIn(
-            "20234F8",
-            text.upper(),
+            struct.pack("<I", BG1_SCREEN),
+            blob,
             "page1 lyn must not target BG1 screen 0x20234F8 on growth refresh",
         )
 
