@@ -41,11 +41,11 @@ mov r5, r0
 pop {r0}
 cmp r5,#0
 beq Loop
-mov r3,#0x4
-ldr r5,[r5,r3]
+ldr r5,[r5]                 @pCharacterData
 cmp r5,#0
 beq Loop
-ldrb r3,[r5,r3]
+mov r3,#0x4
+ldrb r3,[r5,r3]             @character number (Eliwood/Hector/Lyn_t/Lyn)
 cmp r3,#0x1
 beq Final
 cmp r3,#0x2
