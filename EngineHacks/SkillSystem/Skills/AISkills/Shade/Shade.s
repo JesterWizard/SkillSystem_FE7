@@ -1,25 +1,14 @@
 .thumb
 .align
 
-@hook into AiBattleGetSubjectHpWeight (the last AI weight function)
-@this is the last function and is a negative modifier
-@so we can do the same thing as provoke does pretty much for Shade Plus to get an almost-zero value
+@jumpToHack at FE7 AiGetLowHpScoreComponent (0x39218)
+@caller keeps combat score in r4; returning 0 leaves the r4 we set
 
 .equ SkillTester,EALiterals+0
 .equ ShadeID,EALiterals+4
 .equ gActiveBattleUnit,0x203A3F0
 .equ gDefendingBattleUnit,0x203A470
-.equ gpAiBattleWeightFactorTable,0x30017D8
-
-@push {r14}
-@ldr r0,=gActiveBattleUnit
-@hook here with r1 (AiBattleGetSubjectHpWeight + 4)
-
-@r4 contains the total AI weight and this is the last function in the lineup
-@if we set r4 and return 0 it will subtract 0 from the value we set it as given these skills
-@so we don't need to hook after this function
-@set r4 to 1 if Shade (if 0 it would use r5 instead)
-
+.equ gpAiBattleWeightFactorTable,0x30013C0
 
 ShadeCheck:
 ldr r0,=gDefendingBattleUnit
@@ -49,8 +38,8 @@ bge GoBack
 mov r1,#0
 GoBack:
 mov r0,r1
-pop {r1}
-bx r1
+Done:
+bx lr
 
 .ltorg
 .align
@@ -58,4 +47,3 @@ bx r1
 EALiterals:
 @POIN SkillTester
 @WORD ShadeID
-@WORD ShadePlusID

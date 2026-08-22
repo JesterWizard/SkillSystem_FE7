@@ -14,7 +14,7 @@ SHORT 0x46C0
 POP
 
 //#include "ActivationRateSkills/ActivationRateSkills.event"
-//#include "AISkills/AISkills.event"
+#include "AISkills/AISkills.event"
 //#include "AuraSkills/AuraSkills.event"
 //#include "BuffSkills/Installer.event" 
 //#include "DebuffSkills/DebuffSkills.event"

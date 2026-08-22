@@ -9,8 +9,8 @@
 
 //AI Skills
 #define ProvokeID 43
-#define ShadeID SKILL_OFF
-#define ShadePlusID SKILL_OFF
+#define ShadeID 246
+#define ShadePlusID 247
 
 //Aura Skills
 #define AnathemaID 149
@@ -234,8 +234,8 @@
 #define SlowBurnID 229
 #define ShortShieldID 178
 #define SilentPrideID 181
-#define BracingStanceID 246
-#define DartingStanceID 247
+#define BracingStanceID SKILL_OFF
+#define DartingStanceID SKILL_OFF
 #define FierceStanceID 248
 #define KestrelStanceID 249
 #define MirrorStanceID 250

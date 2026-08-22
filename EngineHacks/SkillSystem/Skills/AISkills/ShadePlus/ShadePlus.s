@@ -1,19 +1,12 @@
 .thumb
 .align
 
-@hooks in the middle of AI trying to make an offensive action at 0x3D59E (8 byte hook)
-@r6 = current unit struct to check for shade+
-@fixed return point to 803D608 if has skill
-@fixed return point to 083D5A8 if does not have skill
+@jumpToHack at FE7 AiAttemptOffensiveAction target check (0x386A0)
+@r4 = candidate unit
+@continue at 0x386C0, skip at 0x38702 (adds r6,#1 — not 0x38704)
 
-.macro blh to, reg=r3
-  ldr \reg, =\to
-  mov lr, \reg
-  .short 0xf800
-.endm
-.equ AITargetTrueReturn,0x803D5C1
-.equ AITargetFalseReturn,0x803D609
-.equ IsUnitEnemyWithActiveUnit,0x803c819
+.equ AITargetTrueReturn,0x80386C1
+.equ AITargetFalseReturn,0x8038703
 .equ SkillTester,EALiterals+0
 .equ ShadePlusID,EALiterals+4
 
@@ -28,10 +21,9 @@ and r1,r2
 cmp r1,#0
 bne DoNotTarget
 
-
 mov r0,r4
-ldr r7,[sp,#0x24]
-bl BXR7
+ldr r1,[sp,#0x24]
+bl BXR1
 mov r1,r0
 cmp r1,#0
 beq DoNotTarget
@@ -54,12 +46,11 @@ ldr r1,=AITargetTrueReturn
 GoBack:
 bx r1
 
-
 .ltorg
 .align
 
-BXR7:
-bx r7
+BXR1:
+bx r1
 
 .ltorg
 .align

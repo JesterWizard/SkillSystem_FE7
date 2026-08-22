@@ -1,10 +1,10 @@
 .thumb
 .org 0x0
 .equ ProvokeID, SkillTester+4
-@jumpToHack here from 3DF78
-@r0=30017D8, r1=accuracy/100
+@jumpToHack here from 0x39054
+@r0=0x030013C0, r1=accuracy/100
 ldr   r0,[r0]
-ldrb  r0,[r0]           @number of times to attack?
+ldrb  r0,[r0]
 mul   r1,r0
 cmp   r1,#0x28
 ble   Label1
@@ -18,9 +18,10 @@ ldr   r1,ProvokeID
 .short  0xF800
 cmp   r0,#0x0
 beq   Label2
-mov   r4,#0xFF          @should be high enough to ensure provokedness without overflowing
+mov   r4,#0xFF
 Label2:
 mov   r0,r4
+Done:
 pop   {r4}
 pop   {r1}
 bx    r1

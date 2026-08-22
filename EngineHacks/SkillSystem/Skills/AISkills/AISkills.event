@@ -1,22 +1,18 @@
 PUSH
 
-//Provoke
-ORG $3DF78
+//Provoke — FE7 AiGetDamageDealtCombatScoreComponent tail (FE8 $3DF78)
+ORG $3901C
+SHORT 0x2132 0xE018 // keep scoring if the skill holder would die
+ORG $39054
 jumpToHack(Provoke)
 
-//LungeAI
-ORG $3A094
-jumpToHack(LungeAI)
+//Shade — FE7 AiGetLowHpScoreComponent (FE8 $3E154 / callHack)
+ORG $39218
+jumpToHack(Shade)
 
-//Shade
-ORG $3E154
-callHack_r1(Shade)
-
-//Shade+
-ORG $3D5A0
+//Shade+ — FE7 AiAttemptOffensiveAction target filter (FE8 $3D5A0)
+ORG $386A0
 jumpToHack(ShadePlus)
-ORG $3C824
-SHORT 0x0E00
 
 POP
 
@@ -25,12 +21,6 @@ Provoke:
 #include "Provoke/Provoke.lyn.event"
 POIN SkillTester
 WORD ProvokeID
-
-ALIGN 4
-LungeAI:
-#include "LungeAI/lungeAI.lyn.event"
-POIN SkillTester
-WORD LungeID
 
 ALIGN 4
 Shade:
