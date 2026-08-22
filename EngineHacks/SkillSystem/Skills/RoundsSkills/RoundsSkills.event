@@ -4,9 +4,9 @@ PUSH
 ORG $29498
 jumpToHack(Armsthrift)
 
-// Dazzle still uses FE8 0x2C864; do not install until ported.
-// ORG 0x2C864
-// jumpToHack(DazzleCheck)
+// Dazzle / Moonlight: FE7 BattleInitTargetCanCounter
+ORG $2A1F4
+jumpToHack(DazzleCheck)
 
 POP
 
