@@ -13,19 +13,19 @@ cmp 	r0, #0
 beq 	NoSkill
 
 @Unit has skill, check to see if unit has an axe equipped
-mov     r0, #0x50      @Move to the attacking unit weapon type.
-ldrb    r0, [r4, r0]   @Load the attacking unit weapon type.
-cmp     r0, #2         @Is it Axe?
-bne     NoSkill        @If not, goto end
+mov     r0, #0x50           @Move to the attacking unit weapon type.
+ldrb    r0, [r4, r0]        @Load the attacking unit weapon type.
+cmp     r0, #2              @Is it Axe?
+bne     NoSkill             @If not, goto end
 
 @Add to Hit (luck is a byte; ldrh reads adjacent stats)
-ldrb    r0, [r4, #0x19] @load luck
-lsr     r1, r0, #1     @put half luck in r1
-add     r0, r0, r1     @add back together.
+ldrb    r0, [r4, #0x19]     @load luck
+lsr     r1, r0, #1          @put half luck in r1
+add     r0, r0, r1          @add back together.
 mov     r3, #0x60
-ldrh    r1, [r4,r3]    @load hit
-add     r1, r0         @Increase hit by 1.5x Luck.
-strh    r1, [r4,r3]    @store.
+ldrh    r1, [r4,r3]         @load hit
+add     r1, r0              @Increase hit by 1.5x Luck.
+strh    r1, [r4,r3]         @store.
 
 NoSkill:
 pop {r4-r7} 

@@ -16,7 +16,7 @@ Condition:
 @has skill
 ldr	r0,[r5,#0xC]
 ldr	r1,RandomMugID
-ldr	r2,SkillTester	@test for skill
+ldr     r2,SkillTester  @test for skill
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0x1
@@ -24,7 +24,7 @@ beq	GetRandom
 
 ldr	r0,[r5,#0xC]
 ldr	r1,IdentityProblemsID
-ldr	r2,SkillTester	@test for skill
+ldr     r2,SkillTester  @test for skill
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0x0

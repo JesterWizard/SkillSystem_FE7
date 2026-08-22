@@ -13,7 +13,7 @@ cmp		r0,#0
 beq		Label1
 mov		r5,r0
 Label1:
-ldrh	r0,[r7]		@attacker's item
+ldrh    r0,[r7]         @attacker's item
 mov		r1,r8
 bl		Check_Effectiveness
 cmp		r0,#0
@@ -23,7 +23,7 @@ ble		Label2
 mov		r5,r0
 Label2:
 mov		r0,#0
-ldsh	r0,[r4,r0]	@current attack
+ldsh    r0,[r4,r0]      @current attack
 cmp		r5,#0
 beq		Label3
 mul		r0,r5

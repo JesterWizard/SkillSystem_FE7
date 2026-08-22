@@ -13,7 +13,7 @@
 @retuns
 	@r0: updated min max range word
 .set GetWeaponType, 0x801725c
-.set BonusWeaponType, 0x4 @Staves
+.set BonusWeaponType, 0x4       @Staves
 .set MaxRangeBonus, 0x1
 push 	{ lr}
 add 	sp, #-0x4
@@ -21,7 +21,7 @@ str 	r2, [sp]
 mov 	r0, r1
 
 _blh GetWeaponType
-cmp 	r0, #BonusWeaponType	@check if item is matching weapon type
+cmp     r0, #BonusWeaponType    @check if item is matching weapon type
 bne End
 mov 	r2, sp
 ldrh 	r0, [r2]

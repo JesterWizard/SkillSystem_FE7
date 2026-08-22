@@ -13,9 +13,9 @@ MoveTargetUnitAction:
 	ldr r4, =pActionStruct
 	
 	@ Loading target unit struct
-	ldrb r0, [r4, #0x0D] @ Target Unit Index
+        ldrb r0, [r4, #0x0D]    @ Target Unit Index
 	_blh prUnit_GetStruct
-	mov r5, r0 @ r5 = Target Unit Struct
+        mov r5, r0              @ r5 = Target Unit Struct
 	
 	@ Prepare call of GetFacingDirectionId
 	ldr r3, =prGetFacingDirectionId
@@ -32,8 +32,8 @@ MoveTargetUnitAction:
 	@ Call
 	.short 0xF800
 	
-	mov r1, r0 @ r1 = Facing Direction
-	mov r0, r5 @ r5 = Target Unit Struct
+        mov r1, r0              @ r1 = Facing Direction
+        mov r0, r5              @ r5 = Target Unit Struct
 	
 	@ Making our animation 6C
 	@ NOTE: we need to make that 6C *before* moving the units coordinates, since it will read the units coordinates to position the MOVEUNIT
@@ -52,7 +52,7 @@ MoveTargetUnitAction:
 	strb r1, [r5, #0x11]
 	
 	@ Apply Movement
-	mov r0, r5 @ Target Unit
+        mov r0, r5              @ Target Unit
 	_blh prUnit_ApplyMovement
 	
 	@ Updating map sprites and stuff

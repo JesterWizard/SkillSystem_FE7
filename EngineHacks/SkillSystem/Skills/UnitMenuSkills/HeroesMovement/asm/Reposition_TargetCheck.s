@@ -22,24 +22,24 @@ Reposition_TargetCheck:
 	_blr r3
 	
 	cmp r0, #0
-	beq End @ Returns 0 since r0 is 0
+        beq End                 @ Returns 0 since r0 is 0
 	
 SkipLegalCheck:
 	@ Loading active unit
 	ldr r3, =ppActiveUnit
-	ldr r3, [r3] @ ARG r0 = unit
+        ldr r3, [r3]            @ ARG r0 = unit
 	
 	@ Loading unit position
-	ldrb r1, [r3, #0x10] @ ARG r1 = unit.x
-	ldrb r2, [r3, #0x11] @ ARG r2 = unit.y
+        ldrb r1, [r3, #0x10]    @ ARG r1 = unit.x
+        ldrb r2, [r3, #0x11]    @ ARG r2 = unit.y
 	
 	@ Getting potential target position in [r1, r2]
-	mov r0, r4 @ Target Unit
+        mov r0, r4              @ Target Unit
 	ldr r3, prGetTargetPosition
 	_blr r3
 	
 	@ Checking that position
-	mov r0, r4 @ Target Unit
+        mov r0, r4              @ Target Unit
 	ldr r3, prUnit_CanBeOnPosition
 	_blr r3
 	

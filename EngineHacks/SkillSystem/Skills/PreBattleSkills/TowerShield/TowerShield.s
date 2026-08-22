@@ -11,8 +11,8 @@ mov r4, r0
 mov r5, r1
 
 @check range
-ldr r0,=#0x203A3D8 //FE8 -> #0x203A4D4 @battle stats
-ldrb r0,[r0,#2] @range
+ldr r0,=#0x203A3D8      //FE8 -> #0x203A4D4 @battle stats
+ldrb r0,[r0,#2]         @range
 cmp r0,#1
 ble GoBack
 

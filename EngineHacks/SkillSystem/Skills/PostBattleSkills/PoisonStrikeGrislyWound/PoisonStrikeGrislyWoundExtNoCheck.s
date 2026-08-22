@@ -9,16 +9,16 @@
 
 .global PSGWInjureAttacker
 .type PSGWInjureAttacker, %function
-PSGWInjureAttacker: @ r4 = attacker's characterr struct, @ r5 = defender's character struct, 6 = attack struct, r7 = defense struct
+PSGWInjureAttacker:     @ r4 = attacker's characterr struct, @ r5 = defender's character struct, 6 = attack struct, r7 = defense struct
 push { lr }
 ldrb r1, [ r4, #0x13 ]
 cmp r1, #0x00
-beq EndInjureAttacker @ Leave if the attacker is already dead.
-ldrb r0, [ r4, #0x12 ] @ Max HP
-lsl r0, r0, #1 @ Multiply by 2
+beq EndInjureAttacker   @ Leave if the attacker is already dead.
+ldrb r0, [ r4, #0x12 ]  @ Max HP
+lsl r0, r0, #1          @ Multiply by 2
 mov r1, #10
 //FE8 -> #0x080D18FC
-blh #0x80BFC88, r3 @ r0 has 20% of the max HP
+blh #0x80BFC88, r3      @ r0 has 20% of the max HP
 ldrb r1, [ r4, #0x13 ]
 cmp r0, r1
 bge SetAttacker1HP
@@ -40,16 +40,16 @@ bx r0
 
 .global PSGWInjureDefender
 .type PSGWInjureDefender, %function
-PSGWInjureDefender: @ r4 = attacker's characterr struct, @ r5 = defender's character struct, 6 = attack struct, r7 = defense struct
+PSGWInjureDefender:     @ r4 = attacker's characterr struct, @ r5 = defender's character struct, 6 = attack struct, r7 = defense struct
 push { lr }
 ldrb r1, [ r5, #0x13 ]
 cmp r1, #0x00
-beq EndInjureDefender @ Leave if the defender is already dead.
-ldrb r0, [ r5, #0x12 ] @ Max HP
-lsl r0, r0, #1 @ Multiply by 2
+beq EndInjureDefender   @ Leave if the defender is already dead.
+ldrb r0, [ r5, #0x12 ]  @ Max HP
+lsl r0, r0, #1          @ Multiply by 2
 mov r1, #10
 //FE8 -> #0x080D18FC
-blh #0x80BFC88, r3 @ r0 has 20% of the max HP
+blh #0x80BFC88, r3      @ r0 has 20% of the max HP
 ldrb r1, [ r5, #0x13 ]
 cmp r0, r1
 bge SetDefender1HP

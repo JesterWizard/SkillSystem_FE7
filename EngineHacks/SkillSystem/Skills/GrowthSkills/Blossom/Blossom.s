@@ -18,7 +18,7 @@ cmp		r0,#1
 bne		End
 
 BlossomEffect:
-lsl r5,#1 @growth x2
+lsl r5,#1               @growth x2
 
 End:
 pop {r2}

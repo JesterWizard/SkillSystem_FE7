@@ -19,11 +19,11 @@ ldrb	r2,[r1,#0xB]
 cmp		r0,#0x0
 bne		GoBack
 
-cmp		r2,#0x80	@Check Enemy
+cmp             r2,#0x80    @Check Enemy
 blt		GoBack
 
 ldrb	r0,[r1,#0x13]
-cmp		r0,#0x1		@HP 1 <=
+cmp             r0,#0x1     @HP 1 <=
 bgt		GoBack
 
 cmp		r3,#0x0

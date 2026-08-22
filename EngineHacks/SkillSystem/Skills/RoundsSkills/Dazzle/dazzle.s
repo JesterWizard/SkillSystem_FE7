@@ -9,7 +9,7 @@ push {r4-r7}
 @original stuff
 mov r5, r12
 ldr r0, [r4, #0x4c]
-ldr r1, [r5, #0x4c] @if EITHER one has uncounterable weapon
+ldr r1, [r5, #0x4c]     @if EITHER one has uncounterable weapon
 orr r0, r1
 mov r1, #0x80
 and r0, r1
@@ -19,7 +19,7 @@ bne Uncounterable
 @otherwise check skill ONLY on the attacker
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, DazzleID
 .short 0xf800
 cmp r0, #0
@@ -28,11 +28,11 @@ bne Uncounterable
 @does ONLY the attacker have moonlight?
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, MoonlightID
 .short 0xf800
 cmp r0, #0
-beq Normal @if not, we can counter
+beq Normal              @if not, we can counter
 
 
 Uncounterable:

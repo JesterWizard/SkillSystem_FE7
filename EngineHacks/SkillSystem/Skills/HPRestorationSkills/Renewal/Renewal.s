@@ -9,8 +9,8 @@
 
 Renewal:
 push {r4-r5,r14}
-mov r4,r0 @r4 = unit
-mov r5,r1 @r5 = heal %
+mov r4,r0               @r4 = unit
+mov r5,r1               @r5 = heal %
 
 ldr r0,=SkillTester
 mov r14,r0

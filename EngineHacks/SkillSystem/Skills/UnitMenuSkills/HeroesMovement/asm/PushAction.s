@@ -40,15 +40,15 @@ PushAction:
 	lsl r3, #0x10
 	orr r2, r3
 	
-	mov r1, r0 @ r1 = Facing Direction
-	mov r0, r5 @ r5 = Target Unit Struct
+        mov r1, r0      @ r1 = Facing Direction
+        mov r0, r5      @ r5 = Target Unit Struct
 	
 	ldr r3, prUnitPushAnim_New
 	_blr r3
 	
 	@ Decrement Sleep If Applicable
 	mov r0, r4
-	add r0, #0x0D @ Target unit
+        add r0, #0x0D   @ Target unit
 	ldrb r0, [r0]
 	
 	ldr r3, =prUnit_GetStruct
@@ -56,13 +56,13 @@ PushAction:
 	
 	mov r3, r0
 	add r3, #0x30
-	ldrb r0, [r3] @ Status
+        ldrb r0, [r3]   @ Status
 	mov r1, #0xF 
-	and r1, r0 @isolate status ID
-	cmp r1, #2 @Sleep
+        and r1, r0      @isolate status ID
+        cmp r1, #2      @Sleep
 	bne SkipDecrement
-	lsr r1, r0, #4 @isolate status duration
-	sub r1, #1 @subtract 1
+        lsr r1, r0, #4  @isolate status duration
+        sub r1, #1      @subtract 1
 	cmp r1, #0
 	bne SkipClearStatus
 	mov r0, #0

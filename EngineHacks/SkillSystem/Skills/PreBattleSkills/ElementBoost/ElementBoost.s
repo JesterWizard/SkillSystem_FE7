@@ -1,10 +1,10 @@
 .thumb
 .equ ElementBoostIDList, SkillTester+4
-.equ gBattleData,0x203A3D8 //FE8 -> 0x203A4D4
+.equ gBattleData,0x203A3D8      //FE8 -> 0x203A4D4
 push {r3-r7, lr}
 
-mov		r4, r0 @atkr
-mov		r5, r1 @dfdr
+mov             r4, r0          @atkr
+mov             r5, r1          @dfdr
 
 @make sure we're in combat (or combat prep)
 ldrb	r3, =gBattleData
@@ -13,21 +13,21 @@ cmp		r3, #4
 beq		EndProgram
 
 mov		r3, #0x72
-ldrb	r0, [r4, r3] @Attacker Current HP
-ldrb	r1, [r5, r3] @Defender Current HP
-add		r1, #0x03 @Add 3 to Defender
+ldrb    r0, [r4, r3]            @Attacker Current HP
+ldrb    r1, [r5, r3]            @Defender Current HP
+add             r1, #0x03       @Add 3 to Defender
 cmp		r0,r1
 blt		EndProgram
 
-mov		r6,#0 @Counter
+mov             r6,#0           @Counter
 CheckLoop:
 mov		r0, r4
 ldr     r2,ElementBoostIDList   @Load in the list of Skills.
-ldrb    r1,[r2,r6]  @Load in the next Skill in the list.
+ldrb    r1,[r2,r6]              @Load in the next Skill in the list.
 ldr     r3,SkillTester
 mov     lr, r3     
-.short 0xf800       @Call Skill Tester.
-cmp r0, #0          @Check if unit has the corresponding skill.
+.short 0xf800                   @Call Skill Tester.
+cmp r0, #0                      @Check if unit has the corresponding skill.
 bne SkillChecks
 SkillReturn:
 add		r6, #0x01
@@ -52,14 +52,14 @@ bx		r0
 
 FireBoost:
 mov		r1, #0x5A
-ldrh	r0, [r4, r1]	@Atk
+ldrh    r0, [r4, r1]            @Atk
 add		r0, #6
 strh	r0, [r4,r1]
 b       SkillReturn
 
 WindBoost:
 mov		r1, #0x5E
-ldrh	r0, [r4, r1]	@AS
+ldrh    r0, [r4, r1]            @AS
 add		r0, #6
 strh	r0, [r4,r1]
 b       SkillReturn
@@ -77,7 +77,7 @@ cmp		r0, r1
 beq 	SkillReturn
 ProcBonus:
 mov		r1, #0x5C
-ldrh	r0, [r4, r1]	@Def
+ldrh    r0, [r4, r1]            @Def
 add		r0, #6
 strh	r0, [r4,r1]
 b       SkillReturn

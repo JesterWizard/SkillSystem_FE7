@@ -3,14 +3,14 @@
 .equ AnalyticID, ItemTable+4
 
 push {r4-r7, lr}
-mov r4, r0 @atkr
-mov r5, r1 @dfdr
+mov r4, r0              @atkr
+mov r5, r1              @dfdr
 
 
 @has Analytic
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @Attacker data
+mov r0, r4              @Attacker data
 ldr r1, AnalyticID
 .short 0xf800
 cmp r0, #0

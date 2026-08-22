@@ -10,5 +10,5 @@ mov lr, r2
 pop {r1}
 bx r1
 .align
-LungeMarker: @1 is rescue, 2 is pair up, 0 is nothing, 3 is lunge
+LungeMarker:            @1 is rescue, 2 is pair up, 0 is nothing, 3 is lunge
 .long 0x203f101

@@ -11,19 +11,19 @@ mov r5, r1
 @now check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, LilysPoiseID
-mov r2, #0 @can_trade
-mov r3, #1 @range
+mov r2, #0              @can_trade
+mov r3, #1              @range
 .short 0xf800
 cmp r0, #0
 beq Done
 
 mov r0, r4
-add     r0,#0x5A    @Move to the attacker's dmg.
-ldrh    r3,[r0]     @Load the attacker's dmg into r3.
-add     r3,#1    @add 1 to the attacker's dmg.
-strh    r3,[r0]     @Store.
+add     r0,#0x5A        @Move to the attacker's dmg.
+ldrh    r3,[r0]         @Load the attacker's dmg into r3.
+add     r3,#1           @add 1 to the attacker's dmg.
+strh    r3,[r0]         @Store.
 
 @ mov r0, r5
 @ add     r0,#0x5A    @Move to the defender's dmg.
@@ -33,7 +33,7 @@ strh    r3,[r0]     @Store.
 
 @testing
 mov r0, r4
-add r0, #0x5c @attacker defense
+add r0, #0x5c           @attacker defense
 ldrh r3, [r0]
 add r3, #3
 strh r3, [r0]

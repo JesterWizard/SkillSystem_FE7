@@ -4,7 +4,7 @@
 
 @Check for TouchLock Skill 
 
-push {r2} @The vanilla routine we jump back to needs this value
+push {r2}               @The vanilla routine we jump back to needs this value
 
 	ldr r0, SkillTester
 	mov lr, r0

@@ -3,15 +3,15 @@
 .equ NiceThighsID, CulturedID+4
 
 push {r4-r7, lr}
-mov r4, r0 @attacker
-mov r5, r1 @defender
+mov r4, r0              @attacker
+mov r5, r1              @defender
 
 cmp r5,#0
 beq GoBack
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, CulturedID
 .short 0xf800
 cmp r0, #0

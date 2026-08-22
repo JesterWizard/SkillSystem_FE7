@@ -7,7 +7,7 @@ ldrb	r1,[r0,#0xB]
 mov		r2,#0xC0
 tst		r1,r2
 beq		GetPortrait
-mov		r1,#0x1		@blank mug
+mov             r1,#0x1     @blank mug
 b		GoBack
 GetPortrait:
 ldr		r1,PortraitGetter

@@ -16,7 +16,7 @@ ldr		r0,RangeMap
 ldr		r0,[r0]
 mov		r1,#0x0
 .short	0xF800
-ldr		r0,Fill_One_Range_Map		@1-1 range stuff
+ldr             r0,Fill_One_Range_Map   @1-1 range stuff
 mov		r14,r0
 mov		r0,r4
 mov		r1,r5

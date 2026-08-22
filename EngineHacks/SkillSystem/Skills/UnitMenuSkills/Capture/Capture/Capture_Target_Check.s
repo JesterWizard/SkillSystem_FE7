@@ -12,7 +12,7 @@ ldr		r3,SkillTester
 mov		r14,r3
 .short	0xF800
 cmp		r0,#1
-beq		GoBack 		@can't be captured if they have watchful
+beq             GoBack  @can't be captured if they have watchful
 
 ldr		r0,Comp_Allegiance_Func
 mov		r14,r0
@@ -31,7 +31,7 @@ mov		r14,r1
 mov		r1,r4
 .short	0xF800
 cmp		r0,#0x0
-beq		GoBack				@can't capture if you can't rescue
+beq             GoBack  @can't capture if you can't rescue
 
 ldr	r1, [r5]
 ldr	r1, [r1, #40]
@@ -39,7 +39,7 @@ ldr	r0, [r5, #4]
 ldr	r0, [r0, #40]
 orr	r1, r0
 lsl	r0, r1, #22
-bmi	GoBack		@Unit has a SupplyFlag
+bmi     GoBack          @Unit has a SupplyFlag
 
 ldr		r0,Fill_Target_Queue
 mov		r14,r0

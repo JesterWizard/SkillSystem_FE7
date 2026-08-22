@@ -31,7 +31,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=PivotClassList
@@ -50,7 +50,7 @@ Pivot_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Pivot_GoBack @if false, return false
+beq Pivot_GoBack        @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4
@@ -85,7 +85,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=RepositionClassList
@@ -104,7 +104,7 @@ Reposition_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Reposition_GoBack @if false, return false
+beq Reposition_GoBack   @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4
@@ -139,7 +139,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=SwapClassList
@@ -158,7 +158,7 @@ Swap_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Swap_GoBack @if false, return false
+beq Swap_GoBack         @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4
@@ -192,7 +192,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=ShoveClassList
@@ -211,7 +211,7 @@ Shove_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Shove_GoBack @if false, return false
+beq Shove_GoBack        @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4
@@ -245,7 +245,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=SmiteClassList
@@ -264,7 +264,7 @@ Smite_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Smite_GoBack @if false, return false
+beq Smite_GoBack        @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4
@@ -298,7 +298,7 @@ mov r4,r0
 @check unit's class
 
 ldr r0,[r4,#4]
-ldrb r0,[r0,#4] @r0 = class
+ldrb r0,[r0,#4]         @r0 = class
 
 @get class list 
 ldr r1,=SwarpClassList
@@ -317,7 +317,7 @@ Swarp_RetFalse:
 ldr r0,=UseSkillCheckSettingLink
 ldrb r0,[r0]
 cmp r0,#0
-beq Swarp_GoBack @if false, return false
+beq Swarp_GoBack        @if false, return false
 
 @otherwise, do we have the skill?
 mov r0,r4

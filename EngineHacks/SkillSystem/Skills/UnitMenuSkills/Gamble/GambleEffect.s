@@ -10,5 +10,5 @@ mov lr, r2
 pop {r1}
 bx r1
 .align
-GambleMarker: @1 is rescue, 2 is pair up, 0 is nothing, 3 is Lunge, 4 is Mercy, 5 is Gamble
+GambleMarker:           @1 is rescue, 2 is pair up, 0 is nothing, 3 is Lunge, 4 is Mercy, 5 is Gamble
 .long 0x203f101

@@ -15,8 +15,8 @@
 IsRallyApplicable: 
 push {lr} 
 @r0 = unit 
-mov r1, #0 @ Can trade 
-mov r2, #2 @ rally range 
+mov r1, #0                      @ Can trade 
+mov r2, #2                      @ rally range 
 bl GetUnitsInRange 
 cmp r0, #0 
 beq Rally_False
@@ -33,36 +33,36 @@ bx r1
 .type RallyChaosFunc, %function 
 RallyChaosFunc: 
 push {r4-r7, lr} 
-mov r4, r0 @ valid unit with this skill 
+mov r4, r0                      @ valid unit with this skill 
 
-mov r1, #0 @ can trade 
-mov r2, #2 @ range 
+mov r1, #0                      @ can trade 
+mov r2, #2                      @ range 
 bl GetUnitsInRange 
 cmp r0, #0 
 beq ExitRallyChaos 
-mov r5, r0 @ units in range pointer 
+mov r5, r0                      @ units in range pointer 
 
-mov r0, #8 @ highest lsl to do as 1<<8 aka 0x100 
+mov r0, #8                      @ highest lsl to do as 1<<8 aka 0x100 
 blh NextRN_N 
 mov r7, #1 
-lsl r7, r0 @ rally bit to do 
+lsl r7, r0                      @ rally bit to do 
 
-mov r0, r4 @ unit with skill 
-mov r1, r7 @ rally anim bits 
-mov r2, #2 @ range 
+mov r0, r4                      @ unit with skill 
+mov r1, r7                      @ rally anim bits 
+mov r2, #2                      @ range 
 bl StartBuffFx
 
 mov r6, #0 
 sub r6, #1 
 
-RallyChaosLoop: @ apply the buff bits 
+RallyChaosLoop:                 @ apply the buff bits 
 add r6, #1 
 ldrb r0, [r5, r6] 
 cmp r0, #0 
 beq ExitRallyChaos 
 blh GetUnit 
-mov r1, r7 @ rally anim bits 
-bl RallyCommandEffect_apply @ args: r0 = unit, r1 = rally bits
+mov r1, r7                      @ rally anim bits 
+bl RallyCommandEffect_apply     @ args: r0 = unit, r1 = rally bits
 b RallyChaosLoop
 
 ExitRallyChaos: 

@@ -6,15 +6,15 @@
 .equ ClassType,SkillID+4
 
 push {r4-r7,r14}
-mov r4,r0 @attacker
-mov r5,r1 @defender
+mov r4,r0               @attacker
+mov r5,r1               @defender
 
 @basically we do what armor march does to check for armored allies in range but for class types
 
 @check if enemy is correct class type
 mov r0,r5
 ldr r0,[r0,#4]
-add r0,#0x50 @class type
+add r0,#0x50            @class type
 ldrh r0,[r0]
 ldr r1,ClassType
 and r0,r1
@@ -33,22 +33,22 @@ beq GoBack
 @get nearby units
 ldr	r0,GetUnitsInRange
 mov	lr,r0
-mov	r0,r4		@unit to check
-mov	r1,#0		@are allied
-mov	r2,#3		@range
+mov     r0,r4           @unit to check
+mov     r1,#0           @are allied
+mov     r2,#3           @range
 .short	0xf800
 cmp r0, #0x0
 beq GoBack
 
 @check if any nearby unit is correct class type
-mov r6, r0	@bugger for the nearby units
+mov r6, r0              @bugger for the nearby units
 LoopStart:
 ldrb	r0,[r6]
 cmp	r0,#0
 beq	GoBack
-ldr	r1,=#0x8018d0c	@get char data
+ldr     r1,=#0x8018d0c  @get char data
 mov	lr,r1
-.short	0xf800		@r0 = pointer to unit in ram
+.short  0xf800          @r0 = pointer to unit in ram
 mov	r3,r0
 ldr	r0,ClassType
 ldr	r1,[r3,#0x4]

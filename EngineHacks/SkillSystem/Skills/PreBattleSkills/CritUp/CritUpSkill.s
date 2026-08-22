@@ -7,8 +7,8 @@
 .thumb
 
 push {r4-r7, lr}
-mov r4, r0 @skill user
-mov r5, r1 @defender
+mov r4, r0              @skill user
+mov r5, r1              @defender
 
 ldr r0, SkillTester
 mov lr, r0

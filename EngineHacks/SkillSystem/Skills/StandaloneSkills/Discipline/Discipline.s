@@ -23,13 +23,13 @@ asr     r1, r1, #0x18
 mul     r1, r0
 
 @go to skill check
-mov     r4, r1    @hold that WEXP value for me buddy
+mov     r4, r1          @hold that WEXP value for me buddy
 ldr     r1, SkillPlus_ID
 ldr     r2, SkillTester
 mov     r0, r7
 mov     lr, r2
-.short     0xF800    @two byte bl to lr
-mov	r5, r0     @save vaue in r5 while we check for regular discipline
+.short     0xF800       @two byte bl to lr
+mov     r5, r0          @save vaue in r5 while we check for regular discipline
 ldr	r1, Skill_ID
 ldr     r2, SkillTester
 mov 	r0,r7

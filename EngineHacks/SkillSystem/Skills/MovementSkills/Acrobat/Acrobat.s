@@ -11,11 +11,11 @@ ldr   r0,CurrentCharPtr
 ldr   r0,[r0]
 cmp   r0, #0
 bne   NoDZ
-mov   r0, r2 @if the active unit is 0, we're being called from dangerzone
+mov   r0, r2            @if the active unit is 0, we're being called from dangerzone
 NoDZ:
 ldr   r1,AcrobatID
 .short  0xF800
-mov   r1,#0x0       @counter
+mov   r1,#0x0           @counter
 ldr   r5,MoveCostLoc
 Loop1:
 add   r2,r4,r1
@@ -37,9 +37,9 @@ bx    r0
 
 .align
 CurrentCharPtr:
-.long 0x03004690 //FE8 -> 0x03004E50
+.long 0x03004690        //FE8 -> 0x03004E50
 MoveCostLoc:
-.long 0x030043F0 //FE8 -> 0x03004BB0
+.long 0x030043F0        //FE8 -> 0x03004BB0
 SkillChecker:
 @POIN SkillChecker
 @WORD AcrobatID

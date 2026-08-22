@@ -8,7 +8,7 @@
 	lsr	r6, r0, #16
 
 @IsCapture?
-	ldr		r0, =0x3004690	@current char pointer
+        ldr             r0, =0x3004690  @current char pointer
 	ldr		r0, [r0]
 
 	@Check Current Unit is Player Unit
@@ -29,7 +29,7 @@
 	pop	{r1}
 	bx	r1
 GoBack:
-	ldr	r4, =0x0808472C	@DeathQuote Pointer
+        ldr     r4, =0x0808472C         @DeathQuote Pointer
 	ldr	r4, [r4]
 	ldr	r0, =0x080846EC|1
 	bx	r0

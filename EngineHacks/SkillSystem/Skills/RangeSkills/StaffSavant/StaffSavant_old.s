@@ -24,7 +24,7 @@ GetStatusStaffRange:
     mov r4, r0
     
     ldr r1, [r4]
-    ldrb r1, [r1, #4] @ loading char id
+    ldrb r1, [r1, #4]   @ loading char id
     
     cmp r1, #unitFormortiis
     bne NotFormortiis
@@ -38,7 +38,7 @@ NotFormortiis:
     mov r0, r4
     blh GetUnitPower, r1
     
-    asr r2, r0, #1 @ range = pow/2
+    asr r2, r0, #1      @ range = pow/2
     
     cmp r2, #5
     bgt SkipMinRange

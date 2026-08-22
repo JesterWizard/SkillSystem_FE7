@@ -37,15 +37,15 @@ PivotSelection_OnChange:
 	ldr r3, [r3]
 	
 	@ Loading row
-	lsl r2, #2 @ y*4
+        lsl r2, #2      @ y*4
 	add r3, r2
 	ldr r3, [r3]
 	
-	add r3, r1 @ x
+        add r3, r1      @ x
 	mov r0, #0
 	strb r0, [r3]
 	
-	mov r0, #1 @ &1 = Blue Move Display
+        mov r0, #1      @ &1 = Blue Move Display
 	_blh prMoveRange_ShowGfx
 	
 	pop {r4}

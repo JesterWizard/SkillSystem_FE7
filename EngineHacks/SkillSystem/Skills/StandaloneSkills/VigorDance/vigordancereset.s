@@ -12,7 +12,7 @@ push	{r4, lr}
 
 @r3 is our counter
 ldr	r0,=gChapterData
-ldrb	r4,[r0,#0x0F]	@phase
+ldrb    r4,[r0,#0x0F]   @phase
 add	r4,#1
 
 Loop:
@@ -31,16 +31,16 @@ bl UnsetBit
 
 Next:
 add	r4,#1
-cmp	r4,#0x3F @end of player units
+cmp     r4,#0x3F        @end of player units
 beq	End
-cmp	r4,#0x55 @end of green units
+cmp     r4,#0x55        @end of green units
 beq	End
-cmp	r4,#0xB3 @end of enemy units
+cmp     r4,#0xB3        @end of enemy units
 beq	End
 b	Loop
 
 End:
-mov r0, #0 @ no blocking proc / animation 
+mov r0, #0              @ no blocking proc / animation 
 pop	{r4}
 pop	{r1}
 bx	r1

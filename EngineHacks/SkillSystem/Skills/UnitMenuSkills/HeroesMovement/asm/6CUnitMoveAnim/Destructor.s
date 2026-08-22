@@ -13,7 +13,7 @@ UnitMoveAnim_Destruct:
 	@ Clearing bit 1 in Unit State bitfield
 	ldr r1, [r0, #0xC]
 		mov r2, #0x01
-		bic r1, r2 @ r1 = r1 & ~r2
+                bic r1, r2  @ r1 = r1 & ~r2
 	str r1, [r0, #0xC]
 	
 	@ End

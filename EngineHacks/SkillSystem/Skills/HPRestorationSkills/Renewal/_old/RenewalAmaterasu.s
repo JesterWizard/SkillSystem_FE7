@@ -45,15 +45,15 @@ no_renewal:
 @Now check for Amaterasu
 ldr r0, =AuraSkillCheck
 mov lr, r0
-mov r0, r5 @unit
+mov r0, r5                  @unit
 ldr r1, =RenewalAmaterasuIDLink
 ldrb r1, [ r1 ]
-mov r2, #0 @same_team
-mov r3, #2 @range
+mov r2, #0                  @same_team
+mov r3, #2                  @range
 .short 0xf800
 cmp r0, #0
 beq no_amaterasu
-add r4, #20 @heal 20% hp
+add r4, #20                 @heal 20% hp
 
 no_amaterasu:
 
@@ -69,10 +69,10 @@ beq no_camaraderie
   @check for allies in range:
   ldr r0, =AuraSkillCheck
   mov lr, r0
-  mov r0, r5 @unit
-  mov r1, #0 @always true
-  mov r2, #0 @same_team
-  mov r3, #2 @range
+  mov r0, r5                @unit
+  mov r1, #0                @always true
+  mov r2, #0                @same_team
+  mov r3, #2                @range
   .short 0xf800
   cmp r0, #0
   beq no_camaraderie
@@ -93,10 +93,10 @@ beq no_relief
   @check for allies in range:
   ldr r0, =AuraSkillCheck
   mov lr, r0
-  mov r0, r5 @unit
-  mov r1, #0 @always true
-  mov r2, #0 @same_team
-  mov r3, #2 @range
+  mov r0, r5                @unit
+  mov r1, #0                @always true
+  mov r2, #0                @same_team
+  mov r3, #2                @range
   .short 0xf800
   cmp r0, #0
   bne no_relief
@@ -108,15 +108,15 @@ no_relief:
 @Now check for bond
 ldr r0, =AuraSkillCheck
 mov lr, r0
-mov r0, r5 @unit
+mov r0, r5                  @unit
 ldr r1, =RenewalBondIDLink
 ldrb r1, [ r1 ]
-mov r2, #0 @same_team
-mov r3, #3 @range
+mov r2, #0                  @same_team
+mov r3, #3                  @range
 .short 0xf800
 cmp r0, #0
 beq no_bond
-add r4, #10 @heal 10% hp
+add r4, #10                 @heal 10% hp
 
 no_bond:
 
@@ -131,13 +131,13 @@ cmp	r0,#0x0
 beq	no_forager
 
 @check the terrain the unit is on, compare it against the list
-ldrb	r0,[r5,#0x10]	@x coord of unit
-ldrb	r1,[r5,#0x11]	@y coord of unit
-lsl	r1,#2		@y times 4 since it's pointer
-ldr	r2,=0x202E3E0	@tile id map pointer
-ldr	r2,[r2]		@tile id map offset
-ldr	r2,[r2,r1]	@load pointer to y row
-ldrb	r0,[r2,r0]	@load x byte of the row, which gets us tile id
+ldrb    r0,[r5,#0x10]       @x coord of unit
+ldrb    r1,[r5,#0x11]       @y coord of unit
+lsl     r1,#2               @y times 4 since it's pointer
+ldr     r2,=0x202E3E0       @tile id map pointer
+ldr     r2,[r2]             @tile id map offset
+ldr     r2,[r2,r1]          @load pointer to y row
+ldrb    r0,[r2,r0]          @load x byte of the row, which gets us tile id
 ldr	r1, =ForagerList
 ForagerLoop:
 ldrb	r2,[r1]
@@ -161,10 +161,10 @@ ldrb r0, [ r0, #0x0E ]
 ldr r1, =#0x080346B0
 mov lr, r1
 .short 0xF800
-ldr r3, [ r0, #0x20 ] @ Pointer to trap data in r3.
+ldr r3, [ r0, #0x20 ]       @ Pointer to trap data in r3.
 sub r3, #6
-ldrb r0, [ r5, #0x10 ] @ X coordinate of current unit in r0
-ldrb r1, [ r5, #0x11 ] @ Y coordinate of current unit in r1
+ldrb r0, [ r5, #0x10 ]      @ X coordinate of current unit in r0
+ldrb r1, [ r5, #0x11 ]      @ Y coordinate of current unit in r1
 ldr r6, =RenewalHealTrapID
 ldrb r6, [ r6 ]
 
@@ -172,29 +172,29 @@ BeginHealingTileLoop:
 add r3, #6
 ldrh r2, [ r3 ]
 cmp r2, #0x00
-beq NoHealingTiles @ If this is an ENDTRAP, end.
+beq NoHealingTiles          @ If this is an ENDTRAP, end.
 ldrb r2, [ r3 ]
 cmp r2, r6
-bne BeginHealingTileLoop @ If this isn't an 0x23, loop back and try again.
+bne BeginHealingTileLoop    @ If this isn't an 0x23, loop back and try again.
 ldrb r2, [ r3, #1 ]
 cmp r0, r2
-bne BeginHealingTileLoop @ If the X coordinates don't match up, loop back.
+bne BeginHealingTileLoop    @ If the X coordinates don't match up, loop back.
 ldrb r2, [ r3, #2 ]
 cmp r1, r2
-bne BeginHealingTileLoop @ If the Y coordinates don't match up, loop back.
+bne BeginHealingTileLoop    @ If the Y coordinates don't match up, loop back.
 push { r0, r1, r3 }
-ldrb r0, [ r3, #5 ] @ Event ID of this one in r0.
+ldrb r0, [ r3, #5 ]         @ Event ID of this one in r0.
 ldr r1, =#0x08083DA8
 mov lr, r1
 .short 0xF800
 cmp r0, #0x01
 pop { r0, r1, r3 }
-beq BeginHealingTileLoop @ If the event ID is set, loop back.
+beq BeginHealingTileLoop    @ If the event ID is set, loop back.
 
 @ If I'm here, this unit is on a good healing tile. Spooky.
 
-ldrb r2, [ r3, #4 ] @ Percent healed in r2
-add r4, r2, r4 @ Add to the main healing percentage.
+ldrb r2, [ r3, #4 ]         @ Percent healed in r2
+add r4, r2, r4              @ Add to the main healing percentage.
 
 @346B0: (Get_Chapter_Events) (FE8J: 345B8) (FE7: 315BC)
 @Params: r0=chapter number
@@ -224,7 +224,7 @@ add r4,r0
 
 NoImbue:
 
-mov r0, r4 @return the amount healed.
+mov r0, r4                  @return the amount healed.
 pop {r4 - r6}
 pop {r1}
 bx r1

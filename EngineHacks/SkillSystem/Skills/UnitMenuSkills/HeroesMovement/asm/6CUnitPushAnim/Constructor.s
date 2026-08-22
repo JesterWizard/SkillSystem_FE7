@@ -9,17 +9,17 @@ UnitPushAnim_Constructor:
 	push {r4-r7, lr}
 	
 	@ Saving arguments for later use
-	mov r4, r0 @ r4 = Unit Struct
-	mov r5, r1 @ r5 = Facing Direction
-	mov r6, r2 @ r6 = Direction pos pair
+        mov r4, r0          @ r4 = Unit Struct
+        mov r5, r1          @ r5 = Facing Direction
+        mov r6, r2          @ r6 = Direction pos pair
 	
 	@ Setting up New6C Arguments
-	ldr r0, p6CCode @ r0 = 6C code pointer
-	mov r1, #3      @ r1 = Main 3 6C Thread
+        ldr r0, p6CCode     @ r0 = 6C code pointer
+        mov r1, #3          @ r1 = Main 3 6C Thread
 	
 	@ Making 6C
 	_blh pr6C_New
-	mov r7, r0 @ r6 = New 6C
+        mov r7, r0          @ r6 = New 6C
 	
 	@ Field 0x30 = Subject Unit Struct
 	str r4, [r7, #0x30]

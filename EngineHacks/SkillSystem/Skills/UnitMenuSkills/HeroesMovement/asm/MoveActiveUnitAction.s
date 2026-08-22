@@ -14,7 +14,7 @@ MoveActiveUnitAction:
 	
 	@ Loading action struct
 	ldr  r4, =pActionStruct
-	ldrb r0, [r4, #0x0D] @ Target Unit Index
+        ldrb r0, [r4, #0x0D]    @ Target Unit Index
 	
 	@ Loading target unit struct
 	_blh prUnit_GetStruct

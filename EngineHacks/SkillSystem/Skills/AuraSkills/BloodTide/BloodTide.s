@@ -15,24 +15,24 @@ CheckSkill:
 @now check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, BloodTideID
-mov r2, #0 @can_trade
-mov r3, #1 @range
+mov r2, #0              @can_trade
+mov r3, #1              @range
 .short 0xf800
 cmp r0, #0
 beq Done
 
 mov r0, r4
-add     r0,#0x5A    @Move to the attacker's damage.
-ldrh    r3,[r0]     @Load the attacker's damage into r3.
-add     r3,#5    	@Add 5 damage.
-strh    r3,[r0]     @Store dmg.
+add     r0,#0x5A        @Move to the attacker's damage.
+ldrh    r3,[r0]         @Load the attacker's damage into r3.
+add     r3,#5           @Add 5 damage.
+strh    r3,[r0]         @Store dmg.
 
-add		r0,#6		@Move to the attacker's hit.
-ldrh	r3,[r0]		@Load the attacker's hit into r3.
-add		r3,#5		@Add 5 hit.
-strh	r3,[r0]		@Store hit.
+add             r0,#6   @Move to the attacker's hit.
+ldrh    r3,[r0]         @Load the attacker's hit into r3.
+add             r3,#5   @Add 5 hit.
+strh    r3,[r0]         @Store hit.
 
 
 Done:

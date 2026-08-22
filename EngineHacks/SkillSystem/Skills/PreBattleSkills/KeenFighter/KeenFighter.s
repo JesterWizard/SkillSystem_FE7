@@ -28,33 +28,33 @@ beq GoBack
 
 ldr r4,=#0x203A3F0
 ldr r5,=#0x203A470
-mov r1,#0x5E        @short for speed
-ldrsh r2,[r4,r1]    @load the speed short value for the attacker
-ldrsh r7,[r5,r1]    @load the speed short value for the defender
-sub r6,r7,r2        @subtract the enemy's attack speed from the skill holder's
+mov r1,#0x5E            @short for speed
+ldrsh r2,[r4,r1]        @load the speed short value for the attacker
+ldrsh r7,[r5,r1]        @load the speed short value for the defender
+sub r6,r7,r2            @subtract the enemy's attack speed from the skill holder's
 
 @Get the absolute value of the difference to account for negatives
 asr r3, r6, #31
 add r6, r6, r3
 eor r6, r3
-cmp r6,#4           @does the enemy double?
+cmp r6,#4               @does the enemy double?
 bge ReduceDamage
 b   GoBack
 
 ReduceDamage:
-mov r1,#0x5A        @get the attack short
-ldrsh r7,[r5,r1]    @load the attack short value for the enemy
-mov r1,#0x5C        @now get the defense short
-ldrsh r6,[r4,r1]    @load the skill holder's defense value
-sub r0,r7,r6        @subtract the skill's holder's defense from the enemy's attack
+mov r1,#0x5A            @get the attack short
+ldrsh r7,[r5,r1]        @load the attack short value for the enemy
+mov r1,#0x5C            @now get the defense short
+ldrsh r6,[r4,r1]        @load the skill holder's defense value
+sub r0,r7,r6            @subtract the skill's holder's defense from the enemy's attack
 cmp r0, #0
-ble GoBack          @if the difference is less than or equal to 0, (the skill holder's defense is higher) then we have nothing more to do
-asr r2,r0,#1        @otherwise, get half of the resulting attack value
-asr r3,r2,#1        @half it again and store it in another register
-add r2,r3           @add both together to get a quick and dirty 75%
-sub r0,r2           @subtract the resulting attack value from the 75% we calculated to get 25%
-add r6,r0           @add this 25% to the skill holder's defense value
-strh r6,[r4,r1]     @store the new defense value for the skill holder
+ble GoBack              @if the difference is less than or equal to 0, (the skill holder's defense is higher) then we have nothing more to do
+asr r2,r0,#1            @otherwise, get half of the resulting attack value
+asr r3,r2,#1            @half it again and store it in another register
+add r2,r3               @add both together to get a quick and dirty 75%
+sub r0,r2               @subtract the resulting attack value from the 75% we calculated to get 25%
+add r6,r0               @add this 25% to the skill holder's defense value
+strh r6,[r4,r1]         @store the new defense value for the skill holder
 
 GoBack:
 pop {r4-r7}

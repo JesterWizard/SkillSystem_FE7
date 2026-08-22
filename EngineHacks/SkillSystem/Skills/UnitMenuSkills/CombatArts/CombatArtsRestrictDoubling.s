@@ -12,9 +12,9 @@ CombatArtsRestrictDoubling:
 @return 0 for forcing unable to double, 1 for forcing able to double, 2 for keeping AS result/no change
 @we want to return 0 if A. we are using a combat art and B. the setting for combat arts doubling is set to true, otherwise return 2
 push {r4-r6,r14}
-mov r4,r0 @attacker
-mov r5,r1 @defender
-mov r6,r2 @AS check result
+mov r4,r0               @attacker
+mov r5,r1               @defender
+mov r6,r2               @AS check result
 
 @are combat arts allowed to double?
 ldr r0,=CombatArtDoubleOptionLink

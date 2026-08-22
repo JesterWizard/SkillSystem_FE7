@@ -4,12 +4,12 @@
 .equ NiceThighsID, AuraSkillCheck+4
 
 push {r4-r7, lr}
-mov r4, r0 @attacker
-mov r5, r1 @defendker
+mov r4, r0              @attacker
+mov r5, r1              @defendker
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, ThighdeologyID
 .short 0xf800
 cmp r0, #0
@@ -18,10 +18,10 @@ beq GoBack
 @if we have Thighdeology, check for people with Nice Thighs
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, NiceThighsID
-mov r2, #4 @all units
-mov r3, #3 @range
+mov r2, #4              @all units
+mov r3, #3              @range
 .short 0xf800
 cmp r0, #0
 beq GoBack

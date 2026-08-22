@@ -9,7 +9,7 @@
 .equ SoundID, PaletteList+4
 
 PUSH {r4-r6,lr}
-MOV r6,r0 @r0 is pointer to the battle animation data??
+MOV r6,r0               @r0 is pointer to the battle animation data??
 LSL r5,r1,#0x18
 LSR r5,#0x18
 LDR r0, SkillAnimStruct
@@ -78,7 +78,7 @@ InitializeStruct:
 routine1:
 .long 0x80551b0|1
 routine2:
-.long 0x805a16c|1 @ takes halfword at [r0,#0xc] and returns if bit 0x200 is set
+.long 0x805a16c|1       @ takes halfword at [r0,#0xc] and returns if bit 0x200 is set
 routine3:
 .long 0x8001d8c|1
 LeftOrRight:

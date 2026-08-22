@@ -14,40 +14,40 @@
 .endm
 
 .global PoisonStrike
-.type PoisonStrike, %function @ r4 = attacker's character struct, r5 = defender's character struct
-PoisonStrike: @ Deals damage equal to 20% of the enemy's HP after combat if this unit initiates battle.
+.type PoisonStrike, %function   @ r4 = attacker's character struct, r5 = defender's character struct
+PoisonStrike:                   @ Deals damage equal to 20% of the enemy's HP after combat if this unit initiates battle.
 push { r6, r7, lr }
 ldr r0, =actionStruct
 ldrb r0, [ r0, #0x11 ]
 cmp r0, #0x02
-bne End @ End if this isn't combat.
+bne End                         @ End if this isn't combat.
 mov r0, r4
 ldr r1, =PoisonStrikeIDLink
 ldrb r1, [ r1 ]
 blh SkillTester, r3
 cmp r0, #0x00
 beq End
-ldr r6, =#0x0203A3F0 @ Attack struct
-ldr r7, =#0x0203A470 @ Defense struct
+ldr r6, =#0x0203A3F0            @ Attack struct
+ldr r7, =#0x0203A470            @ Defense struct
 bl PSGWInjureDefender
 b End
 
 .global GrislyWound
 .type GrislyWound, %function
-GrislyWound: @ Same as Poison Strike, except unit doesn't have to initiate.
+GrislyWound:                    @ Same as Poison Strike, except unit doesn't have to initiate.
 push { r6, r7, lr }
 ldr r0, =actionStruct
 ldrb r0, [ r0, #0x11 ]
 cmp r0, #0x02
-bne End @ End if this isn't combat.
+bne End                         @ End if this isn't combat.
 mov r0, r4
 ldr r1, =GrislyWoundIDLink
 ldrb r1, [ r1 ]
 blh SkillTester, r3
 cmp r0, #0x00
 beq CheckGrislyWoundDefender
-ldr r6, =#0x0203A3F0 @ Attack struct
-ldr r7, =#0x0203A470 @ Defense struct
+ldr r6, =#0x0203A3F0            @ Attack struct
+ldr r7, =#0x0203A470            @ Defense struct
 bl PSGWInjureDefender
 
 CheckGrislyWoundDefender:
@@ -57,8 +57,8 @@ ldrb r1, [ r1 ]
 blh SkillTester, r3
 cmp r0, #0x00
 beq End
-ldr r6, =#0x0203A3F0 @ Attack struct
-ldr r7, =#0x0203A470 @ Defense struct
+ldr r6, =#0x0203A3F0            @ Attack struct
+ldr r7, =#0x0203A470            @ Defense struct
 bl PSGWInjureAttacker
 
 End:

@@ -2,8 +2,8 @@
 .thumb
 
 push	{r4-r6,lr}
-mov	r4,r0		@stat
-mov	r5,r1		@ unit struct 
+mov     r4,r0           @stat
+mov     r5,r1           @ unit struct 
 
 mov r0, r5 
 bl GetUnitDebuffEntry 
@@ -14,7 +14,7 @@ cmp r0, #0
 beq End 
 ldr	r0, =ArmorMarchBoost
 ldr r0, [r0] 
-add	r4,r0		@add stat
+add     r4,r0           @add stat
 
 End:
 mov	r0,r4

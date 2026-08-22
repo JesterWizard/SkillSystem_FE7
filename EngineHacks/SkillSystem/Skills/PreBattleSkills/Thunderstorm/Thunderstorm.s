@@ -2,16 +2,16 @@
 .equ ItemTable, SkillTester+4
 .equ ThunderstormID, ItemTable+4
 
-.equ gBattleData, 0x203A3D8 //FE8 -> x0x203A3D8
+.equ gBattleData, 0x203A3D8     //FE8 -> x0x203A3D8
 
 push {r4-r7, lr}
-mov r4, r0 @atkr
-mov r5, r1 @dfdr
+mov r4, r0                      @atkr
+mov r5, r1                      @dfdr
 
 @has Thunderstorm
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @Attacker data
+mov r0, r4                      @Attacker data
 ldr r1, ThunderstormID
 .short 0xf800
 cmp r0, #0

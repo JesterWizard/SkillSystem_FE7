@@ -46,7 +46,7 @@ mov		r0,#1
 GoBack:
 pop		{r4-r5}
 pop		{r1}
-cmp		r0,#0				@necessary due to laziness and space constraints
+cmp             r0,#0               @necessary due to laziness and space constraints
 bx		r1
 
 StealCommandUsability:
@@ -68,15 +68,15 @@ beq StealCommandUsability_RetFalse
     cmp r0, #0x0
     bne StealCommandUsability_RetFalse
         mov r0 ,r2
-        blh 0x08025c00   @MakeTargetListForSteal
-        blh 0x0804b174   @GetTargetListSize Gets list size (used to check for empty lists in usability routines) Number of entries in the list
+        blh 0x08025c00              @MakeTargetListForSteal
+        blh 0x0804b174              @GetTargetListSize Gets list size (used to check for empty lists in usability routines) Number of entries in the list
         cmp r0, #0x0
         beq StealCommandUsability_RetFalse
 
 ldr r0, [r4, #0x0] 
-blh 0x080176da   @GetUnitItemCount
+blh 0x080176da                      @GetUnitItemCount
 cmp r0, #0x5
-beq StealCommandUsability_RetFalse   @ItemFull
+beq StealCommandUsability_RetFalse  @ItemFull
 
 StealCommandUsability_RetTrue:
 mov		r0,#1

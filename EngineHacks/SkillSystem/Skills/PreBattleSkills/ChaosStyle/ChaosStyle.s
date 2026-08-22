@@ -1,5 +1,5 @@
 .equ ChaosStyleID, SkillTester+4
-.equ gBattleData, 0x203A3D8 //FE8 -> 0x203A4D4
+.equ gBattleData, 0x203A3D8     //FE8 -> 0x203A4D4
 .thumb
 
 push {r4-r7,lr}
@@ -26,34 +26,34 @@ beq End
 
 @Check for own weapon
 mov r0, r4
-mov r1, #0x4c    @Move to the attackers's weapon ability
+mov r1, #0x4c                   @Move to the attackers's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
 bne MagicalAttacker
 
 mov r0, r5
-mov r1, #0x4c    @Move to the defender's weapon ability
+mov r1, #0x4c                   @Move to the defender's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
-bne Effect @Magic bit set -> go to effect
+bne Effect                      @Magic bit set -> go to effect
 
-b End	@Neither magical -> end
+b End                           @Neither magical -> end
 
 MagicalAttacker:
 mov r0,r5
-mov r1, #0x4c    @Move to the defender's weapon ability
+mov r1, #0x4c                   @Move to the defender's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
-bne End @do nothing if magic bit set
+bne End                         @do nothing if magic bit set
 
 Effect:
 mov r0, r4
-add r0,#0x5E	@attacker AS
+add r0,#0x5E                    @attacker AS
 ldrh r3,[r0]
-add r3,#3		@add 3 AS
+add r3,#3                       @add 3 AS
 strh r3,[r0]
 
 End:

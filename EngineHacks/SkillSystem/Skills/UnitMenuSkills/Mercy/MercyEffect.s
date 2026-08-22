@@ -10,5 +10,5 @@ mov lr, r2
 pop {r1}
 bx r1
 .align
-MercyMarker: @1 is rescue, 2 is pair up, 0 is nothing, 3 is lunge, 4 is mercy, 5 is gamble
+MercyMarker:            @1 is rescue, 2 is pair up, 0 is nothing, 3 is lunge, 4 is mercy, 5 is gamble
 .long 0x203f101

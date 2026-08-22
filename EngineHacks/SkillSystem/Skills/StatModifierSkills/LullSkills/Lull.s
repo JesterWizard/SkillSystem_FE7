@@ -8,8 +8,8 @@
 .type Lull, %function
 Lull:
 push {r4-r7,r14}
-mov r4, r0 @ Attacker
-mov r5, r1 @ Defender
+mov r4, r0              @ Attacker
+mov r5, r1              @ Defender
 
 bl GetUnitDebuffEntry 
 mov r6, r0 
@@ -222,7 +222,7 @@ beq noSpdRally
 	mov r0,r4
 	add r0,#0x5E
 	ldrh r1,[r0]
-	mov r2,r1 @hold on to AS for a moment
+        mov r2,r1       @hold on to AS for a moment
 	cmp r1,#4
 	blt NoAS
 	sub r1,#4
@@ -234,12 +234,12 @@ beq noSpdRally
 	
 	@using old AS and new AS, get the difference
 	sub r2,r1
-	lsl r2,#1 @multiply it by 2
+        lsl r2,#1       @multiply it by 2
 	@now we get Avoid
 	mov r0,r4
-	add r0,#0x62 @avoid
+        add r0,#0x62    @avoid
 	ldrb r1,[r0]
-	sub r1,r2 @subtract (change in AS)*2 from avoid to simulate speed debuff
+        sub r1,r2       @subtract (change in AS)*2 from avoid to simulate speed debuff
 	strb r1,[r0]
 	
 
@@ -276,7 +276,7 @@ beq SklRally
 	mov r0,r4
 	add r0,#0x5E
 	ldrh r1,[r0]
-	mov r2,r1 @hold on to AS for a moment
+        mov r2,r1       @hold on to AS for a moment
 	cmp r1,#2
 	blt NoAS2
 	sub r1,#2
@@ -288,12 +288,12 @@ beq SklRally
 	
 	@using old AS and new AS, get the difference
 	sub r2,r1
-	lsl r2,#1 @multiply it by 2
+        lsl r2,#1       @multiply it by 2
 	@now we get Avoid
 	mov r0,r4
-	add r0,#0x62 @avoid
+        add r0,#0x62    @avoid
 	ldrb r1,[r0]
-	sub r1,r2 @subtract (change in AS)*2 from avoid to simulate speed debuff
+        sub r1,r2       @subtract (change in AS)*2 from avoid to simulate speed debuff
 	strb r1,[r0]
 
 SklRally:
@@ -327,13 +327,13 @@ beq noSklRally
 
 	@we subtract 8 hit and 2 crit to simulate -4 skill
 	mov r0,r4
-	add r0,#0x60 @hit
+        add r0,#0x60    @hit
 	ldrh r1,[r0]
 	sub r1,#8
 	strh r1,[r0]
 
 	mov r0,r4
-	add r0,#0x66 @crit
+        add r0,#0x66    @crit
 	ldrh r1,[r0]
 	sub r1,#2
 	strh r1,[r0]
@@ -369,13 +369,13 @@ beq LckRally
 
 	@we subtract 4 hit and 1 crit to simulate -2 skill
 	mov r0,r4
-	add r0,#0x60 @hit
+        add r0,#0x60    @hit
 	ldrh r1,[r0]
 	sub r1,#4
 	strh r1,[r0]
 
 	mov r0,r4
-	add r0,#0x66 @crit
+        add r0,#0x66    @crit
 	ldrh r1,[r0]
 	sub r1,#1
 	strh r1,[r0]
@@ -411,19 +411,19 @@ beq noLuckRally
 	@we subtract 2 hit 4 avoid 4 crit avoid to simulate -4 luck
 	
 	mov r0,r4
-	add r0,#0x60 @hit
+        add r0,#0x60    @hit
 	ldrh r1,[r0]
 	sub r1,#2
 	strh r1,[r0]
 	
 	mov r0,r4
-	add r0,#0x62 @avoid
+        add r0,#0x62    @avoid
 	ldrh r1,[r0]
 	sub r1,#4
 	strh r1,[r0]
 	
 	mov r0,r4
-	add r0,#0x68 @crit avoid
+        add r0,#0x68    @crit avoid
 	ldrh r1,[r0]
 	sub r1,#4
 	strh r1,[r0]
@@ -461,19 +461,19 @@ beq ResRally
 	@we subtract 1 hit 2 avoid 2 crit avoid to simulate -2 luck
 	
 	mov r0,r4
-	add r0,#0x60 @hit
+        add r0,#0x60    @hit
 	ldrh r1,[r0]
 	sub r1,#1
 	strh r1,[r0]
 	
 	mov r0,r4
-	add r0,#0x62 @avoid
+        add r0,#0x62    @avoid
 	ldrh r1,[r0]
 	sub r1,#2
 	strh r1,[r0]
 	
 	mov r0,r4
-	add r0,#0x68 @crit avoid
+        add r0,#0x68    @crit avoid
 	ldrh r1,[r0]
 	sub r1,#2
 	strh r1,[r0]
@@ -516,7 +516,7 @@ beq noResRally
 	beq noResRally
 	
 	mov r0,r4
-	add r0,#0x5C @defense
+        add r0,#0x5C    @defense
 	ldrb r1,[r0]
 	sub r1,#4
 	strb r1,[r0]
@@ -561,7 +561,7 @@ beq DefRally
 	beq DefRally
 	
 	mov r0,r4
-	add r0,#0x5C @defense
+        add r0,#0x5C    @defense
 	ldrb r1,[r0]
 	sub r1,#2
 	strb r1,[r0]
@@ -605,7 +605,7 @@ beq noDefRally
 	beq noDefRally
 	
 	mov r0,r4
-	add r0,#0x5C @defense
+        add r0,#0x5C    @defense
 	ldrb r1,[r0]
 	sub r1,#4
 	strb r1,[r0]
@@ -648,7 +648,7 @@ beq GoBack
 	beq GoBack
 	
 	mov r0,r4
-	add r0,#0x5C @defense
+        add r0,#0x5C    @defense
 	ldrb r1,[r0]
 	sub r1,#2
 	strb r1,[r0]

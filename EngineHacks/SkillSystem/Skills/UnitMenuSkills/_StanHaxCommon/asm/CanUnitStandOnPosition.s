@@ -12,20 +12,20 @@ CanUnitStandOnPosition:
 	@ BOUND CHECK BEGIN
 	@ -----------------
 	
-	cmp r1, #0 @ x < 0
+        cmp r1, #0      @ x < 0
 	blt ReturnFalse
 	
-	cmp r2, #0 @ y < 0
+        cmp r2, #0      @ y < 0
 	blt ReturnFalse
 	
 	ldrh r3, [r4, #0]
 	
-	cmp r1, r3 @ x >= size.x
+        cmp r1, r3      @ x >= size.x
 	bge ReturnFalse
 	
 	ldrh r3, [r4, #2]
 	
-	cmp r2, r3 @ y >= size.y
+        cmp r2, r3      @ y >= size.y
 	bge ReturnFalse
 	
 	@ POSITION CHECK BEGIN
@@ -38,7 +38,7 @@ CanUnitStandOnPosition:
 	ldr r4, [r4]
 	
 	@ converting y pos into row pointer offset
-	lsl r3, r2, #2 @ r3 = y*4
+        lsl r3, r2, #2  @ r3 = y*4
 	
 	@ getting the relevant row pointer for each map
 	add r4, r3

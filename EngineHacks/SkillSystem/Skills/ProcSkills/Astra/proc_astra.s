@@ -14,10 +14,10 @@
 @ original SkillTester + Skill % check for a one-hit proc if 0x7F is clear.
 @ Do not write [r6,#4] (FE7 rounds are 4 bytes).
 push {r4-r7,lr}
-mov r4, r0 @attacker
-mov r5, r1 @defender
-mov r6, r2 @battle buffer
-mov r7, r3 @battle data
+mov r4, r0              @attacker
+mov r5, r1              @defender
+mov r6, r2              @battle buffer
+mov r7, r3              @battle data
 
 mov r0, r4
 add r0, #0x7F
@@ -29,24 +29,24 @@ bne AstraSwing
 @check for Astra proc
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, AstraID
 .short 0xf800
 cmp r0, #0
 beq End
 @if user has Astra, check for proc rate
-ldrb r0, [r4, #0x15] @skill stat as activation rate
-mov r1, r4 @skill user
+ldrb r0, [r4, #0x15]    @skill stat as activation rate
+mov r1, r4              @skill user
 blh d100Result
 cmp r0, #1
 bne End
 
-mov r5, #1 @stamp 0x4000
+mov r5, #1              @stamp 0x4000
 b CheckMiss
 
 AstraSwing:
 mov r3, #0x0F
-and r3, r1 @remaining this swing
+and r3, r1              @remaining this swing
 cmp r3, #5
 beq FirstHit
 mov r5, #0

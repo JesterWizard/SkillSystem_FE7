@@ -13,7 +13,7 @@ mov r4 ,r0
 @ 0x2Cで指定しているアニメーションProcsが終わるまで待ちます
 @ arg r0 = target proc 
 ldr r0, [r4, #0x2c]
-blh 0x080046a8	@Fin6C	{U}
+blh 0x080046a8                  @Fin6C	{U}
 
 
 
@@ -32,47 +32,47 @@ bne Exit
 
 
 
-	ldr  r6, =0x0203A3F0 @BattleUnit@gBattleActor	{U}	戦闘アニメで右側.CopyUnit
+        ldr  r6, =0x0203A3F0    @BattleUnit@gBattleActor	{U}	戦闘アニメで右側.CopyUnit
 	@ldr r6, =0x0203A4E8 @BattleUnit@gBattleActor	{J}	戦闘アニメで右側.CopyUnit
 	ldrb r0, [r6, #0xb]
-	blh 0x08018d0c       @GetUnitStruct	{U}
+        blh 0x08018d0c          @GetUnitStruct	{U}
 	@blh 0x08019108       @GetUnitStruct	{J}
-	mov r5, r0	@Unit
+        mov r5, r0              @Unit
 	
 
 	
-	mov r0, r5 @ unit 
-	blh 0x8079BB8 @ MU_GetByUnit(struct Unit* unit);
-	blh 0x80790B4 @ mu_end 
+        mov r0, r5              @ unit 
+        blh 0x8079BB8           @ MU_GetByUnit(struct Unit* unit);
+        blh 0x80790B4           @ mu_end 
 	@ユニットが移動中のモーションが残ってしまうので消す
 	@blh 0x0806CCB8       @ClearMOVEUNITs	{U}
 	@blh 0x0807B4B8       @ClearMOVEUNITs	{J}
 
-ldr r1, [r6, #0x0C] @ Unit state 
-mov r2, #0x1 @ Hide
-bic r1, r2 @ Show SMS @ 
+ldr r1, [r6, #0x0C]             @ Unit state 
+mov r2, #0x1                    @ Hide
+bic r1, r2                      @ Show SMS @ 
 str r1, [r6, #0x0C] 
 	
 	mov r0, r6 
-	blh 0x8028130 @ ShowUnitSMS
+        blh 0x8028130           @ ShowUnitSMS
 
 	@回復やダメージの結果をRAMUnitに書き戻して確定させます
-	mov r0, r5       @Arg1: Unit
-	mov r1, r6       @Arg2: 戦闘アニメで右側.CopyUnit
-	blh 0x08029c24   @SaveUnitFromBattle	{U}
+        mov r0, r5              @Arg1: Unit
+        mov r1, r6              @Arg2: 戦闘アニメで右側.CopyUnit
+        blh 0x08029c24          @SaveUnitFromBattle	{U}
 	@blh 0x0802C134   @SaveUnitFromBattle	{J}
 
 	@もしユニットのHPが0になってしまっているなら死亡させる
-	mov r0, r5       @Arg1 Unit
-	blh 0x08032750   @KillUnitIfNoHealth	{U}
+        mov r0, r5              @Arg1 Unit
+        blh 0x08032750          @KillUnitIfNoHealth	{U}
 	@blh 0x0803269C   @KillUnitIfNoHealth	{J}
 
-	blh 0x080321C8   @UpdateMapAndUnit	{U}
+        blh 0x080321C8          @UpdateMapAndUnit	{U}
 	@blh 0x08032114   @UpdateMapAndUnit	{J}
 
 	@マップアニメーションが終わったのでループを抜ける
 	mov r0 ,r4
-	blh 0x080046a0   @Break6CLoop	{U}
+        blh 0x080046a0          @Break6CLoop	{U}
 	@blh 0x08002DE4   @Break6CLoop	{J}
 	
 

@@ -7,9 +7,9 @@ ldrb	r1,[r2,#0xB]
 mov		r0,#0xC0
 and		r1,r0
 cmp		r1,#0
-beq		GoBack		@player units don't get cleared
+beq             GoBack      @player units don't get cleared
 ldr		r0,[r2,#0xC]
-mov		r3,#0x20	@being rescued
+mov             r3,#0x20    @being rescued
 tst		r0,r3
 beq		GoBack
 mov		r1,#0

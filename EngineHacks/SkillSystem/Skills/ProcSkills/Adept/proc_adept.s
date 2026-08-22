@@ -19,7 +19,7 @@ mov r7, r3
 mov r0, r4
 add r0, #0x7F
 ldrb r1, [r0]
-mov r2, #0x80 @Astra owns this swing
+mov r2, #0x80           @Astra owns this swing
 tst r1, r2
 bne End
 cmp r1, #0
@@ -33,14 +33,14 @@ b StampSkill
 OrigChance:
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, AdeptID
 .short 0xf800
 cmp r0, #0
 beq End
 @if user has Adept, check for proc rate
-ldrb r0, [r4, #0x16] @speed stat as activation rate
-mov r1, r4 @skill user
+ldrb r0, [r4, #0x16]    @speed stat as activation rate
+mov r1, r4              @skill user
 blh d100Result
 cmp r0, #1
 bne End

@@ -19,7 +19,7 @@ UnitPushAnim_PushLoopor:
 	@ Loading fast anim option value
 	ldr  r0, =(pChapterDataStruct + 0x40)
 	ldrb r0, [r0]
-	lsr r0, r0, #7 @ r0 = 1 if fast anim is set, 0 otherwise
+        lsr r0, r0, #7  @ r0 = 1 if fast anim is set, 0 otherwise
 	
 	@ add 1 to speed if fast speed is set
 	add r3, r0
@@ -43,7 +43,7 @@ UnitPushAnim_PushLoopor:
 	str r0, [r4, #0x38]
 	
 	cmp r0, #0
-	bgt End @ If countdown didn't reach zero yet, goto end
+        bgt End         @ If countdown didn't reach zero yet, goto end
 	
 	@ Break loop
 	mov r0, r4

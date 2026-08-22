@@ -19,10 +19,10 @@
 .endm
 
 push {r4-r7,lr}
-mov r5, r0 @unit
-mov r0, r1 @item
+mov r5, r0              @unit
+mov r0, r1              @item
 blh GetItemCost, r3
-mov r4, r0 @price
+mov r4, r0              @price
 
 @while we're at it, let's let you make a bunch of silver cards
 
@@ -33,7 +33,7 @@ ldr r1, BargainID
 .short 0xf800
 cmp r0, #0
 beq SilverCardCheck
-lsr r4,#1 @halve price of item
+lsr r4,#1               @halve price of item
 ldr r0, DoesBargainStack
 cmp r0,#1
 bne GoBack
@@ -51,7 +51,7 @@ beq LoopEnd
 add r6,#1
 b LoopStart
 LoopEnd:
-lsr r4,#1 @halve price of item
+lsr r4,#1               @halve price of item
 
 GoBack:
 mov r0,r4

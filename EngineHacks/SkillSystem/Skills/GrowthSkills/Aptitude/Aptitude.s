@@ -18,7 +18,7 @@ cmp		r0,#1
 bne		End
 
 AptitudeEffect:
-add		r5,#20 @growth +20%
+add             r5,#20  @growth +20%
 
 End:
 pop {r2}

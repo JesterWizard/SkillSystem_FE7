@@ -1,17 +1,17 @@
 .thumb
 .equ UnitRangeCheck, SkillTester+4
 .equ LoyaltyID, UnitRangeCheck+4
-.equ GetUnit, 0x8018D0D //FE8 -> 0x8019431
+.equ GetUnit, 0x8018D0D     //FE8 -> 0x8019431
 
 push {r4-r7, lr}
-mov r4, r0 @atkr
-mov r5, r1 @dfdr
+mov r4, r0                  @atkr
+mov r5, r1                  @dfdr
 
 
 @has Loyalty
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @Attacker data
+mov r0, r4                  @Attacker data
 ldr r1, LoyaltyID
 .short 0xf800
 cmp r0, #0
@@ -20,9 +20,9 @@ beq End
 @now check for the skill
 ldr r0, UnitRangeCheck
 mov lr, r0
-mov r0, r4 @attacker
-mov r1, #0 @are allies
-mov r2, #2 @range
+mov r0, r4                  @attacker
+mov r1, #0                  @are allies
+mov r2, #2                  @range
 .short 0xf800
 cmp r0, #0
 beq End
@@ -52,7 +52,7 @@ cmp r3,#0x2
 beq Final
 cmp r3,#0x3
 beq Final
-cmp r3,#0x2D @Lyn (not tutorial)
+cmp r3,#0x2D                @Lyn (not tutorial)
 beq Final
 b Loop
 

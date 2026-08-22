@@ -15,5 +15,5 @@ BYTE $1 $F1 $3 $2
 POIN SignedShortList
 POIN UnsignedShortList
 POIN SignedByteList
-BYTE $FC $18 $D $8
+BYTE $88 $FC $B $8
 POIN SkillTester

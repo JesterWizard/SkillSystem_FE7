@@ -10,7 +10,7 @@
 .equ AttackerUnit,0x203a3f0
 .equ DefenderUnit,0x203a470
 
-Synchronize: @r3 hook at 2C214
+Synchronize:            @r3 hook at 2C214
 @status ID in r0, unit in r4, attacker or defender ptr in r5
 
 @if the unit here is the attacker 

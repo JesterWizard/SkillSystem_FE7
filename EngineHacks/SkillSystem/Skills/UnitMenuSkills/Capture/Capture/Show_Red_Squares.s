@@ -10,12 +10,12 @@ ldr        r1,Is_Capture_Set
 mov        r14,r1
 .short    0xF800
 cmp        r0,#0x0
-bne        GoBack            @returns 1 if true, which is coincidentally what we need the range to be
+bne        GoBack       @returns 1 if true, which is coincidentally what we need the range to be
 ldr        r0,Get_Range_Bitfield
 mov        r14,r0
 ldr        r0,[r4]
 mov        r1,#0x0
-ldsb    r1,[r5,r1]        @inventory slot
+ldsb    r1,[r5,r1]      @inventory slot
 .short    0xF800
 GoBack:
 mov        r1,r0

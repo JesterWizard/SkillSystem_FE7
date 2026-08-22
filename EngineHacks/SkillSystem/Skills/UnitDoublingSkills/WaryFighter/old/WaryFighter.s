@@ -19,7 +19,7 @@ ldr   r6,DefenderStruct
 mov   r0,r6
 ldr   r1,WaryFighterID
 .short  0xF800
-cmp   r0,#0x0 @does the defender have wary fighter?
+cmp   r0,#0x0           @does the defender have wary fighter?
 bne   RetFalse
 
 mov   r14,r5
@@ -27,7 +27,7 @@ ldr   r5,AttackerStruct
 mov   r0,r5
 ldr   r1,WaryFighterID
 .short  0xF800
-cmp   r0,#0x0 @does the attacker?
+cmp   r0,#0x0           @does the attacker?
 bne   RetFalse
 
 @does attacker have moonlight?
@@ -37,15 +37,15 @@ mov   r0,r5
 ldr   r1,MoonlightID
 .short  0xF800
 cmp   r0,#1
-beq   RetFalse @if so, we don't double
+beq   RetFalse          @if so, we don't double
 
 mov   r3,#0x5E
-ldsh  r2,[r6,r3]    @defender's AS
+ldsh  r2,[r6,r3]        @defender's AS
 cmp   r2,#0xFA
-bgt   RetFalse    @something about snags, possibly. Or just IntSys being IntSys.
+bgt   RetFalse          @something about snags, possibly. Or just IntSys being IntSys.
 
-ldsh  r3,[r5,r3]    @attacker's AS
-sub   r1,r3,r2    @Attacker-defender
+ldsh  r3,[r5,r3]        @attacker's AS
+sub   r1,r3,r2          @Attacker-defender
 cmp   r1,#0x0
 ble   DefDoubAtk
 
@@ -72,16 +72,16 @@ ldr   r1,=Get_Weapon_Effect
 mov   r14,r1
 .short 0xF800
 cmp   r0,#0x3
-beq   RetFalse      @can't double with Eclipse weapons (unless they're brave, but why would you do that?)
+beq   RetFalse          @can't double with Eclipse weapons (unless they're brave, but why would you do that?)
 
 cmp   r0, #0xC
-beq   RetFalse      @also can't double if weapon effect is 0xC
+beq   RetFalse          @also can't double if weapon effect is 0xC
 
 ldr   r0,[r4]
 add   r0,#0x48
 ldrb  r0,[r0]
 cmp   r0,#0xB5
-beq   RetFalse      @Stone can't double
+beq   RetFalse          @Stone can't double
 
 @are combat arts allowed to double?
 ldr r0, CombatArtSetting

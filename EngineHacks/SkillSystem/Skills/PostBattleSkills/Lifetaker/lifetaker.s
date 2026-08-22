@@ -15,18 +15,18 @@ cmp	r0, #0x00
 beq	End
 
 @check if attacked this turn
-ldr   r6,=actionStruct @so we have to do a weird thing here and override the default action struct because it starts 11 bytes ahead of where it should be for this skill
-ldrb 	r0, [r6,#0x11]	@action taken this turn
+ldr   r6,=actionStruct      @so we have to do a weird thing here and override the default action struct because it starts 11 bytes ahead of where it should be for this skill
+ldrb    r0, [r6,#0x11]      @action taken this turn
 mov r0,#0x2
-cmp	r0, #0x2 @attack
+cmp     r0, #0x2            @attack
 bne	End
-ldrb 	r0, [r6,#0x0C]	@allegiance byte of the current character taking action 
-ldrb	r1, [r4,#0x0B]	@allegiance byte of the character we are checking
-cmp	r0, r1		@check if same character
+ldrb    r0, [r6,#0x0C]      @allegiance byte of the current character taking action 
+ldrb    r1, [r4,#0x0B]      @allegiance byte of the character we are checking
+cmp     r0, r1              @check if same character
 bne	End
 
 @check if killed enemy
-ldrb	r0, [r5, #0x13]	@currhp
+ldrb    r0, [r5, #0x13]     @currhp
 cmp	r0, #0
 bne	End
 
@@ -41,29 +41,29 @@ beq	End
 
 @killed enemy, then heal 25% hp
 mov	r0,r4
-ldr	r3,=#0x8018AB0 //FE8 -> #0x8019190	@max hp getter
+ldr     r3,=#0x8018AB0      //FE8 -> #0x8019190	@max hp getter
 mov	lr,r3
 .short	0xF800
 mov	r1,r0
 push	{r1}
 mov	r0,r4
-ldr	r3,=#0x8018A70 //FE8 -> #0x8019150	@current hp getter
+ldr     r3,=#0x8018A70      //FE8 -> #0x8019150	@current hp getter
 mov	lr,r3
 .short	0xF800
 mov	r2,r0
 pop	{r1}
-cmp	r1, r2		@check if hp is already max
+cmp     r1, r2              @check if hp is already max
 beq	End
 
 
 @this used to just add curHP to curHP and set that as new curHP
 @make r0 = 1/4 maxHP
-lsr r0,r1,#2 @maxHP/4
+lsr r0,r1,#2                @maxHP/4
 
-add	r2, r0		@total healing
-cmp	r2, r1		@is the new hp higher than max?
+add     r2, r0              @total healing
+cmp     r2, r1              @is the new hp higher than max?
 ble	StoreHP
-mov	r2, r1		@if so, set to max
+mov     r2, r1              @if so, set to max
 StoreHP:
 strb	r2, [r4,#0x13]
 

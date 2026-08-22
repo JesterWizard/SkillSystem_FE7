@@ -16,58 +16,58 @@ LAxeFaithSkillID   = EALiterals+0x08
 @ Branch back to the function epilogue
 ArmsthriftHook:
 	ldr  r0, [r2]
-	ldrh r0, [r0] @ current hit attributes
+        ldrh r0, [r0]               @ current hit attributes
 
-	mov r1, #2   @ Miss flag
+        mov r1, #2                  @ Miss flag
 
-	tst r0, r1  @ <void> = CurrentRound & 2
-	beq NonMiss @ goto NonMiss if zero (Miss flag is not set)
+        tst r0, r1                  @ <void> = CurrentRound & 2
+        beq NonMiss                 @ goto NonMiss if zero (Miss flag is not set)
 
-	ldr r1, [r5, #0x4C]    @ BattleUnit.weaponAttributes
-	mov r2, #(0x02 | 0x80) @ IA_MAGIC | IA_UNCOUNTERABLE
+        ldr r1, [r5, #0x4C]         @ BattleUnit.weaponAttributes
+        mov r2, #(0x02 | 0x80)      @ IA_MAGIC | IA_UNCOUNTERABLE
 
-	tst r1, r2 @ <void> = BattleUnit.weaponAttributes & (IA_MAGIC | IA_UNCOUNTERABLE)
-	beq End    @ goto End if zero (weapon is neither magic or uncounterable)
+        tst r1, r2                  @ <void> = BattleUnit.weaponAttributes & (IA_MAGIC | IA_UNCOUNTERABLE)
+        beq End                     @ goto End if zero (weapon is neither magic or uncounterable)
 
 NonMiss:
 	@ ACTUAL ARMSTHRIFT CHECK BEGIN
 
-	mov r0, r5                 @ arg r0 = (Battle) Unit
-	ldr r1, LArmsthriftSkillID @ arg r1 = Skill Index
+        mov r0, r5                  @ arg r0 = (Battle) Unit
+        ldr r1, LArmsthriftSkillID  @ arg r1 = Skill Index
 
 	ldr r3, LUnitHasSkill
 	bl CallR3
 
-	cmp r0, #0        @ compare result
-	beq NonArmsthrift @ goto NonArmsthrift if zero (unit does not have armsthrift)
+        cmp r0, #0                  @ compare result
+        beq NonArmsthrift           @ goto NonArmsthrift if zero (unit does not have armsthrift)
 
 	@ Getting Armsthrift proc chance (=luck)
-	ldrb r0, [r5, #0x19] @ BattleUnit.luck
+        ldrb r0, [r5, #0x19]        @ BattleUnit.luck
 @	lsl  r0, #1          @ multiply by 2
-	mov r1, r5           @ get attacker for future checks
+        mov r1, r5                  @ get attacker for future checks
 
 	@ ROLL
 	ldr r3, =RollBattleRN
 	bl CallR3
 
-	cmp r0, #0 @ compare result
-	bne End    @ goto End if non-zero (Armsthrift proc)
+        cmp r0, #0                  @ compare result
+        bne End                     @ goto End if non-zero (Armsthrift proc)
 
 NonArmsthrift:
 	@ ACTUAL ARMSTHRIFT CHECK END
 
 	@ AxeFaith: skip durability when this round's weapon is an axe
-	mov r0, r5                 @ arg r0 = (Battle) Unit
-	ldr r1, LAxeFaithSkillID   @ arg r1 = Skill Index
+        mov r0, r5                  @ arg r0 = (Battle) Unit
+        ldr r1, LAxeFaithSkillID    @ arg r1 = Skill Index
 
 	ldr r3, LUnitHasSkill
 	bl CallR3
 
-	cmp r0, #0        @ compare result
-	beq NonAxeFaith   @ goto NonAxeFaith if zero (unit does not have axefaith)
+        cmp r0, #0                  @ compare result
+        beq NonAxeFaith             @ goto NonAxeFaith if zero (unit does not have axefaith)
 
 	mov  r0, #0x50
-	ldrb r0, [r5, r0] @ BattleUnit.weaponType for this round
+        ldrb r0, [r5, r0]           @ BattleUnit.weaponType for this round
 	cmp  r0, #WTYPE_AXE
 	beq  End
 
@@ -80,15 +80,15 @@ NonAxeFaith:
 	ldr r3, =GetItemAfterUse
 	bl CallR3
 
-	strh r0, [r4] @ Store used weapon
+        strh r0, [r4]               @ Store used weapon
 
-	cmp r0, #0 @ Compare weapon
-	bne End    @ goto End if weapon != 0
+        cmp r0, #0                  @ Compare weapon
+        bne End                     @ goto End if weapon != 0
 
-	mov  r1, #0x7D @ BattleUnit.weaponBroke
+        mov  r1, #0x7D              @ BattleUnit.weaponBroke
 	mov  r0, #1
 
-	strb r0, [r5, r1] @ BattleUnit.weaponBroke = true
+        strb r0, [r5, r1]           @ BattleUnit.weaponBroke = true
 
 End:
 	ldr r3, =_ReturnLocation

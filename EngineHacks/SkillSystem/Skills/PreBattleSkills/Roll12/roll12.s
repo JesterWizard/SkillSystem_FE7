@@ -5,8 +5,8 @@
 .equ geneateRN100, 0x8000E04
 
 push	{r4, lr}
-mov	r4, r0 @attacker
-mov	r5, r1 @defender
+mov     r4, r0              @attacker
+mov     r5, r1              @defender
 
 ldr	r0,=Attacker
 cmp	r4,r0
@@ -23,7 +23,7 @@ cmp	r0, #0
 beq	Defender
 
 @get random number here
-ldr	r0,=geneateRN100	@random number
+ldr     r0,=geneateRN100    @random number
 mov	lr,r0
 .short	0xF800
 mov	r1,#12
@@ -56,7 +56,7 @@ cmp	r0, #0
 beq	End
 
 @get random number here
-ldr	r0,=geneateRN100	@random number
+ldr     r0,=geneateRN100    @random number
 mov	lr,r0
 .short	0xF800
 mov	r1,#12

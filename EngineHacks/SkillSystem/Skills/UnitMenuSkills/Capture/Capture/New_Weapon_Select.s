@@ -8,14 +8,14 @@
 push	{r14}
 ldr		r0,Func_4E884
 mov		r14,r0
-.short	0xF800			@I think this clears backgrounds and stuff?
+.short  0xF800                          @I think this clears backgrounds and stuff?
 ldr		r0,Is_Capture_Set
 mov		r14,r0
 ldr		r0,[r4]
 .short	0xF800
 cmp		r0,#0x0
 beq		RegularRange
-ldr		r0,Is_Capture_Set+4		@actually Fill_Capture_Range_Map
+ldr             r0,Is_Capture_Set+4     @actually Fill_Capture_Range_Map
 mov		r14,r0
 ldr		r0,[r4]
 .short	0xF800

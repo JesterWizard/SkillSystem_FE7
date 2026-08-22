@@ -1,8 +1,8 @@
 .thumb
 
-	gActionData = 0x203A86C //FE8 -> 0x203A958
-	gActiveUnit = 0x3004690 //FE8 -> 0x3004E50
-	gChapterData = 0x202BBF8 //FE8 -> 0x202BCF0
+        gActionData = 0x203A86C     //FE8 -> 0x203A958
+        gActiveUnit = 0x3004690     //FE8 -> 0x3004E50
+        gChapterData = 0x202BBF8    //FE8 -> 0x202BCF0
 
 	.global AIMoveDistance
 	.type   AIMoveDistance, function
@@ -75,7 +75,7 @@ AIMoveDistance:
 
 	// return
 
-	ldr r1, =#0x8034E7C + 1 //FE8 -> #0x8039C4C + 1
+        ldr r1, =#0x8034E7C + 1     //FE8 -> #0x8039C4C + 1
 	bx r1
 
 	.pool
@@ -101,10 +101,10 @@ NewClearAttackFlag:
 
 	ldr r0, =0x203f101
 	strb r5, [r0]
-	ldr r0, =0x202BBB8 //FE8 -> 0x202bcb0
+        ldr r0, =0x202BBB8          //FE8 -> 0x202bcb0
 	mov r1, r0
 	add r1, #0x3d
-	ldr r3, =0x8018119 //FE8 -> 0x8018689
+        ldr r3, =0x8018119          //FE8 -> 0x8018689
 	bx r3
 
 	.pool

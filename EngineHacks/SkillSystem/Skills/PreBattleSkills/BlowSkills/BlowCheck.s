@@ -4,22 +4,22 @@
 .equ Defender, 0x203A470
 
 push {r4-r7, lr}
-mov     r4,#0 @loop counter
-ldr     r5,=Attacker @attacker
+mov     r4,#0           @loop counter
+ldr     r5,=Attacker    @attacker
 cmp     r0,r5
-bne     EndProgram @skip if unit isn't the attacker
+bne     EndProgram      @skip if unit isn't the attacker
 mov     r6,r1 
-ldr     r1, [r6,#4] @class number
+ldr     r1, [r6,#4]     @class number
 cmp     r1, #0
 beq     EndProgram
 CheckLoop:
 mov r0, r5
 ldr     r2,BlowIDList   @Load in the list of Blow Skills.
-ldrb    r1,[r2,r4]  @Load in the next Blow Skill in the list.
+ldrb    r1,[r2,r4]      @Load in the next Blow Skill in the list.
 ldr     r3,SkillTester
 mov     lr, r3     
-.short 0xf800       @Call Skill Tester.
-cmp r0, #0          @Check if unit has the corresponding Faire skill.
+.short 0xf800           @Call Skill Tester.
+cmp r0, #0              @Check if unit has the corresponding Faire skill.
 bne SkillChecks
 SkillReturn:
 add     r4, #0x01
@@ -48,7 +48,7 @@ beq     PragmaticSkill
 cmp		r4, #0x09
 beq		HeroesDeathSkill
 b SkillReturn
-EndProgram:		@I had to move this to stop out of range errors. - Darrman
+EndProgram:             @I had to move this to stop out of range errors. - Darrman
 pop {r4-r7}
 pop {r0}
 bx r0
@@ -83,16 +83,16 @@ mov r1, #0x4c           @Move to the defender's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
-beq     SkillReturn @do nothing if magic bit not set
+beq     SkillReturn     @do nothing if magic bit not set
 mov r2, #0x2
-lsl r2, #0x10 @0x20000 negate def/res
+lsl r2, #0x10           @0x20000 negate def/res
 tst r1, r2
 bne SkillReturn
 ldr r0, =Attacker
-add     r0,#0x5C      @Move to the attacker's defense
-ldrh    r3,[r0]       @Load the attacker's defense into r3.
-add     r3,#0x0A      @Add 10 to the attacker's defense
-strh    r3,[r0]       @Store defender avoid.
+add     r0,#0x5C        @Move to the attacker's defense
+ldrh    r3,[r0]         @Load the attacker's defense into r3.
+add     r3,#0x0A        @Add 10 to the attacker's defense
+strh    r3,[r0]         @Store defender avoid.
 b       SkillReturn
 
 CertainSkill:
@@ -109,13 +109,13 @@ mov r1, #0x4c           @Move to the defender's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
-bne     SkillReturn @do nothing if magic bit set
+bne     SkillReturn     @do nothing if magic bit set
 mov r2, #0x2
-lsl r2, #0x10 @0x20000 negate def/res
+lsl r2, #0x10           @0x20000 negate def/res
 tst r1, r2
 bne SkillReturn
 ldr r0, =Attacker
-add r0, #0x5c @attacker defense
+add r0, #0x5c           @attacker defense
 ldrh r3, [r0]
 add r3, #5
 strh r3, [r0]
@@ -169,7 +169,7 @@ add     r0,#0x5A        @Move to the attacker's attack.
 ldrh    r3,[r0]         @Load the attacker's attack into r3.
 add     r3,#0x6         @Add 6 to the attacker's attack.
 strh    r3,[r0]         @Store attacker attack.
-b       SkillReturn	    @Attacker's attack. Redundancy? Nah.
+b       SkillReturn     @Attacker's attack. Redundancy? Nah.
 
 .align
 .ltorg

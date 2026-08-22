@@ -17,16 +17,16 @@ cmp    r0, #0x00
 bne    End
 
 @check if attacked this turn
-ldrb 	r0, [r6,#0x11]	@action taken this turn
-cmp	r0, #0x2 @attack
+ldrb    r0, [r6,#0x11]  @action taken this turn
+cmp     r0, #0x2        @attack
 bne	End
-ldrb 	r0, [r6,#0x0C]	@allegiance byte of the current character taking action
-ldrb	r1, [r4,#0x0B]	@allegiance byte of the character we are checking
-cmp	r0, r1		@check if same character
+ldrb    r0, [r6,#0x0C]  @allegiance byte of the current character taking action
+ldrb    r1, [r4,#0x0B]  @allegiance byte of the character we are checking
+cmp     r0, r1          @check if same character
 bne	End
 
 @check if already galeforced this turn
-ldr	r0, [r4,#0x0C]	@status bitfield
+ldr     r0, [r4,#0x0C]  @status bitfield
 mov	r1, #0x04
 lsl	r1, #0x08
 and	r0, r1
@@ -43,10 +43,10 @@ cmp	r0,#0x00
 beq	End
 
 @if killed enemy, unset 0x2 and 0x40, set 0x400, write to status
-ldr	r0, [r4,#0x0C]	@status bitfield
+ldr     r0, [r4,#0x0C]  @status bitfield
 mov	r1, #0x42
 mvn	r1, r1
-and	r0, r1		@unset bits 0x42
+and     r0, r1          @unset bits 0x42
 mov	r1, #0x04
 lsl	r1, #0x08
 orr	r0, r1
@@ -54,7 +54,7 @@ str	r0, [r4,#0x0C]
 
 @add unit to the AI list so enemies act twice
 ldr	r0,=#0x203AA03
-ldrb	r1, [r4,#0x0B]	@allegiance byte of the character we are checking
+ldrb    r1, [r4,#0x0B]  @allegiance byte of the character we are checking
 AddAILoop:
 add	r0, #0x01
 ldrb	r2, [r0]

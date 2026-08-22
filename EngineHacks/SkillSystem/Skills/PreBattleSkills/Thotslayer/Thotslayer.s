@@ -4,15 +4,15 @@
 .equ PersonalityID, NiceThighsID+4
 
 push {r4-r7, lr}
-mov r4, r0 @attacker
-mov r5, r1 @defendker
+mov r4, r0              @attacker
+mov r5, r1              @defendker
 
 cmp r5,#0
 beq GoBack
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker data
+mov r0, r4              @attacker data
 ldr r1, ThotslayerID
 .short 0xf800
 cmp r0, #0
@@ -27,7 +27,7 @@ beq GoBack
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r5 @defender data
+mov r0, r5              @defender data
 ldr r1, NiceThighsID
 .short 0xf800
 cmp r0, #0
@@ -35,7 +35,7 @@ bne ActivateSkill
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r5 @defender data
+mov r0, r5              @defender data
 ldr r1, PersonalityID
 .short 0xf800
 cmp r0, #0

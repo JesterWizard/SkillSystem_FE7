@@ -21,7 +21,7 @@ beq no_renewal
  @add hp
  add r4, #30
 no_renewal:
-mov r0, r4 @return the amount healed.
+mov r0, r4              @return the amount healed.
 pop {r4}
 pop {r1}
 bx r1

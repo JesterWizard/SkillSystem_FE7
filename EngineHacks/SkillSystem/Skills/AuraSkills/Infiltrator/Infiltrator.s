@@ -12,7 +12,7 @@ mov r5, r1
 @has Infiltrator
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @Attacker data
+mov r0, r4              @Attacker data
 ldr r1, InfiltratorID
 .short 0xf800
 cmp r0, #0
@@ -22,8 +22,8 @@ CheckSkill:
 @now check for the skill
 ldr r0, GetUnitsInRange
 mov lr, r0
-mov r0, r4 @attacker
-mov r1, #3 @Enemy
+mov r0, r4              @attacker
+mov r1, #3              @Enemy
 mov r2, #2
 .short 0xf800
 cmp r0, #0

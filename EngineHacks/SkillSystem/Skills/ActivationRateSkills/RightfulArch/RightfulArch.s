@@ -5,7 +5,7 @@
 .type RightfulArch, %function
 
 
-RightfulArch: @r0 = activation chance, r1 = unit ptr; return updated activation chance
+RightfulArch:           @r0 = activation chance, r1 = unit ptr; return updated activation chance
 push {r4-r5,r14}
 mov r4,r0
 mov r5,r1

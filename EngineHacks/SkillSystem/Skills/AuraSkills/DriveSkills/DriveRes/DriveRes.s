@@ -8,14 +8,14 @@ push {r4-r7,lr}
 mov r4, r0
 mov r5, r1
 
-mov r0, r5       @Move defender data into r1.
-mov r1, #0x4c    @Move to the defender's weapon ability
+mov r0, r5              @Move defender data into r1.
+mov r1, #0x4c           @Move to the defender's weapon ability
 ldr r1, [r0,r1]
 mov r2, #0x42
 tst r1, r2
-beq     Done @do nothing if magic bit not set
+beq     Done            @do nothing if magic bit not set
 mov r2, #0x2
-lsl r2, #0x10 @0x20000 negate def/res
+lsl r2, #0x10           @0x20000 negate def/res
 tst r1, r2
 bne Done
 
@@ -23,10 +23,10 @@ bne Done
 @now check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, DriveResID
-mov r2, #0 @can_trade
-mov r3, #2 @range
+mov r2, #0              @can_trade
+mov r3, #2              @range
 .short 0xf800
 cmp r0, #0
 beq Done
@@ -39,7 +39,7 @@ beq Done
 
 @testing
 mov r0, r4
-add r0, #0x5c @attacker defense
+add r0, #0x5c           @attacker defense
 ldrh r3, [r0]
 add r3, #2
 strh r3, [r0]

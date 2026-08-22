@@ -11,9 +11,9 @@
 
 push {r4-r7,r14}
 
-mov r4,r0 @r4=char struct
-mov r5,r1 @r5=item halfword
-mov r6,r2 @r6=rank
+mov r4,r0               @r4=char struct
+mov r5,r1               @r5=item halfword
+mov r6,r2               @r6=rank
 
 @See if we have the skill
 ldr r0,SkillTester

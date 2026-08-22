@@ -41,7 +41,7 @@ PivotSelection_OnSelection:
 	strb r1, [r3, #0x14]
 	
 	ldr r0, ACTION_SWAP
-	strb r0, [r3, #0x11] @ Action Index
+        strb r0, [r3, #0x11]    @ Action Index
 	
 	@ 0x02 = Kill Unit Selection, 0x04 = Beep Sound, 0x10 = Clear Unit Selection Gfx
 	mov r0, #0x16

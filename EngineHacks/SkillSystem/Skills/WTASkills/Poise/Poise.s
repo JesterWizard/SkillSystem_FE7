@@ -2,8 +2,8 @@
 .equ	PoiseID,SkillTester+4
 
 push {r4-r6,lr}
-mov r4,r0 @ Attack struct
-mov r5,r1 @ Defense struct
+mov r4,r0               @ Attack struct
+mov r5,r1               @ Defense struct
 
 @ check if defender has poise
 ldr r6,SkillTester

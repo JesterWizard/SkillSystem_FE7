@@ -71,7 +71,7 @@ mov r2,#0
 ldr r0,[r5]
 ldr r0,[r0]
 ldr r1,=0x0802442C
-ldr r1,[r1]   @Get SummonTable
+ldr r1,[r1]             @Get SummonTable
 ldrb r0,[r0,#4]
 mov r3,r1
 ldrb r1,[r3]
@@ -122,8 +122,8 @@ ExistingPhantomCheck:
 mov r4,#1
 lsl r1,#1
 ldr r0,=0x0802442C
-ldr r0,[r0]   @Get SummonTable
-add r0,#0x1   @SummonTable+1
+ldr r0,[r0]             @Get SummonTable
+add r0,#0x1             @SummonTable+1
 add r5,r1,r0
 GetSummonUnit:
 mov r0,r4
@@ -151,7 +151,7 @@ b ReturnFalse
 
 CheckNextUnit:
 add r4,#1
-cmp r4,#0xAF @ For compatibility with Pikmin's npc/enemy summons hack
+cmp r4,#0xAF            @ For compatibility with Pikmin's npc/enemy summons hack
 ble GetSummonUnit
 
 ReturnTrue:

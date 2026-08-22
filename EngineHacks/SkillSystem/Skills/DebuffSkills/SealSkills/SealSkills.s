@@ -2,11 +2,11 @@
 .thumb
 .equ SealSkillList, SkillTester+4
 .equ ExtraUnitData, SealSkillList+4
-.equ ItemTableLocation, ExtraUnitData+4 @dont forget to add this to the master skill installer
+.equ ItemTableLocation, ExtraUnitData+4     @dont forget to add this to the master skill installer
 .equ FullMetalBodyID, ItemTableLocation+4
 
 mov r1,r5
-ldr r3, =0x8029c24 @UpdateUnitFromBattleUnit
+ldr r3, =0x8029c24                          @UpdateUnitFromBattleUnit
 mov lr, r3
 .short 0xf800
 cmp r6, #0
@@ -14,13 +14,13 @@ beq loc_2c0a4
 
 mov r0, r6
 mov r1, r4
-ldr r3, =0x8029c24 @UpdateUnitFromBattleUnit
+ldr r3, =0x8029c24                          @UpdateUnitFromBattleUnit
 mov lr, r3
 .short 0xf800
 b ApplySeals
 
 loc_2c0a4:
-ldr r0, =0x802c984 @SaveSnagWallFromBattle
+ldr r0, =0x802c984                          @SaveSnagWallFromBattle
 mov lr, r0
 mov r0, r4
 .short 0xf800
@@ -42,7 +42,7 @@ beq End
 @r4 = defender
 mov r0, r5
 mov r1, r4
-bl ApplyWeaponDebuffs @ in SetDebuffs.s 
+bl ApplyWeaponDebuffs                       @ in SetDebuffs.s 
 mov r0, r4
 mov r1, r5
 bl ApplyWeaponDebuffs
@@ -59,8 +59,8 @@ SealLoop:
 	.short	0xf800
 	cmp	r0,#1
 	beq	OtherSide
-  ldrb r1, [r4,r5] @nth skill
-  mov r0, r6 @defender
+  ldrb r1, [r4,r5]                          @nth skill
+  mov r0, r6                                @defender
   ldr r2, SkillTester
   mov lr, r2
   .short 0xf800
@@ -70,7 +70,7 @@ SealLoop:
     mov r0, r7
 	ldr r1, =DebuffAmount 
 	ldr r1, [r1] 
-    mov r2, r5 @nth seal
+    mov r2, r5                              @nth seal
     bl ApplyDebuff
   OtherSide:
 	@check for FullMetalBody
@@ -81,8 +81,8 @@ SealLoop:
 	.short	0xf800
 	cmp	r0,#1
 	beq	NextLoop
-  ldrb r1, [r4,r5] @nth skill
-  mov r0, r7 @attacker
+  ldrb r1, [r4,r5]                          @nth skill
+  mov r0, r7                                @attacker
   ldr r2, SkillTester
   mov lr, r2
   .short 0xf800
@@ -92,11 +92,11 @@ SealLoop:
     mov r0, r6
 	ldr r1, =DebuffAmount 
 	ldr r1, [r1] 
-    mov r2, r5 @nth seal
+    mov r2, r5                              @nth seal
     bl ApplyDebuff
   NextLoop:
   add r5, #1
-  cmp r5, #6 @ Expanded to 6 to compensate for SealMag
+  cmp r5, #6                                @ Expanded to 6 to compensate for SealMag
   ble SealLoop
 
 End:
@@ -113,36 +113,36 @@ push {r4-r6, lr}
 @ r0 = unit 
 mov r4, r1
 mov r5, r2
-bl GetUnitDebuffEntry @ r0 = unit struct 
-mov r6, r0 @ debuff entry 
-lsl r3, r5, #2 @ 4 bytes per 
-ldr r1, =SealDebuffIndex @ table of POINs 
+bl GetUnitDebuffEntry                       @ r0 = unit struct 
+mov r6, r0                                  @ debuff entry 
+lsl r3, r5, #2                              @ 4 bytes per 
+ldr r1, =SealDebuffIndex                    @ table of POINs 
 add r1, r3 
-ldr r1, [r1] @ address of the debuff offset 
-ldr r1, [r1] @ debuff offset 
+ldr r1, [r1]                                @ address of the debuff offset 
+ldr r1, [r1]                                @ debuff offset 
 ldr r2, =DebuffStatNumberOfBits_Link
 ldr r2, [r2] 
 bl UnpackData_Signed 
-mov r3, r0 @ value 
+mov r3, r0                                  @ value 
 cmp r3, #0 
 blt Negative 
-sub r3, r4 @ new value 
+sub r3, r4                                  @ new value 
 mov r4, r3 
 b NowStoreDebuff 
 Negative: 
 mov r1, #0 
-sub r1, r4 @ to compare 
+sub r1, r4                                  @ to compare 
 cmp r3, r1 
-blt EndApplyDebuff @ we had a lower value / worse debuff already 
-mov r4, r1 @ new value to store 
+blt EndApplyDebuff                          @ we had a lower value / worse debuff already 
+mov r4, r1                                  @ new value to store 
 
 NowStoreDebuff: 
-mov r0, r6 @ debuff entry 
-lsl r2, r5, #2 @ 4 bytes per 
-ldr r1, =SealDebuffIndex @ table of POINs 
+mov r0, r6                                  @ debuff entry 
+lsl r2, r5, #2                              @ 4 bytes per 
+ldr r1, =SealDebuffIndex                    @ table of POINs 
 add r1, r2 
-ldr r1, [r1] @ address of the debuff offset 
-ldr r1, [r1] @ debuff offset 
+ldr r1, [r1]                                @ address of the debuff offset 
+ldr r1, [r1]                                @ debuff offset 
 mov r3, r4
 ldr r2, =DebuffStatNumberOfBits_Link
 ldr r2, [r2] 

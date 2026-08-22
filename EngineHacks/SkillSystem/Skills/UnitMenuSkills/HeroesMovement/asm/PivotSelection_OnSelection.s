@@ -39,12 +39,12 @@ PivotSelection_OnSelection:
 	
 	ldr r3, =pActionStruct
 	
-	strb r0, [r3, #0x0E] @ Action xMove
-	strb r1, [r3, #0x0F] @ Action yMove
-	strb r2, [r3, #0x0D] @ Target Unit
+        strb r0, [r3, #0x0E]    @ Action xMove
+        strb r1, [r3, #0x0F]    @ Action yMove
+        strb r2, [r3, #0x0D]    @ Target Unit
 	
 	ldr r2, ACTION_MOVEACTIVEUNIT
-	strb r2, [r3, #0x11] @ Action Index
+        strb r2, [r3, #0x11]    @ Action Index
 	
 	@ 0x02 = Kill Unit Selection, 0x04 = Beep Sound, 0x10 = Clear Unit Selection Gfx
 	mov r0, #0x16

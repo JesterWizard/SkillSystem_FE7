@@ -9,13 +9,13 @@
 
 	push	{r14}
 
-	ldrb	r0, [r6, #0xB]		@ arg r0 = acting unit id
+        ldrb    r0, [r6, #0xB]          @ arg r0 = acting unit id
 
 	ldr		r3, Get_Unit_Data
 	mov		r14,r3
 	.short	0xF800
 
-	mov r5, r0 @ r5 = acting unit
+        mov r5, r0                      @ r5 = acting unit
 
 	ldr		r0, Is_Capture_Set
 	mov		r14, r0
@@ -33,16 +33,16 @@
 	lsl		r1,#0x17
 	mvn		r1,r1
 	and		r0,r1
-	str		r0,[r5,#0xC]		@remove the 'is capturing' bit from attacker
+        str             r0,[r5,#0xC]    @remove the 'is capturing' bit from attacker
 
 
-	ldrb	r0,[r4,#0x13]		@is defender dead?
+        ldrb    r0,[r4,#0x13]           @is defender dead?
 	cmp		r0,#0x0
 	bne End
 
 	@if defender dead and capturing:
 
-	ldrb	r7,[r4,#0xB]		@defender allegiance
+        ldrb    r7,[r4,#0xB]            @defender allegiance
 	ldr		r0,Get_Unit_Data
 	mov		r14,r0
 	mov		r0,r7
@@ -59,7 +59,7 @@
 	mov		r0,#0x1
 	strb	r0,[r7,#0x13]
 
-	mov		r7,#0x0				@captured units don't drop anything
+        mov             r7,#0x0         @captured units don't drop anything
 	b End
 
 NotCapture:
@@ -71,7 +71,7 @@ NotCapture:
 	mov  r0, #0x13
 	ldsb r0, [r6, r0]
 
-	cmp  r0, #0 @ is *acting unit* dead?
+        cmp  r0, #0                     @ is *acting unit* dead?
 	bne  CheckTargetDeadItemDrop
 
 	ldrb r0, [r6, #0xB]
@@ -80,7 +80,7 @@ NotCapture:
 	mov  lr, r3
 	.short 0xF800
 
-	mov r7, r0 @ r7 = acting unit (dead unit)
+        mov r7, r0                      @ r7 = acting unit (dead unit)
 
 	ldrb r0, [r4, #0xB]
 
@@ -88,13 +88,13 @@ NotCapture:
 	mov  lr, r3
 	.short 0xF800
 
-	mov r5, r0 @ r5 = target unit (unit receiving item)
+        mov r5, r0                      @ r5 = target unit (unit receiving item)
 
 CheckTargetDeadItemDrop:
 	mov  r0, #0x13
 	ldsb r0, [r4, r0]
 
-	cmp  r0, #0 @ is *target unit* dead?
+        cmp  r0, #0                     @ is *target unit* dead?
 	bne  End
 
 	ldrb r0, [r6, #0xB]
@@ -103,7 +103,7 @@ CheckTargetDeadItemDrop:
 	mov  lr, r3
 	.short 0xF800
 
-	mov r5, r0 @ r7 = acting unit (unit receiving item)
+        mov r5, r0                      @ r7 = acting unit (unit receiving item)
 
 	ldrb r0, [r4, #0xB]
 
@@ -111,7 +111,7 @@ CheckTargetDeadItemDrop:
 	mov  lr, r3
 	.short 0xF800
 
-	mov r7, r0 @ r5 = target unit (dead unit)
+        mov r7, r0                      @ r5 = target unit (dead unit)
 
 End:
 	@ We shouldn't need to check if the dead unit has the drop item flag
@@ -122,9 +122,9 @@ End:
 
 .align
 Get_Unit_Data:
-.long 0x08018d0c @ GetUnit
+.long 0x08018d0c                        @ GetUnit
 Write_Rescue_Data:
-.long 0x08017DE4 @ UnitRescue
+.long 0x08017DE4                        @ UnitRescue
 Is_Capture_Set:
 @
 

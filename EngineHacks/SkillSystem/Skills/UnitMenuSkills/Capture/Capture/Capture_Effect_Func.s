@@ -7,7 +7,7 @@ ldr		r0,CurrentCharPtr
 ldr		r0,[r0]
 ldr		r1,[r0,#0xC]
 mov		r2,#0x80
-lsl		r2,#0x17		@byte 4, 0x40 for Capture
+lsl             r2,#0x17    @byte 4, 0x40 for Capture
 orr		r1,r2
 str		r1,[r0,#0xC]
 pop		{r0,r1}

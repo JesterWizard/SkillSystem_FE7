@@ -13,7 +13,7 @@ CheckSkill:
 @now check for the skill
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, FocusID
 .short 0xf800
 cmp r0, #0
@@ -22,18 +22,18 @@ beq Done
 @Check if there are allies in 3 spaces
 ldr r0, GetUnitsInRange
 mov lr, r0
-mov r0, r4 @attacker
-mov r1, #0 @allies
-mov r2, #3 @range
+mov r0, r4              @attacker
+mov r1, #0              @allies
+mov r2, #3              @range
 .short 0xf800
 cmp r0, #0
 bne Done
 
 mov r0, r4
-add     r0,#0x66    @Move to the attacker's crit.
-ldrh    r3,[r0]     @Load the attacker's crit into r3.
-add     r3,#10    @add 10.
-strh    r3,[r0]     @Store.
+add     r0,#0x66        @Move to the attacker's crit.
+ldrh    r3,[r0]         @Load the attacker's crit into r3.
+add     r3,#10          @add 10.
+strh    r3,[r0]         @Store.
 
 Done:
 pop {r4-r7}

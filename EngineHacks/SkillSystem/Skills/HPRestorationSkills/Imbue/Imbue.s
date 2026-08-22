@@ -9,8 +9,8 @@
 
 Imbue:
 push {r4-r5,r14}
-mov r4,r0 @r4 = unit
-mov r5,r1 @r5 = heal %
+mov r4,r0               @r4 = unit
+mov r5,r1               @r5 = heal %
 
 ldr r0,=SkillTester
 mov r14,r0
@@ -24,8 +24,8 @@ beq GoBack
 @unit is in r4
 @get str stat
 mov r0,r4
-add r0,#0x14 @Jester - this was originally #0x3A which was used to hold the magic stat in the str/mag split hack, but I'm not using that
-ldrb r0,[r0] @r0 = str
+add r0,#0x14            @Jester - this was originally #0x3A which was used to hold the magic stat in the str/mag split hack, but I'm not using that
+ldrb r0,[r0]            @r0 = str
 
 @multiply it by 100
 mov r1,#100
@@ -33,14 +33,14 @@ mul r0,r1
 
 
 @divide it by MHP
-ldrb r1,[r4,#0x12] @r1 = mhp
+ldrb r1,[r4,#0x12]      @r1 = mhp
 
 @add MHP to dividend to make it round up
 add r0,r1
 @also add 1 here beyond that
 add r0,#1
 
-swi 0x6 @div [r0/r1]
+swi 0x6                 @div [r0/r1]
 
 @r0 = div result
 @add it to r5

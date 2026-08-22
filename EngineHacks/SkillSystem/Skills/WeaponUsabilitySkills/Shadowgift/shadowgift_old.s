@@ -7,8 +7,8 @@
 push	{r4-r6}
 
 @r4 = character pointer
-mov	r5,r1	@item type
-mov	r6,r2	@rank
+mov     r5,r1           @item type
+mov     r6,r2           @rank
 
 mov	r0,r4
 add	r0,#0x28
@@ -18,7 +18,7 @@ cmp	r0,r2
 bhs	True
 
 @shadowgift
-cmp	r5,#7	@if dark rank
+cmp     r5,#7           @if dark rank
 bne	noShadowgift
 mov	r0,r4
 ldr	r1,ShadowgiftID
@@ -44,7 +44,7 @@ bhs	True
 noShadowgift:
 
 @lumina
-cmp	r5,#6	@if light rank
+cmp     r5,#6           @if light rank
 bne	noLumina
 mov	r0,r4
 ldr	r1,LuminaID

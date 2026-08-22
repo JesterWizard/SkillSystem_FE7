@@ -1,14 +1,14 @@
 .thumb
 @assassinate: When initiating battle at 1 range: +2 Damage, Double attacks occur before counter
 .equ AssassinateID, SkillTester+4
-.equ gBattleData, 0x203A3D8 //FE8 -> 0x203A4D4
+.equ gBattleData, 0x203A3D8     //FE8 -> 0x203A4D4
 push {r4-r7, lr}
-mov r4, r0 @atkr
-mov r5, r1 @dfdr
+mov r4, r0                      @atkr
+mov r5, r1                      @dfdr
 
 @check range
-ldr r0,=gBattleData @battle stats
-ldrb r0,[r0,#2] @range
+ldr r0,=gBattleData             @battle stats
+ldrb r0,[r0,#2]                 @range
 cmp r0,#1
 bne End
 
@@ -21,7 +21,7 @@ beq		End
 @has Assassinate
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @Attacker data
+mov r0, r4                      @Attacker data
 ldr r1, AssassinateID
 .short 0xf800
 cmp r0, #0
@@ -29,7 +29,7 @@ beq End
 
 @add 2 damage
 mov r1, #0x5a
-ldrh r0, [r4, r1] @atk
+ldrh r0, [r4, r1]               @atk
 add r0, #2
 strh r0, [r4,r1]
 

@@ -12,7 +12,7 @@ and		r0,r3
 mov		r1,#0x24
 mul		r0,r1
 add		r6,r0,r5
-ldr		r0,[r6,#0x10]		@effectiveness pointer
+ldr             r0,[r6,#0x10]   @effectiveness pointer
 cmp		r0,#0
 beq		RetFalse
 mov		r0,r4
@@ -22,9 +22,9 @@ mov		r14,r3
 .short	0xF800
 cmp		r0,#0
 bne		RetFalse
-ldrb	r3,[r6,#0x6]		@item id
+ldrb    r3,[r6,#0x6]            @item id
 ldr		r2,[r4,#0x4]
-ldrb	r2,[r2,#0x4]		@class id
+ldrb    r2,[r2,#0x4]            @class id
 ldr		r1,[r6,#0x10]
 b		GoBack
 RetFalse:

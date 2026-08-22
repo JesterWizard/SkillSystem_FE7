@@ -13,19 +13,19 @@ CombatArtUsability:
 
 push {r4-r7,lr}
 ldr r0,=0x3004690
-ldr r4,[r0] @save active unit in r4
+ldr r4,[r0]             @save active unit in r4
 ldr r1,[r4,#0xc]
-mov r0, #0x40 @has not moved...
+mov r0, #0x40           @has not moved...
 and r0,r1
 cmp r0,#0
 bne False
 
 @check if active unit has skill
-mov r0, r4 @test
+mov r0, r4              @test
 ldr r1, SkillID
 ldr r2, SkillTester
 mov lr, r2
-.short 0xf800 @test if unit has the skill
+.short 0xf800           @test if unit has the skill
 cmp r0, #0
 bne UnitHasSkill
 b False
@@ -35,9 +35,9 @@ UnitHasSkill:
 ldr r0,ArtID
 ldr r1,CombatArtCostTable
 add r0,r1
-ldrb r5,[r0] @r5 = needed durability
+ldrb r5,[r0]            @r5 = needed durability
 mov r6,r4
-add r6,#0x1E @r6 = start of items on active unit
+add r6,#0x1E            @r6 = start of items on active unit
 
 LoopStart:
 ldrh r1,[r6]
@@ -66,7 +66,7 @@ ble LoopStart
 
 HasDurability:
 @now check if can attack
-ldr r0, =0x802357c @attack usability
+ldr r0, =0x802357c      @attack usability
 mov lr, r0
 .short 0xf800
 cmp r0, #1

@@ -32,10 +32,10 @@ CheckSkill:
 @now check for the skill
 ldr	r0, AuraSkillCheck
 mov	lr, r0
-mov	r0, r4 @attacker
+mov     r0, r4          @attacker
 ldr	r1, UpWithArchID
-mov	r2, #0 @can_trade
-mov	r3, #1 @range
+mov     r2, #0          @can_trade
+mov     r3, #1          @range
 .short	0xf800
 mov	r5, #0x00
 mov	r6, r1
@@ -48,33 +48,33 @@ ldrb	r0, [r6,r5]
 cmp	r0, #0x00
 beq	StoreMight
 @testing
-ldr	r3,=#0x8018d0c	@gets character ram pointer
+ldr     r3,=#0x8018d0c  @gets character ram pointer
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x8018AD0	@gets character power
+ldr     r3,=#0x8018AD0  @gets character power
 mov	lr, r3
 .short	0xf800
-add	r7, r0		@add character power to total
+add     r7, r0          @add character power to total
 ldrb	r0, [r6,r5]
-ldr	r3,=#0x8018d0c	@gets character ram pointer
+ldr     r3,=#0x8018d0c  @gets character ram pointer
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x8016764	@gets character weapon id and uses
+ldr     r3,=#0x8016764  @gets character weapon id and uses
 mov	lr, r3
 .short	0xf800
-ldr	r3,=#0x80172E0	@gets weapon might from weapon short
+ldr     r3,=#0x80172E0  @gets weapon might from weapon short
 mov	lr, r3
 .short	0xf800
-add	r7, r0		@add to total
+add     r7, r0          @add to total
 add	r5, #0x01
 b	Loop
 
 StoreMight:
-lsr	r7, #0x01	@divide total by 2
+lsr     r7, #0x01       @divide total by 2
 add	r4, #0x5A
-ldrh	r0, [r4]	@load damage
-add	r0, r7		@add total to damage
-strh	r0, [r4]	@store damage
+ldrh    r0, [r4]        @load damage
+add     r0, r7          @add total to damage
+strh    r0, [r4]        @store damage
 
 Done:
 pop {r4-r7}

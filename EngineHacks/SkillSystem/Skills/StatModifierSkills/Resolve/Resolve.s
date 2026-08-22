@@ -12,8 +12,8 @@
 @goes in stat getters
 
 push {r4-r6, lr}
-mov r4, r0 @stat
-mov r5, r1 @unit
+mov r4, r0              @stat
+mov r5, r1              @unit
 
 ldrb r0,[r5,#0x12]
 ldrb r1,[r5,#0x13]
@@ -32,9 +32,9 @@ beq GoBack
 
 mov r1,#3
 mov r0,r4
-mul r0,r1 @multiply stat by 3
-lsr r0,#1 @divide stat by 2 (1.5x total)
-mov r4,r0 @put back the stat
+mul r0,r1               @multiply stat by 3
+lsr r0,#1               @divide stat by 2 (1.5x total)
+mov r4,r0               @put back the stat
 
 
 GoBack:

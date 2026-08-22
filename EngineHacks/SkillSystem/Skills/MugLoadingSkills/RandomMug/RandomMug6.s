@@ -10,7 +10,7 @@ Condition:
 @has skill
 mov	r0,r6
 ldr	r1,RandomMugID
-ldr	r2,SkillTester	@test for skill
+ldr     r2,SkillTester  @test for skill
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0x01
@@ -18,7 +18,7 @@ beq	GetRandom
 
 mov	r0,r6
 ldr	r1,IdentityProblemsID
-ldr	r2,SkillTester	@test for skill
+ldr     r2,SkillTester  @test for skill
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0

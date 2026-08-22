@@ -11,14 +11,14 @@ ldr		r0,[r5,#0x4]
 cmp		r0,#0
 beq		RetFalse
 mov		r0,r4
-ldr		r3,=#0x80173D0		@get effectiveness pointer
+ldr             r3,=#0x80173D0  @get effectiveness pointer
 mov		r14,r3
 .short	0xF800
 cmp		r0,#0
-beq		RetFalse			@if weapon isn't effective, end
+beq             RetFalse        @if weapon isn't effective, end
 ldr		r1,[r5,#0x4]
 mov		r6,#0x50
-ldr		r6,[r1,r6]			@class weaknesses
+ldr             r6,[r1,r6]      @class weaknesses
 
 
 @ used with Dragz's Effectiveness Items
@@ -60,10 +60,10 @@ pop 	{r0-r3}
 */
 
 cmp		r6,#0
-beq		RetFalse			@if class has no weaknesses, end
+beq             RetFalse        @if class has no weaknesses, end
 
-mov		r4,r0				@save effectiveness ptr
-mov		r7,#0				@inventory slot counter
+mov             r4,r0           @save effectiveness ptr
+mov             r7,#0           @inventory slot counter
 ProtectiveItemsLoop:
 lsl		r0,r7,#1
 add		r0,#0x1E
@@ -72,19 +72,19 @@ cmp		r0,#0
 beq		EffectiveWeaponLoop
 mov		r1,#0xFF
 and		r0,r1
-ldr		r3,=#0x80174AC		@get_item_data
+ldr             r3,=#0x80174AC  @get_item_data
 mov		r14,r3
 .short	0xF800
-ldr		r1,[r0,#0x8]		@weapon abilities
+ldr             r1,[r0,#0x8]    @weapon abilities
 mov		r2,#0x80
-lsl		r2,#0x7				@delphi shield bit, aka 'protector item'
+lsl             r2,#0x7         @delphi shield bit, aka 'protector item'
 tst		r1,r2
 beq		NextItem
-ldr		r1,[r0,#0x10]		@pointer to classes it protects
+ldr             r1,[r0,#0x10]   @pointer to classes it protects
 cmp		r1,#0
 beq		NextItem
 ldrh	r1,[r1,#2]
-bic		r6,r1				@remove bits that are protected from the class weaknesses bitfield
+bic             r6,r1           @remove bits that are protected from the class weaknesses bitfield
 cmp		r6,#0
 beq		RetFalse
 NextItem:
@@ -93,10 +93,10 @@ cmp		r7,#4
 ble		ProtectiveItemsLoop
 
 EffectiveWeaponLoop:
-ldrh	r1,[r4,#2]			@bitfield of types this weapon is effective against
+ldrh    r1,[r4,#2]              @bitfield of types this weapon is effective against
 cmp		r1,#0
 beq		RetFalse
-and		r1,r6				@see if they have bits in common
+and             r1,r6           @see if they have bits in common
 cmp		r1,#0
 bne		NullifyCheck
 add		r4,#4
@@ -111,7 +111,7 @@ mov		r14,r3
 cmp		r0,#0
 bne		RetFalse
 
-ldrb	r0,[r4,#0x1]		@coefficient
+ldrb    r0,[r4,#0x1]            @coefficient
 b		GoBack
 RetFalse:
 mov		r0,#0

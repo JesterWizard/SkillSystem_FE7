@@ -19,11 +19,11 @@ MoveTargetUnitAction:
 	ldr r4, =pActionStruct
 	
 	ldr r0, =ppActiveUnit
-	ldr r5, [r0] @ r5 = Active Unit Struct
+        ldr r5, [r0]            @ r5 = Active Unit Struct
 	
-	ldrb r0, [r4, #0x0D] @ Target Unit Index
+        ldrb r0, [r4, #0x0D]    @ Target Unit Index
 	_blh prUnit_GetStruct
-	mov r6, r0 @ r6 = Target Unit Struct
+        mov r6, r0              @ r6 = Target Unit Struct
 	
 	@ Prepare call of GetFacingDirectionId
 	ldr r3, =prGetFacingDirectionId
@@ -40,8 +40,8 @@ MoveTargetUnitAction:
 	@ Call
 	.short 0xF800
 	
-	mov r1, r0 @ r1 = Facing Direction
-	mov r0, r5 @ r5 = Active Unit Struct
+        mov r1, r0              @ r1 = Facing Direction
+        mov r0, r5              @ r5 = Active Unit Struct
 	
 	@ Making the Active Unit Anim 6C
 	ldr r3, prUnitUnitMoveAnim_New
@@ -65,8 +65,8 @@ MoveTargetUnitAction:
 	@ Call
 	.short 0xF800
 	
-	mov r1, r0 @ r1 = Facing Direction
-	mov r0, r6 @ r5 = Target Unit Struct
+        mov r1, r0              @ r1 = Facing Direction
+        mov r0, r6              @ r5 = Target Unit Struct
 	
 	@ Making the Active Unit Anim 6C
 	ldr r3, prUnitUnitMoveAnim_New
@@ -85,7 +85,7 @@ MoveTargetUnitAction:
 		strb r0, [r5, #0x11]
 	
 	@ Apply Movement
-	mov r0, r5 @ Active Unit
+        mov r0, r5              @ Active Unit
 	_blh prUnit_ApplyMovement
 	
 	@ Updating target pos
@@ -98,7 +98,7 @@ MoveTargetUnitAction:
 		strb r0, [r6, #0x11]
 	
 	@ Apply Movement
-	mov r0, r6 @ Target Unit
+        mov r0, r6              @ Target Unit
 	_blh prUnit_ApplyMovement
 	
 	@ Updating map sprites and stuff

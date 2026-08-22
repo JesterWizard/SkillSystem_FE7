@@ -6,15 +6,15 @@
 .equ ParagonID, SkillTester+4
 push {r4}
 
-mov r4, r0 @store the exp value here
+mov r4, r0              @store the exp value here
 mov r6, r5
-add r6, #0x6e @location to store exp
+add r6, #0x6e           @location to store exp
 
 @Now check for Paragon skill
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r5 @defender
+mov r0, r5              @defender
 ldr r1, ParagonID
 .short 0xf800
 cmp r0, #0x0
@@ -25,7 +25,7 @@ beq no_Paragon1
  ble no_Paragon1
   mov r4, #100
 no_Paragon1:
-mov r0, r4 @return the amount healed.
+mov r0, r4              @return the amount healed.
 pop {r4}
 
 strb r0, [r6]
@@ -43,7 +43,7 @@ mov r5, r0
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, ParagonID
 .short 0xf800
 cmp r0, #0x0
@@ -54,7 +54,7 @@ beq no_Paragon
  ble no_Paragon
   mov r5, #100
 no_Paragon:
-mov r0, r5 @return the amount healed.
+mov r0, r5              @return the amount healed.
 pop {r5}
 
 mov r1, r4

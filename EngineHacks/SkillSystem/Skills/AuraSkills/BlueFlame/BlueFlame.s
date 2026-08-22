@@ -11,19 +11,19 @@ mov r5, r1
 @check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, BlueFlameID
-mov r2, #0 @can_trade
-mov r3, #1 @range
+mov r2, #0              @can_trade
+mov r3, #1              @range
 .short 0xf800
 cmp r0, #0
 beq Done
 
 mov r0, r4
-add     r0,#0x5A    @Move to the attacker's Atk.
-ldrh    r3,[r0]     @Load the attacker's Atk into r3.
-add     r3,#2    @add 2 to the attacker's Atk.
-strh    r3,[r0]     @Store attacker Atk.
+add     r0,#0x5A        @Move to the attacker's Atk.
+ldrh    r3,[r0]         @Load the attacker's Atk into r3.
+add     r3,#2           @add 2 to the attacker's Atk.
+strh    r3,[r0]         @Store attacker Atk.
 
 Done:
 pop {r4-r7}

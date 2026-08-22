@@ -2,12 +2,12 @@
 .equ BlueFlameID, SkillTester+4
 
 push {r4-r7, lr}
-mov r4, r0 @attacker
-mov r5, r1 @defender
+mov r4, r0              @attacker
+mov r5, r1              @defender
 
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @defender data
+mov r0, r4              @defender data
 ldr r1, BlueFlameID
 .short 0xf800
 cmp r0, #0

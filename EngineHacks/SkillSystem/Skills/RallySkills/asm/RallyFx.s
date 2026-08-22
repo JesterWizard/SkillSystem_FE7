@@ -36,7 +36,7 @@ RallyFxProc:
 
 	.word 2, UnlockGame
 
-	.word 0, 0 @ end
+        .word 0, 0                  @ end
 
 RallyFxProc.name:
 	.asciz "Rally Fx"
@@ -60,9 +60,9 @@ RallyFx_OnInit:
 
 	ldr r3, =ForEachRalliedUnit
 	ldr r2, =gActiveUnit
-	ldr r2, [r2] @ arg r2 = active unit
+        ldr r2, [r2]                @ arg r2 = active unit
 
-	ldr r0, =AddMapAuraFxUnit @ arg r0 = function
+        ldr r0, =AddMapAuraFxUnit   @ arg r0 = function
 	@ unused                  @ arg r1 = user argument
 
 	bl BXR3
@@ -71,7 +71,7 @@ RallyFx_OnInit:
 
 	ldr r3, =SetMapAuraFxSpeed
 
-	mov r0, #32 @ arg r0 = speed
+        mov r0, #32                 @ arg r0 = speed
 
 	bl BXR3
 
@@ -79,11 +79,11 @@ RallyFx_OnInit:
 	ldrb r0, [r0]
 
 	lsl r0, r0, #0x1E
-	blt 0f @ Skip sound
+        blt 0f                      @ Skip sound
 
 	ldr r3, =m4aSongNumStart
 
-	mov r0, #136 @ arg r0 = sound ID (some kind of staff sound?)
+        mov r0, #136                @ arg r0 = sound ID (some kind of staff sound?)
 
 	bl BXR3
 
@@ -185,14 +185,14 @@ RallyFx_OnLoop:
 
 	@ implied @ arg r0 = blend
 
-	bx r3 @ jump
+        bx r3                       @ jump
 
 RallyFx_OnLoop.break:
 	ldr r3, =BreakProcLoop
 
 	@ implied @ r0 = proc
 
-	bx r3 @ jump
+        bx r3                       @ jump
 
 	.pool
 	.align
@@ -205,8 +205,8 @@ StartRallyFx:
 push {lr} 
 	ldr r3, =StartProc
 
-	ldr r0, =RallyFxProc @ arg r0 = proc scr
-	mov r1, #3           @ arg r1 = parent
+        ldr r0, =RallyFxProc        @ arg r0 = proc scr
+        mov r1, #3                  @ arg r1 = parent
 	bl BXR3 
 pop {r3} 
 BXR3:
@@ -229,7 +229,7 @@ BuffFxProc:
 
 	.word 2, UnlockGame
 
-	.word 0, 0 @ end
+        .word 0, 0                  @ end
 .align 
 
 
@@ -238,15 +238,15 @@ BuffFxProc:
 StartBuffFx:
 push {r4-r6, lr} 
 
-	mov r4, r0 @ unit 
-	mov r5, r1 @ rally bit(s) to set 
-	mov r6, r2 @ effect range 
-	ldr r0, =BuffFxProc @ arg r0 = proc scr
-	mov r1, #3           @ arg r1 = parent
+        mov r4, r0                  @ unit 
+        mov r5, r1                  @ rally bit(s) to set 
+        mov r6, r2                  @ effect range 
+        ldr r0, =BuffFxProc         @ arg r0 = proc scr
+        mov r1, #3                  @ arg r1 = parent
 	blh StartProc
-	str r4, [r0, #0x30] @ unit 
-	str r5, [r0, #0x34] @ bits 
-	str r6, [r0, #0x38] @ effect range 
+        str r4, [r0, #0x30]         @ unit 
+        str r5, [r0, #0x34]         @ bits 
+        str r6, [r0, #0x38]         @ effect range 
 
 pop {r4-r6} 
 pop {r1}
@@ -265,18 +265,18 @@ BuffFx_OnInit:
 	@ It will be our clock
 	mov r1, #0
 	str r1, [r0, #0x2C]
-	mov r4, r0 @ proc 
+        mov r4, r0                  @ proc 
 	ldr r3, =StartMapAuraFx
 	bl  BXR3
 
 
-ldr r0, [r4, #0x38] @ range of units to buff 
+ldr r0, [r4, #0x38]                 @ range of units to buff 
 mov r1, #0xF 
 and r0, r1 
 cmp r0, #0 
 bne BuffAllies
 @ show animation on self as first digit is 0 
-ldr r0, [r4, #0x30] @ unit 
+ldr r0, [r4, #0x30]                 @ unit 
 bl AddMapAuraFxUnit
 b AuraSpeed 
 
@@ -285,10 +285,10 @@ BuffAllies:
 
 	ldr r3, =ForEachRalliedUnit_NoneActive
 	@ ldr r3, =SelfBuff 
-	ldr r0, =AddMapAuraFxUnit @ arg r0 = function
+        ldr r0, =AddMapAuraFxUnit   @ arg r0 = function
 	@ unused                  @ arg r1 = user argument
-	ldr r2, [r4, #0x30] @ unit 
-	ldr r1, [r4, #0x38] @ effect range 
+        ldr r2, [r4, #0x30]         @ unit 
+        ldr r1, [r4, #0x38]         @ effect range 
 	bl BXR3
 
 AuraSpeed: 
@@ -296,7 +296,7 @@ AuraSpeed:
 
 	ldr r3, =SetMapAuraFxSpeed
 
-	mov r0, #32 @ arg r0 = speed
+        mov r0, #32                 @ arg r0 = speed
 
 	bl BXR3
 	
@@ -306,18 +306,18 @@ AuraSpeed:
 	ldrb r0, [r0]
 
 	lsl r0, r0, #0x1E
-	blt SkipSound @ Skip sound
+        blt SkipSound               @ Skip sound
 
 	ldr r3, =m4aSongNumStart
 
-	mov r0, #136 @ arg r0 = sound ID (some kind of staff sound?)
+        mov r0, #136                @ arg r0 = sound ID (some kind of staff sound?)
 
 	bl BXR3
 
 SkipSound:
 	@ TODO: use another palette for aura effect
 
-ldr r0, [r4, #0x34] @ bits 
+ldr r0, [r4, #0x34]                 @ bits 
 
 	mov r1, #0
 

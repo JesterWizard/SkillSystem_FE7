@@ -25,17 +25,17 @@ cmp		r0,#0
 beq		RetFalse
 ldr		r6,SlayerTable
 ldr		r3,[r4,#4]
-ldrb	r3,[r3,#4]			@class id
+ldrb    r3,[r3,#4]      @class id
 ldr		r2,[r5,#4]
 mov		r1,#0x50
-ldrh	r2,[r2,r1]			@weaknesses defender unit has
+ldrh    r2,[r2,r1]      @weaknesses defender unit has
 SlayerLoop:
 ldrb	r0,[r6]
 cmp		r0,#0
 beq		RetFalse
 cmp		r0,r3
 bne		NextSlayerTableEntry
-ldrh	r0,[r6,#2]			@class types this unit has slayer against
+ldrh    r0,[r6,#2]      @class types this unit has slayer against
 and		r0,r2
 cmp		r0,#0
 bne		NullifyCheck
@@ -50,7 +50,7 @@ mov		r14,r3
 .short	0xF800
 cmp		r0,#0
 bne		RetFalse
-ldrb	r0,[r6,#1]			@multiplier
+ldrb    r0,[r6,#1]      @multiplier
 b		GoBack
 RetFalse:
 mov		r0,#0

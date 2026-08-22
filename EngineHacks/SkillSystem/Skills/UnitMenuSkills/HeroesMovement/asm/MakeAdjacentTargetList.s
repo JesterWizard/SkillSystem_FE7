@@ -15,12 +15,12 @@ MakeAdjacentTargetList:
 	ldr r3, =ppActiveUnit
 	ldr r3, [r3]
 	
-	ldrb r0, [r3, #0x10] @ x
-	ldrb r1, [r3, #0x11] @ y
+        ldrb r0, [r3, #0x10]    @ x
+        ldrb r1, [r3, #0x11]    @ y
 	
 	@ Loading Address of routine to call
 	adr r2, PotentiallyAddUnitToTargetList
-	add r2, #1 @ Thumb bit
+        add r2, #1              @ Thumb bit
 	
 	@ for each unit adjactent to position [r0, r1] call r2
 	_blh prForEachAdjacentUnit
@@ -52,14 +52,14 @@ PotentiallyAddUnitToTargetList:
 	beq SkipAdding
 	
 SkipChecking:
-	ldrb r0, [r4, #0x10] @ Unit.x
-	ldrb r1, [r4, #0x11] @ Unit.y
-	ldrb r2, [r4, #0x0B] @ Unit.id
+        ldrb r0, [r4, #0x10]    @ Unit.x
+        ldrb r1, [r4, #0x11]    @ Unit.y
+        ldrb r2, [r4, #0x0B]    @ Unit.id
 	
 	ldr r3, =prAddTargetListEntry
 	mov lr, r3
 	
-	mov r3, #0 @ Trap id, probably irrelevant
+        mov r3, #0              @ Trap id, probably irrelevant
 	
 	.short 0xF800
 	

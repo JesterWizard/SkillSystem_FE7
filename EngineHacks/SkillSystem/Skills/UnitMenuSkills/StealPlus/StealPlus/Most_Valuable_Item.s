@@ -6,10 +6,10 @@
 push	{r4-r7,r14}
 add		sp,#-0x4
 mov		r4,r0
-mov		r6,#0		@slot id
-mov		r7,#0		@value of most expensive item
+mov             r6,#0           @slot id
+mov             r7,#0           @value of most expensive item
 mvn		r0,r7
-str		r0,[sp]		@slot id of current most valuable item
+str             r0,[sp]         @slot id of current most valuable item
 InventoryLoop:
 lsl		r5,r6,#1
 add		r5,#0x1E
@@ -20,11 +20,11 @@ mov		r0,r4
 mov		r1,r6
 ldr		r3,=#0x8016d36
 mov		r14,r3
-.short	0xF800		@is item stealable
+.short  0xF800                  @is item stealable
 cmp		r0,#0
 beq		NextItem
 mov		r0,r5
-ldr		r3,=#0x8017340	@GetItemCost
+ldr             r3,=#0x8017340  @GetItemCost
 mov		r14,r3
 .short	0xF800
 cmp		r0,r7

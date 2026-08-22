@@ -11,20 +11,20 @@
 .type ShrewdPotential, %function  
 ShrewdPotential: 
 push {r5, lr} 
-mov r5, r0 @ table of stat boosts to add to stats 
+mov r5, r0              @ table of stat boosts to add to stats 
 
-mov r0, r4 @ unit 
+mov r0, r4              @ unit 
 ldr r1, =ShrewdPotentialID_Link 
 ldr r1, [r1] 
 bl SkillTester 
-mov r1, r5 @ table of stat boosts 
+mov r1, r5              @ table of stat boosts 
 mov r5, #0 
 cmp r0, #0 
 beq NoBoost 
 ldr r5, =ShrewdPotentialAmount_Link 
 ldr r5, [r5] 
 NoBoost: 
-mov r0, r1 @ table of stat boosts 
+mov r0, r1              @ table of stat boosts 
 
 LDRB r1, [r0, #0x0]
 cmp r1, #0 
@@ -109,7 +109,7 @@ strb	r2,[r4,#0x1A]
 mov		r1,r4
 add		r1,#0x3A
 ldrb	r2,[r1]
-ldrb	r3,[r0,#0x9]		@mag bonus
+ldrb    r3,[r0,#0x9]    @mag bonus
 cmp r3, #0 
 beq NoAdd_10
 add r3, r5

@@ -13,10 +13,10 @@ GetPushPosition:
 	mov r4, r0
 	
 	ldrb r3, [r4, #0x10]
-	sub  r1, r3, r1 @ r1 = direction.x = unit.x - source.x
+        sub  r1, r3, r1     @ r1 = direction.x = unit.x - source.x
 	
 	ldrb r3, [r0, #0x11]
-	sub  r2, r3, r2 @ r2 = direction.y = unit.y - source.y
+        sub  r2, r3, r2     @ r2 = direction.y = unit.y - source.y
 	
 	@ r5 = Direction Pair
 	_MakePair r5, r1, r2

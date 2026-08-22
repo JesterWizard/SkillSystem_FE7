@@ -2,7 +2,7 @@
 .equ LuckySevenID, SkillTester+4
 
 push {r4, lr}
-mov	r4, r0 @attacker
+mov     r4, r0          @attacker
 
 @check if turn is bigger than seven
 ldr	r0,=#0x202BBF8
@@ -21,14 +21,14 @@ beq	End
 
 @add 20 to hit and avoid
 mov	r0, #0x60
-ldrh	r1, [r4,r0]	@load hit
-add	r1, #0x14	@add 20 to hit
-strh	r1, [r4,r0]     @store
+ldrh    r1, [r4,r0]     @load hit
+add     r1, #0x14       @add 20 to hit
+strh    r1, [r4,r0]     @store
 
 mov	r0, #0x62
-ldrh	r1, [r4,r0]	@load avoid
-add	r1, #0x14	@add 20 to avoid
-strh	r1, [r4,r0]     @store
+ldrh    r1, [r4,r0]     @load avoid
+add     r1, #0x14       @add 20 to avoid
+strh    r1, [r4,r0]     @store
 
 End:
 pop	{r4, r15}

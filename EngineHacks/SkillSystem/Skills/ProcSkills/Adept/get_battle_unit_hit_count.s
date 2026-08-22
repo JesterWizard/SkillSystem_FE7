@@ -35,16 +35,16 @@ ldr r1, AstraID
 cmp r0, #0
 beq CheckAdept
 @if user has Astra, check for proc rate (also in proc_astra.s)
-ldrb r0, [r4, #0x15] @skill stat as activation rate
+ldrb r0, [r4, #0x15]    @skill stat as activation rate
 @mov r0, #100
-mov r1, r4 @skill user
+mov r1, r4              @skill user
 blh d100Result
 cmp r0, #1
 bne CheckAdept
-mov r5, #5 @5 consecutive attacks this swing
+mov r5, #5              @5 consecutive attacks this swing
 mov r0, r4
 add r0, #0x7F
-mov r1, #0x85 @5 | this-swing
+mov r1, #0x85           @5 | this-swing
 strb r1, [r0]
 b Return
 
@@ -61,7 +61,7 @@ ldr r1, AdeptID
 cmp r0, #0
 beq Return
 
-ldrb r0, [r4, #0x16] @speed stat as activation rate
+ldrb r0, [r4, #0x16]    @speed stat as activation rate
 @mov r0, #0x64
 mov r1, r4
 blh d100Result
@@ -70,7 +70,7 @@ bne Return
 add r5, #1
 mov r0, r4
 add r0, #0x7F
-strb r5, [r0] @ remaining hits; Proc_Adept marks when this hits 0
+strb r5, [r0]           @ remaining hits; Proc_Adept marks when this hits 0
 
 Return:
 mov r0, r5

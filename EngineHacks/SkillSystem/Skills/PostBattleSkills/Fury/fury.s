@@ -14,8 +14,8 @@ push	{lr}
 @ r6 = actiondata
 
 @check if the action was an attack
-ldrb  r0, [r6,#0x11]  @action taken this turn
-cmp r0, #0x2 @attack
+ldrb  r0, [r6,#0x11]    @action taken this turn
+cmp r0, #0x2            @attack
 bne End
 
 @check if attacker dead
@@ -33,15 +33,15 @@ cmp	r0,#0x00
 beq	CheckDefender
 
 @take 6 damage
-ldrb	r1, [r4,#0x12]	@r1=maxhp
+ldrb    r1, [r4,#0x12]  @r1=maxhp
 mov r0, #furydamage
-ldrb	r2, [r4,#0x13]	@r2=currhp
+ldrb    r2, [r4,#0x13]  @r2=currhp
 @cmp	r1, r2		@check if hp is already max
 @beq	End
-sub	r2, r0		@total healing
-cmp r2, #1    @is new hp<1?
+sub     r2, r0          @total healing
+cmp r2, #1              @is new hp<1?
 bge	StoreHP
-mov	r2, #1		@if so, set to 1
+mov     r2, #1          @if so, set to 1
 StoreHP:
 strb	r2, [r4,#0x13]
 
@@ -77,15 +77,15 @@ cmp r0,#0x00
 beq End
 
 @take 6 damage
-ldrb  r1, [r5,#0x12]  @r1=maxhp
+ldrb  r1, [r5,#0x12]    @r1=maxhp
 mov r0, #furydamage
-ldrb  r2, [r5,#0x13]  @r2=currhp
+ldrb  r2, [r5,#0x13]    @r2=currhp
 @cmp  r1, r2    @check if hp is already max
 @beq  End
-sub r2, r0    @total healing
-cmp r2, #1    @is new hp<1?
+sub r2, r0              @total healing
+cmp r2, #1              @is new hp<1?
 bge StoreHP2
-mov r2, #1    @if so, set to 1
+mov r2, #1              @if so, set to 1
 StoreHP2:
 strb  r2, [r5,#0x13]
 

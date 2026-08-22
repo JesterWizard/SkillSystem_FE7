@@ -8,7 +8,7 @@
 .endm
 
 push {r4-r7, lr} 
-mov        r4,r0 @ r0 = battle struct.
+mov        r4,r0        @ r0 = battle struct.
 
 @ EDIT BY SNEK:
 	@ Getting the weapon type in this way doesn't account for magic swords.
@@ -17,12 +17,12 @@ mov        r4,r0 @ r0 = battle struct.
 @ldrb    r0,[r0]        @Load in the attacking unit's weapon type.    
 
 mov r1, #0x4A
-ldrh r0, [ r4, r1 ] @ Equipped item halfword.
+ldrh r0, [ r4, r1 ]     @ Equipped item halfword.
 cmp r0, #0x00
 beq NoSkill
-blh =0x80171B4 //FE8 -> 0x080174EC, r1 @ GetItemIndex. This function is such a meme tbh. r0 = item ID.
-blh =0x80174AC //FE8 -> 0x080177B0, r1 @ GetItemData. r0 = pointer to ROM item data.
-ldrb r0, [ r0, #0x07 ] @ r0 = this item's weapon type.
+blh =0x80171B4          //FE8 -> 0x080174EC, r1 @ GetItemIndex. This function is such a meme tbh. r0 = item ID.
+blh =0x80174AC          //FE8 -> 0x080177B0, r1 @ GetItemData. r0 = pointer to ROM item data.
+ldrb r0, [ r0, #0x07 ]  @ r0 = this item's weapon type.
 
 ldr     r1,FaireIDList  @Load in the list of Faire Skills.
 ldrb    r1,[r1,r0]      @Load in the Faire Skill corresponding to the equipped weapon.

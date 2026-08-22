@@ -12,8 +12,8 @@
 
 
 push       {r4-r6,lr}
-mov        r4,r0 @ Attack struct
-mov        r5,r1 @ Defense struct
+mov        r4,r0        @ Attack struct
+mov        r5,r1        @ Defense struct
 
 @first we see if we have the better version of the skill
 ldr        r6,SkillTester

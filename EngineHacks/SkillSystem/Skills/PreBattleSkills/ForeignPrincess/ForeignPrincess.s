@@ -6,13 +6,13 @@
 @therefore, this skill will only have an effect in the Link Arena because fuck you
 
 .equ ForeignPrincessID, SkillTester+4
-.equ CheckGameLinkArenaBit,0x803DA14 //FE8 -> 0x8042e98
+.equ CheckGameLinkArenaBit,0x803DA14    //FE8 -> 0x8042e98
 
 
 push {r4-r5,r14}
 
-mov r4,r0 @attacker
-mov r5,r1 @defender
+mov r4,r0                               @attacker
+mov r5,r1                               @defender
 
 cmp r5,#0
 beq GoBack
@@ -35,11 +35,11 @@ beq GoBack
 
 @yes, so -2 def and -2 atk on defender
 mov r0,r5
-add r0,#0x5A @attack
+add r0,#0x5A                            @attack
 ldrh r1,[r0]
 sub r1,#2
 strh r1,[r0]
-add r0,#2 @defense
+add r0,#2                               @defense
 ldrh r1,[r0]
 sub r1,#2
 strh r1,[r0]

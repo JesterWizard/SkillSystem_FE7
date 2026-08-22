@@ -29,7 +29,7 @@
 HoneStr: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Str @ bit offset 
+ldr r1, =DebuffStatBitOffset_Str    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneStrAmount_Link 
 ldr r2, [r2] 
@@ -46,7 +46,7 @@ bx r0
 HoneMag: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Mag @ bit offset 
+ldr r1, =DebuffStatBitOffset_Mag    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneMagAmount_Link 
 ldr r2, [r2] 
@@ -65,7 +65,7 @@ bx r0
 HoneSkl: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Skl @ bit offset 
+ldr r1, =DebuffStatBitOffset_Skl    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneSklAmount_Link 
 ldr r2, [r2] 
@@ -81,7 +81,7 @@ bx r0
 HoneSpd: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Spd @ bit offset 
+ldr r1, =DebuffStatBitOffset_Spd    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneSpdAmount_Link 
 ldr r2, [r2] 
@@ -97,7 +97,7 @@ bx r0
 HoneDef: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Def @ bit offset 
+ldr r1, =DebuffStatBitOffset_Def    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneDefAmount_Link 
 ldr r2, [r2] 
@@ -113,7 +113,7 @@ bx r0
 HoneRes: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Res @ bit offset 
+ldr r1, =DebuffStatBitOffset_Res    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneResAmount_Link 
 ldr r2, [r2] 
@@ -129,7 +129,7 @@ bx r0
 HoneLuk: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Luk @ bit offset 
+ldr r1, =DebuffStatBitOffset_Luk    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneLukAmount_Link 
 ldr r2, [r2] 
@@ -144,7 +144,7 @@ bx r0
 HoneMov: 
 push {lr} 
 @ given r0 = unit 
-ldr r1, =DebuffStatBitOffset_Mov @ bit offset 
+ldr r1, =DebuffStatBitOffset_Mov    @ bit offset 
 ldr r1, [r1] 
 ldr r2, =HoneMovAmount_Link 
 ldr r2, [r2] 
@@ -158,8 +158,8 @@ bx r0
 .type IsHoneApplicable, %function 
 IsHoneApplicable: 
 push {lr} 
-mov r1, #0 @ Can trade 
-mov r2, #1 @ adjacent 
+mov r1, #0                          @ Can trade 
+mov r2, #1                          @ adjacent 
 bl GetUnitsInRange 
 cmp r0, #0 
 beq Hone_False
@@ -174,20 +174,20 @@ bx r1
 
 HoneStat: 
 push {r4-r7, lr} 
-mov r4, r0 @ unit 
-mov r5, r1 @ bit offset 
-mov r6, r2 @ amount 
+mov r4, r0                          @ unit 
+mov r5, r1                          @ bit offset 
+mov r6, r2                          @ amount 
 mov r7, r8 
 push {r7} 
-mov r8, r3 @ rally anim bits 
+mov r8, r3                          @ rally anim bits 
 mov r3, r9 
 push {r3} 
-mov r9, r4 @ unit 
-mov r0, r4 @ unit 
+mov r9, r4                          @ unit 
+mov r0, r4                          @ unit 
 
-mov r1, #0 @ can trade 
-mov r2, #1 @ adjacent 
-bl GetUnitsInRange @(Unit* unit, int allyOption, int range)
+mov r1, #0                          @ can trade 
+mov r2, #1                          @ adjacent 
+bl GetUnitsInRange                  @(Unit* unit, int allyOption, int range)
 cmp r0, #0 
 beq NoMoreHone
 mov r4, r0 
@@ -200,30 +200,30 @@ add r4, #1
 blh GetUnit 
 mov r9, r0 
 bl GetUnitDebuffEntry 
-mov r7, r0 @ debuff entry 
-mov r1, r5 @ bit offset 
+mov r7, r0                          @ debuff entry 
+mov r1, r5                          @ bit offset 
 ldr r2, =DebuffStatNumberOfBits_Link
 ldr r2, [r2] 
 bl UnpackData_Signed 
-cmp r0, r6 @ old value vs new value 
+cmp r0, r6                          @ old value vs new value 
 bgt NoBuff 
 mov r3, r6 
 cmp r0, #0 
 bge UseNewValue 
-add r3, r0 @ negative, so reduce the debuff 
+add r3, r0                          @ negative, so reduce the debuff 
 UseNewValue: 
-mov r0, r7 @ debuff entry 
-mov r1, r5 @ bit offset 
+mov r0, r7                          @ debuff entry 
+mov r1, r5                          @ bit offset 
 ldr r2, =DebuffStatNumberOfBits_Link
 ldr r2, [r2] 
 @ r3 = value 
 bl PackData_Signed 
-mov r0, r9 @ unit 
-mov r1, r8 @ rally anim bits 
-mov r2, #0 @ range adjacent 
+mov r0, r9                          @ unit 
+mov r1, r8                          @ rally anim bits 
+mov r2, #0                          @ range adjacent 
 bl StartBuffFx
 
-NoBuff: @ current stat is higher than what we'd set it to 
+NoBuff:                             @ current stat is higher than what we'd set it to 
 b AreaLoop 
 
 NoMoreHone: 

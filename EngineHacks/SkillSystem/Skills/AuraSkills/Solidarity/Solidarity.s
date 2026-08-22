@@ -11,24 +11,24 @@ mov r5, r1
 @now check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, SolidarityID
-mov r2, #0 @can_trade
-mov r3, #1 @range
+mov r2, #0              @can_trade
+mov r3, #1              @range
 .short 0xf800
 cmp r0, #0
 beq Done
 
 mov r0, r4
-add     r0,#0x66    @crit chance
-ldrh    r3,[r0]     @Load the attacker's avoid into r3.
-add     r3,#10    @subtract 10 from the attacker's avoid
-strh    r3,[r0]     @Store attacker avoid
+add     r0,#0x66        @crit chance
+ldrh    r3,[r0]         @Load the attacker's avoid into r3.
+add     r3,#10          @subtract 10 from the attacker's avoid
+strh    r3,[r0]         @Store attacker avoid
 
-add r0, #2 @crit avoid
-ldrh    r3,[r0]     @Load the attacker's avoid into r3.
-add     r3,#10    @subtract 10 from the attacker's avoid
-strh    r3,[r0]     @Store attacker avoid
+add r0, #2              @crit avoid
+ldrh    r3,[r0]         @Load the attacker's avoid into r3.
+add     r3,#10          @subtract 10 from the attacker's avoid
+strh    r3,[r0]         @Store attacker avoid
 
 Done:
 pop {r4-r7}

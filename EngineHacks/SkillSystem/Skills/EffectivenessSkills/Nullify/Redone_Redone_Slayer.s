@@ -34,7 +34,7 @@ beq		Skybreaker
 
 ldr		r2,[r5,#4]
 mov		r1,#0x50
-ldrh	r2,[r2,r1]			@weaknesses defender unit has
+ldrh    r2,[r2,r1]      @weaknesses defender unit has
 ldrh 	r0,SlayerClassType
 and		r0,r2
 cmp		r0,#0
@@ -51,7 +51,7 @@ beq		RetFalse
 
 ldr		r2,[r5,#4]
 mov		r1,#0x50
-ldrh	r2,[r2,r1]			@weaknesses defender unit has
+ldrh    r2,[r2,r1]      @weaknesses defender unit has
 ldrh 	r0,SkybreakerClassType
 and		r0,r2
 cmp		r0,#0

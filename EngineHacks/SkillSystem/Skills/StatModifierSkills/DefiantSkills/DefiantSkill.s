@@ -12,8 +12,8 @@
 @goes in stat getters
 
 push {r4-r6, lr}
-mov r4, r0 @stat
-mov r5, r1 @unit
+mov r4, r0              @stat
+mov r5, r1              @unit
 
 ldrb r0,[r5,#0x12]
 ldrb r1,[r5,#0x13]

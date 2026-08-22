@@ -22,7 +22,7 @@ Pivot_TargetCheck:
 	_blr r3
 	
 	cmp r0, #0
-	beq End @ Returns 0 since r0 is 0
+        beq End                 @ Returns 0 since r0 is 0
 	
 	@ "popping" target unit struct
 	mov r0, r4
@@ -33,10 +33,10 @@ SkipLegalCheck:
 	ldr r4, [r4]
 	
 	@ Loading target position
-	ldrb r1, [r0, #0x10] @ ARG r1 = target.x
-	ldrb r2, [r0, #0x11] @ ARG r2 = target.y
+        ldrb r1, [r0, #0x10]    @ ARG r1 = target.x
+        ldrb r2, [r0, #0x11]    @ ARG r2 = target.y
 
-	mov r0, r4 @ ARG r0 = unit
+        mov r0, r4              @ ARG r0 = unit
 	
 	@ Getting Target position in [r1, r2]
 	ldr r3, prGetTargetPosition

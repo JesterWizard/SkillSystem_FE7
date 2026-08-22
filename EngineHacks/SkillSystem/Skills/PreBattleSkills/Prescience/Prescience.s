@@ -10,12 +10,12 @@ push {r4-r7,lr}
 mov r4, r0
 mov r5, r1
 
-ldr r0,=#0x203A3F0 //FE8 -> #0x203A4EC @attacker struct
+ldr r0,=#0x203A3F0      //FE8 -> #0x203A4EC @attacker struct
 cmp r0,r4
-bne GoBack @if not attacker, don't do
+bne GoBack              @if not attacker, don't do
 
-ldr r1, [r5,#4] @class data ptr
-cmp r1, #0 @if 0, this is prep screen
+ldr r1, [r5,#4]         @class data ptr
+cmp r1, #0              @if 0, this is prep screen
 beq GoBack
 
 ldr r0, SkillTester

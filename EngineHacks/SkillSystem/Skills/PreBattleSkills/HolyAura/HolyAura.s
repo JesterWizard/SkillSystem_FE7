@@ -2,12 +2,12 @@
 .equ HolyAuraID, SkillTester+4
 
 push {r4-r7, lr}
-mov r4, r0 @atkr
-mov r5, r1 @dfdr
+mov r4, r0              @atkr
+mov r5, r1              @dfdr
 
 mov r0, #0x50
-ldrb r0, [r4, r0] @r0 = Equipped weapon type
-cmp r0, #0x6 @Light weapon type
+ldrb r0, [r4, r0]       @r0 = Equipped weapon type
+cmp r0, #0x6            @Light weapon type
 bne End
 
 
@@ -15,7 +15,7 @@ bne End
 @has HolyAura
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r4 @defender data
+mov r0, r4              @defender data
 ldr r1, HolyAuraID
 .short 0xf800
 cmp r0, #0

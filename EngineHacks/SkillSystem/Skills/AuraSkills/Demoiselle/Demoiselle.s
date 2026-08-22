@@ -10,24 +10,24 @@ mov r5, r1
 
 CheckGender:
 @is the attacker male?
-ldr r0, [r4] @char
-ldr r0, [r0, #0x28] @char abilities
-ldr r1, [r4,#4] @class
-ldr r1, [r1,#0x28] @class abilities
+ldr r0, [r4]            @char
+ldr r0, [r0, #0x28]     @char abilities
+ldr r1, [r4,#4]         @class
+ldr r1, [r1,#0x28]      @class abilities
 orr r0, r1
 mov r1, #0x40
-lsl r1, #8 @0x4000 IsFemale
+lsl r1, #8              @0x4000 IsFemale
 tst r0, r1
-bne Done @skip if not male
+bne Done                @skip if not male
 
 CheckSkill:
 @now check for the skill
 ldr r0, AuraSkillCheck
 mov lr, r0
-mov r0, r4 @attacker
+mov r0, r4              @attacker
 ldr r1, DemoiselleID
-mov r2, #0 @can_trade
-mov r3, #2 @range
+mov r2, #0              @can_trade
+mov r3, #2              @range
 .short 0xf800
 cmp r0, #0
 beq Done
@@ -40,7 +40,7 @@ beq Done
 
 @testing
 mov r0, r4
-add r0, #0x5c @attacker defense
+add r0, #0x5c           @attacker defense
 ldrh r3, [r0]
 add r3, #2
 strh r3, [r0]

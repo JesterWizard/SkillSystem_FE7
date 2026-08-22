@@ -9,7 +9,7 @@ ldr		r0,[r5,#0x4]
 cmp		r0,#0
 beq		GoBack
 mov		r0,#0x52
-ldrb	r0,[r5,r0]		@can unit counter
+ldrb    r0,[r5,r0]      @can unit counter
 cmp		r0,#0
 bne		GoBack
 

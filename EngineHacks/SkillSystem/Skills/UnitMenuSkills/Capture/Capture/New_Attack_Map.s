@@ -17,13 +17,13 @@ b		CheckResults
 
 CaptureWeapons:
 mov		r0,r4
-ldr		r1,=#0x801736C		@get min range
+ldr             r1,=#0x801736C          @get min range
 mov		r14,r1
 .short	0xF800
 mov		r1,#0x3
 cmp		r0,#0x1
 bne		GoBack
-ldr		r0,Is_Capture_Set+4		@Fill_Capture_Range_Map
+ldr             r0,Is_Capture_Set+4     @Fill_Capture_Range_Map
 mov		r14,r0
 ldr		r0,[r5]
 .short	0xF800

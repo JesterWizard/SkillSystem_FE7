@@ -37,15 +37,15 @@ b	unsetLoop
 
 allUnset:
 ldr	r2,=gChapterData
-ldrb	r4,[r2,#0xF]	@phase
+ldrb    r4,[r2,#0xF]    @phase
 add	r4,#1
 
 Loop:
 mov	r0,r4
-ldr	r1,=GetUnit	@get char data
+ldr     r1,=GetUnit     @get char data
 mov	lr,r1
 .short	0xf800
-mov	r5,r0		@r5 = pointer to unit in ram
+mov     r5,r0           @r5 = pointer to unit in ram
 
 @check if there is a unit
 cmp	r5,#0
@@ -54,14 +54,14 @@ ldr	r0,[r5]
 cmp	r0,#0
 beq	Next
 ldrb	r0,[r5,#0x0C]
-mov	r1,#0xC @ dead or undeployed 
+mov     r1,#0xC         @ dead or undeployed 
 tst r0, r1 
 bne	Next
 
 @check if this unit is an armor
 ldr	r0,ArmorMarchList
 ldr	r1,[r5,#0x4]
-ldrb	r1,[r1,#0x4]	@class id
+ldrb    r1,[r1,#0x4]    @class id
 armorLoop:
 ldrb	r2,[r0]
 cmp	r2,#0
@@ -75,10 +75,10 @@ Armor:
 @check for the skill from nearby units
 ldr	r0,AuraSkillCheck
 mov	lr,r0
-mov	r0,r5		@unit to check
+mov     r0,r5           @unit to check
 ldr	r1,ArmorMarchID
-mov	r2,#0		@can_trade
-mov	r3,#1		@range
+mov     r2,#0           @can_trade
+mov     r3,#1           @range
 .short	0xf800
 mov	r6,r0
 cmp	r6,#0
@@ -88,7 +88,7 @@ notArmor:
 @check if the unit has the skill
 ldr	r0,SkillTester
 mov	lr,r0
-mov	r0,r5		@unit to check
+mov     r0,r5           @unit to check
 ldr	r1,ArmorMarchID
 .short	0xf800
 mov	r6,r0
@@ -98,25 +98,25 @@ beq	Set
 @get nearby units
 ldr	r0,AuraSkillCheck
 mov	lr,r0
-mov	r0,r5		@unit to check
+mov     r0,r5           @unit to check
 mov	r1,#0
-mov	r2,#0		@can_trade
-mov	r3,#1		@range
+mov     r2,#0           @can_trade
+mov     r3,#1           @range
 .short	0xf800
 
 @check if any nearby unit is an armor
-ldr	r6,=#0x202B256	@bugger for the nearby units
+ldr     r6,=#0x202B256  @bugger for the nearby units
 checkArmorsLoop:
 ldrb	r0,[r6]
 cmp	r0,#0
 beq	noArmors
-ldr	r1,=GetUnit	@get char data
+ldr     r1,=GetUnit     @get char data
 mov	lr,r1
-.short	0xf800		@r0 = pointer to unit in ram
+.short  0xf800          @r0 = pointer to unit in ram
 mov	r3,r0
 ldr	r0,ArmorMarchList
 ldr	r1,[r3,#0x4]
-ldrb	r1,[r1,#0x4]	@class id
+ldrb    r1,[r1,#0x4]    @class id
 armorLoop2:
 ldrb	r2,[r0]
 cmp	r2,#0
@@ -146,7 +146,7 @@ mov lr,r2
 bl GetUnitDebuffEntry 
 ldr r1, =ArmorMarchBitOffset_Link
 ldr r1, [r1] 
-cmp	r6,#0		@check if the skill check was successful or not
+cmp     r6,#0           @check if the skill check was successful or not
 beq	Unset
 bl SetBit 
 b	Next
@@ -166,7 +166,7 @@ b	Loop
 
 
 End:
-mov r0, #0 @ no blocking proc / animation 
+mov r0, #0              @ no blocking proc / animation 
 pop	{r4-r6}
 pop	{r1}
 bx	r1

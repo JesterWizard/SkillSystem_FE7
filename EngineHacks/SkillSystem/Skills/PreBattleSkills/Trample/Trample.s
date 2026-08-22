@@ -20,7 +20,7 @@ ldr		r0,[r0,#0x28]
 ldr		r1,[r5,#0x4]
 ldr		r1,[r1,#0x28]
 orr		r0,r1
-mov		r1,#0x1			@is defender mounted
+mov             r1,#0x1     @is defender mounted
 tst		r0,r1
 bne		GoBack
 

@@ -21,16 +21,16 @@ cmp	r0, #0x00
 beq	End
 
 @check if current chracter
-ldrb  r0, [r6,#0x11]  @action taken this turn
-cmp r0, #0x1E @check if found enemy in the fog
+ldrb  r0, [r6,#0x11]    @action taken this turn
+cmp r0, #0x1E           @check if found enemy in the fog
 beq End
-ldrb  r0, [r6,#0x0C]  @allegiance byte of the current character taking action
-ldrb  r1, [r4,#0x0B]  @allegiance byte of the character we are checking
-cmp r0, r1    @check if same character
+ldrb  r0, [r6,#0x0C]    @allegiance byte of the current character taking action
+ldrb  r1, [r4,#0x0B]    @allegiance byte of the character we are checking
+cmp r0, r1              @check if same character
 bne End
 
 @check if action is movement skill
-ldrb r0, [r6,#0x11] @action taken this turn
+ldrb r0, [r6,#0x11]     @action taken this turn
 ldr r1, ACTION_MOVETARGET
 cmp r0,r1
 beq CheckMovement
@@ -50,15 +50,15 @@ bne End
 CheckMovement:
 
 @check if moved all the squares
-ldr	r0,=#0x8018B44 //FE8 -> #0x8019224	@mov getter
+ldr     r0,=#0x8018B44  //FE8 -> #0x8019224	@mov getter
 mov	lr, r0
-mov	r0, r4		@attacker
+mov     r0, r4          @attacker
 .short	0xF800
-ldrb 	r1, [r6,#0x10]	@squares moved this turn
+ldrb    r1, [r6,#0x10]  @squares moved this turn
 cmp	r0,r1
 beq	End
 
-ldr	r1,=#0x80180EC //FE8 -> #0x8018BD8	@check if can move again
+ldr     r1,=#0x80180EC  //FE8 -> #0x8018BD8	@check if can move again
 mov	lr, r1
 .short	0xF800
 lsl	r0, #0x18
@@ -66,8 +66,8 @@ cmp	r0, #0x00
 beq	End
 
 @check if already Cantoing
-ldr	r0, [r4,#0x0C]	@status bitfield
-mov	r1, #0x40	@has moved already
+ldr     r0, [r4,#0x0C]  @status bitfield
+mov     r1, #0x40       @has moved already
 and	r0, r1
 cmp	r0, #0x00
 bne	End
@@ -82,11 +82,11 @@ cmp	r0,#0x00
 beq	End
 
 @if canto, unset 0x2 and set 0x40
-ldr	r0, [r4,#0x0C]	@status bitfield
+ldr     r0, [r4,#0x0C]  @status bitfield
 mov	r1, #0x02
 mvn	r1, r1
-and	r0, r1		@unset bit 0x2
-mov	r1, #0x40	@set canto bit
+and     r0, r1          @unset bit 0x2
+mov     r1, #0x40       @set canto bit
 orr	r0, r1
 str	r0, [r4,#0x0C]
 
