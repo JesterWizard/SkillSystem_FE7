@@ -42,11 +42,13 @@ Returns true if unit is none of the following:
 Returns false otherwise.
 
 ### IsSkillInBuffer (SkillBuffer* buffer, u8 skillID)
-Loops through a given buffer to find the given skillID.  
+Internal helper (inlined). Loops through a given buffer to find the given skillID.  
 
 ### NihilTester (Unit* unit, u8 skillID)
 Checks if unit's opponent has Nihil and if the skill in question is negated by it.  
 Negated skills are found by indexing `NegatedSkills` by skillID.  
+The opponent is `gBattleActor` or `gBattleTarget` (must be one of those two).  
+Nihil itself is read from the live opponent unit (personal, class, learned), not from the skill RAM buffers — those share `0x0202A9D4` with GetSkills' unit-pointer cache.  
 
 `NegatedSkills` can be found in
 `Root/EngineHacks/SkillSystem/Internals/SkillSystem.event`

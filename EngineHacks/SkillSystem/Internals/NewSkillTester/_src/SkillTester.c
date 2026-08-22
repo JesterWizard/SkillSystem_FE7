@@ -23,7 +23,8 @@ static bool IsUnitOnField(Unit* unit) {
 }
 
 //Checks if given skillID is in given skill buffer
-bool IsSkillInBuffer(SkillBuffer* buffer, u8 skillID) {
+static inline bool IsSkillInBuffer(SkillBuffer* buffer, u8 skillID) __attribute__((always_inline));
+static inline bool IsSkillInBuffer(SkillBuffer* buffer, u8 skillID) {
     for (int i = 0; buffer->skills[i] != 0; ++i) {
         if (buffer->skills[i] == skillID) {
             return TRUE;
@@ -33,19 +34,49 @@ bool IsSkillInBuffer(SkillBuffer* buffer, u8 skillID) {
 }
 
 //Checks if the given skillID is negated by Nihil
-//If it is, the unit's opponent's skill buffer is searched through for nihil
+//Read the live opponent battle unit — do not trust skill RAM buffers.
+//GetSkills still caches a unit pointer at gAttackerSkillBuffer (0x0202A9D4).
 bool NihilTester(Unit* unit, u8 skillID) {
-    //Check if in battle and if the skill in question can be negated
-    if ((gBattleStats.config & 3) && NegatedSkills[skillID]) {
-        SkillBuffer* buffer = &gDefenderSkillBuffer;
-
-        //If unit is the defender, check the attacker skill buffer instead
-        if (unit->index == gBattleTarget.unit.index) {
-            buffer = &gAttackerSkillBuffer;
-        }
-
-        return IsSkillInBuffer(buffer, NihilIDLink);
+    if (!IsBattleReal() || !NegatedSkills[skillID]) {
+        return FALSE;
     }
+
+    Unit* opponent;
+    if (unit->index == gBattleTarget.unit.index) {
+        opponent = &gBattleActor.unit;
+    }
+    else if (unit->index == gBattleActor.unit.index) {
+        opponent = &gBattleTarget.unit;
+    }
+    else {
+        return FALSE;
+    }
+
+    if (!opponent->pCharacterData || !opponent->pClassData) {
+        return FALSE;
+    }
+
+    u8 nihil = NihilIDLink;
+    if (PersonalSkillTable[opponent->pCharacterData->number] == nihil) {
+        return TRUE;
+    }
+    if (ClassSkillTable[opponent->pClassData->number] == nihil) {
+        return TRUE;
+    }
+
+    int learnedLimit = gSkillTestConfig.genericLearnedSkillLimit;
+    if ((opponent->index & 0xC0) != 0 && learnedLimit > 6) {
+        learnedLimit = 6;
+    }
+    for (int i = 0; i < learnedLimit; ++i) {
+        if (!IsSkillIDValid(opponent->supports[i])) {
+            break;
+        }
+        if (opponent->supports[i] == nihil) {
+            return TRUE;
+        }
+    }
+
     return FALSE;
 }
 
