@@ -16,6 +16,7 @@ from __future__ import annotations
 import re
 import unittest
 from pathlib import Path
+from typing import Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILT = ROOT / "FE7_Hack.gba"
@@ -24,22 +25,32 @@ SYMS = ROOT / "FE7_Hack.sym"
 
 ROM_ADDR_MASK = 0x1FFFFFF
 
+_rom: Optional[bytes] = None
+_syms: Optional[dict] = None
+
 
 def load() -> bytes:
     """Bytes of the assembled ROM, or SkipTest if it was never assembled."""
+    global _rom
+    if _rom is not None:
+        return _rom
     if not BUILT.is_file():
         raise unittest.SkipTest("FE7_Hack.gba not built")
     rom = BUILT.read_bytes()
-    if CLEAN.is_file() and rom == CLEAN.read_bytes():
+    if CLEAN.is_file() and len(rom) == CLEAN.stat().st_size and rom == CLEAN.read_bytes():
         raise unittest.SkipTest(
             "FE7_Hack.gba is an unassembled copy of FE7_clean.gba; "
             "run MAKE_HACK_quick.cmd"
         )
+    _rom = rom
     return rom
 
 
 def symbols() -> dict[str, int]:
     """Nocash .sym map, or SkipTest if it is missing."""
+    global _syms
+    if _syms is not None:
+        return _syms
     if not SYMS.is_file():
         raise unittest.SkipTest("FE7_Hack.sym not built")
     out: dict[str, int] = {}
@@ -47,6 +58,7 @@ def symbols() -> dict[str, int]:
         m = re.match(r"([0-9A-Fa-f]{8})\s+(\S+)", line.strip())
         if m:
             out[m.group(2)] = int(m.group(1), 16)
+    _syms = out
     return out
 
 

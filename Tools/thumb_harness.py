@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import subprocess
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 from unicorn import Uc, UcError, UC_ARCH_ARM, UC_MODE_THUMB
@@ -85,42 +86,64 @@ def _include_flags(src: Path, include_dirs=None) -> list[str]:
     return [f"-I{d}" for d in dirs]
 
 
-def assemble(src: Path, include_dirs=None) -> bytes:
-    """Assemble src with the project's ARM toolchain; return raw .text bytes."""
+@dataclass(frozen=True)
+class _Asm:
+    code: bytes
+    offsets: dict[str, int]
+
+
+_ASM_CACHE: dict[tuple, _Asm] = {}
+
+
+def _cache_key(src: Path, include_dirs=None) -> tuple:
+    src = Path(src).resolve()
+    extras = tuple(str(Path(d).resolve()) for d in (include_dirs or ()))
+    return (str(src), src.stat().st_mtime_ns, extras)
+
+
+def _assemble_once(src: Path, include_dirs=None) -> _Asm:
+    """One `as` + objcopy + nm; reused by assemble() and symbol_offsets()."""
+    src = Path(src)
+    key = _cache_key(src, include_dirs)
+    hit = _ASM_CACHE.get(key)
+    if hit is not None:
+        return hit
     with tempfile.TemporaryDirectory() as tmp:
         elf = Path(tmp) / (src.stem + ".elf")
         binf = Path(tmp) / (src.stem + ".bin")
+        flags = _include_flags(src, include_dirs)
         subprocess.run(
             [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
-             *_include_flags(src, include_dirs), str(src), "-o", str(elf)],
+             *flags, str(src), "-o", str(elf)],
             check=True, capture_output=True, text=True,
         )
         subprocess.run(
             [str(OBJCOPY), "-O", "binary", str(elf), str(binf)],
             check=True, capture_output=True, text=True,
         )
-        return binf.read_bytes()
-
-
-def symbol_offsets(src: Path, include_dirs=None) -> dict[str, int]:
-    """Label -> byte offset within the assembled .text, via nm (not hand-counted)."""
-    with tempfile.TemporaryDirectory() as tmp:
-        elf = Path(tmp) / (src.stem + ".elf")
-        subprocess.run(
-            [str(AS), "-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork",
-             *_include_flags(src, include_dirs), str(src), "-o", str(elf)],
-            check=True, capture_output=True, text=True,
-        )
         out = subprocess.run(
             [str(NM), str(elf)], check=True, capture_output=True, text=True,
         ).stdout
+        code = binf.read_bytes()
     offsets: dict[str, int] = {}
     for line in out.splitlines():
         parts = line.split()
         if len(parts) == 3:
             addr_hex, _kind, name = parts
             offsets[name] = int(addr_hex, 16)
-    return offsets
+    result = _Asm(code=code, offsets=offsets)
+    _ASM_CACHE[key] = result
+    return result
+
+
+def assemble(src: Path, include_dirs=None) -> bytes:
+    """Assemble src with the project's ARM toolchain; return raw .text bytes."""
+    return _assemble_once(src, include_dirs).code
+
+
+def symbol_offsets(src: Path, include_dirs=None) -> dict[str, int]:
+    """Label -> byte offset within the assembled .text, via nm (not hand-counted)."""
+    return dict(_assemble_once(src, include_dirs).offsets)
 
 
 def _is_trampoline_at(code: bytes, idx: int) -> bool:
