@@ -93,7 +93,7 @@ class SkillDefinitionToggleTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertEqual(rom.read_bytes()[:5], bytes([1, 255, 255, 43, 156]))
+            self.assertEqual(rom.read_bytes()[:5], bytes([1, 255, 255, 43, 255]))
 
 
 if __name__ == "__main__":

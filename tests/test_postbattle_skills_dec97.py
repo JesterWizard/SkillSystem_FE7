@@ -26,7 +26,7 @@ SNAPSHOT = Path(__file__).with_name("skill_id_snapshot.json")
 
 CANTO, CANTOPLUS, DESPOIL, FURY = 1, 2, 122, 128
 PENDING = 0x8000  # US_CANTO_PENDING, FE8's unused US_BIT15
-BOL, GRIDMASTER, SAVAGE, LUNGE_ID = 123, 120, 254, 61
+BOL, GRIDMASTER, SAVAGE, LUNGE_ID = 123, 255, 143, 61
 RED_GEM = 0x75
 ACTOR = 0x02020000
 TARGET = 0x02020100
@@ -211,7 +211,7 @@ class SourceWiringTests(unittest.TestCase):
             "GridmasterID": GRIDMASTER,
             "SavageBlowID": SAVAGE,
             "LungeID": LUNGE_ID,
-            "SwiftStanceID": 255,
+            "SwiftStanceID": 161,
         }
         for name, sid in expect.items():
             m = re.search(rf"^#define\s+{name}\s+(\S+)", text, re.M)

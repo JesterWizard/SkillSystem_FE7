@@ -17,7 +17,7 @@ SHADE = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "AISkills" / "Shade" /
 SHADEPLUS = ROOT / "EngineHacks" / "SkillSystem" / "Skills" / "AISkills" / "ShadePlus" / "ShadePlus.s"
 HACK = ROOT / "FE7_Hack.gba"
 
-PROVOKE_ID, SHADE_ID, SHADEPLUS_ID = 43, 246, 247
+PROVOKE_ID, SHADE_ID, SHADEPLUS_ID = 43, 145, 146
 GP_AI = 0x030013C0
 G_TARGET = 0x0203A470
 G_ACTOR = 0x0203A3F0

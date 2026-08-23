@@ -40,9 +40,10 @@ class SkillIndexTests(unittest.TestCase):
         self.assertEqual(row["live"], "yes")
         self.assertTrue(row["source"].endswith("Provoke/Provoke.s"))
 
-    def test_anathema_id_assigned_but_aura_not_installed(self):
+    def test_anathema_is_skill_off(self):
         row = self.rows["AnathemaID"]
-        self.assertEqual(row["off"], "no")
+        self.assertEqual(row["id"], "OFF")
+        self.assertEqual(row["off"], "yes")
         self.assertEqual(row["category"], "AuraSkills")
         self.assertEqual(row["live"], "no")
 

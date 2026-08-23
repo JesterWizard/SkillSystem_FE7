@@ -22,7 +22,7 @@ MSS_PAGE1 = (
 INSTALL_CORE = ROOT / "EngineHacks" / "Necessary" / "MSG" / "InstallCore.event"
 HACK = ROOT / "FE7_Hack.gba"
 
-CELERITY_ID = 143
+CELERITY_ID = 255
 CELERITY_BONUS = 2
 MOV_GETTER = 0x18B44
 CLASS_MOV = 6
@@ -35,7 +35,7 @@ CLASS = 0x02012000
 STOP = 0x08FFFFF0
 SP = 0x03007F00
 
-# rWithConstant(CelerityID): ldr r2, [pc]; b +4; .word 143
+# rWithConstant(CelerityID): ldr r2, [pc]; b +4; .word SKILL_OFF (255)
 CELERITY_CONST = bytes.fromhex("004a01e0") + struct.pack("<I", CELERITY_ID)
 
 MEM_MAP = [
@@ -78,7 +78,8 @@ class CeleritySourceTests(unittest.TestCase):
         text = DEFS.read_text(encoding="utf-8")
         m = re.search(r"^#define\s+CelerityID\s+(\S+)", text, re.M)
         self.assertIsNotNone(m)
-        self.assertEqual(int(m.group(1)), CELERITY_ID)
+        rhs = m.group(1)
+        self.assertEqual(255 if rhs == "SKILL_OFF" else int(rhs), CELERITY_ID)
 
     def test_wired_into_mov_chain_as_plus_two(self):
         src = MOVEMENT.read_text(encoding="utf-8")
