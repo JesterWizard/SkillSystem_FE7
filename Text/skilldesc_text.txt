@@ -1131,6 +1131,18 @@ is full, gain +5 defense.[X]
 Push Resistance: When HP is[N]
 full, gain +5 resistance.[X]
 
+## SD_PushLck
+Push Luck: When HP[N]
+is full, gain +5 luck.[X]
+
+## SD_PushMov
+Push Movement: When HP[N]
+is full, gain +5 movement.[X]
+
+## SD_PushSpectrum
+Push Spectrum: When HP is[N]
+full, gain +5 to all stats.[X]
+
 ## SD_Skybreaker
 Skybreaker: Deal effective[N]
 damage to flying units.[X]
@@ -1175,6 +1187,10 @@ rallies on opponent's resistance.[X]
 ## SD_LullSpectrum
 Lull Spectrum: Negates the[N]
 effects of rallies on opponent.[X]
+
+## SD_LullMov
+Lull Mov: Negates the effects[N]
+of rallies on opponent's movement.[X]
 
 ## SD_Shade
 Shade: Enemies are less[N]

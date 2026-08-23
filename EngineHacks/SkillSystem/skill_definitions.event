@@ -1,6 +1,6 @@
 //Here you can choose which skills to install. You can only install up to 254, ranging from IDs 1 - 254. Make sure you don't use the same ID more than once.
 //Toggle a skill with its id or SKILL_OFF. Disabled skills assemble as SKILL_OFF (255).
-//Complete skills from the Implemented Skills spreadsheet occupy 1-198 (unused: 185, 186, 189).
+//Complete skills from the Implemented Skills spreadsheet occupy 1-195 (unused: 196-198).
 //Skill effects and authors: skill_definition_descriptions.event.
 
 #ifndef SKILL_DEFINITIONS
@@ -176,11 +176,11 @@
 #define CertainBlowID 26
 #define ArmoredBlowID 24
 #define HeroesDeathBlowID 166
-#define SwordbreakerID 190
-#define LancebreakerID 191
-#define AxebreakerID 192
-#define BowbreakerID 193
-#define AnimabreakerID 194
+#define SwordbreakerID 187
+#define LancebreakerID 188
+#define AxebreakerID 189
+#define BowbreakerID 190
+#define AnimabreakerID 191
 #define DarkbreakerID 125
 #define LightbreakerID 40
 #define StaffbreakerID 170
@@ -202,10 +202,10 @@
 #define ElbowRoomID 57
 #define OddRhythmID 102
 #define EvenRhythmID 63
-#define SwordfaireID 195
-#define LancefaireID 196
-#define AxefaireID 197
-#define BowfaireID 198
+#define SwordfaireID 192
+#define LancefaireID 193
+#define AxefaireID 194
+#define BowfaireID 195
 #define StafffaireID 66
 #define AnimafaireID 169
 #define DarkfaireID 64
@@ -253,7 +253,7 @@
 #define TowerShieldPlusID 180
 #define TrampleID 173
 #define VanityID 183
-#define VigilanceID 188
+#define VigilanceID 186
 #define WindDiscipleID 184
 #define WrathID 150
 #define QuickDrawID 37
@@ -264,7 +264,7 @@
 #define ThotslayerID 164
 #define HurricaneID 4
 #define HeavyBladeID 25
-#define DancingBladeID 187
+#define DancingBladeID 185
 #define FireBoostID 59
 #define WindBoostID 62
 #define EarthBoostID 58

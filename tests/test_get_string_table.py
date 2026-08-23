@@ -5,6 +5,7 @@ Title-start black screens happen when the live text table is FE8's
 (or too short, or the function's literal pool is clobbered). These
 tests read the built ROM the same way the game does.
 """
+import re
 import struct
 import sys
 import unittest
@@ -58,9 +59,17 @@ PAGE3_LYN = (
     / "mss_page3_original.lyn.event"
 )
 
+def _text_id(name: str) -> int:
+    text = (ROOT / "Text" / "TextDefinitions.event").read_text(encoding="utf-8")
+    m = re.search(rf"#define {name}\s+\$([0-9A-Fa-f]+)", text)
+    if not m:
+        raise AssertionError(f"{name} missing from TextDefinitions.event")
+    return int(m.group(1), 16)
+
+
 TID_STR = 0x10F8
-TID_SKILLS = 0xF45
-TID_AFFIN = 0xF64
+TID_SKILLS = _text_id("SS_SkillsText")
+TID_AFFIN = _text_id("SS_AffinText")
 STRING_EXPANDER = 0x4364
 
 GBA_ROM_BASE = 0x08000000
