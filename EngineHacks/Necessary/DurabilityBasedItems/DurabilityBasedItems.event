@@ -12,7 +12,7 @@ PUSH
 		jumpToHack(GetItemNameString)
 
 	ORG $1722C
-		jumpToHack(GetItemNameIdStringIndex) // help / ItemDescGetter R-text mid
+		jumpToHack(GetItemNameIdStringIndex) // GetItemDescId; item-select / help R-text
 
 	ORG $17244
 		jumpToHack(GetItemDescStringIndex)

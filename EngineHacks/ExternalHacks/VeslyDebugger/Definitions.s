@@ -363,7 +363,10 @@ SET_FUNC HideUnitSprite, 0x8026575
 SET_FUNC MU_Exists, 0x8009FB9
 SET_FUNC MU_SetDefaultFacing_Auto, 0x806BFE1
 SET_FUNC MU_Create, 0x806BAF1
-SET_FUNC MenuAutoHelpBoxSelect, 0x804a9D5
+@ Do not SET_FUNC this to vanilla 0x804A9D5 — lyn emits a trampoline
+@ there that replaces Menu_DefaultRPress with the stub `return 0`,
+@ which kills R-help on every menu (item select, attack weapon pick, …).
+@SET_FUNC MenuAutoHelpBoxSelect, 0x804a9D5
 SET_FUNC StartOrphanMenuAdjusted, 0x804a225
 SET_FUNC SetAllUnitNotBackSprite, 0x80183F5
 SET_DATA gActiveUnitMoveOrigin, 0x202BBF8

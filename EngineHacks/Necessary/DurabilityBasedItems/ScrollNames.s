@@ -350,9 +350,8 @@ bx r3
 .align
 
 
-@ FE7 GetItemNameId 0x0801722C — ItemDescGetter / help uses this for R-text mid.
-@ For durability scrolls (name 0xFFFF) return SkillDescTable[durability] so R-text
-@ shows the skill description instead of text id 0xFFFF.
+@ FE7 GetItemDescId 0x0801722C — ItemDescGetter / item-select R-text (vanilla ldrh +2).
+@ For durability scrolls (desc 0xFFFF) return SkillDescTable[durability].
 .global GetItemNameIdStringIndex
 .type GetItemNameIdStringIndex, %function
 
@@ -367,9 +366,9 @@ add r1,r0
 lsl r1,r1,#2
 ldr r0,=ItemTable
 add r1,r0
-ldrh r0,[r1] @r0 = name ID
+ldrh r0,[r1,#2] @r0 = desc ID
 
-ldr r2,=DurabilityBasedItemNameList
+ldr r2,=DurabilityBasedItemDescList
 NameIdLoopStart:
 ldrh r1,[r2]
 cmp r1,#0
@@ -395,6 +394,7 @@ bx r14
 .align
 
 
+@ FE7 GetItemUseDescId 0x08017244 (vanilla ldrh +4).
 GetItemDescStringIndex: @hook at 17244
 push {r4}
 mov r4,r0
@@ -406,7 +406,7 @@ add r1,r0
 lsl r1,r1,#2
 ldr r0,=ItemTable
 add r1,r0
-ldrh r0,[r1,#2] @r0 = desc ID
+ldrh r0,[r1,#4] @r0 = use desc ID
 
 ldr r2,=DurabilityBasedItemDescList
 DescLoopStart:
