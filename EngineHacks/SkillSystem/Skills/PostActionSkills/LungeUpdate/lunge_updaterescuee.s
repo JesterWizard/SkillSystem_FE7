@@ -9,7 +9,7 @@
 push { lr }
 ldr r0, =0x8018d0c
 mov lr, r0
-ldr r0, =0x203a868      @action struct
+ldr r0, =0x203A85C      @action struct
 ldrb r0, [r0, #0xd]     @target
 cmp r0, #0
 beq End

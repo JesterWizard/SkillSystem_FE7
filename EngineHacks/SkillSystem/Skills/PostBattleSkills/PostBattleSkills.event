@@ -31,20 +31,52 @@ WORD LifetakerID
 //#include "Lifetaker/LifetakerEvent.event"
 
 ALIGN 4
+TryMakeCantoCheck:
+#include "Canto/try_make_canto.lyn.event"
+WORD ENABLE_LEGACY_CANTO
+
+ALIGN 4
 Canto:
 #include "Canto/canto.lyn.event"
 POIN SkillTester
 WORD CantoID
-//WORD ENABLE_LEGACY_CANTO
+WORD ENABLE_LEGACY_CANTO
 
 CantoAI_Label:
 WORD CANTO_AI 
+
+#include "Extensions/PopupDefinitions.txt"
+
+ALIGN 4
+// "<unit> obtained a <item>". Article is its own component (0x0F, white)
+// so the item name can be blue. 0x0F is wired in SkillScrolls.event.
+DespoilPopup:
+	Popup_SetSound(0x37A)		// the vanilla item-get jingle
+	Popup_SetColor(0)
+	Popup_UnitName
+	Popup_StringId(DespoilGotText)	// " obtained "
+	Popup_ItemArticle		// white "a " / "an "
+	Popup_SetColor(2)
+	Popup_ItemName
+	Popup_Space(1)
+	Popup_ItemIcon
+	Popup_End
 
 ALIGN 4
 Despoil:
 #include "Despoil/despoil.lyn.event"
 POIN SkillTester
 WORD DespoilID
+POIN DespoilPopupProc
+POIN DespoilPopup
+
+// After the lyn include so CallDespoilPopup is already defined (a forward
+// POIN into the blob has been 0 and crashed on CALL_2).
+ALIGN 4
+DespoilPopupProc:
+	SHORT 0x16 0
+	POIN (CallDespoilPopup|1)
+	SHORT 0x00 0 0 0
 //POIN DespoilEvent
 //#include "Despoil/DespoilEvent.event"
 
@@ -89,20 +121,26 @@ POIN SkillTester
 WORD FailGaleID
 
 PUSH //some changes to vanilla code to make everything work
-ORG $1CBA0 //FE8 -> $1D24C //check for canto, modified to just check for cantoing bit set
-//#ifdef ENABLE_GALEFORCE_AUTOSELECT
-SHORT 0x7B18 0x2102 0x4008 0x46C0 0x46C0 0x46C0 0x46C0 0x46C0 0x2802 //galeforce autoselects unit
-//#else
-//SHORT 0x7b18 0x2102 0x4001 0x2902 0xd020 0x2140 0x4008 0x46c0 0x2800 //galeforce does not autoselect the unit
-//#endif
-ORG $21F08 //FE8 -> $2302C //prevent infinite canto after seizing under certain conditions as a consequence of the modified canto check
-SHORT 0x2102
+ORG $1CBA0 // FE7 TryMakeCantoUnit: ability check -> TryMakeCantoCheck.
+// TryMakeCantoCheck re-applies the vanilla "already cantoed / turn ended"
+// guard itself and jumps straight to the leftover-movement check at $1CBCA,
+// so $1CBB6 and $1CBBE keep their vanilla bytes. Nopping that guard is what
+// let a unit canto again every time it finished a canto move, and the
+// blanket "fail on Combat" at $1CBBE is what kept Canto+ from ever moving
+// after a fight.
+jumpToHack(TryMakeCantoCheck)
+// Leftover movement: use the modular Mov getter instead of raw class Mov, so
+// Mov-granting skills (Celerity, ...) agree with the check canto.s already
+// makes. Replaces $1CBCA-$1CBD9; $1CBDA (bl CanUnitMove) is untouched.
+ORG $1CBCA
+SHORT 0x1C10            // mov  r0, r2       ; gActiveUnit
+BL(prGotoMovGetter)
+SHORT 0x7C24            // ldrb r4, [r4,#0x10] ; squares moved this turn
+SHORT 0x42A0            // cmp  r0, r4
+SHORT 0xDD06            // ble  $1CBE4       ; nothing left to move
+SHORT 0x46C0 0x46C0
 ORG $181FA //FE8 -> $18754 //this used to set state to "turn ended"
 SHORT 0x46C0
-ORG $1CBB6 //FE8 -> $1D264 //this used to be part of the "check if already cantoing"
-SHORT 0x2000
-ORG $1CBBE //FE8 -> $1D26C //this used to be part of the "check for this turn's action"
-SHORT 0x2110
 ORG $2F50C //FE8 -> $323A0 //making dance not clear the galeforce flag
 SHORT 0xFFBD
 SHORT 0xFFFF
@@ -110,33 +148,13 @@ ORG $34DC8 //FE8 -> $39B98 //this sets 00040000 to the status bitfield thing for
 SHORT 0x46C0
 POP
 
-
-/*
-ALIGN 4
-Despoil:
-#include "Despoil/despoil.lyn.event"
-POIN SkillTester
-WORD DespoilID
-POIN DespoilEvent
-#include "Despoil/DespoilEvent.event"
-
-ALIGN 4
-SavageBlow:
-#include "SavageBlow/savageblow.lyn.event"
-POIN SkillTester
-WORD SavageBlowID
-POIN SavageBlowEvent
-POIN GetUnitsInRange
-#include "SavageBlow/SavageBlowEvent.event"
-
-ALIGN 4
-BreathOfLife:
-#include "BreathOfLife/BreathOfLife.lyn.event"
-POIN SkillTester
-WORD BreathOfLifeID
-POIN BreathOfLifeEvent
-POIN GetUnitsInRange
-#include "BreathOfLife/BreathOfLifeEvent.event"
+#ifndef ACTION_MOVETARGET
+#define ACTION_MOVETARGET 0x23
+#define ACTION_MOVEACTIVE 0x24
+#define ACTION_SWAP       0x25
+#define ACTION_PUSH       0x26
+#define ACTION_SWARP      0x27
+#endif
 
 ALIGN 4
 CantoPlus:
@@ -144,20 +162,19 @@ CantoPlus:
 POIN SkillTester
 WORD CantoPlusID
 
-CantoAI_Label:
-WORD CANTO_AI 
+ALIGN 4
+SavageBlow:
+#include "SavageBlow/savageblow.lyn.event"
+POIN SkillTester
+WORD SavageBlowID
+POIN GetUnitsInRange
 
-MoveActiveTo_sBCoords: 
-EVBIT_MODIFY 1 
-EVBIT_T 9 // follow camera 
-ASMC MoveActorToCoords_sB
-ENUN 
-SET_ENDTURN (-1) 
-//ASMC SetActorCoords 
-NoFade 
-ENDA 
-
-#include "Cultured/Cultured.event"
+ALIGN 4
+BreathOfLife:
+#include "BreathOfLife/BreathOfLife.lyn.event"
+POIN SkillTester
+WORD BreathOfLifeID
+POIN GetUnitsInRange
 
 ALIGN 4
 Gridmaster:
@@ -169,7 +186,5 @@ WORD ACTION_MOVEACTIVE
 WORD ACTION_SWAP
 WORD ACTION_PUSH
 WORD ACTION_SWARP
-
-*/
 
 #include "Cultured/Cultured.event"

@@ -10,8 +10,8 @@ PostCombatLoop:
 #include "post_loop.lyn.event"
 
 PostCombatSkills: //I like having savage blow as the first one because it makes the activation sound play first
-POIN /* Despoil */ Lifetaker Fury /*PoisonStrike GrislyWound*/
-POIN /* Canto */ /* CantoPlus */ Galeforce FailGale ReMove Powerstaff CulturedPostCombat
+POIN SavageBlow Despoil Lifetaker Fury BreathOfLife /*PoisonStrike GrislyWound*/
+POIN Canto CantoPlus Gridmaster Galeforce FailGale ReMove Powerstaff CulturedPostCombat
 WORD 0 //Terminator
 
 PROTECT $1CC54 $1CC60

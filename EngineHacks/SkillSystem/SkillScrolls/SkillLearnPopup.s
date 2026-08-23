@@ -5,6 +5,7 @@
 @ Extends vanilla component ids (jumped into from in-function tables):
 @   0x0D = skill icon (IconRework sheet, 0x100 | skillId)
 @   0x0E = skill name (SkillDescTable text before ':')
+@   0x0F = item article only ("a " / "an "), so the name can be a different colour
 @ Length ABI:  r4=width, r5=def, r6=proc  → resume 0x0800A904
 @ Display ABI: r5=def, sp+0x10=TextHandle → resume 0x0800AA00
 
@@ -20,6 +21,7 @@
 .equ ProcStartBlocking,       0x080044F8
 .equ ProcStart,               0x08004494
 .equ GetStringFromIndex,      0x08012C60
+.equ GetItemNameWithArticle,  0x080171E4
 .equ Text_GetStringTextWidth,  0x080055FC
 .equ Text_DrawString,          0x08005718
 .equ Text_Advance,             0x08005578
@@ -32,6 +34,8 @@
 .global PopupDisp_SkillIcon
 .global PopupLen_SkillName
 .global PopupDisp_SkillName
+.global PopupLen_ItemArticle
+.global PopupDisp_ItemArticle
 .global LearnScrollSkill
 .global CallScrollLearnedPopup
 
@@ -95,6 +99,60 @@ PopupDisp_SkillName:
 
 .ltorg
 .align
+
+@ 0x0F: "a " / "an " only, so Despoil can keep the article white.
+PopupLen_ItemArticle:
+    bl ItemArticleString
+    blh Text_GetStringTextWidth
+    add r4, r0
+    ldr r0, =PopupLenResume
+    bx r0
+
+.ltorg
+.align
+
+PopupDisp_ItemArticle:
+    bl ItemArticleString
+    mov r1, r0
+    add r0, sp, #0x10
+    blh Text_DrawString
+    ldr r0, =PopupDispResume
+    bx r0
+
+.ltorg
+.align
+
+@ r0 = "a "/"an " in ArticleBuf (copy through first space).
+ItemArticleString:
+    push {r4, lr}
+    ldr r0, =gPopupItem
+    ldrh r0, [r0]
+    mov r1, #0
+    blh GetItemNameWithArticle
+    ldr r4, =ArticleBuf
+    mov r1, r4
+ItemArticleCopy:
+    ldrb r2, [r0]
+    strb r2, [r1]
+    add r0, #1
+    add r1, #1
+    cmp r2, #0x20
+    beq ItemArticleDone
+    cmp r2, #0
+    beq ItemArticleDone
+    b ItemArticleCopy
+ItemArticleDone:
+    mov r2, #0
+    strb r2, [r1]
+    mov r0, r4
+    pop {r4}
+    pop {r1}
+    bx r1
+
+.ltorg
+.align
+ArticleBuf:
+    .space 8
 
 @ r0 = skill id → r0 = name cstr (colon-truncated desc)
 ResolveSkillName:

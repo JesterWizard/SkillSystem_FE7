@@ -65,9 +65,9 @@ lsl	r0, #0x18
 cmp	r0, #0x00
 beq	End
 
-@check if already Cantoing
+@check if already Cantoing or already flagged for a re-move
 ldr     r0, [r4,#0x0C]  @status bitfield
-mov     r1, #0x40       @has moved already
+ldr     r1, =0x00008040 @US_CANTO_PENDING | US_HAS_MOVED
 and	r0, r1
 cmp	r0, #0x00
 bne	End
@@ -81,12 +81,14 @@ mov	lr, r3
 cmp	r0,#0x00
 beq	End
 
-@if canto, unset 0x2 and set 0x40
+@ Flag the re-move for TryMakeCantoUnit (US_CANTO_PENDING, FE8's unused
+@ US_BIT15). Setting US_HAS_MOVED here is what made an already-cantoed unit
+@ look eligible for another canto, and clearing US_UNSELECTABLE here left the
+@ unit selectable again whenever the canto was afterwards refused. The vanilla
+@ code at 0x0801CC04 does both, once, when the canto really starts.
 ldr     r0, [r4,#0x0C]  @status bitfield
-mov	r1, #0x02
-mvn	r1, r1
-and     r0, r1          @unset bit 0x2
-mov     r1, #0x40       @set canto bit
+mov	r1, #0x80
+lsl	r1, #0x08
 orr	r0, r1
 str	r0, [r4,#0x0C]
 
@@ -110,4 +112,9 @@ bx	r0
 SkillTester:
 @POIN SkillTester
 @WORD GridmasterID
+@WORD ACTION_MOVETARGET
+@WORD ACTION_MOVEACTIVE
+@WORD ACTION_SWAP
+@WORD ACTION_PUSH
+@WORD ACTION_SWARP
 

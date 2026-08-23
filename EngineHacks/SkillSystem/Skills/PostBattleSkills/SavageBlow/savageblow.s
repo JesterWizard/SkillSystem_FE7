@@ -4,8 +4,7 @@
   .short 0xf800
 .endm
 .equ SavageBlowID, SkillTester+4
-.equ SavageBlowEvent, SavageBlowID+4
-.equ GetUnitsInRange, SavageBlowEvent+4
+.equ GetUnitsInRange, SavageBlowID+4
 .thumb
 push	{r4-r7,lr}
 @check if dead
@@ -31,64 +30,47 @@ mov	lr, r3
 cmp	r0,#0x00
 beq	End
 
-@Check if there are enemies in 2 spaces
+@enemies in 2 spaces
 ldr	r0, GetUnitsInRange
 mov	lr, r0
 mov     r0, r4                  @attacker
 mov     r1, #0x03               @are_enemies
 mov     r2, #0x02               @range
 .short	0xf800
-
-SavageBlowDamage:
-mov     r5, r0                  @start of buffer
-mov     r6, #0x00               @counter
 cmp	r0, #0x00
 beq	End
-@if not 0 go through the buffer in r1
 
-CheckEventLoop:                 @check if all units in range are dead (or have 1 hp) and if so do not play sound
-ldrb	r0, [r5,r6]
-cmp r0, #0x00
-beq End
-add	r6,#1
-ldr	r2,=#0x8018d0c
-mov	lr, r2
-.short	0xf800
-ldrb    r0,[r0,#0x13]           @current hp
-mov	r1,#1
-cmp	r0,r1
-bhi	Event
-b	CheckEventLoop
-
-Event:
-mov     r6, #0x00               @reset counter
-ldr     r0,=#0x800D07C          @event engine thingy
-mov	lr, r0
-ldr     r0, SavageBlowEvent     @this event is just "play some sound effects"
-mov     r1, #0x01               @0x01 = wait for events
-.short	0xF800
+mov     r5, r0
+mov     r6, #0x00
 
 Savage_loop:
 ldrb	r0, [r5,r6]
-cmp r0, #0x00
-beq End
+cmp	r0, #0x00
+beq	End
 ldr	r2,=#0x8018d0c
 mov	lr, r2
 .short	0xf800
-@r0 is ram data
 mov	r7, r0
 ldrb    r0, [r7,#0x12]          @max hp
-mov	r1, #0x05
-swi     #0x06                   @r0 max hp/5
-ldrb    r1, [r7,#0x13]          @r1 = current hp
-cmp     r1, #0x00               @checking if the unit is already dead, it was setting the killed enemy's hp to 1 which made other skills not work
+mov	r1, r0
+mov	r0, #0x00
+Div5:
+cmp	r1, #0x05
+blt	Div5Done
+sub	r1, #0x05
+add	r0, #0x01
+b	Div5
+Div5Done:
+ldrb    r1, [r7,#0x13]
+cmp	r1, #0x00
 beq	NextLoop
 sub	r1, r0
 cmp	r1, #0x00
-bgt	NextLoop
-mov     r1, #0x01               @min of 1 hp
-NextLoop:
+bgt	StoreHP
+mov     r1, #0x01
+StoreHP:
 strb	r1, [r7,#0x13]
+NextLoop:
 add	r6, #0x01
 b	Savage_loop
 
@@ -101,5 +83,4 @@ bx	r0
 SkillTester:
 @POIN SkillTester
 @WORD SavageBlowID
-@POIN SavageBlowEvent
 @POIN GetUnitsInRange

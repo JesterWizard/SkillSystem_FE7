@@ -19,9 +19,9 @@ jumpToHack(LiveToServe)
 ORG $23E8C //ignore vanilla locktouch routine
 jumpToHack(LockTouch)
 
-//Lunge
-ORG $18744
-callHack_r3(Lunge)
+// Lunge is installed from Lunge/Lunge.event (included by
+// MasterSkillInstaller). $18744 was an FE8 address that lands mid
+// IsPosMagicSealed on FE7 -- do not re-add it here.
 
 //Vantage
 ORG $2Af7C
@@ -77,10 +77,6 @@ LockTouch:
 #include "Locktouch/LockTouch.lyn.event"
 POIN SkillTester
 WORD LockTouchID
-
-ALIGN 4
-Lunge:
-#include "Lunge/lunge.lyn.event"
 
 ALIGN 4
 Vantage:

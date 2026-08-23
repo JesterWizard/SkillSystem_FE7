@@ -1,0 +1,19 @@
+// Lunge: swap places with the target after winning a fight.
+//
+// $181D4 is inside SetActiveUnitPosition, the routine the post-action proc
+// calls to commit gActiveUnit's moved-to tile. The hack writes the (possibly
+// swapped) coordinates itself and returns to $181DC.
+//
+// Note: the enemy AI commits its position from $3523C instead, before combat
+// resolves, so AI-controlled Lunge holders do not swap. That needs the
+// (currently uninstalled) LungeAI hook.
+PUSH
+ORG $181D4
+jumpToHack(Lunge)
+POP
+
+ALIGN 4
+Lunge:
+#include "lunge.lyn.event"
+POIN SkillTester
+WORD LungeID

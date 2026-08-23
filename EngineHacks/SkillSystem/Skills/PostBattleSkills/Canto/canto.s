@@ -13,46 +13,39 @@ cmp	r0, #0x00
 beq	End
 
 @check if moved all the squares
-ldr     r0,=#0x8018B44  //FE8 -> #0x8019224	@mov getter
-mov	lr, r0
-mov     r0, r4          @attacker
-.short	0xF800
+mov     r0, r4
+blh     0x8018B44
 ldrb    r1, [r6,#0x10]  @squares moved this turn
 cmp	r0, r1
 beq	End
 
 @check if flag 0x3 set; if so, cannot canto
-ldr r0,=#0x80798F8      //FE8 -> #0x8083da8 @CheckEventId
-mov r14,r0
 mov r0,#3
-.short 0xF800
+blh 0x80798F8
 cmp r0,#1
 beq End
 
-blh 0x8019ABD           //FE8 -> 0x801A1F5 @first refresh the entity map
-ldr     r1,=#0x80180EC  //FE8 -> #0x8018BD8	@check if can move again
-mov	lr, r1
-.short	0xF800
-lsl	r0, #0x18
-cmp	r0, #0x00
-beq	End
+blh 0x8019868           //FE8 -> 0x801A1F5 @UpdateUnitMapAndVision
+@ Do not call 0x80180EC (UnitBeginAction). FE8's "can move again" was misported.
 
-
-@check if attacked this turn
+@ Canto: remaining move after staff (0x03) or item (0x1A), not Wait/Combat.
 ldrb  r0, [r6,#0x11]    @action taken this turn
-cmp r0, #0x04           @check if staff or attack was used
-blo End
 cmp r0, #0x1E           @check if found enemy in the fog
 beq End
+cmp r0, #0x03           @ staff
+beq ActionOk
+cmp r0, #0x1A           @ use item
+beq ActionOk
+b End
+ActionOk:
 ldrb  r0, [r6,#0x0C]    @allegiance byte of the current character taking action
 ldrb  r1, [r4,#0x0B]    @allegiance byte of the character we are checking
 cmp r0, r1              @check if same character
 bne End
 
-@check if already cantoing, and is not in a ballista
+@check if already cantoing/pending, and is not in a ballista
 ldr     r0, [r4,#0x0C]  @status bitfield
-mov	r1, #0x21
-lsl     r1, #0x06       @has moved already and is in a ballista
+ldr	r1, =0x00008840   @US_CANTO_PENDING | US_HAS_MOVED | US_IN_BALLISTA
 and	r0, r1
 cmp	r0, #0x00
 bne	End
@@ -89,12 +82,14 @@ cmp	r0,#0x00
 beq	End
 
 CanCanto:
-@if canto, unset 0x2 and set 0x40
+@ Flag the re-move for TryMakeCantoUnit (US_CANTO_PENDING, FE8's unused
+@ US_BIT15). Setting US_HAS_MOVED here is what made an already-cantoed unit
+@ look eligible for another canto, and clearing US_UNSELECTABLE here left the
+@ unit selectable again whenever the canto was afterwards refused. The vanilla
+@ code at 0x0801CC04 does both, once, when the canto really starts.
 ldr     r0, [r4,#0x0C]  @status bitfield
-mov	r1, #0x02
-mvn	r1, r1
-and     r0, r1          @unset bit 0x2
-mov     r1, #0x40       @set canto bit
+mov	r1, #0x80
+lsl	r1, #0x08
 orr	r0, r1
 str	r0, [r4,#0x0C]
 

@@ -16,6 +16,7 @@
 #define Popup_WTypeIcon           "WORD 0x0A 0"
 #define Popup_Number              "WORD 0x0B 0"
 #define Popup_SetSound(aSoundId)  "WORD 0x0C aSoundId"
+#define Popup_ItemArticle         "WORD 0x0F 0"
 
 // Example (Actual example from the game)
 

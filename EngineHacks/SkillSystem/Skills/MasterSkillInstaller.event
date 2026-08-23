@@ -34,6 +34,7 @@ POP
 #include "RoundsSkills/RoundsSkills.event"
 //#include "StandaloneSkills/StandaloneSkills.event"
 #include "StandaloneSkills/Bargain/Bargain.event"
+#include "StandaloneSkills/Lunge/Lunge.event"
 #include "StatModifierSkills/StatModifierSkills.event"
 //#include "TurnSkills/Installer.event" 
 //#include "WeaponUsabilitySkills/WeaponUsabilitySkills.event"

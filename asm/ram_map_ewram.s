@@ -47,3 +47,12 @@ SET_ARRAY gHpRoundData,    0x0203F730, HpRoundDataSize
 @ Address: 0x02040000 - 0x1F0 = 0x0203FE10
 .set BwlSupportExpSize, 0x1F0
 _kernel_malloc_ewram gBwlSupportExp, BwlSupportExpSize
+
+@ The proc HandlePostActionTraps was called with, stashed by post_loop.s.
+@ Address: 0x0203FE10 - 0x4 = 0x0203FE0C
+_kernel_malloc_ewram gPostCombatProc, 0x4
+
+@ Set by Despoil when it starts a blocking popup wrapper. post_loop.s returns 0
+@ from HandlePostActionTraps so PlayerPhase CALL_2 yields this frame.
+@ Downward bump: 0x0203FE0C - 0x4 = 0x0203FE08
+_kernel_malloc_ewram gPostCombatYield, 0x4

@@ -4,8 +4,7 @@
   .short 0xf800
 .endm
 .equ BreathOfLifeID, SkillTester+4
-.equ BreathOfLifeEvent, BreathOfLifeID+4
-.equ GetUnitsInRange, BreathOfLifeEvent+4
+.equ GetUnitsInRange, BreathOfLifeID+4
 .thumb
 push	{r4-r7,lr}
 @check if dead
@@ -31,65 +30,48 @@ mov	lr, r3
 cmp	r0,#0x00
 beq	End
 
-@Check if there are allies in 2 spaces
+@allies in 2 spaces
 ldr	r0, GetUnitsInRange
 mov	lr, r0
 mov     r0, r4                  @attacker
-mov     r1, #0x00               @can_trade
+mov     r1, #0x00               @same team
 mov     r2, #0x02               @range
 .short	0xf800
-
-BreathOfLifeDamage:
-mov     r5, r0                  @start of buffer
-mov     r6, #0x00               @counter
 cmp	r0, #0x00
 beq	End
-@if not 0 go through the buffer in r1
 
-CheckEventLoop:                 @check if all units in range are at full hp and if so do not play sound
-ldrb	r0, [r5,r6]
-cmp r0, #0x00
-beq End
-add	r6,#1
-ldr	r2,=#0x8018d0c
-mov	lr, r2
-.short	0xf800
-ldrb    r2,[r0,#0x13]           @current hp
-ldrb  r0,[r0,#0x12]             @max hp
-cmp r2, r0
-blt	Event
-b	CheckEventLoop
-
-Event:
-mov     r6, #0x00               @reset counter
-ldr     r0,=#0x800D07C          @event engine thingy
-mov	lr, r0
-ldr     r0, BreathOfLifeEvent   @this event is just "play some sound effects"
-mov     r1, #0x01               @0x01 = wait for events
-.short	0xF800
+mov     r5, r0                  @start of buffer
+mov     r6, #0x00               @counter
 
 BOL_loop:
 ldrb	r0, [r5,r6]
-cmp r0, #0x00
-beq End
+cmp	r0, #0x00
+beq	End
 ldr	r2,=#0x8018d0c
 mov	lr, r2
 .short	0xf800
-@r0 is ram data
 mov	r7, r0
 ldrb    r0, [r7,#0x12]          @max hp
-mov	r1, #0x05
-swi     #0x06                   @r0 max hp/5
-ldrb    r1, [r7,#0x13]          @r1 = current hp
-cmp     r1, #0x00               @checking if the unit is already dead, probably not needed but w/e
+mov	r1, r0
+mov	r0, #0x00
+Div5:
+cmp	r1, #0x05
+blt	Div5Done
+sub	r1, #0x05
+add	r0, #0x01
+b	Div5
+Div5Done:
+ldrb    r1, [r7,#0x13]          @current hp
+cmp     r1, #0x00
 beq	NextLoop
 add	r1, r0
-ldrb r0, [r7, #0x12]
-cmp     r1, r0                  @is hp>max?
-ble	NextLoop
-mov     r1, r0                  @cap hp at max
-NextLoop:
+ldrb	r0, [r7, #0x12]
+cmp     r1, r0
+ble	StoreHP
+mov     r1, r0
+StoreHP:
 strb	r1, [r7,#0x13]
+NextLoop:
 add	r6, #0x01
 b	BOL_loop
 
@@ -102,5 +84,4 @@ bx	r0
 SkillTester:
 @POIN SkillTester
 @WORD BreathOfLifeID
-@POIN BreathOfLifeEvent
 @POIN GetUnitsInRange

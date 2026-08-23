@@ -160,7 +160,7 @@
 #define GrislyWoundID 127
 #define PowerstaffID 118
 #define ReMoveID 119
-#define SavageBlowID SKILL_OFF
+#define SavageBlowID 254
 #define CulturedID 121
 #define GridmasterID 120
 
@@ -242,7 +242,7 @@
 #define ReadyStanceID 251
 #define SteadyStanceID 252
 #define SturdyStanceID 253
-#define SwiftStanceID 254
+#define SwiftStanceID SKILL_OFF
 #define WardingStanceID 242
 #define SpectrumStanceID 243
 #define AlertStanceID 245

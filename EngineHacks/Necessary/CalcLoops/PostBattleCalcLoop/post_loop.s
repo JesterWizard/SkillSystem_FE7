@@ -10,11 +10,21 @@
 .equ ActionStruct, 0x0203A85C
 .equ Defender, 0x203A470
 .equ CurrentUnit, 0x3004690
+@ asm/ram_map_ewram.s :: gPostCombatProc / gPostCombatYield
+.equ PostCombatProc, 0x0203FE0C
+.equ PostCombatYield, 0x0203FE08
+.equ UNIT_ACTION_WAIT, 0x01
 .equ UNIT_ACTION_COMBAT, 0x02
 .thumb
 mov r5, r0
 ldr r4, =CurrentUnit
 push	{r4-r7, lr}
+
+@ r5 still holds the proc HandlePostActionTraps was called with. A skill that
+@ wants to block the game on a popup needs it as the popup's parent, and
+@ nothing further down keeps r5, so park it before it is reused.
+ldr	r4, =PostCombatProc
+str	r5, [r4]
 
 ldr	r4, =CurrentUnit
 ldr	r4, [r4]
@@ -30,22 +40,30 @@ str	r0, [r4,#0x0C]
 
 ldr	r6, =ActionStruct
 ldrb	r0, [r6,#0x11]	@ unitActionType
-cmp	r0, #UNIT_ACTION_COMBAT
-bne	End
+cmp	r0, #0x00
+beq	End
+cmp	r0, #UNIT_ACTION_WAIT
+beq	End
 
 ldrb	r0, [r4,#0x0B]
 blh	GetCharPtr
 mov	r4, r0
 cmp	r4, #0x00
 beq	End
+
+@ Self-heal / items have no defender. Combat-only skills check action themselves.
+mov	r5, #0x00
+ldrb	r0, [r6,#0x11]
+cmp	r0, #UNIT_ACTION_COMBAT
+bne	RunSkills
 ldr	r5, =Defender
 ldrb	r0, [r5,#0x0B]
 cmp	r0, #0x00
-beq	End
+beq	RunSkills
 blh	GetCharPtr
 mov	r5, r0
-cmp	r5, #0x00
-beq	End
+
+RunSkills:
 ldr	r7, =PostCombatSkills
 
 Loop:
@@ -62,8 +80,32 @@ End:
 ldr	r0,=#0x203A3D8
 mov	r1,#0
 strb	r1,[r0]
+
+@ Drop the parked proc. It is only valid for the callback that is running now;
+@ leaving it behind would let a later skill parent a blocking popup onto a
+@ proc that no longer exists.
+@ Yield: FE7 opcode 0x16 already advanced past this CALL_2. Returning 0 stops
+@ the rest of PlayerPhase this frame (terrain/goal windows). lockCnt from the
+@ blocking wrapper then skips PlayerPhase until the popup ends; the next
+@ command is the HUD restore, not a second run of this hook.
+ldr	r0, =PostCombatYield
+ldrb	r1, [r0]
+mov	r2, #0
+strb	r2, [r0]
+ldr	r0, =PostCombatProc
+str	r2, [r0]
 pop	{r4-r7}
 pop {r3}
+cmp	r1, #0
+beq	ResumeTraps
+@ jumpToHack is `ldr r3; bx r3` and does not touch lr. Vanilla already
+@ pushed {r4, r5, lr} at 08034520. Returning 0 without popping that
+@ frame leaves CALL_2 to bx leftover r4 as if it were lr.
+pop	{r4, r5}
+pop	{r3}
+mov	r0, #0
+bx	r3
+ResumeTraps:
 ldr r0, [r4]
 blh 0x8018A70 @GetUnitCurrentHP
 ldr r1, =0x803452D

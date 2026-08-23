@@ -18,6 +18,9 @@ SKILL_ROOT = ROOT / "EngineHacks" / "SkillSystem"
 MSS_PAGES_DIR = ROOT / "EngineHacks" / "Necessary" / "ModularStatScreen" / "pages"
 RANGE_LOOP_DIR = ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "RangeCalcLoop" / "RangeLoop"
 RANGE_LOOP_ASM = [RANGE_LOOP_DIR / "RangeSkillLoop.s"]
+POST_LOOP_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "PostBattleCalcLoop" / "post_loop.s"
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -171,13 +174,17 @@ def main() -> int:
     sources = discover_sources()
     mss_pages = [p for p in MSS_PAGES if p.is_file()]
     range_loop = [p for p in RANGE_LOOP_ASM if p.is_file()]
-    extra = mss_pages + range_loop
+    post_loop = [p for p in POST_LOOP_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop
     if args.force:
         for src in sources + extra:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
             src.with_suffix(".dmp").unlink(missing_ok=True)
 
-    print(f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, {len(range_loop)} range-loop files")
+    print(
+        f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, "
+        f"{len(range_loop)} range-loop files, {len(post_loop)} post-loop files"
+    )
     errors = []
     for src in sources:
         try:
@@ -191,7 +198,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop:
+    for src in range_loop + post_loop:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:

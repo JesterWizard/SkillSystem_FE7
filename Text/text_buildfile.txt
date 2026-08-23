@@ -130,3 +130,7 @@ a skill when used.[X]
 
 ## HealArrowText
 ->[X]
+
+## DespoilGotText
+// Used mid-popup: "[Unit] obtained [a/an] [Item][icon]"
+ obtained [X]
