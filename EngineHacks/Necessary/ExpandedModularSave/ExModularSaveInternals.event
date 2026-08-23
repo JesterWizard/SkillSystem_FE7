@@ -87,6 +87,10 @@ PUSH
 		SHORT $E022 // b epilogue of SaveClearedBWL…; skip BWL/win SRAM writes
 	ORG $0A07D0
 		WORD $46C046C0 // nop; skip vanilla SavePermanentEids
+	// Vanilla here is mov r1, r8; bl WriteSaveBlockInfo (r0=sp buffer).
+	// MS_SaveGame wants the slot in r0 (held in r8 since function entry).
+	ORG $0A07DC
+		SHORT $4640 // mov r0, r8
 	ORG $0A07DE
 		BL($0A0810) // MS_SaveGame (via LynJump); returns @ $0A07E2
 	ORG $0A07E2

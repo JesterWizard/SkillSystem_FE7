@@ -103,6 +103,15 @@ class TestExpandedModularSave(unittest.TestCase):
                 count += 1
         self.assertGreaterEqual(count, 2, "expected game+suspend convoy chunks of size 0x190")
 
+    def test_savenewgame_passes_slot_in_r0(self):
+        """SaveNewGame must mov r0, r8 before BL SaveGame (r0=slot), not mov r1, r8."""
+        # Vanilla 0xA07DC is mov r1, r8 (WriteSaveBlockInfo args). MS_SaveGame wants r0.
+        self.assertEqual(
+            self.rom[0x0A07DC:0x0A07DE],
+            bytes((0x40, 0x46)),
+            "SaveNewGame @ 0xA07DC must be mov r0, r8 so the slot is not lost",
+        )
+
     def test_game_chunk_savers_are_thumb(self):
         """POIN to Thumb code must be odd; even addresses crash on bx (DEC-68 new-game)."""
         idx = -1
