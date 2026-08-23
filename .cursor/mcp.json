@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "codedrift": {
+      "command": "C:\\Users\\Owner\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": [
+        "C:\\Users\\Owner\\Desktop\\Gaming\\Nintendo\\Game_Boy_Advance\\FE7\\FEBuilder\\BuildFiles\\SkillSystem_FE7\\Tools\\codedrift_cli.py",
+        "mcp"
+      ],
+      "env": {
+        "PYTHONUTF8": "1",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}

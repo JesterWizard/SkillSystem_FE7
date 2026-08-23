@@ -39,6 +39,12 @@ $RECYCLE.BIN/
 # python cache
 __pycache__
 
+# CodeDrift local index
+.codecodedrift/
+
+# Derived skill table (query: python Tools/build_skill_index.py --skill Name)
+Documentation/skill-index.md
+
 # =========================
 # Operating System Files
 # =========================

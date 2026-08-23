@@ -1,0 +1,12 @@
+﻿# Generated / binary — do not search
+*.lyn.event
+*.dmp
+*.gba
+*.sav
+*.sym
+EventAssembler/
+.codecodedrift/
+__pycache__/
+Text/InstallTextData.event
+Text/TextDefinitions.event
+

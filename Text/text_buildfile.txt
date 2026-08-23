@@ -1,5 +1,12 @@
 
-# 0x0002 textWeaponRankIncreasedTo
+// FE7 shop / Options Yes-No (vanilla IDs 0x1 / 0x2). Do not reuse 0x2 for popups.
+#0x1
+Yes[X]
+
+#0x2
+No[X]
+
+# 0x0750 textWeaponRankIncreasedTo
  Weapon rank increased to [X]
 
 #0x3A LearnedSkillText

@@ -1,0 +1,43 @@
+---
+description: Cap Grep/Read/explore; edit, do not tour
+alwaysApply: true
+---
+
+# Min-explore
+
+Default is **edit, not tour**. Search is a last resort after user pointers fail.
+
+## Budget (hard, per user request)
+
+| Tool | Max |
+|------|-----|
+| Grep / Glob / CodeDrift search | 2 total |
+| Read / CodeDrift read or resolve | 3 files, sliced (`offset`/`limit`) |
+| Task `explore` / broad codebase agents | 0 |
+| Extra "for context" files | 0 |
+
+If the budget would be exceeded, **stop and act**, or ask one targeted question.
+
+## Start here
+
+1. User pointers (`@`, open tabs, named paths).
+2. Named skill: `python Tools/build_skill_index.py --skill Name` (parses the event files). Do not treat `Documentation/skill-index.md` as truth.
+3. One exact-symbol search if still needed. No synonyms, no repo-wide `.`.
+4. Read only the block you will change. Do the job. Stop.
+
+## Do not
+
+- Launch explore/generalPurpose agents to "understand the codebase"
+- Grep for a pattern already in an open file
+- Read callers, tests, or sibling skills "to be safe"
+- Glob `**/*` when the path is known
+- Parallel-scatter: 5 Greps + 8 Reads before the first edit
+
+## Exceptions
+
+Spend extra reads **only** if: the named path is missing (one Glob); a second known installer/table is required to assemble; or the user asked to diagnose/map the system.
+
+```
+# "Fix the off-by-one in armsthriftaxefaith.s"
+# Read that .s. Patch it. Do not open RoundsSkills.
+```

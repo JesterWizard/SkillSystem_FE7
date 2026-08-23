@@ -37,6 +37,16 @@ lookups. Use CodeDrift tools **before** native file-read tools.
 
 ## MCP server registration
 
+Cursor: `.cursor/mcp.json` in this repo (and `%USERPROFILE%\.cursor\mcp.json`)
+must run `Tools/codedrift_cli.py mcp` with Python 3.13, `PYTHONUTF8=1`.
+CodeDrift 0.1.0 needs `mcp>=1.0,<2` (`mcp` 2.0 dropped `Server.list_tools`).
+
+Index `.s` / `.event` via the wrapper, not bare `codedrift mcp`:
+
 ```bash
-claude mcp add --scope local codedrift -- codedrift mcp
+python Tools/codedrift_cli.py init
+python Tools/codedrift_cli.py update
 ```
+
+Claude Code only: `claude mcp add --scope local codedrift -- codedrift mcp`
+(that path does not load the FE7 adapters).

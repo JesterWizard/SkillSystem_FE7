@@ -66,6 +66,15 @@ echo Dumping FE7 text table
 python "%base_dir%Tools\dump_fe7_text_table.py" --rom "%source_rom%" --out "%base_dir%Text\NewTextTable.dmp"
 
 echo:
+echo Refreshing derived skill index
+python "%base_dir%Tools\build_skill_index.py"
+if errorlevel 1 (
+  echo Skill index generation failed.
+  pause
+  exit /b 1
+)
+
+echo:
 echo Running source tests
 python "%base_dir%tests\run_tests.py" --pre-assemble
 if errorlevel 1 (

@@ -10,6 +10,9 @@ FE7U ROM the user supplies) is copied to `FE7_Hack.gba`, then Event Assembler
 writes hacks, tables, text, and compiled Thumb ASM into it. Installation via
 FEBuilderGBA is not supported; Event Assembler is the only supported path.
 
+Read `CONTEXT.md` first for domain vocabulary. This file is the build, wiring,
+and test map.
+
 ## Build
 
 ```cmd
@@ -84,8 +87,37 @@ allegiance statscreen, tutorials) and for skill tuning constants.
    category's loop as a fixed record: `ALIGN 4`, label, `#include "<Skill>.lyn.event"`,
    then `POIN SkillTester` (+ any other externs the routine references) and
    `WORD <Skill>ID`. `Skills/MasterSkillInstaller.event` selects which categories
-   are installed — **many are commented out in this port**; check there before
-   assuming a category is live.
+   are installed.
+
+### Live skill categories
+
+Source of truth: uncommented `#include`s in
+`EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event`. Do not copy that
+list elsewhere.
+
+For one skill (ID, live, `.s` path), parse the event files:
+
+```cmd
+python Tools/build_skill_index.py --skill Provoke
+```
+
+`Documentation/skill-index.md` is a derived dump rewritten by `MAKE_HACK`. If it
+disagrees with the event files, the event files win.
+
+### Where to look
+
+| Task | File |
+|------|------|
+| Domain words | `CONTEXT.md` |
+| Skill ID, live, `.s` path | `python Tools/build_skill_index.py --skill Name` |
+| Toggle ID / `SKILL_OFF` | `EngineHacks/SkillSystem/skill_definitions.event` |
+| Effect ASM | `EngineHacks/SkillSystem/Skills/<Category>/<Skill>/<Skill>.s` |
+| Loop wiring | `EngineHacks/SkillSystem/Skills/<Category>/<Category>.event` |
+| Category on/off | `EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event` |
+| Stat modifier chain | `EngineHacks/Necessary/StatGetters/<Stat>.event` |
+| Optional hacks / skill constants | `EngineHacks/Config.event` |
+| Editor assignment (do not test) | `Tables/NightmareModules/*.csv` |
+| Level-up learnset | `EngineHacks/SkillSystem/skill_lists.event` |
 
 `Tools/build_skill_asm.py` regenerates `.lyn.event` from `.s`: it scans every
 non-`.lyn` `.event` under `SkillSystem/` for `#incbin "*.dmp"` / `#include
@@ -129,9 +161,8 @@ most often change how a task is done:
 Also present: `tdd.md` (red→green→refactor; do not test *which* unit/class/item
 has a skill — that is editor data), `no-new-git-branches.md`,
 `make-hack-quick.mdc` (assemble before handing back), `token-efficiency.mdc`,
-and `codedrift.md` (prefer the CodeDrift MCP tools over Grep/Glob **when the
-server is registered**; it is not registered by default —
-`claude mcp add --scope local codedrift -- codedrift mcp`).
+`min-explore.mdc` (edit, do not tour; 2 searches / 3 sliced reads / 0 explore agents),
+and `codedrift.md` (prefer CodeDrift MCP via `Tools/codedrift_cli.py`; pin `mcp<2`).
 
 ## Known state (from README)
 
