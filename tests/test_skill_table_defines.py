@@ -80,9 +80,12 @@ class SkillTableDefineTests(unittest.TestCase):
     def test_skill_definitions_can_be_included_twice(self):
         if not CLEAN_ROM.is_file() or not COLORZCORE.is_file():
             self.skipTest("FE7_clean.gba or ColorzCore.exe missing")
+        # ColorzCore often fails to open a long C:/ absolute include (this
+        # test's "Error reading file" flake). Include from its cwd instead.
+        rel = (Path("..") / DEFS.relative_to(ROOT)).as_posix()
         event = (
-            f'#include "{DEFS.as_posix()}"\n'
-            f'#include "{DEFS.as_posix()}"\n'
+            f'#include "{rel}"\n'
+            f'#include "{rel}"\n'
             "ORG 0\n"
             "BYTE CantoID\n"
         )

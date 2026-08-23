@@ -25,6 +25,28 @@ SkillLearnedPopupDef:
 	Popup_SetColor(0)
 	Popup_End
 
+// Vanilla gPopup_WRankIncrease (0xB91BC4) is sound + wtype + text 0x750 + end.
+// 0x750 is now "Weapon rank increased to"; add the letter and host in FreeSpace
+// so the next vanilla popup at 0xB91BE4 is not overwritten.
+ALIGN 4
+WeaponRankUpPopup:
+	Popup_SetSound(0x37A)
+	Popup_WTypeIcon
+	Popup_StringId(0x750)
+	Popup_SetColor(2)
+	WORD 0x10 0                    // next rank letter (blue)
+	Popup_End
+
+PUSH
+ORG $EE48
+POIN WeaponRankUpPopup
+
+ORG $6B1FC
+SHORT 0x3418
+ORG $6B298
+jumpToHack(DrawBattlePopup_WRank)
+POP
+
 // Blocking wrapper (FE8 LearnNewSkill style):
 // CALL_ROUTINE_2 advances to END, starts CreatePopup as blocking child, returns 0.
 // While popup holds lockCount, script does not run; when it ends, END runs and
@@ -36,15 +58,15 @@ LearnScrollPopupProc:
 	SHORT 0x00 0 0 0 // END
 
 // FE7 CreatePopup length/display only allow component ids 1..0xC / 1..0xB.
-// Extend both jump tables through 0x0F for skill icon, skill name, item article.
+// Extend both jump tables through 0x10 for skill icon, skill name, article, wrank letter.
 PUSH
 ORG $A7F4
-SHORT 0x280E // cmp r0, #0x0E  (ids 1..0x0F after subs #1)
+SHORT 0x280F // cmp r0, #0x0F  (ids 1..0x10 after subs #1)
 ORG $A804
 POIN SkillPopupLengthJumpTable
 
 ORG $A928
-SHORT 0x280E // cmp r0, #0x0E  (display uses bhi; allow through 0x0F)
+SHORT 0x280F // cmp r0, #0x0F  (display uses bhi; allow through 0x10)
 ORG $A938
 POIN SkillPopupDisplayJumpTable
 POP
@@ -66,6 +88,7 @@ WORD 0x0800A838 // 0C sound
 POIN (PopupLen_SkillIcon|1) // 0D
 POIN (PopupLen_SkillName|1) // 0E
 POIN (PopupLen_ItemArticle|1) // 0F
+POIN (PopupLen_WRankLetter|1) // 10
 
 ALIGN 4
 SkillPopupDisplayJumpTable:
@@ -84,6 +107,7 @@ WORD 0x0800AA00 // 0C sound (no-op display → loop)
 POIN (PopupDisp_SkillIcon|1) // 0D
 POIN (PopupDisp_SkillName|1) // 0E
 POIN (PopupDisp_ItemArticle|1) // 0F
+POIN (PopupDisp_WRankLetter|1) // 10
 
 // FE7 item jump tables: index = itemId - 0x4A, vanilla max item 0x9A (index 0x50).
 // Expand through SkillScroll (0x9F => index 0x55) and repoint the three tables.
