@@ -18,6 +18,12 @@ CritUpSkill:
 POIN SkillTester
 WORD CritUpID
 
+#ifdef LAST_HIT_CRIT
+ALIGN 4
+LastHitCrit:
+#include "LastHitCrit/LastHitCrit.lyn.event"
+#endif
+
 ALIGN 4
 DoubleLion:
 #include "DoubleLion/DoubleLion.lyn.event"

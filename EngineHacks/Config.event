@@ -58,6 +58,9 @@
 // If commented, Poison Strike and Grisly Wound apply even when battle damage was 0.
 #define RESIDUAL_DAMAGE_REQUIRES_BATTLE_DAMAGE
 
+// If uncommented, a weapon with 1 use remaining is a guaranteed crit.
+#define LAST_HIT_CRIT
+
 // If commented, Capture / Dragon Veins / Heroes Movement are global commands.
 #define CAPTURE_SKILL_REQUIRED
 #define DRAGON_VEIN_SKILL_REQUIRED

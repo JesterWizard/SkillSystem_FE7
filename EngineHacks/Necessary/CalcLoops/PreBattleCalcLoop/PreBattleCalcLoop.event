@@ -18,6 +18,9 @@ ALIGN 4
 BtlLoopList:
 POIN InitializePreBattleLoop
 POIN BC_DefRes BC_Power BC_ASpd BC_Hit BC_Avo BC_Crit CritUpSkill BC_Dodge BC_Support BC_WRank BC_Status //these are the existing battle calculation routines
+#ifdef LAST_HIT_CRIT
+POIN LastHitCrit
+#endif
 POIN FaireCheck
 POIN BreakerCheck MageSlayer
 POIN BlowCheck
