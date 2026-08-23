@@ -1,6 +1,7 @@
 ---
 description: FE7 table expansions must live in FreeSpace; never ORG past vanilla table ends
-alwaysApply: true
+globs: "**/*.event,Tables/**/*.csv"
+alwaysApply: false
 ---
 
 # FE7 FreeSpace Table Expansions

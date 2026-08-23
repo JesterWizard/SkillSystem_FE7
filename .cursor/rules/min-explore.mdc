@@ -1,6 +1,6 @@
 ---
 description: Cap Grep/Read/explore; edit, do not tour
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Min-explore

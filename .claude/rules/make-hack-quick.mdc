@@ -1,6 +1,6 @@
 ---
 description: After finishing work, assemble with MAKE_HACK_quick.cmd before returning control
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Assemble before handing back

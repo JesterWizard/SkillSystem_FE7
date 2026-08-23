@@ -1,6 +1,7 @@
 ---
 description: Red-green-refactor for FE7 Skill System features and ROM-visible behavior
-alwaysApply: true
+globs: tests/**/*.py,EngineHacks/**/*.s,EngineHacks/**/*.c,Tools/**/*.py
+alwaysApply: false
 ---
 
 # Test-driven development

@@ -1,0 +1,22 @@
+---
+description: Cheap default — min explore, short replies, assemble at end
+alwaysApply: true
+---
+
+# Cheap default
+
+Named file + symptom → edit. Do not tour. Do not read `CLAUDE.md`, `CONTEXT.md`, or `build-wiring.mdc` for a known-file patch. Do not use the diagnose skill unless the user says diagnose.
+
+## Explore (hard, per request)
+
+User `@`/paths first. Else `python Tools/build_skill_index.py --skill Name`. Else one exact-symbol search.
+
+Max: 2 Grep/Glob/CodeDrift search, 3 sliced Reads, 0 explore/generalPurpose agents. Stop when you can act. Ask one question if blocked. Never re-read a file already in this session.
+
+## Replies
+
+Keep paths, skill IDs, offsets, error strings, citations. Cut recap, tool narration, option lists, whole-file dumps. Caveman if the user says caveman.
+
+## Done
+
+After EngineHacks / Event Assembler / test changes: `.\MAKE_HACK_quick.cmd`, then `FE7_Hack.gba` is ready. Docs-only: skip. Do not create git branches unless asked.

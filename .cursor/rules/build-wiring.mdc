@@ -1,0 +1,80 @@
+---
+description: FE7 buildfile map — install order, skill layers, where-to-look. Load only when mapping the system or editing installers, not for a named-file patch.
+globs: ROMBuildfile.event,EngineHacks/_MasterHackInstaller.event,EngineHacks/Config.event,EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event,EngineHacks/Necessary/StatGetters/**
+alwaysApply: false
+---
+
+# Build and wiring
+
+FE7U Skill System **ROM patch buildfile**. `FE7_clean.gba` → `FE7_Hack.gba` via Event Assembler. Not FEBuilder.
+
+## Build
+
+```cmd
+MAKE_HACK_quick.cmd   :: skip text/map/patch — normal loop
+MAKE_HACK_full.cmd    :: text + maps + ASM + tests + assemble + UPS + NO$GBA
+```
+
+Pipeline (`MAKE_HACK_full.cmd`): copy ROM → (text, maps) → `Tools/build_skill_asm.py` → dump text table → source tests → ColorzCore → (UPS) → ROM tests → NO$GBA.
+
+Tools: devkitARM `C:\devkitPro\devkitARM\bin`; vendored `EventAssembler/`; Python 3 + `unicorn`; `Tools/FE-Clib` submodule.
+
+## Tests
+
+```bash
+python tests/run_tests.py
+python tests/run_tests.py --pre-assemble
+python tests/run_tests.py --rom
+python tests/test_defiant_execution.py
+```
+
+`run_tests.py` splits source vs ROM by grepping the test for `FE7_Hack.gba`, `self.hack`, `cls.hack`, `BUILT`, `cls.rom`. ROM-reading tests must use one of those names. Skip (do not fail) if `FE7_clean.gba`, `FE7_Hack.gba`, `unicorn`, or devkitARM is missing.
+
+`Tools/thumb_harness.py`: `assemble(src)`, `symbol_offsets(src)`, `Harness(code, skill_present=)` with `.seed()`, `.read()`, `.run()`. Stubs `SkillTester`.
+
+## Assembly order (`ROMBuildfile.event`)
+
+`EAstdlib` → `CustomDefinitions.event` → `ORG FreeSpace` → text → `Tables/` → `EngineHacks/_MasterHackInstaller.event`, then `ASSERT (FreeSpaceEnd - currentOffset)`. FreeSpace `0x1000000`–`0x2000000`.
+
+Skill System must install before `Necessary/StatGetters/` (`prDefiant*` / `prPush*` / `prResolve`). Expanded Modular Save after skill system and StrMag. Toggles: `EngineHacks/Config.event`.
+
+## Three layers of a skill
+
+1. **ID** — `EngineHacks/SkillSystem/skill_definitions.event` (`1–254` or `SKILL_OFF` 255). Unique. Authors in `skill_definition_descriptions.event`.
+2. **Effect** — `EngineHacks/SkillSystem/Skills/<Category>/<Skill>/<Skill>.s`.
+3. **Wiring** — `<Category>.event`: `ALIGN 4`, label, `#include "<Skill>.lyn.event"`, `POIN SkillTester`, `WORD <Skill>ID`. Categories: uncommented `#include`s in `MasterSkillInstaller.event`.
+
+```cmd
+python Tools/build_skill_index.py --skill Provoke
+```
+
+`Documentation/skill-index.md` is a derived dump; event files win.
+
+## Where to look
+
+| Task | File |
+|------|------|
+| Domain words | `CONTEXT.md` |
+| Skill ID, live, `.s` path | `python Tools/build_skill_index.py --skill Name` |
+| Toggle ID / `SKILL_OFF` | `EngineHacks/SkillSystem/skill_definitions.event` |
+| Effect ASM | `EngineHacks/SkillSystem/Skills/<Category>/<Skill>/<Skill>.s` |
+| Loop wiring | `EngineHacks/SkillSystem/Skills/<Category>/<Category>.event` |
+| Category on/off | `EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event` |
+| Stat modifier chain | `EngineHacks/Necessary/StatGetters/<Stat>.event` |
+| Optional hacks / constants | `EngineHacks/Config.event` |
+| Editor assignment (do not test) | `Tables/NightmareModules/*.csv` |
+| Level-up learnset | `EngineHacks/SkillSystem/skill_lists.event` |
+
+`Tools/build_skill_asm.py` rebuilds `.lyn.event` from sibling `.s` (skips `.s` with sibling `.c` unless `SkillTester:` trampoline).
+
+Stat getter chains: `p<Stat>Modifiers` `POIN` list, `WORD 0` terminator. Dead if not in a chain or chain not installed.
+
+## Data / text / maps
+
+- `Tables/NightmareModules/*.csv` via `Tables/TableInstaller.event`
+- `Text/text_buildfile.txt` → `Text/InstallTextData.event`
+- `Maps/MasterMapInstaller.event` via `Tools/tmx2ea`
+
+## Known state
+
+~Half of FE8 skills ported. ModularStatScreen / IconRework offsets not all verified. Skill scrolls and in-game add/remove partial. `Documentation/`: `ram-map.md`, `narrow-font.md`, `skill-activation-flags.md`.

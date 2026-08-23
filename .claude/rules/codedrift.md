@@ -1,3 +1,8 @@
+---
+description: CodeDrift MCP — ranked search when the edit site is unknown. Not for named-file patches.
+alwaysApply: false
+---
+
 # CodeDrift — Scope-Aware Code Intelligence
 
 ## Overview

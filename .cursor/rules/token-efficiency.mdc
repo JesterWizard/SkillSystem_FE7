@@ -1,6 +1,6 @@
 ---
 description: Cut chat tokens without dropping facts, paths, or citations the work needs
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Token efficiency

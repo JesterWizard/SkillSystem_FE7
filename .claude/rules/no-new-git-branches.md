@@ -1,6 +1,6 @@
 ---
 description: Never create git branches unless the user explicitly asks
-alwaysApply: true
+alwaysApply: false
 ---
 
 # No New Git Branches

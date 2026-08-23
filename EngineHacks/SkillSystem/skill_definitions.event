@@ -125,7 +125,7 @@
 
 //Growth Skills
 #define BlossomID 52
-#define AptitudeID SKILL_OFF
+#define AptitudeID 196
 
 //HP Restoration Skills
 #define RenewalID 87
