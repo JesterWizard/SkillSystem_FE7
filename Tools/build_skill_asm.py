@@ -37,7 +37,16 @@ MSS_PAGES = [
 # .s files the pages pull in with .include; mtime changes here restale every page.
 MSS_PAGE_DEPS = [MSS_PAGES_DIR / "mss_defs.s", MSS_PAGES_DIR / "GetTalkee.s"]
 AS = Path(r"C:\devkitPro\devkitARM\bin\arm-none-eabi-as.exe")
+CC = Path(r"C:\devkitPro\devkitARM\bin\arm-none-eabi-gcc.exe")
 LYN = ROOT / "EventAssembler" / "Tools" / "lyn.exe"
+CLIB_INCLUDE = Path(r"C:\devkitPro\FE-CLib\include")
+
+# C sources compiled to .lyn.event, newest-style skills. Each needs a sibling
+# Definitions.s (which .includes SkillsRef.s) so vanilla symbols resolve.
+C_SOURCES = [
+    ROOT / "EngineHacks/SkillSystem/Internals/SkillActivationFlags/SkillActivationFlags.c",
+    ROOT / "EngineHacks/SkillSystem/Skills/ProcSkills/Hurricane/Hurricane.c",
+]
 
 INC_BIN_RE = re.compile(r'#incbin\s+"([^"]+\.dmp)"')
 INC_BIN_BARE_RE = re.compile(r"#incbin\s+([^\s\"]+\.dmp)")
@@ -145,6 +154,57 @@ def build_one(src: Path, deps: list[Path] | None = None) -> None:
     print(f"[LYN] {lyn.relative_to(ROOT)}")
 
 
+def build_one_c(src: Path) -> None:
+    """Compile a .c skill to .lyn.event.
+
+    Mirrors the per-skill Makefiles (see KeenFighter): compile to asm, assemble
+    that plus the sibling Definitions.o, then lyn both objects together so the
+    SkillsRef.s addresses resolve. The generated .s is written next to the .c,
+    where should_build_asm() already knows to leave compiler dumps alone.
+    """
+    lyn = src.with_suffix(".lyn.event")
+    defs = src.parent / "Definitions.s"
+    headers = sorted(src.parent.rglob("*.h")) + [defs]
+
+    fresh = not stale(src, lyn)
+    for dep in headers:
+        if dep.is_file() and stale(dep, lyn):
+            fresh = False
+    if fresh:
+        return
+
+    asm = src.with_name(src.stem + "_c.s")
+    obj = src.with_name(src.stem + "_c.o")
+    defs_obj = src.parent / "Definitions.o"
+
+    subprocess.run(
+        [
+            str(CC),
+            "-mcpu=arm7tdmi",
+            "-mthumb",
+            "-mthumb-interwork",
+            "-Wall",
+            "-mtune=arm7tdmi",
+            "-O2",
+            "-mlong-calls",
+            "-S",
+            str(src),
+            f"-I{CLIB_INCLUDE}",
+            "-o",
+            str(asm),
+            "-fverbose-asm",
+        ],
+        check=True,
+    )
+    _assemble(asm, obj)
+    _assemble(defs, defs_obj)
+    lyn_text = subprocess.check_output([str(LYN), str(obj), str(defs_obj)], cwd=str(ROOT))
+    lyn.write_bytes(lyn_text.replace(b"\r\n", b"\n"))
+    for tmp in (obj, defs_obj):
+        tmp.unlink(missing_ok=True)
+    print(f"[LYN-C] {lyn.relative_to(ROOT)}")
+
+
 def _assemble(src: Path, obj: Path) -> None:
     subprocess.run(
         [
@@ -167,7 +227,7 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
-    for tool in (AS, LYN):
+    for tool in (AS, CC, LYN):
         if not tool.is_file():
             print(f"Missing tool: {tool}", file=sys.stderr)
             return 1
@@ -177,22 +237,28 @@ def main() -> int:
         print(f"Converted {n} event files from dmp incbin to lyn include")
 
     sources = discover_sources()
+    c_sources = [p for p in C_SOURCES if p.is_file()]
     mss_pages = [p for p in MSS_PAGES if p.is_file()]
     range_loop = [p for p in RANGE_LOOP_ASM if p.is_file()]
     post_loop = [p for p in POST_LOOP_ASM if p.is_file()]
     durability = [p for p in DURABILITY_ASM if p.is_file()]
     extra = mss_pages + range_loop + post_loop + durability
     if args.force:
-        for src in sources + extra:
+        for src in sources + extra + c_sources:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
             src.with_suffix(".dmp").unlink(missing_ok=True)
 
     print(
         f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, "
         f"{len(range_loop)} range-loop files, {len(post_loop)} post-loop files, "
-        f"{len(durability)} durability files"
+        f"{len(durability)} durability files, {len(c_sources)} C sources"
     )
     errors = []
+    for src in c_sources:
+        try:
+            build_one_c(src)
+        except subprocess.CalledProcessError as exc:
+            errors.append((src, exc))
     for src in sources:
         try:
             build_one(src)

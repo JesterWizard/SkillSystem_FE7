@@ -1666,5 +1666,3 @@ ally switch their current HP totals.[X]
 Fail 'n Gale: Move again[N]
 after attacking but failing[N]
 to harm an enemy.[X]
-
-

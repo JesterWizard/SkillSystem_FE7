@@ -752,6 +752,11 @@ ORG SkillIcon(FlareID)
 ORG SkillIcon(TempestID)
 #incbin "SkillIcons/Tempest.dmp"
 
+// Placeholder until real Hurricane art exists. WIP.dmp is the shared
+// "no icon yet" badge -- see Documentation/skill-activation-flags.md.
+ORG SkillIcon(HurricaneID)
+#incbin "SkillIcons/WIP.dmp"
+
 ORG SkillIcon(SerenityID)
 #incbin "SkillIcons/Serenity.dmp"
 

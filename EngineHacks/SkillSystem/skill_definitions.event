@@ -261,6 +261,7 @@
 #define DoubleLionID SKILL_OFF
 #define ThighdeologyID 152
 #define ThotslayerID 164
+#define HurricaneID 4
 #define HeavyBladeID 25
 #define DancingBladeID 187
 #define FireBoostID SKILL_OFF
@@ -442,7 +443,7 @@
 #define SerenityID 130
 
 //Display-Only Skills
-#define CunningID 4
+#define CunningID SKILL_OFF // ID-only stub, never implemented; slot 4 reused by Hurricane
 #define NiceThighsID 115
 #define PersonalityID 116
 

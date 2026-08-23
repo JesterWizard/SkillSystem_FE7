@@ -24,6 +24,12 @@ HookUnitLoading:
 	ldr r1, =0x202BBE6
 	strh r0, [r1]
 
+	@ DEC-85: a freshly loaded unit owes nothing, so drop all sixteen skill
+	@ activation flags. This is the once-per-map reset -- the flags live in
+	@ unit+0x3A/0x3B and only survive within a chapter.
+	mov r0, #0
+	strh r0, [r5, #0x3A]
+
 	mov r0, r5
 	pop {r4-r7}
 	pop {r1}

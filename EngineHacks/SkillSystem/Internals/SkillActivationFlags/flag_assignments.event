@@ -1,0 +1,47 @@
+// ============================================================================
+// Activation flag bit assignments (DEC-85)
+// ============================================================================
+// Sixteen bits, 0..15, live in unit+0x3A/0x3B. Give a bit to a skill with one
+// of the two macros below; each bit may be owned by exactly one skill ID.
+//
+//   ActivationFlagOncePerTurn(SkillID, bit)
+//     Scope byte 0. Cleared for every unit at the top of each player phase.
+//
+//   ActivationFlagOncePerMap(SkillID, bit)
+//     Scope byte 1. Cleared only when the unit is loaded, i.e. when the
+//     chapter starts and everything else resets.
+//
+// To retire a skill, delete or comment out its macro line below and free its
+// row in the table. A skill left at SKILL_OFF still burns its bit, so do not
+// leave assignments in place for skills you are no longer using.
+//
+// The ID column is the value skill_definitions.event resolves the name to --
+// it is what lands in SkillActivationFlagTable, and what you would look for
+// in a RAM watch on unit+0x3A. tests/test_skill_activation_flags.py checks
+// this table against the macro calls below, so it cannot drift.
+//
+// bit | skill      | ID  | scope
+// ----+------------+-----+---------------
+//   0 | Hurricane  |   4 | once per turn
+//   1 | (free)     |   - |
+//   2 | (free)     |   - |
+//   3 | (free)     |   - |
+//   4 | (free)     |   - |
+//   5 | (free)     |   - |
+//   6 | (free)     |   - |
+//   7 | (free)     |   - |
+//   8 | (free)     |   - |
+//   9 | (free)     |   - |
+//  10 | (free)     |   - |
+//  11 | (free)     |   - |
+//  12 | (free)     |   - |
+//  13 | (free)     |   - |
+//  14 | (free)     |   - |
+//  15 | (free)     |   - |
+//
+// Bits 0-7 are byte 0x3A, bits 8-15 are byte 0x3B.
+//
+// Example of the other scope:
+// ActivationFlagOncePerMap(MiracleID, 1)
+
+ActivationFlagOncePerTurn(HurricaneID, 0)

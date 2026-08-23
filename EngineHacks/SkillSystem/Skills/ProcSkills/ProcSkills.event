@@ -3,6 +3,17 @@ Proc_Aegis:
 POIN SkillTester
 WORD AegisID
 
+ALIGN 4
+// Written in C (Hurricane/Hurricane.c). lyn resolves SkillTester, GetUnit and
+// the activation-flag routines by symbol, so the only thing left to supply is
+// the skill ID.
+Proc_Hurricane:
+#include "Hurricane/Hurricane.lyn.event"
+
+ALIGN 4
+HurricaneID_Link:
+WORD HurricaneID
+
 Proc_Bane: //Proc_Bane should always come after Proc_Lethality
 #include "Bane/proc_bane.lyn.event" //bane does not proc against counter because it was giving problems
 POIN SkillTester

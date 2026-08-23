@@ -6,6 +6,7 @@
 - [Plan](#plan)
 - [Code Locations](#code-locations)
 - [Existing occupants](#existing-occupants)
+- [Unit struct bytes](#unit-struct-bytes)
 - [TODO](#todo)
 - [Limitations & Bugs](#limitations--bugs)
 
@@ -104,6 +105,7 @@ This layout means:
 | SRAM / EMS labels | `ram_map_sram.s` | Save-block starts; bump pool empty by default |
 | EMS sizes / offsets | `EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event` | Authoritative save layout |
 | Battle-hit repoint | `EngineHacks/SkillSystem/Internals/repointbuffer_fe7.event` | Patches vanilla `gBattleHitArray` literals |
+| Skill activation flags | `EngineHacks/SkillSystem/Internals/SkillActivationFlags/` | Claims unit+0x3A/0x3B; bit assignments in `flag_assignments.event` |
 
 ## Existing occupants
 
@@ -133,6 +135,27 @@ EMS block map (DEC-68; see `ExModularSave.event` / `ram_map_sram.s`):
 
 Game chunks include a `0x190` convoy (200 items), expanded unit packs, BWL support exp, and optional STR/MAG unit modules behind `USE_STRMAG_SPLIT`.
 
+## Unit struct bytes
+
+The unit struct is per-unit RAM, allocated by the engine rather than from a bump
+pool, so custom uses of it are recorded here.
+
+| Bytes | Owner | Notes |
+|-------|-------|-------|
+| `0x32`–`0x38` | `supports[]` reused as learned skills (DEC-59) | BWL support exp moved to `gBwlSupportExp` |
+| `0x3A`–`0x3B` | Skill activation flags (DEC-85) | 16 "this skill already fired" bits, read/written as one halfword |
+| `0x47` | STR/MAG split magic stat | Behind `USE_STRMAG_SPLIT`; FE8 hacks put this at `0x3A`, this build does not |
+
+Activation flags (`SkillActivationFlags/`):
+
+- `SkillActivationFlagTable` maps a skill ID to `bit + 1`; `0` means the skill
+  owns no flag.
+- `SkillActivationFlagScope` gives each bit a scope: `0` once per turn, `1` once
+  per map.
+- Once-per-turn bits are cleared for every unit by `ResetTurnActivationFlags`,
+  spliced into the first command of `gProcScr_PlayerPhase` (`0x8B93394`).
+- All sixteen bits are cleared in `HookUnitLoading`, so a chapter starts clean.
+
 ## TODO
 
 - Move GaidenMagic spell-menu bytes off `0x0203F080` so they no longer overlap `gAnimRoundData`.
@@ -145,6 +168,12 @@ Game chunks include a `0x190` convoy (200 items), expanded unit packs, BWL suppo
 - If a symbol is assigned the wrong address, the assembler and linker will usually not catch the logic error.
 - The SRAM region only reserves the lower `0x8000` bytes because that is the portion the current save code actually uses.
 - Cursor-based placement is only safe when the sequence length is updated consistently with the backing storage and all consumers.
+- Activation flags are not part of the EMS unit pack, so suspending and resuming
+  mid-chapter clears them. Once-per-map skills become usable again after a
+  resume until the flags are added to a save module.
+- `ShrewdPotential.s` still writes a magic stat to unit+0x3A (an unported FE8
+  offset). It is not installed today, but it must be repointed to `0x47` before
+  `StandaloneSkills.event` is re-enabled or it will corrupt activation flags.
 - EA `#define`s for the same addresses can drift if they are edited without updating `asm/ram_map_ewram.s`.
 
 Modeled on [ygodm8 ram-map.md](https://github.com/JesterWizard/ygodm8/blob/master/documentation/ram-map.md).

@@ -384,9 +384,10 @@
   "ShrewdPotentialID": 255,
   "TempestID": 45,
   "SerenityID": 130,
-  "CunningID": 4,
+  "CunningID": 255,
   "NiceThighsID": 115,
   "PersonalityID": 116,
   "Roll12ID": 255,
-  "TraceID": 131
+  "TraceID": 131,
+  "HurricaneID": 4
 }

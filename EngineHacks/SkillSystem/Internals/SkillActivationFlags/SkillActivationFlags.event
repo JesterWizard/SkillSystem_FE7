@@ -1,0 +1,71 @@
+// ============================================================================
+// Skill activation flags (DEC-85)
+// ============================================================================
+// Sixteen per-unit "already fired" bits packed into the vanilla-unused unit
+// bytes 0x3A and 0x3B. While a skill's bit is set the skill must not proc
+// again; the bit is cleared either at the top of the next player phase
+// (once per turn) or when the unit is loaded for a chapter (once per map).
+//
+// Routines exported to skill ASM:
+//   GetSkillActivationBit(skillID)               -> bit 0..15, or -1
+//   IsSkillActivationFlagSet(unit, skillID)      -> 1 if already fired
+//   CanSkillActivationFlagProc(unit, skillID)    -> 1 if it may still fire
+//   SetSkillActivationFlag(unit, skillID)        -> unit
+//   ClearSkillActivationFlag(unit, skillID)      -> unit
+//   ClearUnitActivationFlags(unit)               -> unit  (all 16 bits)
+//   ClearUnitTurnActivationFlags(unit)           -> unit  (per-turn bits only)
+//   GetPerMapActivationFlagMask()                -> keep-mask
+//   ResetTurnActivationFlags()                   -> proc routine, all units
+// ============================================================================
+
+// skillID -> bit index + 1. 0 means the skill owns no activation flag.
+ALIGN 4
+SkillActivationFlagTable:
+FILL 256
+
+// bit index -> scope. 0 = once per turn, 1 = once per map.
+ALIGN 4
+SkillActivationFlagScope:
+FILL 16
+
+#define ActivationFlagOncePerTurn(skillID, bit) "PUSH; ORG SkillActivationFlagTable+(skillID); BYTE ((bit)+1); POP"
+#define ActivationFlagOncePerMap(skillID, bit) "PUSH; ORG SkillActivationFlagTable+(skillID); BYTE ((bit)+1); ORG SkillActivationFlagScope+(bit); BYTE 1; POP"
+
+#include "flag_assignments.event"
+
+// Written in C (SkillActivationFlags.c / .h). lyn emits the POIN references to
+// the two tables above by symbol, so nothing is appended by hand here.
+ALIGN 4
+SkillActivationFlagRoutines:
+#include "SkillActivationFlags.lyn.event"
+
+// ---------------------------------------------------------------------------
+// Once-per-turn reset.
+//
+// gProcScr_PlayerPhase ($8B93374) is started fresh by the phase dispatcher at
+// $80153E0 whenever gPlaySt+0x0F (phase) is 0, so the commands at the top of
+// the script run exactly once per player phase.
+//
+// The hook MUST stay above the script's first PROC_LABEL. Everything from
+// LABEL(0) at $8B9338C onward is the per-action idle loop -- $8B93484 and
+// $8B934FC both PROC_GOTO(0) after a unit finishes acting -- so a hook placed
+// there re-runs once per unit action and hands every once-per-turn skill a
+// fresh charge mid-turn. The script header is:
+//
+//   $8B93374  PROC_19
+//   $8B9337C  PROC_SET_MARK(2)
+//   $8B93384  PROC_YIELD          <- displaced below, replayed in our proc
+//   $8B9338C  PROC_LABEL(0)       <- loop starts here; nothing above re-runs
+//
+// tests/test_skill_activation_flags_rom.py pins that invariant.
+// ---------------------------------------------------------------------------
+PUSH
+ORG $B93384 // gProcScr_PlayerPhase: PROC_YIELD, the last command before LABEL(0)
+  WORD $0D; POIN SkillActivationFlagTurnResetProc
+POP
+
+ALIGN 4
+SkillActivationFlagTurnResetProc:
+WORD $02; POIN ResetTurnActivationFlags
+SHORT $0E $0 $0 $0  // PROC_YIELD -- the displaced vanilla command
+WORD $0D $08B9338C  // back into gProcScr_PlayerPhase, at LABEL(0)

@@ -73,3 +73,8 @@ Documentation/skill-index.md
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# gcc output from Tools/build_skill_asm.py C sources (regenerated on build)
+*_c.s
+*_c.o
+Definitions.o

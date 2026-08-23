@@ -123,13 +123,39 @@ def symbol_offsets(src: Path, include_dirs=None) -> dict[str, int]:
     return offsets
 
 
-def _patch_skilltester_trampoline(code: bytes, skill_present: bool) -> bytes:
-    idx = code.find(SKILLTESTER_CALL)
-    if idx == -1:
-        return code  # no SkillTester call in this snippet; nothing to patch
+def _is_trampoline_at(code: bytes, idx: int) -> bool:
+    """True when `idx` really is the `.short 0xf800` of a SkillTester call.
+
+    The byte pair 0xF800 also occurs inside ordinary Thumb encodings and
+    literal pools -- compiled C hits this constantly, since gcc calls through
+    a normal long-call thunk and never emits a bare BL suffix at all. Patching
+    on a bare byte match therefore NOPs out four halfwords of unrelated code
+    and produces a corrupt blob that faults far from the real cause.
+
+    A genuine trampoline is `ldr rX, =fn ; mov lr, rX ; ... ; .short 0xf800`,
+    so require a `mov lr, rX` (0x46 in the high byte, 0xE in the low nibble of
+    the destination field) somewhere in the four halfwords before it.
+    """
     span_start = idx - 2 * (TRAMPOLINE_HALFWORDS - 1)
     if span_start < 0:
-        raise ValueError("`.short 0xf800` found without a full 5-halfword trampoline before it")
+        return False
+    for i in range(TRAMPOLINE_HALFWORDS - 1):
+        hw = int.from_bytes(code[span_start + 2 * i: span_start + 2 * i + 2], "little")
+        # `mov lr, rX` == 0x46F0 | (rX & 7), plus the H1 bit for the destination.
+        if (hw & 0xFF87) == 0x4686:
+            return True
+    return False
+
+
+def _patch_skilltester_trampoline(code: bytes, skill_present: bool) -> bytes:
+    idx = -1
+    while True:
+        idx = code.find(SKILLTESTER_CALL, idx + 1)
+        if idx == -1:
+            return code  # no SkillTester trampoline here; nothing to patch
+        if _is_trampoline_at(code, idx):
+            break
+    span_start = idx - 2 * (TRAMPOLINE_HALFWORDS - 1)
     patched = bytearray(code)
     for i in range(TRAMPOLINE_HALFWORDS - 1):
         patched[span_start + 2 * i: span_start + 2 * i + 2] = NOP.to_bytes(2, "little")

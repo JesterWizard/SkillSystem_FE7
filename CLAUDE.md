@@ -169,7 +169,7 @@ and `codedrift.md` (prefer CodeDrift MCP via `Tools/codedrift_cli.py`; pin `mcp<
 Roughly half the FE8 skills are ported. ModularStatScreen and IconRework offsets
 were hand-converted from FE8 and are not all verified. Skill scrolls and
 in-game skill add/remove are partially supported. `Documentation/` holds
-`ram-map.md` and `narrow-font.md`.
+`ram-map.md`, `narrow-font.md` and `skill-activation-flags.md`.
 
 # 3-Tier Model Routing
 

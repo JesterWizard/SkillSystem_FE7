@@ -335,7 +335,7 @@ NegatedSkillEntry(AlertStanceID)
 NegatedSkillEntry(AlertStancePlusID)
 NegatedSkillEntry(CoronaID)
 NegatedSkillEntry(FlareID)
-NegatedSkillEntry(TempestID)
+NegatedSkillEntry(HurricaneID)
 NegatedSkillEntry(SerenityID)
 NegatedSkillEntry(PetrifyID)
 NegatedSkillEntry(EnrageID)
@@ -364,6 +364,9 @@ BYTE ForeignPrincessID
 ALIGN 4
 SkillAdder: //given chardata in r0, skill in r1, add skill if possible
 #include "addSkill.lyn.event"
+
+ALIGN 4
+#include "SkillActivationFlags/SkillActivationFlags.event"
 
 ALIGN 4
 HookUnitLoading:

@@ -141,3 +141,7 @@ a skill when used.[X]
 ## DespoilGotText
 // Used mid-popup: "[Unit] obtained [a/an] [Item][icon]"
  obtained [X]
+
+## SD_Hurricane
+Hurricane: Dodges the first attack[N]
+against this unit every turn.[X]
