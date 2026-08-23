@@ -45,22 +45,26 @@ beq	End
 cmp	r0, #UNIT_ACTION_WAIT
 beq	End
 
-ldrb	r0, [r4,#0x0B]
-blh	GetCharPtr
-mov	r4, r0
+@ r4 must stay the *unit* pointer: every post-combat skill reads the actor
+@ through it (curHP +0x13, state +0x0C, index +0x0B) and canto.s/cantoplus.s/
+@ Gridmaster.s write US_CANTO_PENDING back to [r4,#0x0C]. Converting it with
+@ GetCharPtr pointed those reads and that write at ROM character data, so the
+@ pending bit never reached the unit and TryMakeCantoUnit always refused the
+@ re-move -- most visibly after healing yourself with a vulnerary.
 cmp	r4, #0x00
 beq	End
 
 @ Self-heal / items have no defender. Combat-only skills check action themselves.
+@ r5 stays the defender *unit* (galeforce.s reads curHP at [r5,#0x13]); it is
+@ left null for any non-combat action, which is what a vulnerary produces.
 mov	r5, #0x00
 ldrb	r0, [r6,#0x11]
 cmp	r0, #UNIT_ACTION_COMBAT
 bne	RunSkills
-ldr	r5, =Defender
-ldrb	r0, [r5,#0x0B]
-cmp	r0, #0x00
+ldr	r0, =Defender
+ldrb	r1, [r0,#0x0B]
+cmp	r1, #0x00
 beq	RunSkills
-blh	GetCharPtr
 mov	r5, r0
 
 RunSkills:

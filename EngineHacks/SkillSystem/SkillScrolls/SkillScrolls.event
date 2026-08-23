@@ -16,7 +16,7 @@ ALIGN 4
 // Uses CreatePopup; components 0x0D/0x0E added via expanded FE7 jump tables.
 ALIGN 4
 SkillLearnedPopupDef:
-	Popup_SetSound(0x5A)
+	Popup_SetSound(0x37A)		// vanilla "gained something" jingle (0x5A was a UI blip)
 	Popup_UnitName
 	Popup_StringId(LearnedSkillText)
 	WORD 0x0D 0                    // skill icon

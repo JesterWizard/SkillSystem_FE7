@@ -5,6 +5,7 @@
 .endm
 .equ CantoID, SkillTester+4
 .equ Option, CantoID+4
+.equ CurrentUnit, 0x03004690
 .thumb
 push	{lr}
 @check if dead
@@ -28,20 +29,33 @@ beq End
 blh 0x8019868           //FE8 -> 0x801A1F5 @UpdateUnitMapAndVision
 @ Do not call 0x80180EC (UnitBeginAction). FE8's "can move again" was misported.
 
-@ Canto: remaining move after staff (0x03) or item (0x1A), not Wait/Combat.
+@ Canto: remaining move after staff (0x03) or item use.
+@ FE7 self-heal (Vulnerary/Elixir/...) writes 0x17 at 0x08027674; that is
+@ the ApplyUnitAction slot that actually runs ActionStaffDoorChestUseItem.
+@ 0x1A is the targeted-item setter at 0x08021E88 (unused apply stub).
 ldrb  r0, [r6,#0x11]    @action taken this turn
 cmp r0, #0x1E           @check if found enemy in the fog
 beq End
 cmp r0, #0x03           @ staff
 beq ActionOk
-cmp r0, #0x1A           @ use item
+cmp r0, #0x17           @ self-use item (vulnerary)
+beq ActionOk
+cmp r0, #0x1A           @ targeted item
 beq ActionOk
 b End
 ActionOk:
-ldrb  r0, [r6,#0x0C]    @allegiance byte of the current character taking action
-ldrb  r1, [r4,#0x0B]    @allegiance byte of the character we are checking
-cmp r0, r1              @check if same character
-bne End
+@ Confirm the unit we were handed really is the one that just acted.
+@ This used to compare ActionData.subjectIndex (+0x0C) against Unit.index,
+@ but the item-use action setter at 0x08021E88 writes only unitActionType
+@ (+0x11) and leaves subjectIndex holding whatever the previous action left
+@ there. After a self-targeted vulnerary that stale index rarely matched, so
+@ Canto bailed here -- while staff use (0x03), whose setup does refresh the
+@ field, worked. gActiveUnit is maintained on every action path, so compare
+@ against that pointer instead of a field the item path never updates.
+ldr   r0, =CurrentUnit
+ldr   r0, [r0]
+cmp   r0, r4
+bne   End
 
 @check if already cantoing/pending, and is not in a ballista
 ldr     r0, [r4,#0x0C]  @status bitfield

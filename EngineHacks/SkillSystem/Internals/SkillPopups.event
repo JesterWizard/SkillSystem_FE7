@@ -31,7 +31,7 @@ ALIGN 4
 SkillLearnedPopup:
 	// Popup macros are defined in [PopupRework/]Extensions/PopupDefinitions.txt
 
-	Popup_SetSound(0x5A)
+	Popup_SetSound(0x37A)		// vanilla "gained something" jingle (0x5A was a UI blip)
 
 	Popup_StringId(LearnedSkillText) // "Learned " or whatever
 	WORD 0xD 0                       // Skill icon component

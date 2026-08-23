@@ -45,9 +45,18 @@ class PostCombatLoopTests(unittest.TestCase):
     def test_missing_defender_still_runs_canto_skills(self):
         src = POST.read_text(encoding="utf-8")
         self.assertIn("RunSkills", src)
-        defender_fail = src.split("ldr	r5, =Defender", 1)
+        defender_fail = src.split("=Defender", 1)
         self.assertGreater(len(defender_fail), 1)
         self.assertIn("RunSkills", defender_fail[1].split("Loop:", 1)[0])
+
+    def test_actor_and_defender_stay_unit_pointers(self):
+        """Post-combat skills read the actor through r4 and the defender
+        through r5 using Unit offsets (curHP +0x13, state +0x0C, index +0x0B),
+        and canto.s writes US_CANTO_PENDING back to [r4,#0x0C]. Converting
+        either to a CharacterData pointer sends that write into ROM."""
+        src = POST.read_text(encoding="utf-8")
+        self.assertNotIn("blh	GetCharPtr", src)
+        self.assertNotIn("mov	r4, r0", src)
 
     def test_event_uses_relocatable_loop_object(self):
         event = EVENT.read_text(encoding="utf-8")

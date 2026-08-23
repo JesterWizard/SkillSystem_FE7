@@ -250,6 +250,7 @@ class SourceWiringTests(unittest.TestCase):
 
     def test_canto_allows_staff_and_item_not_combat(self):
         src = (POST / "Canto" / "canto.s").read_text(encoding="utf-8")
+        self.assertIn("#0x17", src)
         self.assertIn("#0x1A", src)
         self.assertIn("#0x03", src)
         self.assertNotIn("cmp r0, #0x04", src.replace("\t", " "))
@@ -422,6 +423,10 @@ class CantoExecutionTests(unittest.TestCase):
                 (ACTOR, _unit(hp=hp, index=index, state=state)),
                 (TARGET, _unit(hp=20, index=2)),
                 (ACTION, bytes(action_buf)),
+                # canto.s identifies the actor via gActiveUnit rather than
+                # ActionData.subjectIndex, which the item-use path never
+                # refreshes (see tests/test_canto_execution.py).
+                (ACTIVE_UNIT_PTR, struct.pack("<I", ACTOR)),
             ),
             stubs=(
                 (MOV_GETTER, _stub_r0(mov)),
@@ -440,7 +445,7 @@ class CantoExecutionTests(unittest.TestCase):
         self.assertEqual(self._state(h) & PENDING, 0)
 
     def test_canto_sets_pending_after_item(self):
-        h = self._canto(POST / "Canto" / "canto.s", action=0x1A)
+        h = self._canto(POST / "Canto" / "canto.s", action=0x17)
         self.assertEqual(self._state(h) & PENDING, PENDING)
 
     def test_canto_sets_pending_after_staff(self):

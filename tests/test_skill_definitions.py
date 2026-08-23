@@ -71,8 +71,11 @@ class SkillDefinitionToggleTests(unittest.TestCase):
     def test_colorzcore_expands_enabled_and_disabled_ids(self):
         if not CLEAN_ROM.is_file() or not COLORZCORE.is_file():
             self.skipTest("FE7_clean.gba or ColorzCore.exe missing")
+        # ColorzCore resolves #include relative to the input file, not cwd,
+        # and also fails on long C:/ absolute paths. Copy the catalog next
+        # to the temp event so a basename include works.
         event = (
-            f'#include "{DEFS.as_posix()}"\n'
+            '#include "skill_definitions.event"\n'
             "ORG 0\n"
             "BYTE CantoID\n"
             "BYTE BloodTideID\n"
@@ -84,6 +87,7 @@ class SkillDefinitionToggleTests(unittest.TestCase):
             tmp_path = Path(tmp)
             rom = tmp_path / "out.gba"
             src = tmp_path / "test.event"
+            (tmp_path / "skill_definitions.event").write_bytes(DEFS.read_bytes())
             rom.write_bytes(CLEAN_ROM.read_bytes())
             src.write_text(event, encoding="ascii")
             result = subprocess.run(
