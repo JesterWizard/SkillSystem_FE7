@@ -292,7 +292,9 @@ bx r3
 @ DrawItemMenuLineNoColor-style (Menu C) @ hook at 0x165F4 (aligned)
 @ On entry: r0 = item id, r1 = id<<3; item halfword in r6; itemData in r5
 .equ ReturnPointMenuCOk,0x8016603
-.equ ReturnPointMenuCVan,0x80165F9
+@ 165F8 is the jumpToHack literal word, not code - resume at the ldrh (165FC),
+@ which this hook did not overwrite.
+.equ ReturnPointMenuCVan,0x80165FD
 
 NewItemNameGetter4: @hook at 165F4
 add r1,r1,r0

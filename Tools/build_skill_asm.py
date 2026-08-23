@@ -21,6 +21,11 @@ RANGE_LOOP_ASM = [RANGE_LOOP_DIR / "RangeSkillLoop.s"]
 POST_LOOP_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "PostBattleCalcLoop" / "post_loop.s"
 ]
+DURABILITY_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "DurabilityBasedItems" / "ScrollDurability.s",
+    ROOT / "EngineHacks" / "Necessary" / "DurabilityBasedItems" / "ScrollNames.s",
+    ROOT / "EngineHacks" / "Necessary" / "DurabilityBasedItems" / "SkillBookIconDraw.s",
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -175,7 +180,8 @@ def main() -> int:
     mss_pages = [p for p in MSS_PAGES if p.is_file()]
     range_loop = [p for p in RANGE_LOOP_ASM if p.is_file()]
     post_loop = [p for p in POST_LOOP_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop
+    durability = [p for p in DURABILITY_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability
     if args.force:
         for src in sources + extra:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
@@ -183,7 +189,8 @@ def main() -> int:
 
     print(
         f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, "
-        f"{len(range_loop)} range-loop files, {len(post_loop)} post-loop files"
+        f"{len(range_loop)} range-loop files, {len(post_loop)} post-loop files, "
+        f"{len(durability)} durability files"
     )
     errors = []
     for src in sources:
@@ -198,7 +205,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop:
+    for src in range_loop + post_loop + durability:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:

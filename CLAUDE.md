@@ -170,3 +170,26 @@ Roughly half the FE8 skills are ported. ModularStatScreen and IconRework offsets
 were hand-converted from FE8 and are not all verified. Skill scrolls and
 in-game skill add/remove are partially supported. `Documentation/` holds
 `ram-map.md` and `narrow-font.md`.
+
+# 3-Tier Model Routing
+
+Haiku 5   → locate code, grep, understand, diff review
+Sonnet 5  → default for everything iterative
+Opus 5    → architecture decisions only
+
+NEVER use Opus for:
+- Code lookup or file reading
+- Single-function questions
+- Diff review
+
+# Fetch rule for URLs
+
+Public URLs → ctx_fetch_and_index(url), then ctx_search
+Never WebFetch inline.
+
+Notion pages → fetch ONCE per session, never re-fetch after write.
+
+# Anti-re-read rule — add this and enforce it:
+
+NEVER re-read a file you already read this session.
+If you need to reference it again, use what is already in context.

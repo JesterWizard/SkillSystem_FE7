@@ -69,7 +69,11 @@ bx lr
 
 
 @ r0 = item id. Z clear if on DurabilityItemList, Z set if not.
+@ Clobbers r0 only - r1-r7 are restored, because the vanilla draw code these
+@ hooks return into still holds live values in them (MenuB keeps the number
+@ colour in r1). pop does not disturb the flags, so the cmp goes after it.
 IsDurabilityItem:
+	push {r1, r2}
 	ldr r1, =DurabilityItemList
 IsDurabilityLoop:
 	ldrb r2, [r1]
@@ -80,12 +84,13 @@ IsDurabilityLoop:
 	add r1, #1
 	b IsDurabilityLoop
 IsDurabilityYes:
-	mov r1, #1
-	cmp r1, #0
-	bx lr
+	mov r0, #1
+	b IsDurabilityDone
 IsDurabilityNo:
-	mov r1, #0
-	cmp r1, #0
+	mov r0, #0
+IsDurabilityDone:
+	pop {r1, r2}
+	cmp r0, #0
 	bx lr
 
 .ltorg
@@ -102,8 +107,8 @@ IsDurabilityNo:
 
 ScrollDurabilityGetter_StatScreen:
 	mov r0, r9
-	mov r1, #0xFF
-	and r0, r1
+	lsl r0, r0, #24
+	lsr r0, r0, #24
 	bl IsDurabilityItem
 	beq StatScreenVanilla
 	ldr r3, =StatScreenAfterUses
@@ -129,24 +134,33 @@ StatScreenResumeSlash:
 .equ MenuAAfterUses,0x80164E9
 .equ MenuAResume,0x80164D1
 
+@ jumpToHack is "ldr r3,[pc,#0]; bx r3", so entering this hook has already
+@ destroyed r3 - and at 164C8 r3 is live: it holds the uses-number destination
+@ (r7+22, set at 164C2/164C4) that vanilla reads at 164DE. Rebuild it from r7
+@ before resuming, or DrawNumber writes the uses count to a ROM address and no
+@ number appears in the item menu. Bounce to the resume point through r0, which
+@ 164D0 reloads anyway.
 ScrollDurabilityGetter_MenuA:
-	mov r0, r8
-	mov r1, #0xFF
-	and r0, r1
+	mov r0, r6
+	lsl r0, r0, #24
+	lsr r0, r0, #24
 	bl IsDurabilityItem
 	beq MenuAVanilla
-	ldr r3, =MenuAAfterUses
-	bx r3
+	ldr r0, =MenuAAfterUses
+	bx r0
 
 MenuAVanilla:
 	@ overwritten: mov r0,r8; cmp r0,#0; beq +2; mov r5,#2
+	@ r8 is the color flag, not the item (item is r6).
 	mov r0, r8
 	cmp r0, #0
 	beq MenuAResumeUses
 	mov r5, #2
 MenuAResumeUses:
-	ldr r3, =MenuAResume @ ldr r0, [r4, #8]; ...
-	bx r3
+	mov r3, r7
+	add r3, #22
+	ldr r0, =MenuAResume @ ldr r0, [r4, #8]; ...
+	bx r0
 
 .ltorg
 .align
@@ -160,10 +174,12 @@ MenuAResumeUses:
 .equ MenuBAfterUses,0x80165B5
 .equ MenuBResume,0x8016579
 
+@ r1 already holds the number colour (set at 16564..1656A, read at 1657E), so
+@ it must not be used as a scratch mask here.
 ScrollDurabilityGetter_MenuB:
 	mov r0, r8
-	mov r1, #0xFF
-	and r0, r1
+	lsl r0, r0, #24
+	lsr r0, r0, #24
 	bl IsDurabilityItem
 	beq MenuBVanilla
 	ldr r3, =MenuBAfterUses
