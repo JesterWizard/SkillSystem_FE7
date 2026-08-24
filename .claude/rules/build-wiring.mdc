@@ -55,7 +55,7 @@ python Tools/build_skill_index.py --skill Provoke
 | Task | File |
 |------|------|
 | Domain words | `CONTEXT.md` |
-| Skill ID, live, `.s` path | `python Tools/build_skill_index.py --skill Name` |
+| Skill file pack (ID, live, sources) | `python Tools/build_skill_index.py --skill Name` |
 | Toggle ID / `SKILL_OFF` | `EngineHacks/SkillSystem/skill_definitions.event` |
 | Effect ASM | `EngineHacks/SkillSystem/Skills/<Category>/<Skill>/<Skill>.s` |
 | Loop wiring | `EngineHacks/SkillSystem/Skills/<Category>/<Category>.event` |

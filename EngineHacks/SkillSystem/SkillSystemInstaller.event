@@ -7,3 +7,7 @@
 #include "Skills/MasterSkillInstaller.event"
 
 #include "SkillScrolls/SkillScrolls.event"
+
+#ifdef ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK
+#include "Skills/EffectivenessSkills/EffectivenessRework.event"
+#endif

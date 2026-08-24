@@ -18,7 +18,7 @@ POP
 //#include "AuraSkills/AuraSkills.event"
 //#include "BuffSkills/Installer.event" 
 //#include "DebuffSkills/DebuffSkills.event"
-//#include "EffectivenessSkills/EffectivenessSkills.event"
+#include "EffectivenessSkills/EffectivenessSkills.event"
 #include "EXPSkills/EXPSkills.event"
 #include "HPRestorationSkills/HPRestorationSkills.event"
 #include "MovementSkills/MovementSkills.event"

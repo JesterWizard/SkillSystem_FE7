@@ -1,0 +1,31 @@
+// FE7 Nullify / Slayer / Skybreaker / Resourceful
+// Hooks BC_Power effectiveness multiply (0x28B32) and IsItemEffectiveAgainst (0x16820).
+
+#ifdef ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK
+
+PUSH
+	// Hook at 0x28B30, not 0x28B32. `ldr r3,[pc,#0]` reads from (pc+4)&~3, so the POIN
+	// must land at hook+4 -- which only holds when the hook itself is 4-aligned. At the
+	// 2-aligned 0x28B32 the load reads 0x28B34 while POIN (needing 4-alignment) is forced
+	// out to 0x28B38, so the load returns the `bx r3` opcode 0x00004718 and the game
+	// crashes at 0x28B34 when the stat screen's second page computes effectiveness.
+	// 0x28B30 is 4-aligned and nothing branches into 0x28B30..0x28B37; it displaces one
+	// instruction, `strh r1,[r0,#0]`, which ApplyEffectiveness re-emits on entry.
+	ORG $28B30
+	jumpToHack(ApplyEffectiveness)
+
+	ORG $16820
+	jumpToHack(WeaponEffectiveness)
+POP
+
+ALIGN 4
+#include "Effectiveness_Skills.lyn.event"
+POIN SkillTester
+WORD SlayerID
+WORD NullifyID
+WORD MonsterType
+WORD SkybreakerID
+WORD FlierType
+WORD ResourcefulID
+
+#endif // ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK

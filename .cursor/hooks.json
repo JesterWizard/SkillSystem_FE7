@@ -5,6 +5,19 @@
       {
         "command": "python .cursor/hooks/block-verbose.py"
       }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python .cursor/hooks/implement_prompt.py",
+        "timeout": 30
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "python .cursor/hooks/implement_prompt.py",
+        "timeout": 15,
+        "matcher": "Grep|Glob|Task|codedrift"
+      }
     ]
   }
 }

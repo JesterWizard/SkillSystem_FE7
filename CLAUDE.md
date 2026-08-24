@@ -13,3 +13,8 @@ Do **not** load these on a known-file patch. Request or open matching files only
 | Table expansion | `.cursor/rules/fe7-freespace-tables.md` |
 | New skill behavior / tests | `.cursor/rules/tdd.md` |
 | Skill ASM must execute | `.cursor/rules/skill-unicorn-verification.md` |
+
+When operating as Claude Fable, use the /efficient-fable skill always.
+When using a high-cost frontier model for codebase-heavy work, use the /efficient-frontier skill always.
+When writing final response status indicators, use the /quick-recap skill always.
+When long-running or parallel work needs usage-limit checks, use the /stay-within-limits skill always.

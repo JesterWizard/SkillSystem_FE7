@@ -21,7 +21,7 @@ If the budget would be exceeded, **stop and act**, or ask one targeted question.
 ## Start here
 
 1. User pointers (`@`, open tabs, named paths).
-2. Named skill: `python Tools/build_skill_index.py --skill Name` (parses the event files). Do not treat `Documentation/skill-index.md` as truth.
+2. Named skill: `python Tools/build_skill_index.py --skill Name` (file pack). Do not treat `Documentation/skill-index.md` as truth. Read listed paths only.
 3. One exact-symbol search if still needed. No synonyms, no repo-wide `.`.
 4. Read only the block you will change. Do the job. Stop.
 

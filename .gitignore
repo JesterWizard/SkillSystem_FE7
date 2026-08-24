@@ -42,6 +42,9 @@ __pycache__
 # CodeDrift local index
 .codecodedrift/
 
+# Hook-generated implement brief
+.cursor/cache/
+
 # Derived skill table (query: python Tools/build_skill_index.py --skill Name)
 Documentation/skill-index.md
 

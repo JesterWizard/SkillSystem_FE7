@@ -114,10 +114,10 @@
 #define FullmetalBodyID FullMetalBodyID
 
 //Effectiveness Skills
-#define NullifyID SKILL_OFF
-#define SlayerID SKILL_OFF
-#define SkybreakerID SKILL_OFF
-#define ResourcefulID SKILL_OFF
+#define NullifyID 200
+#define SlayerID 201
+#define SkybreakerID 202
+#define ResourcefulID 203
 
 //EXP Skills
 #define ParagonID 49

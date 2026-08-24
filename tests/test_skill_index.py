@@ -1,5 +1,8 @@
-"""Skill index tracks ID, category, live installer, and .s path."""
+"""Skill index tracks ID, category, live installer, and file pack."""
+import json
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 import sys
 
@@ -9,6 +12,7 @@ from build_skill_index import (  # noqa: E402
     live_category_list,
     lookup,
     main as index_main,
+    rewrite_prompt,
     rows,
 )
 
@@ -68,9 +72,6 @@ class SkillIndexTests(unittest.TestCase):
         self.assertIsNone(lookup("NotARealSkill"))
 
     def test_skill_cli_prints_a_live_row(self):
-        from contextlib import redirect_stdout
-        from io import StringIO
-
         buf = StringIO()
         with redirect_stdout(buf):
             rc = index_main(["--skill", "ProvokeID"])
@@ -78,6 +79,42 @@ class SkillIndexTests(unittest.TestCase):
         out = buf.getvalue()
         self.assertIn("live=yes", out)
         self.assertIn("ProvokeID", out)
+
+    def test_nullify_file_pack_lists_event_and_asm(self):
+        row = lookup("Nullify")
+        self.assertIsNotNone(row)
+        sources = row["sources"]
+        self.assertTrue(any(p.endswith("Nullify/Nullify.event") for p in sources))
+        self.assertTrue(any(p.endswith("Effectiveness_Skills.s") for p in sources))
+        self.assertTrue(row["folder"].endswith("EffectivenessSkills/Nullify"))
+        self.assertTrue(
+            row["installer"].endswith("EffectivenessSkills/EffectivenessSkills.event")
+        )
+        self.assertFalse(any(p.endswith("test_skill_index.py") for p in row["tests"]))
+
+    def test_slayer_pack_includes_nullify_event(self):
+        row = lookup("Slayer")
+        self.assertTrue(any(p.endswith("Nullify/Nullify.event") for p in row["sources"]))
+
+    def test_skill_cli_json_pack(self):
+        buf = StringIO()
+        with redirect_stdout(buf):
+            rc = index_main(["--skill", "Nullify", "--json"])
+        self.assertEqual(rc, 0)
+        data = json.loads(buf.getvalue())
+        self.assertEqual(data["macro"], "NullifyID")
+        self.assertTrue(any(p.endswith("Nullify.event") for p in data["sources"]))
+
+    def test_prompt_rewrite_injects_nullify_pack(self):
+        out = rewrite_prompt("please implement the Nullify skill thanks")
+        self.assertIn("IMPLEMENT SKILL: Nullify", out)
+        self.assertIn("NullifyID", out)
+        self.assertIn("Nullify.event", out)
+        self.assertIn("Documentation/skill-index.md", out)
+
+    def test_prompt_rewrite_no_match(self):
+        out = rewrite_prompt("refactor the build scripts")
+        self.assertIn("NO_SKILL_MATCH", out)
 
 
 if __name__ == "__main__":

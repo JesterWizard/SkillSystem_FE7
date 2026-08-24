@@ -9,7 +9,7 @@ Named file + symptom → edit. Do not tour. Do not read `CLAUDE.md`, `CONTEXT.md
 
 ## Explore (hard, per request)
 
-User `@`/paths first. Else `python Tools/build_skill_index.py --skill Name`. Else one exact-symbol search.
+User `@`/paths first. Else `python Tools/build_skill_index.py --skill Name` (file pack). Else one exact-symbol search.
 
 Max: 2 Grep/Glob/CodeDrift search, 3 sliced Reads, 0 explore/generalPurpose agents. Stop when you can act. Ask one question if blocked. Never re-read a file already in this session.
 
