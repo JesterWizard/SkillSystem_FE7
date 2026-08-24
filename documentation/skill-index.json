@@ -1608,15 +1608,14 @@
       "off": "no",
       "category": "EffectivenessSkills",
       "live": "yes",
-      "source": "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Effectiveness_Skills.s",
-      "folder": "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify",
+      "source": "",
+      "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/EffectivenessSkills/EffectivenessSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/_README.txt",
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Effectiveness_Skills.s",
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Nullify.event"
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Effectiveness_Skills.s",
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify.event"
       ],
       "tests": [
         "tests/test_effectiveness_skills_execution.py"
@@ -1635,8 +1634,8 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Effectiveness_Skills.s",
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Nullify.event"
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Effectiveness_Skills.s",
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify.event"
       ],
       "tests": [
         "tests/test_effectiveness_skills_execution.py"
@@ -1655,8 +1654,8 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Effectiveness_Skills.s",
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Nullify.event"
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Effectiveness_Skills.s",
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify.event"
       ],
       "tests": [
         "tests/test_effectiveness_skills_execution.py"
@@ -1675,8 +1674,8 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Effectiveness_Skills.s",
-        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify/Nullify.event"
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Effectiveness_Skills.s",
+        "EngineHacks/SkillSystem/Skills/EffectivenessSkills/Nullify.event"
       ],
       "tests": [
         "tests/test_effectiveness_skills_execution.py"
@@ -1785,8 +1784,8 @@
     {
       "skill": "Amaterasu",
       "macro": "AmaterasuID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "204",
+      "off": "no",
       "category": "HPRestorationSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Amaterasu/Amaterasu.s",
@@ -1799,13 +1798,15 @@
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/HPRestorationSkills.event",
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Renewal/_old/RenewalAmaterasu.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_hp_restoration_skills_execution.py"
+      ]
     },
     {
       "skill": "Camaraderie",
       "macro": "CamaraderieID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "205",
+      "off": "no",
       "category": "HPRestorationSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Camaraderie/Camaraderie.s",
@@ -1818,13 +1819,15 @@
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/HPRestorationSkills.event",
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Renewal/_old/RenewalAmaterasu.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_hp_restoration_skills_execution.py"
+      ]
     },
     {
       "skill": "Relief",
       "macro": "ReliefID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "206",
+      "off": "no",
       "category": "HPRestorationSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Relief/Relief.s",
@@ -1837,13 +1840,15 @@
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/HPRestorationSkills.event",
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Renewal/_old/RenewalAmaterasu.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_hp_restoration_skills_execution.py"
+      ]
     },
     {
       "skill": "Bond",
       "macro": "BondID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "207",
+      "off": "no",
       "category": "HPRestorationSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Bond/Bond.s",
@@ -1856,7 +1861,9 @@
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/HPRestorationSkills.event",
         "EngineHacks/SkillSystem/Skills/HPRestorationSkills/Renewal/_old/RenewalAmaterasu.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_hp_restoration_skills_execution.py"
+      ]
     },
     {
       "skill": "Forager",

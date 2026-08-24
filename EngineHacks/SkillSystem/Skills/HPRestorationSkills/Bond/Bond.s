@@ -12,7 +12,7 @@ push {r4-r5,r14}
 mov r4,r0               @r4 = unit
 mov r5,r1               @r5 = heal %
 
-ldr r0, =AuraSkillCheck
+ldr r0, =NewAuraSkillCheck
 mov lr, r0
 mov r0, r4              @unit
 ldr r1, =BondIDLink

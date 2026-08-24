@@ -13,6 +13,12 @@ ldr r1,=#0x8BE47C4 //FE8 -> #0x880C744 	@terrain heal data
 add r0,r1		
 ldrb r4,[r0]		@r4 = % to heal from terrain
 
+@ NewAuraSkillCheck reads gAuraSkillBuffer; distances are relative to this unit.
+ldr r0, =MakeAuraSkillBuffer
+mov lr, r0
+mov r0, r5
+.short 0xF800
+
 ldr r6,=HPRestorationLoop
 
 LoopStart:

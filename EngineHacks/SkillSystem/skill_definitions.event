@@ -129,10 +129,10 @@
 
 //HP Restoration Skills
 #define RenewalID 87
-#define AmaterasuID SKILL_OFF
-#define CamaraderieID SKILL_OFF
-#define ReliefID SKILL_OFF
-#define BondID SKILL_OFF
+#define AmaterasuID 204
+#define CamaraderieID 205
+#define ReliefID 206
+#define BondID 207
 #define ForagerID 91
 #define ImbueID 88
 

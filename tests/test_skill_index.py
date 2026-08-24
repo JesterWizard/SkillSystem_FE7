@@ -84,9 +84,9 @@ class SkillIndexTests(unittest.TestCase):
         row = lookup("Nullify")
         self.assertIsNotNone(row)
         sources = row["sources"]
-        self.assertTrue(any(p.endswith("Nullify/Nullify.event") for p in sources))
+        self.assertTrue(any(p.endswith("EffectivenessSkills/Nullify.event") for p in sources))
         self.assertTrue(any(p.endswith("Effectiveness_Skills.s") for p in sources))
-        self.assertTrue(row["folder"].endswith("EffectivenessSkills/Nullify"))
+        self.assertEqual(row["folder"], "")
         self.assertTrue(
             row["installer"].endswith("EffectivenessSkills/EffectivenessSkills.event")
         )
@@ -94,7 +94,7 @@ class SkillIndexTests(unittest.TestCase):
 
     def test_slayer_pack_includes_nullify_event(self):
         row = lookup("Slayer")
-        self.assertTrue(any(p.endswith("Nullify/Nullify.event") for p in row["sources"]))
+        self.assertTrue(any(p.endswith("EffectivenessSkills/Nullify.event") for p in row["sources"]))
 
     def test_skill_cli_json_pack(self):
         buf = StringIO()

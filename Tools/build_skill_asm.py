@@ -30,6 +30,9 @@ WEAPON_USABILITY_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "WeaponUsabilityCalcLoop" / "CanUnitWieldWeapon.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "WeaponUsabilityCalcLoop" / "DoesUnitHaveWRank.s",
 ]
+HP_RESTORATION_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "HPRestorationCalcLoop" / "HPRestorationCalcLoop.s",
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -247,7 +250,8 @@ def main() -> int:
     post_loop = [p for p in POST_LOOP_ASM if p.is_file()]
     durability = [p for p in DURABILITY_ASM if p.is_file()]
     weapon_usability = [p for p in WEAPON_USABILITY_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability
+    hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration
     if args.force:
         for src in sources + extra + c_sources:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
@@ -277,7 +281,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability:
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:
