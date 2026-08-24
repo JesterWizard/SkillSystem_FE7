@@ -9,7 +9,6 @@ extern s8 BattleGenerateRoundHits(struct BattleUnit* attacker, struct BattleUnit
 extern void BattleGetBattleUnitOrder(struct BattleUnit** outAttacker, struct BattleUnit** outDefender);
 extern void ClearBattleHits(void); 
 extern void BattleForecastHitCountUpdate(struct BattleUnit* battleUnit, u8* hitsCounter, int* usesCounter); 
-extern int IsUnitEffectiveAgainst(struct BattleUnit* attacker, struct BattleUnit* defender);
 extern s8 BattleGetFollowUpOrder(struct BattleUnit** outAttacker, struct BattleUnit** outDefender);
 
 
@@ -21,6 +20,17 @@ s8 NewBattleGetFollowUpOrder(struct BattleUnit** outAttacker, struct BattleUnit*
 
 void NewBattleUnwind(void); 
 extern int SkillTester(struct Unit* unit, int id);
+
+struct SupportBonuses {
+	u8 affinity;
+	u8 bonusAttack;
+	u8 bonusDefense;
+	u8 bonusHit;
+	u8 bonusAvoid;
+	u8 bonusCrit;
+	u8 bonusDodge;
+};
+int GetUnitSupportBonuses(struct Unit* unit, struct SupportBonuses* bonuses);
 
 // FE7 stores a round as u16 attributes, u8 info, s8 hpChange.
 // gbafe.h uses the FE8 19/5/8 bitfields, so NewBattleUnwind uses this instead.
@@ -77,9 +87,9 @@ int BidingBlow(struct BattleUnit* bunitA, struct BattleUnit* bunitB) {
 int PassionsFlow(struct BattleUnit* bunitA, struct BattleUnit* bunitB) { 
 	if (SkillTester(&bunitA->unit, PassionsFlowID_Link)) { 
 		if (bunitA == &gBattleActor) { 
-			struct SupportBonuses* bonuses = 0; 
+			struct SupportBonuses bonuses; 
 			// this function returns true if any bonuses are found and also puts the bonuses into the provided ram 
-			if (GetUnitSupportBonuses(&bunitA->unit, bonuses)) {  
+			if (GetUnitSupportBonuses(&bunitA->unit, &bonuses)) {  
 				return ForceDouble; 
 			}
 		} 
@@ -90,16 +100,20 @@ int PassionsFlow(struct BattleUnit* bunitA, struct BattleUnit* bunitB) {
 int GetEffLvl(struct BattleUnit* bunitA) { 
 	u32 attrb = UNIT_CATTRIBUTES(&bunitA->unit);
 	int result = bunitA->unit.level+10; 
-	result -= 10*(attrb & CA_MAXLEVEL10); 
-	result += 20*(attrb & CA_PROMOTED); 
+	if (attrb & CA_MAXLEVEL10)
+		result -= 10;
+	if (attrb & CA_PROMOTED)
+		result += 20;
 	return result; 
 } 
 
 int QuickLearner(struct BattleUnit* bunitA, struct BattleUnit* bunitB) { 
 	if (SkillTester(&bunitA->unit, QuickLearnerID_Link)) { 
-		if (GetEffLvl(bunitA) < GetEffLvl(bunitB)) { 
-			return ForceDouble; 
-		} 
+		if (bunitA == &gBattleActor) {
+			if (GetEffLvl(bunitA) < GetEffLvl(bunitB)) { 
+				return ForceDouble; 
+			}
+		}
 	} 
 	return NoChange; 
 } 
@@ -360,10 +374,6 @@ void NewInitBattleForecastBattleStats(struct BattleForecastProc* proc) {
             BattleForecastHitCountUpdate(buFirst, (u8*)&proc->hitCountA, &usesA);
         }
 
-        if (IsUnitEffectiveAgainst((struct BattleUnit*)&gBattleActor.unit, (struct BattleUnit*)&gBattleTarget.unit) != 0) {
-            proc->isEffectiveA = 1;
-        }
-
         if (IsItemEffectiveAgainst(gBattleActor.weaponBefore, &gBattleTarget.unit) != 0) {
             proc->isEffectiveA = 1;
         }
@@ -383,10 +393,6 @@ void NewInitBattleForecastBattleStats(struct BattleForecastProc* proc) {
         }
         if ((followUp == BothFollowUp)) { // added 
             BattleForecastHitCountUpdate(buSecond, (u8*)&proc->hitCountB, &usesB);
-        }
-
-        if (IsUnitEffectiveAgainst((struct BattleUnit*)&gBattleTarget.unit, (struct BattleUnit*)&gBattleActor.unit) != 0) {
-            proc->isEffectiveB = 1;
         }
 
         if (IsItemEffectiveAgainst(gBattleTarget.weaponBefore, &gBattleActor.unit) != 0) {

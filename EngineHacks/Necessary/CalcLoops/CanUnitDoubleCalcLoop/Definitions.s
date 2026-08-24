@@ -9,6 +9,8 @@ SET_FUNC BattleGenerateRoundHits, 0x080290B9
 SET_FUNC GetItemIndex, 0x080171B5
 SET_FUNC GetItemUses, 0x08017295
 SET_FUNC GetItemWeaponEffect, 0x08017425
+SET_FUNC IsItemEffectiveAgainst, 0x8016821 // FE7; SkillsRef still has the FE8 pointer-table address
+SET_FUNC GetUnitSupportBonuses, 0x8026A19 // FE7; SkillsRef still has FE8 0x80285B1
 SET_DATA gpCurrentRound, 0x0203A50C
 SET_DATA gBattleHitIterator, 0x0203A50C
 

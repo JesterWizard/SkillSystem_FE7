@@ -56,6 +56,7 @@ CLIB_INCLUDE = Path(r"C:\devkitPro\FE-CLib\include")
 C_SOURCES = [
     ROOT / "EngineHacks/SkillSystem/Internals/SkillActivationFlags/SkillActivationFlags.c",
     ROOT / "EngineHacks/SkillSystem/Skills/ProcSkills/Hurricane/Hurricane.c",
+    ROOT / "EngineHacks/Necessary/CalcLoops/CanUnitDoubleCalcLoop/NewBattleGetFollowUpOrder.c",
 ]
 
 INC_BIN_RE = re.compile(r'#incbin\s+"([^"]+\.dmp)"')

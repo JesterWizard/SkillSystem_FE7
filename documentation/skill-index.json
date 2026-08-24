@@ -3539,8 +3539,8 @@
     {
       "skill": "QuickRiposte",
       "macro": "QuickRiposteID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "224",
+      "off": "no",
       "category": "Pre-BattleSkills",
       "live": "no",
       "source": "",
@@ -3551,7 +3551,9 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/WaryFighter/old/WaryFighter.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "QuickBurn",
@@ -5308,8 +5310,8 @@
     {
       "skill": "PridefulWarrior",
       "macro": "PridefulWarriorID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "223",
+      "off": "no",
       "category": "RoundsDataSkills",
       "live": "no",
       "source": "",
@@ -5318,15 +5320,17 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "Moonlight",
       "macro": "MoonlightID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "214",
+      "off": "no",
       "category": "UnitDoublingSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/Moonlight/Moonlight.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/Moonlight",
       "installer": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/UnitDoublingSkills.event",
@@ -5339,13 +5343,15 @@
         "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/UnitDoublingSkills.event",
         "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/WaryFighter/old/WaryFighter.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "RecklessFighter",
       "macro": "RecklessFighterID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "215",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5354,15 +5360,17 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "WaryFighter",
       "macro": "WaryFighterID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "213",
+      "off": "no",
       "category": "UnitDoublingSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/WaryFighter/WaryFighter.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/WaryFighter",
       "installer": "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/UnitDoublingSkills.event",
@@ -5373,13 +5381,15 @@
         "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/UnitDoublingSkills.event",
         "EngineHacks/SkillSystem/Skills/UnitDoublingSkills/WaryFighter/old/WaryFighter.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "LastWord",
       "macro": "LastWordID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "216",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5388,13 +5398,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "BoldFighter",
       "macro": "BoldFighterID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "217",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5403,13 +5415,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "VengefulFighter",
       "macro": "VengefulFighterID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "218",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5418,13 +5432,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "QuickLearner",
       "macro": "QuickLearnerID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "219",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5433,13 +5449,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "PassionsFlow",
       "macro": "PassionsFlowID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "220",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5448,13 +5466,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "BidingBlow",
       "macro": "BidingBlowID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "221",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5463,13 +5483,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "AdvantageChaser",
       "macro": "AdvantageChaserID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "222",
+      "off": "no",
       "category": "DoublingSkills",
       "live": "no",
       "source": "",
@@ -5478,7 +5500,9 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_doubling_skills_dec95.py"
+      ]
     },
     {
       "skill": "DefiantStr",

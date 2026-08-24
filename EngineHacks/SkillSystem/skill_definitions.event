@@ -230,7 +230,7 @@
 #define PerfectionistID 105
 #define PrescienceID 106
 #define PuissanceID 107
-#define QuickRiposteID SKILL_OFF
+#define QuickRiposteID 224
 #define QuickBurnID 142
 #define SlowBurnID 147
 #define ShortShieldID 178
@@ -332,19 +332,19 @@
 #define DazzleID 140
 #define DesperationID 141
 #define AssassinateID 139
-#define PridefulWarriorID SKILL_OFF
+#define PridefulWarriorID 223
 
 // Doubling Skills
-#define MoonlightID SKILL_OFF
-#define RecklessFighterID SKILL_OFF
-#define WaryFighterID SKILL_OFF
-#define LastWordID SKILL_OFF
-#define BoldFighterID SKILL_OFF
-#define VengefulFighterID SKILL_OFF
-#define QuickLearnerID SKILL_OFF
-#define PassionsFlowID SKILL_OFF
-#define BidingBlowID SKILL_OFF
-#define AdvantageChaserID SKILL_OFF
+#define MoonlightID 214
+#define RecklessFighterID 215
+#define WaryFighterID 213
+#define LastWordID 216
+#define BoldFighterID 217
+#define VengefulFighterID 218
+#define QuickLearnerID 219
+#define PassionsFlowID 220
+#define BidingBlowID 221
+#define AdvantageChaserID 222
 
 //Stat Modifier Skills
 #define DefiantStrID 70

@@ -1087,7 +1087,7 @@ ORG SkillIcon(PridefulWarriorID)
 #incbin "SkillIcons/PridefulWarrior.dmp"
 
 ORG SkillIcon(LastWordID)
-#incbin "SkillIcons/LastWord.dmp"
+#incbin "SkillIcons/WIP.dmp"
 ORG SkillIcon(BoldFighterID)
 #incbin "SkillIcons/BoldFighter.dmp"
 ORG SkillIcon(VengefulFighterID)
@@ -1099,7 +1099,7 @@ ORG SkillIcon(QuickLearnerID)
 ORG SkillIcon(PassionsFlowID)
 #incbin "SkillIcons/PassionsFlow.dmp"
 ORG SkillIcon(BidingBlowID)
-#incbin "SkillIcons/BidingBlow.dmp"
+#incbin "SkillIcons/WIP.dmp"
 
 ORG SkillIcon(OddFootedID)
 #incbin "SkillIcons/OddFooted.dmp"

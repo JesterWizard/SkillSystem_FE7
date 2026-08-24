@@ -23,7 +23,7 @@ POP
 #include "HPRestorationSkills/HPRestorationSkills.event"
 #include "MovementSkills/MovementSkills.event"
 //#include "MugLoadingSkills/MugLoadingSkills.event"
-//#include "UnitDoublingSkills/UnitDoublingSkills.event"
+#include "UnitDoublingSkills/UnitDoublingSkills.event"
 //#include "RallySkills/RallySkills.event"
 //#include "UnitMenuSkills/UnitMenuSkills.event"
 //#include "PostActionSkills/PostActionSkills.event"
