@@ -3360,6 +3360,32 @@ static u8 * GetUnitBwlSupportRow(struct Unit * unit)
     return gBwlSupportExp + pid * SupportOptions;
 }
 
+static const struct SupportData * GetUnitSupportDataForDebug(struct Unit * unit)
+{
+    const struct CharacterData * ch;
+    const struct CharacterData * other;
+    int i;
+    if (!unit || !unit->pCharacterData)
+    {
+        return NULL;
+    }
+    ch = unit->pCharacterData;
+    if (ch->pSupportData)
+    {
+        return ch->pSupportData;
+    }
+    /* FE7 Lyn-mode (id 0x03) and similar clones keep partners on another char with the same name. */
+    for (i = 1; i <= 0x45; ++i)
+    {
+        other = GetCharacterData(i);
+        if (other && other->nameTextId == ch->nameTextId && other->pSupportData)
+        {
+            return other->pSupportData;
+        }
+    }
+    return NULL;
+}
+
 void RedrawUnitSupportsMenu(DebuggerProc * proc);
 void EditSupportsInit(DebuggerProc * proc)
 {
@@ -3392,15 +3418,18 @@ void EditSupportsInit(DebuggerProc * proc)
         Text_DrawString(&th[i], "");
     }
 
-    if (unit->pCharacterData->pSupportData)
     {
+        const struct SupportData * sdata = GetUnitSupportDataForDebug(unit);
         int uid;
-        for (int i = 0; i < SupportOptions; ++i)
+        if (sdata)
         {
-            uid = unit->pCharacterData->pSupportData->characters[i];
-            if (uid)
+            for (int i = 0; i < SupportOptions; ++i)
             {
-                Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+                uid = sdata->characters[i];
+                if (uid)
+                {
+                    Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+                }
             }
         }
     }

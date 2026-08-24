@@ -1433,14 +1433,36 @@ void EditWExpIdle(DebuggerProc * proc)
 
 #define SupportWidth 5
 #define SupportOptions 7
+#define gBwlSupportExp ((u8 *)0x0203FE10)
+
+static u8 * GetUnitBwlSupportRow(struct Unit * unit)
+{
+    int pid;
+    if (!unit || !unit->pCharacterData)
+    {
+        return NULL;
+    }
+    pid = unit->pCharacterData->number;
+    if (pid < 1 || pid > 0x45)
+    {
+        return NULL;
+    }
+    if (!((void * (*)(int))(0x080A0550 | 1))(pid))
+    {
+        return NULL;
+    }
+    return gBwlSupportExp + pid * SupportOptions;
+}
+
 void RedrawUnitSupportsMenu(DebuggerProc * proc);
 void EditSupportsInit(DebuggerProc * proc)
 {
     SomeMenuInit(proc);
     struct Unit * unit = proc->unit;
+    u8 * row = GetUnitBwlSupportRow(unit);
     for (int i = 0; i < SupportOptions; ++i)
     {
-        proc->tmp[i] = unit->supports[i];
+        proc->tmp[i] = row ? row[i] : 0;
     }
 
     int x = NUMBER_X - SupportWidth - 1;
@@ -1502,9 +1524,14 @@ void RedrawUnitSupportsMenu(DebuggerProc * proc)
 void SaveSupports(DebuggerProc * proc)
 {
     struct Unit * unit = proc->unit;
+    u8 * row = GetUnitBwlSupportRow(unit);
+    if (!row)
+    {
+        return;
+    }
     for (int i = 0; i < SupportOptions; ++i)
     {
-        unit->supports[i] = proc->tmp[i];
+        row[i] = proc->tmp[i];
     }
 }
 

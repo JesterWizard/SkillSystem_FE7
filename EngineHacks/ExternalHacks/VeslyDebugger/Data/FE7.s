@@ -1213,12 +1213,12 @@ GetMostSignificantDigit:
 	blt	.L116		@,
 @ Data/FE6_FE7.c:560:     int result = 0;
 	movs	r2, #0	@ result,
-	adds	r3, r3, #8	@ ivtmp.342,
+	adds	r3, r3, #8	@ ivtmp.343,
 .L114:
 @ Data/FE6_FE7.c:561:     while (val >= pDigitTable[type][result + 1])
-	adds	r3, r3, #4	@ ivtmp.342,
+	adds	r3, r3, #4	@ ivtmp.343,
 @ Data/FE6_FE7.c:561:     while (val >= pDigitTable[type][result + 1])
-	subs	r1, r3, #4	@ tmp129, ivtmp.342,
+	subs	r1, r3, #4	@ tmp129, ivtmp.343,
 @ Data/FE6_FE7.c:561:     while (val >= pDigitTable[type][result + 1])
 	ldr	r1, [r1]	@ MEM[(const int *)_8 + 4294967292B], MEM[(const int *)_8 + 4294967292B]
 @ Data/FE6_FE7.c:563:         result++;
@@ -1316,14 +1316,14 @@ RedrawStateMenu:
 @ Data/FE6_FE7.c:773:     u32 state = proc->tmp[0] | (proc->tmp[1] << 16);
 	orrs	r3, r2	@ tmp156, tmp158
 	mov	r8, r3	@ _7, tmp156
-	ldr	r3, .L137+8	@ ivtmp.404,
-	mov	fp, r3	@ ivtmp.404, ivtmp.404
+	ldr	r3, .L137+8	@ ivtmp.405,
+	mov	fp, r3	@ ivtmp.405, ivtmp.405
 	movs	r3, #128	@ _145,
-	mov	r4, fp	@ ivtmp.415, ivtmp.404
+	mov	r4, fp	@ ivtmp.416, ivtmp.405
 @ Data/FE6_FE7.c:775:     for (int i = 0; i < NumberOfState; ++i)
 	movs	r5, #0	@ i,
 	lsls	r3, r3, #1	@ _145, _145,
-	add	r3, r3, fp	@ _145, ivtmp.404
+	add	r3, r3, fp	@ _145, ivtmp.405
 	mov	r10, r3	@ _145, _145
 	ldr	r3, .L137+12	@ tmp171,
 	mov	r9, r3	@ tmp171, tmp171
@@ -1335,7 +1335,7 @@ RedrawStateMenu:
 	str	r3, [sp, #8]	@ tmp174, %sfp
 @ Data/FE6_FE7.c:787:             Text_DrawString(&th[i], states[i]);
 	ldr	r3, .L137+24	@ tmp175,
-	ldr	r7, .L137+28	@ ivtmp.417,
+	ldr	r7, .L137+28	@ ivtmp.418,
 	str	r3, [sp, #12]	@ tmp175, %sfp
 .L126:
 @ Data/FE6_FE7.c:777:         c = state & (1 << i);
@@ -1351,103 +1351,103 @@ RedrawStateMenu:
 	movs	r6, #3	@ c,
 .L124:
 @ Data/FE6_FE7.c:783:         if (Text_GetColor(&th[i]) != c)
-	movs	r0, r4	@, ivtmp.415
+	movs	r0, r4	@, ivtmp.416
 	bl	.L139		@
 @ Data/FE6_FE7.c:783:         if (Text_GetColor(&th[i]) != c)
 	cmp	r0, r6	@ tmp177, c
 	beq	.L125		@,
 @ Data/FE6_FE7.c:785:             ClearText(&th[i]);
-	movs	r0, r4	@, ivtmp.415
+	movs	r0, r4	@, ivtmp.416
 	ldr	r3, [sp, #4]	@ tmp173, %sfp
 	bl	.L17		@
 @ Data/FE6_FE7.c:786:             Text_SetColor(&th[i], c);
 	movs	r1, r6	@, c
-	movs	r0, r4	@, ivtmp.415
+	movs	r0, r4	@, ivtmp.416
 	ldr	r3, [sp, #8]	@ tmp174, %sfp
 	bl	.L17		@
 @ Data/FE6_FE7.c:787:             Text_DrawString(&th[i], states[i]);
-	movs	r1, r7	@, ivtmp.417
-	movs	r0, r4	@, ivtmp.415
+	movs	r1, r7	@, ivtmp.418
+	movs	r0, r4	@, ivtmp.416
 	ldr	r3, [sp, #12]	@ tmp175, %sfp
 	bl	.L17		@
 .L125:
 @ Data/FE6_FE7.c:775:     for (int i = 0; i < NumberOfState; ++i)
-	adds	r4, r4, #8	@ ivtmp.415,
+	adds	r4, r4, #8	@ ivtmp.416,
 @ Data/FE6_FE7.c:775:     for (int i = 0; i < NumberOfState; ++i)
 	adds	r5, r5, #1	@ i,
 @ Data/FE6_FE7.c:775:     for (int i = 0; i < NumberOfState; ++i)
-	adds	r7, r7, #16	@ ivtmp.417,
-	cmp	r4, r10	@ ivtmp.415, _145
+	adds	r7, r7, #16	@ ivtmp.418,
+	cmp	r4, r10	@ ivtmp.416, _145
 	bne	.L126		@,
 	movs	r3, #132	@ _135,
 	rsbs	r3, r3, #0	@ _135, _135
 	mov	r8, r3	@ _135, _135
 	movs	r3, #128	@ tmp196,
-	ldr	r4, .L137+32	@ ivtmp.406,
+	ldr	r4, .L137+32	@ ivtmp.407,
 	lsls	r3, r3, #3	@ tmp196, tmp196,
 	ldr	r5, .L137+36	@ tmp172,
-	add	r8, r8, r4	@ _135, ivtmp.406
-	adds	r6, r4, r3	@ _136, ivtmp.406, tmp196
+	add	r8, r8, r4	@ _135, ivtmp.407
+	adds	r6, r4, r3	@ _136, ivtmp.407, tmp196
 .L127:
 @ Data/FE6_FE7.c:795:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
-	movs	r1, r4	@, ivtmp.406
-	mov	r0, fp	@, ivtmp.404
+	movs	r1, r4	@, ivtmp.407
+	mov	r0, fp	@, ivtmp.405
 	bl	.L28		@
 @ Data/FE6_FE7.c:793:     for (int i = 0; i < 8; ++i)
 	movs	r3, #8	@ tmp197,
 	mov	ip, r3	@ tmp197, tmp197
-	adds	r4, r4, #128	@ ivtmp.406,
-	add	fp, fp, ip	@ ivtmp.404, tmp197
-	cmp	r4, r6	@ ivtmp.406, _136
+	adds	r4, r4, #128	@ ivtmp.407,
+	add	fp, fp, ip	@ ivtmp.405, tmp197
+	cmp	r4, r6	@ ivtmp.407, _136
 	bne	.L127		@,
 	ldr	r7, .L137+40	@ _126,
-	ldr	r6, .L137+44	@ ivtmp.393,
-	ldr	r4, .L137+48	@ ivtmp.395,
+	ldr	r6, .L137+44	@ ivtmp.394,
+	ldr	r4, .L137+48	@ ivtmp.396,
 	add	r7, r7, r8	@ _126, _135
 .L128:
 @ Data/FE6_FE7.c:801:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
-	movs	r1, r4	@, ivtmp.395
-	movs	r0, r6	@, ivtmp.393
+	movs	r1, r4	@, ivtmp.396
+	movs	r0, r6	@, ivtmp.394
 @ Data/FE6_FE7.c:799:     for (int i = 0; i < 8; ++i)
-	adds	r4, r4, #128	@ ivtmp.395,
+	adds	r4, r4, #128	@ ivtmp.396,
 @ Data/FE6_FE7.c:801:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
 	bl	.L28		@
 @ Data/FE6_FE7.c:799:     for (int i = 0; i < 8; ++i)
-	adds	r6, r6, #8	@ ivtmp.393,
-	cmp	r4, r7	@ ivtmp.395, _126
+	adds	r6, r6, #8	@ ivtmp.394,
+	cmp	r4, r7	@ ivtmp.396, _126
 	bne	.L128		@,
 	movs	r7, #148	@ _52,
-	ldr	r6, .L137+52	@ ivtmp.380,
+	ldr	r6, .L137+52	@ ivtmp.381,
 	lsls	r7, r7, #3	@ _52, _52,
-	ldr	r4, .L137+56	@ ivtmp.382,
+	ldr	r4, .L137+56	@ ivtmp.383,
 	add	r7, r7, r8	@ _52, _135
 .L129:
 @ Data/FE6_FE7.c:807:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
-	movs	r1, r4	@, ivtmp.382
-	movs	r0, r6	@, ivtmp.380
+	movs	r1, r4	@, ivtmp.383
+	movs	r0, r6	@, ivtmp.381
 @ Data/FE6_FE7.c:805:     for (int i = 0; i < 8; ++i)
-	adds	r4, r4, #128	@ ivtmp.382,
+	adds	r4, r4, #128	@ ivtmp.383,
 @ Data/FE6_FE7.c:807:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
 	bl	.L28		@
 @ Data/FE6_FE7.c:805:     for (int i = 0; i < 8; ++i)
-	adds	r6, r6, #8	@ ivtmp.380,
-	cmp	r7, r4	@ _52, ivtmp.382
+	adds	r6, r6, #8	@ ivtmp.381,
+	cmp	r7, r4	@ _52, ivtmp.383
 	bne	.L129		@,
 	ldr	r7, .L137+60	@ _83,
-	ldr	r6, .L137+64	@ ivtmp.367,
-	ldr	r4, .L137+68	@ ivtmp.369,
+	ldr	r6, .L137+64	@ ivtmp.368,
+	ldr	r4, .L137+68	@ ivtmp.370,
 	add	r7, r7, r8	@ _83, _135
 .L130:
 @ Data/FE6_FE7.c:813:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
-	movs	r1, r4	@, ivtmp.369
-	movs	r0, r6	@, ivtmp.367
+	movs	r1, r4	@, ivtmp.370
+	movs	r0, r6	@, ivtmp.368
 @ Data/FE6_FE7.c:811:     for (int i = 0; i < 8; ++i)
-	adds	r4, r4, #128	@ ivtmp.369,
+	adds	r4, r4, #128	@ ivtmp.370,
 @ Data/FE6_FE7.c:813:         PutText(&th[c], gBG0TilemapBuffer + TILEMAP_INDEX(x, y + (i * 2)));
 	bl	.L28		@
 @ Data/FE6_FE7.c:811:     for (int i = 0; i < 8; ++i)
-	adds	r6, r6, #8	@ ivtmp.367,
-	cmp	r7, r4	@ _83, ivtmp.369
+	adds	r6, r6, #8	@ ivtmp.368,
+	cmp	r7, r4	@ _83, ivtmp.370
 	bne	.L130		@,
 @ Data/FE6_FE7.c:817:     BG_EnableSyncByMask(BG0_SYNC_BIT);
 	movs	r0, #1	@,
@@ -1552,28 +1552,28 @@ StateInit:
 	movs	r1, #1	@,
 	movs	r0, #1	@,
 	bl	.L27		@
-	ldr	r4, .L143+36	@ ivtmp.428,
-	adds	r3, r4, #1	@ _43, ivtmp.428,
+	ldr	r4, .L143+36	@ ivtmp.429,
+	adds	r3, r4, #1	@ _43, ivtmp.429,
 	adds	r3, r3, #255	@ _43,
 	mov	r8, r3	@ _43, _43
-	ldr	r5, .L143+40	@ ivtmp.430,
+	ldr	r5, .L143+40	@ ivtmp.431,
 	ldr	r7, .L143+44	@ tmp141,
 	ldr	r6, .L143+48	@ tmp142,
 .L141:
 @ Data/FE6_FE7.c:758:         InitText(&th[i], StateWidth);
-	movs	r0, r4	@, ivtmp.428
+	movs	r0, r4	@, ivtmp.429
 	movs	r1, #7	@,
 	bl	.L145		@
 @ Data/FE6_FE7.c:759:         Text_DrawString(&th[i], states[i]);
-	movs	r1, r5	@, ivtmp.430
-	movs	r0, r4	@, ivtmp.428
+	movs	r1, r5	@, ivtmp.431
+	movs	r0, r4	@, ivtmp.429
 @ Data/FE6_FE7.c:756:     for (int i = 0; i < NumberOfState; ++i)
-	adds	r4, r4, #8	@ ivtmp.428,
+	adds	r4, r4, #8	@ ivtmp.429,
 @ Data/FE6_FE7.c:759:         Text_DrawString(&th[i], states[i]);
 	bl	.L38		@
 @ Data/FE6_FE7.c:756:     for (int i = 0; i < NumberOfState; ++i)
-	adds	r5, r5, #16	@ ivtmp.430,
-	cmp	r4, r8	@ ivtmp.428, _43
+	adds	r5, r5, #16	@ ivtmp.431,
+	cmp	r4, r8	@ ivtmp.429, _43
 	bne	.L141		@,
 @ Data/FE6_FE7.c:761:     StartGreenText(proc);
 	mov	r0, r9	@, proc
@@ -1835,44 +1835,44 @@ RedrawUnitStatsMenu:
 	rsbs	r3, r3, #0	@ _55, _55
 	mov	r9, r3	@ _55, _55
 	ldr	r3, .L191+12	@ tmp147,
-	movs	r4, r7	@ ivtmp.461, tmp129
+	movs	r4, r7	@ ivtmp.462, tmp129
 	mov	ip, r3	@ tmp147, tmp147
-	ldr	r6, .L191+16	@ ivtmp.459,
+	ldr	r6, .L191+16	@ ivtmp.460,
 	ldr	r5, .L191+20	@ tmp138,
 	add	r9, r9, r7	@ _55, tmp129
-	subs	r4, r4, #68	@ ivtmp.461,
+	subs	r4, r4, #68	@ ivtmp.462,
 	add	r7, r7, ip	@ _56, tmp147
 .L187:
 @ Data/FE6_FE7.c:962:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, (Y_HAND - 1) + (i * 2)));
-	movs	r1, r4	@, ivtmp.461
-	movs	r0, r6	@, ivtmp.459
+	movs	r1, r4	@, ivtmp.462
+	movs	r0, r6	@, ivtmp.460
 @ Data/FE6_FE7.c:960:     for (int i = 0; i < NumberOfOptions; ++i)
-	adds	r4, r4, #128	@ ivtmp.461,
+	adds	r4, r4, #128	@ ivtmp.462,
 @ Data/FE6_FE7.c:962:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, (Y_HAND - 1) + (i * 2)));
 	bl	.L28		@
 @ Data/FE6_FE7.c:960:     for (int i = 0; i < NumberOfOptions; ++i)
-	adds	r6, r6, #8	@ ivtmp.459,
-	cmp	r4, r7	@ ivtmp.461, _56
+	adds	r6, r6, #8	@ ivtmp.460,
+	cmp	r4, r7	@ ivtmp.462, _56
 	bne	.L187		@,
 	mov	r5, r10	@ proc, proc
 	ldr	r6, .L191+24	@ _46,
-	ldr	r4, .L191+28	@ ivtmp.450,
+	ldr	r4, .L191+28	@ ivtmp.451,
 	ldr	r7, .L191+32	@ tmp136,
 	adds	r5, r5, #64	@ proc,
 	add	r6, r6, r9	@ _46, _55
 .L188:
 @ Data/FE6_FE7.c:967:         PutNumber(
-	movs	r0, r4	@, ivtmp.450
+	movs	r0, r4	@, ivtmp.451
 	movs	r3, #0	@ tmp142,
-	ldrsh	r2, [r5, r3]	@ MEM[(short int *)_44], ivtmp.448, tmp142
+	ldrsh	r2, [r5, r3]	@ MEM[(short int *)_44], ivtmp.449, tmp142
 	movs	r1, #3	@,
 @ Data/FE6_FE7.c:965:     for (int i = 0; i < NumberOfOptions; ++i)
-	adds	r4, r4, #128	@ ivtmp.450,
+	adds	r4, r4, #128	@ ivtmp.451,
 @ Data/FE6_FE7.c:967:         PutNumber(
 	bl	.L145		@
 @ Data/FE6_FE7.c:965:     for (int i = 0; i < NumberOfOptions; ++i)
-	adds	r5, r5, #2	@ ivtmp.448,
-	cmp	r4, r6	@ ivtmp.450, _46
+	adds	r5, r5, #2	@ ivtmp.449,
+	cmp	r4, r6	@ ivtmp.451, _46
 	bne	.L188		@,
 @ Data/FE6_FE7.c:972: }
 	@ sp needed	@
@@ -1977,15 +1977,15 @@ EditStatsIdle:
 	bgt	.LCB1547	@
 	b	.L221	@long jump	@
 .LCB1547:
-	mov	r3, r9	@ ivtmp.472, tmp429
+	mov	r3, r9	@ ivtmp.473, tmp429
 @ Data/FE6_FE7.c:546:     int result = 1;
 	subs	r5, r5, #47	@ result,
-	adds	r3, r3, #76	@ ivtmp.472,
+	adds	r3, r3, #76	@ ivtmp.473,
 .L199:
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	adds	r3, r3, #4	@ ivtmp.472,
+	adds	r3, r3, #4	@ ivtmp.473,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	subs	r1, r3, #4	@ tmp288, ivtmp.472,
+	subs	r1, r3, #4	@ tmp288, ivtmp.473,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	ldr	r1, [r1]	@ MEM[(const int *)_114 + 4294967292B], MEM[(const int *)_114 + 4294967292B]
 @ Data/FE6_FE7.c:549:         result++;
@@ -2450,19 +2450,19 @@ EditStatsInit:
 	ldr	r3, .L267+36	@ tmp207,
 	movs	r6, r3	@ _66, tmp207
 	mov	r8, r3	@ tmp207, tmp207
-	movs	r4, r3	@ ivtmp.484, tmp207
+	movs	r4, r3	@ ivtmp.485, tmp207
 	ldr	r5, .L267+40	@ tmp208,
 	adds	r6, r6, #120	@ _66,
 .L265:
 @ Data/FE6_FE7.c:922:         InitText(&th[i], StatWidth);
-	movs	r0, r4	@, ivtmp.484
+	movs	r0, r4	@, ivtmp.485
 	movs	r1, #4	@,
 @ Data/FE6_FE7.c:920:     for (int i = 0; i < 15; ++i)
-	adds	r4, r4, #8	@ ivtmp.484,
+	adds	r4, r4, #8	@ ivtmp.485,
 @ Data/FE6_FE7.c:922:         InitText(&th[i], StatWidth);
 	bl	.L28		@
 @ Data/FE6_FE7.c:920:     for (int i = 0; i < 15; ++i)
-	cmp	r4, r6	@ ivtmp.484, _66
+	cmp	r4, r6	@ ivtmp.485, _66
 	bne	.L265		@,
 @ Data/FE6_FE7.c:926:     Text_DrawString(&th[c], MaxHPText);
 	ldr	r4, .L267+44	@ tmp182,
@@ -2577,21 +2577,21 @@ RedrawItemMenu:
 @ Data/FE6_FE7.c:1010:     ResetIconGraphics();
 	ldr	r3, .L308+12	@ tmp175,
 	bl	.L17		@
-	add	r3, sp, #12	@ ivtmp.527,,
-	mov	r8, r3	@ ivtmp.527, ivtmp.527
-	movs	r7, r3	@ ivtmp.562, ivtmp.527
+	add	r3, sp, #12	@ ivtmp.528,,
+	mov	r8, r3	@ ivtmp.528, ivtmp.528
+	movs	r7, r3	@ ivtmp.563, ivtmp.528
 	ldr	r3, .L308+16	@ tmp212,
 	mov	r10, r3	@ tmp212, tmp212
 @ Data/FE6_FE7.c:1016:         itemData[i] = GetItemData(proc->tmp[i] & 0xFF);
 	movs	r3, #255	@ tmp181,
-	movs	r5, r4	@ ivtmp.501, proc
+	movs	r5, r4	@ ivtmp.502, proc
 	mov	r9, r3	@ tmp181, tmp181
 	mov	r3, r10	@ tmp212, tmp212
-	adds	r5, r5, #64	@ ivtmp.501,
+	adds	r5, r5, #64	@ ivtmp.502,
 @ Data/FE6_FE7.c:1010:     ResetIconGraphics();
-	movs	r6, r5	@ ivtmp.560, ivtmp.501
+	movs	r6, r5	@ ivtmp.561, ivtmp.502
 @ Data/FE6_FE7.c:1016:         itemData[i] = GetItemData(proc->tmp[i] & 0xFF);
-	mov	r10, r5	@ ivtmp.501, ivtmp.501
+	mov	r10, r5	@ ivtmp.502, ivtmp.502
 	movs	r5, r3	@ tmp212, tmp212
 	adds	r4, r4, #74	@ _186,
 .L270:
@@ -2600,17 +2600,17 @@ RedrawItemMenu:
 	ands	r0, r3	@ tmp182, tmp181
 	bl	.L28		@
 @ Data/FE6_FE7.c:1014:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.560,
+	adds	r6, r6, #2	@ ivtmp.561,
 @ Data/FE6_FE7.c:1016:         itemData[i] = GetItemData(proc->tmp[i] & 0xFF);
 	stmia	r7!, {r0}	@ MEM[(const struct ItemData * *)_184], tmp223
 @ Data/FE6_FE7.c:1014:     for (int i = 0; i < NumberOfItems; ++i)
-	cmp	r6, r4	@ ivtmp.560, _186
+	cmp	r6, r4	@ ivtmp.561, _186
 	bne	.L270		@,
-	ldr	r3, .L308+20	@ ivtmp.537,
-	mov	r9, r3	@ ivtmp.537, ivtmp.537
-	movs	r7, r3	@ ivtmp.549, ivtmp.537
+	ldr	r3, .L308+20	@ ivtmp.538,
+	mov	r9, r3	@ ivtmp.538, ivtmp.538
+	movs	r7, r3	@ ivtmp.550, ivtmp.538
 	ldr	r3, .L308+24	@ tmp213,
-	mov	r5, r10	@ ivtmp.501, ivtmp.501
+	mov	r5, r10	@ ivtmp.502, ivtmp.502
 	mov	r10, r3	@ tmp213, tmp213
 @ Data/FE6_FE7.c:1025:             if (GetItemDescId(proc->tmp[i] & 0xFFFF) < 0x4000)
 	ldr	r3, .L308+28	@ tmp220,
@@ -2618,24 +2618,24 @@ RedrawItemMenu:
 @ Data/FE6_FE7.c:1025:             if (GetItemDescId(proc->tmp[i] & 0xFFFF) < 0x4000)
 	mov	r3, r10	@ tmp213, tmp213
 @ Data/FE6_FE7.c:1014:     for (int i = 0; i < NumberOfItems; ++i)
-	movs	r6, r5	@ ivtmp.551, ivtmp.501
+	movs	r6, r5	@ ivtmp.552, ivtmp.502
 @ Data/FE6_FE7.c:1025:             if (GetItemDescId(proc->tmp[i] & 0xFFFF) < 0x4000)
-	mov	r10, r5	@ ivtmp.501, ivtmp.501
+	mov	r10, r5	@ ivtmp.502, ivtmp.502
 	movs	r5, r3	@ tmp213, tmp213
 	b	.L274		@
 .L272:
 @ Data/FE6_FE7.c:1019:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.551,
-	adds	r7, r7, #8	@ ivtmp.549,
-	cmp	r6, r4	@ ivtmp.551, _186
+	adds	r6, r6, #2	@ ivtmp.552,
+	adds	r7, r7, #8	@ ivtmp.550,
+	cmp	r6, r4	@ ivtmp.552, _186
 	beq	.L305		@,
 .L274:
 @ Data/FE6_FE7.c:1021:         ClearText(&th[i]);
-	movs	r0, r7	@, ivtmp.549
+	movs	r0, r7	@, ivtmp.550
 	bl	.L28		@
 @ Data/FE6_FE7.c:1022:         if (proc->tmp[i])
 	movs	r3, #0	@ tmp278,
-	ldrsh	r0, [r6, r3]	@ _7, ivtmp.551, tmp278
+	ldrsh	r0, [r6, r3]	@ _7, ivtmp.552, tmp278
 @ Data/FE6_FE7.c:1022:         if (proc->tmp[i])
 	cmp	r0, #0	@ _7,
 	beq	.L272		@,
@@ -2663,72 +2663,72 @@ RedrawItemMenu:
 @ Data/FE6_FE7.c:1030:                     Text_DrawString(&th[i], str);
 	movs	r1, r0	@, str
 	ldr	r3, .L308+36	@ tmp194,
-	movs	r0, r7	@, ivtmp.549
+	movs	r0, r7	@, ivtmp.550
 @ Data/FE6_FE7.c:1019:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.551,
+	adds	r6, r6, #2	@ ivtmp.552,
 @ Data/FE6_FE7.c:1030:                     Text_DrawString(&th[i], str);
 	bl	.L17		@
 @ Data/FE6_FE7.c:1019:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r7, r7, #8	@ ivtmp.549,
-	cmp	r6, r4	@ ivtmp.551, _186
+	adds	r7, r7, #8	@ ivtmp.550,
+	cmp	r6, r4	@ ivtmp.552, _186
 	bne	.L274		@,
 .L305:
 @ Data/FE6_FE7.c:1041:             PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
 	ldr	r3, .L308+40	@ tmp219,
-	mov	r5, r10	@ ivtmp.501, ivtmp.501
+	mov	r5, r10	@ ivtmp.502, ivtmp.502
 	mov	r10, r3	@ tmp219, tmp219
 	movs	r3, r4	@ _186, _186
-	ldr	r7, .L308+44	@ ivtmp.539,
+	ldr	r7, .L308+44	@ ivtmp.540,
 @ Data/FE6_FE7.c:1019:     for (int i = 0; i < NumberOfItems; ++i)
-	movs	r6, r5	@ ivtmp.535, ivtmp.501
+	movs	r6, r5	@ ivtmp.536, ivtmp.502
 @ Data/FE6_FE7.c:1041:             PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
-	movs	r4, r7	@ ivtmp.539, ivtmp.539
-	mov	r7, r9	@ ivtmp.537, ivtmp.537
-	mov	r9, r5	@ ivtmp.501, ivtmp.501
+	movs	r4, r7	@ ivtmp.540, ivtmp.540
+	mov	r7, r9	@ ivtmp.538, ivtmp.538
+	mov	r9, r5	@ ivtmp.502, ivtmp.502
 	movs	r5, r3	@ _186, _186
 	b	.L276		@
 .L275:
 @ Data/FE6_FE7.c:1037:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.535,
-	adds	r7, r7, #8	@ ivtmp.537,
-	adds	r4, r4, #128	@ ivtmp.539,
-	cmp	r6, r5	@ ivtmp.535, _186
+	adds	r6, r6, #2	@ ivtmp.536,
+	adds	r7, r7, #8	@ ivtmp.538,
+	adds	r4, r4, #128	@ ivtmp.540,
+	cmp	r6, r5	@ ivtmp.536, _186
 	beq	.L306		@,
 .L276:
 @ Data/FE6_FE7.c:1039:         if (proc->tmp[i])
 	movs	r2, #0	@ tmp279,
-	ldrsh	r3, [r6, r2]	@ MEM[(short int *)_161], ivtmp.535, tmp279
+	ldrsh	r3, [r6, r2]	@ MEM[(short int *)_161], ivtmp.536, tmp279
 	cmp	r3, #0	@ MEM[(short int *)_161],
 	beq	.L275		@,
 @ Data/FE6_FE7.c:1041:             PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
-	movs	r1, r4	@, ivtmp.539
-	movs	r0, r7	@, ivtmp.537
+	movs	r1, r4	@, ivtmp.540
+	movs	r0, r7	@, ivtmp.538
 @ Data/FE6_FE7.c:1037:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.535,
+	adds	r6, r6, #2	@ ivtmp.536,
 @ Data/FE6_FE7.c:1041:             PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
 	bl	.L310		@
 @ Data/FE6_FE7.c:1037:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r7, r7, #8	@ ivtmp.537,
-	adds	r4, r4, #128	@ ivtmp.539,
-	cmp	r6, r5	@ ivtmp.535, _186
+	adds	r7, r7, #8	@ ivtmp.538,
+	adds	r4, r4, #128	@ ivtmp.540,
+	cmp	r6, r5	@ ivtmp.536, _186
 	bne	.L276		@,
 .L306:
-	ldr	r3, .L308+48	@ ivtmp.525,
+	ldr	r3, .L308+48	@ ivtmp.526,
 	ldr	r7, .L308+52	@ tmp209,
 	movs	r4, r5	@ _186, _186
-	mov	r5, r9	@ ivtmp.501, ivtmp.501
-	mov	r9, r3	@ ivtmp.525, ivtmp.525
+	mov	r5, r9	@ ivtmp.502, ivtmp.502
+	mov	r9, r3	@ ivtmp.526, ivtmp.526
 	movs	r3, r7	@ tmp209, tmp209
-	movs	r6, r5	@ ivtmp.523, ivtmp.501
+	movs	r6, r5	@ ivtmp.524, ivtmp.502
 	movs	r7, r4	@ _186, _186
-	mov	r4, r9	@ ivtmp.525, ivtmp.525
-	mov	r9, r5	@ ivtmp.501, ivtmp.501
-	mov	r5, r8	@ ivtmp.527, ivtmp.527
+	mov	r4, r9	@ ivtmp.526, ivtmp.526
+	mov	r9, r5	@ ivtmp.502, ivtmp.502
+	mov	r5, r8	@ ivtmp.528, ivtmp.528
 	mov	r8, r3	@ tmp209, tmp209
 .L278:
 @ Data/FE6_FE7.c:1047:         if (proc->tmp[i])
 	movs	r2, #0	@ tmp280,
-	ldrsh	r3, [r6, r2]	@ MEM[(short int *)_145], ivtmp.523, tmp280
+	ldrsh	r3, [r6, r2]	@ MEM[(short int *)_145], ivtmp.524, tmp280
 @ Data/FE6_FE7.c:1053:             n = 0;
 	movs	r2, #0	@ n,
 @ Data/FE6_FE7.c:1047:         if (proc->tmp[i])
@@ -2740,36 +2740,36 @@ RedrawItemMenu:
 	ldrb	r2, [r3, #6]	@ n,
 .L277:
 @ Data/FE6_FE7.c:2772:     PutNumber(tm, color, number);
-	movs	r0, r4	@, ivtmp.525
+	movs	r0, r4	@, ivtmp.526
 	movs	r1, #3	@,
 @ Data/FE6_FE7.c:1045:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.523,
+	adds	r6, r6, #2	@ ivtmp.524,
 @ Data/FE6_FE7.c:2772:     PutNumber(tm, color, number);
 	bl	.L193		@
 @ Data/FE6_FE7.c:1045:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r4, r4, #128	@ ivtmp.525,
-	adds	r5, r5, #4	@ ivtmp.527,
-	cmp	r6, r7	@ ivtmp.523, _186
+	adds	r4, r4, #128	@ ivtmp.526,
+	adds	r5, r5, #4	@ ivtmp.528,
+	cmp	r6, r7	@ ivtmp.524, _186
 	bne	.L278		@,
-	ldr	r3, .L308+56	@ ivtmp.514,
+	ldr	r3, .L308+56	@ ivtmp.515,
 	movs	r4, r7	@ _186, _186
 	mov	r7, r8	@ tmp209, tmp209
-	mov	r8, r3	@ ivtmp.514, ivtmp.514
+	mov	r8, r3	@ ivtmp.515, ivtmp.515
 @ Data/FE6_FE7.c:1062:             n = (proc->tmp[i] & 0xFF00) >> 8;
 	movs	r3, #255	@ tmp217,
-	mov	r5, r9	@ ivtmp.501, ivtmp.501
+	mov	r5, r9	@ ivtmp.502, ivtmp.502
 	mov	r9, r3	@ tmp217, tmp217
 	movs	r3, r7	@ tmp209, tmp209
 @ Data/FE6_FE7.c:1045:     for (int i = 0; i < NumberOfItems; ++i)
-	movs	r6, r5	@ ivtmp.512, ivtmp.501
+	movs	r6, r5	@ ivtmp.513, ivtmp.502
 @ Data/FE6_FE7.c:1062:             n = (proc->tmp[i] & 0xFF00) >> 8;
-	mov	r7, r8	@ ivtmp.514, ivtmp.514
-	mov	r8, r5	@ ivtmp.501, ivtmp.501
+	mov	r7, r8	@ ivtmp.515, ivtmp.515
+	mov	r8, r5	@ ivtmp.502, ivtmp.502
 	movs	r5, r3	@ tmp209, tmp209
 .L280:
 @ Data/FE6_FE7.c:1060:         if (proc->tmp[i])
 	movs	r2, #0	@ tmp281,
-	ldrsh	r3, [r6, r2]	@ _32, ivtmp.512, tmp281
+	ldrsh	r3, [r6, r2]	@ _32, ivtmp.513, tmp281
 @ Data/FE6_FE7.c:1066:             n = 0;
 	movs	r2, #0	@ n,
 @ Data/FE6_FE7.c:1060:         if (proc->tmp[i])
@@ -2782,54 +2782,54 @@ RedrawItemMenu:
 	ands	r2, r3	@ n, tmp217
 .L279:
 @ Data/FE6_FE7.c:1068:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X + 3, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, n);
-	movs	r0, r7	@, ivtmp.514
+	movs	r0, r7	@, ivtmp.515
 	movs	r1, #3	@,
 @ Data/FE6_FE7.c:1058:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #2	@ ivtmp.512,
+	adds	r6, r6, #2	@ ivtmp.513,
 @ Data/FE6_FE7.c:1068:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X + 3, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, n);
 	bl	.L28		@
 @ Data/FE6_FE7.c:1058:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r7, r7, #128	@ ivtmp.514,
-	cmp	r6, r4	@ ivtmp.512, _186
+	adds	r7, r7, #128	@ ivtmp.515,
+	cmp	r6, r4	@ ivtmp.513, _186
 	bne	.L280		@,
 @ Data/FE6_FE7.c:1079:                 DrawIcon(TILEMAP_LOCATED(gBG0TilemapBuffer, x - 2, Y_HAND + (i * 2)), icon, 0x4000);
 	ldr	r3, .L308+60	@ tmp215,
-	mov	r5, r8	@ ivtmp.501, ivtmp.501
-	ldr	r6, .L308+64	@ ivtmp.503,
+	mov	r5, r8	@ ivtmp.502, ivtmp.502
+	ldr	r6, .L308+64	@ ivtmp.504,
 	mov	r8, r3	@ tmp215, tmp215
 	ldr	r7, .L308+68	@ tmp210,
 	b	.L282		@
 .L281:
 @ Data/FE6_FE7.c:1072:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r5, r5, #2	@ ivtmp.501,
-	adds	r6, r6, #128	@ ivtmp.503,
-	cmp	r5, r4	@ ivtmp.501, _186
+	adds	r5, r5, #2	@ ivtmp.502,
+	adds	r6, r6, #128	@ ivtmp.504,
+	cmp	r5, r4	@ ivtmp.502, _186
 	beq	.L307		@,
 .L282:
 @ Data/FE6_FE7.c:1074:         icon = GetItemIconId(proc->tmp[i]);
 	movs	r3, #0	@ tmp282,
-	ldrsh	r0, [r5, r3]	@ MEM[(short int *)_96], ivtmp.501, tmp282
+	ldrsh	r0, [r5, r3]	@ MEM[(short int *)_96], ivtmp.502, tmp282
 	bl	.L145		@
 @ Data/FE6_FE7.c:1075:         if (icon >= 0)
 	cmp	r0, #0	@ icon,
 	blt	.L281		@,
 @ Data/FE6_FE7.c:1077:             if (proc->tmp[i])
 	movs	r2, #0	@ tmp283,
-	ldrsh	r3, [r5, r2]	@ MEM[(short int *)_96], ivtmp.501, tmp283
+	ldrsh	r3, [r5, r2]	@ MEM[(short int *)_96], ivtmp.502, tmp283
 	cmp	r3, #0	@ MEM[(short int *)_96],
 	beq	.L281		@,
 @ Data/FE6_FE7.c:1079:                 DrawIcon(TILEMAP_LOCATED(gBG0TilemapBuffer, x - 2, Y_HAND + (i * 2)), icon, 0x4000);
 	movs	r2, #128	@,
 	movs	r1, r0	@, icon
 	lsls	r2, r2, #7	@,,
-	movs	r0, r6	@, ivtmp.503
+	movs	r0, r6	@, ivtmp.504
 @ Data/FE6_FE7.c:1072:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r5, r5, #2	@ ivtmp.501,
+	adds	r5, r5, #2	@ ivtmp.502,
 @ Data/FE6_FE7.c:1079:                 DrawIcon(TILEMAP_LOCATED(gBG0TilemapBuffer, x - 2, Y_HAND + (i * 2)), icon, 0x4000);
 	bl	.L193		@
 @ Data/FE6_FE7.c:1072:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r6, r6, #128	@ ivtmp.503,
-	cmp	r5, r4	@ ivtmp.501, _186
+	adds	r6, r6, #128	@ ivtmp.504,
+	cmp	r5, r4	@ ivtmp.502, _186
 	bne	.L282		@,
 .L307:
 @ Data/FE6_FE7.c:1084:     BG_EnableSyncByMask(BG0_SYNC_BIT);
@@ -2948,20 +2948,20 @@ EditItemsInit:
 	movs	r0, #6	@,
 	adds	r3, r3, #12	@,
 	bl	.L27		@
-	ldr	r4, .L315+40	@ ivtmp.575,
-	movs	r7, r4	@ _58, ivtmp.575
+	ldr	r4, .L315+40	@ ivtmp.576,
+	movs	r7, r4	@ _58, ivtmp.576
 	ldr	r6, .L315+44	@ tmp160,
 	adds	r7, r7, #40	@ _58,
 .L313:
 @ Data/FE6_FE7.c:998:         InitText(&th[i], ItemNameWidth);
-	movs	r0, r4	@, ivtmp.575
+	movs	r0, r4	@, ivtmp.576
 	movs	r1, #8	@,
 @ Data/FE6_FE7.c:996:     for (int i = 0; i < NumberOfItems; ++i)
-	adds	r4, r4, #8	@ ivtmp.575,
+	adds	r4, r4, #8	@ ivtmp.576,
 @ Data/FE6_FE7.c:998:         InitText(&th[i], ItemNameWidth);
 	bl	.L38		@
 @ Data/FE6_FE7.c:996:     for (int i = 0; i < NumberOfItems; ++i)
-	cmp	r4, r7	@ ivtmp.575, _58
+	cmp	r4, r7	@ ivtmp.576, _58
 	bne	.L313		@,
 @ Data/FE6_FE7.c:1001:     RedrawItemMenu(proc);
 	movs	r0, r5	@, proc
@@ -3078,12 +3078,12 @@ EditItemsIdle:
 	bl	DisplayVertUiHand		@
 	ldr	r3, .L434+8	@ tmp651,
 	mov	r8, r3	@ tmp651, tmp651
-	adds	r3, r3, #76	@ ivtmp.594,
+	adds	r3, r3, #76	@ ivtmp.595,
 .L344:
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	adds	r3, r3, #4	@ ivtmp.594,
+	adds	r3, r3, #4	@ ivtmp.595,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	subs	r1, r3, #4	@ tmp499, ivtmp.594,
+	subs	r1, r3, #4	@ tmp499, ivtmp.595,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	ldr	r1, [r1]	@ MEM[(const int *)_146 + 4294967292B], MEM[(const int *)_146 + 4294967292B]
 @ Data/FE6_FE7.c:549:         result++;
@@ -3739,13 +3739,13 @@ AdjustWEXPForClass:
 @ Data/FE6_FE7.c:1314:     const struct ClassData * table = GetClassData(classID);
 	ldr	r3, .L447	@ tmp133,
 	bl	.L17		@
-	movs	r2, r5	@ ivtmp.608, unit
+	movs	r2, r5	@ ivtmp.609, unit
 	movs	r4, r0	@ table, tmp147
 @ Data/FE6_FE7.c:1318:     for (int i = 0; i < 8; ++i)
 	movs	r3, #0	@ i,
 @ Data/FE6_FE7.c:1315:     unit->pClassData = table;
 	str	r0, [r5, #4]	@ table, unit_6(D)->pClassData
-	adds	r2, r2, #40	@ ivtmp.608,
+	adds	r2, r2, #40	@ ivtmp.609,
 	adds	r4, r4, #44	@ tmp142,
 	b	.L444		@
 .L446:
@@ -3755,7 +3755,7 @@ AdjustWEXPForClass:
 @ Data/FE6_FE7.c:1318:     for (int i = 0; i < 8; ++i)
 	adds	r3, r3, #1	@ i,
 @ Data/FE6_FE7.c:1318:     for (int i = 0; i < 8; ++i)
-	adds	r2, r2, #1	@ ivtmp.608,
+	adds	r2, r2, #1	@ ivtmp.609,
 	cmp	r3, #8	@ i,
 	beq	.L438		@,
 .L444:
@@ -3782,7 +3782,7 @@ AdjustWEXPForClass:
 @ Data/FE6_FE7.c:1338:                 unit->ranks[i] = charRank;
 	strb	r0, [r2]	@ _14, MEM[(unsigned char *)_31]
 @ Data/FE6_FE7.c:1318:     for (int i = 0; i < 8; ++i)
-	adds	r2, r2, #1	@ ivtmp.608,
+	adds	r2, r2, #1	@ ivtmp.609,
 	cmp	r3, #8	@ i,
 	bne	.L444		@,
 .L438:
@@ -3916,21 +3916,21 @@ RedrawMiscMenu:
 	bl	.L17		@
 	ldr	r3, .L488+16	@ tmp212,
 	mov	r10, r3	@ tmp212, tmp212
-	movs	r6, r3	@ ivtmp.640, tmp212
+	movs	r6, r3	@ ivtmp.641, tmp212
 	movs	r3, #72	@ _115,
 	add	r3, r3, r10	@ _115, tmp212
 	mov	r9, r3	@ _115, _115
-	mov	r4, r10	@ ivtmp.651, tmp212
+	mov	r4, r10	@ ivtmp.652, tmp212
 	ldr	r7, .L488+20	@ tmp213,
 .L463:
 @ Data/FE6_FE7.c:1471:         ClearText(&th[i]);
-	movs	r0, r4	@, ivtmp.651
+	movs	r0, r4	@, ivtmp.652
 @ Data/FE6_FE7.c:1469:     for (i = 0; i <= NumberOfMisc; ++i)
-	adds	r4, r4, #8	@ ivtmp.651,
+	adds	r4, r4, #8	@ ivtmp.652,
 @ Data/FE6_FE7.c:1471:         ClearText(&th[i]);
 	bl	.L145		@
 @ Data/FE6_FE7.c:1469:     for (i = 0; i <= NumberOfMisc; ++i)
-	cmp	r4, r9	@ ivtmp.651, _115
+	cmp	r4, r9	@ ivtmp.652, _115
 	bne	.L463		@,
 @ Data/FE6_FE7.c:1476:     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(proc->tmp[0])->nameTextId));
 	movs	r3, #64	@ tmp157,
@@ -4032,60 +4032,60 @@ RedrawMiscMenu:
 	mov	r9, r3	@ tmp210, tmp210
 	bl	.L17		@
 	ldr	r3, .L488+80	@ tmp252,
-	adds	r4, r7, r3	@ ivtmp.642, tmp201, tmp252
+	adds	r4, r7, r3	@ ivtmp.643, tmp201, tmp252
 	adds	r7, r7, #116	@ _109,
 .L469:
 @ Data/FE6_FE7.c:1569:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
-	movs	r1, r4	@, ivtmp.642
-	movs	r0, r6	@, ivtmp.640
+	movs	r1, r4	@, ivtmp.643
+	movs	r0, r6	@, ivtmp.641
 @ Data/FE6_FE7.c:1567:     for (i = 0; i < NumberOfMisc; ++i)
-	adds	r4, r4, #128	@ ivtmp.642,
+	adds	r4, r4, #128	@ ivtmp.643,
 @ Data/FE6_FE7.c:1569:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
 	bl	.L139		@
 @ Data/FE6_FE7.c:1567:     for (i = 0; i < NumberOfMisc; ++i)
-	adds	r6, r6, #8	@ ivtmp.640,
-	cmp	r4, r7	@ ivtmp.642, _109
+	adds	r6, r6, #8	@ ivtmp.641,
+	cmp	r4, r7	@ ivtmp.643, _109
 	bne	.L469		@,
-	movs	r4, #0	@ ivtmp.624,
-	ldr	r6, .L488+84	@ ivtmp.631,
+	movs	r4, #0	@ ivtmp.625,
+	ldr	r6, .L488+84	@ ivtmp.632,
 	ldr	r7, .L488+88	@ tmp211,
-	adds	r5, r5, #64	@ ivtmp.629,
+	adds	r5, r5, #64	@ ivtmp.630,
 .L470:
 @ Data/FE6_FE7.c:2772:     PutNumber(tm, color, number);
 	movs	r1, #3	@,
-	movs	r0, r6	@, ivtmp.631
+	movs	r0, r6	@, ivtmp.632
 @ Data/FE6_FE7.c:1581:                 gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
 	movs	r3, #0	@ tmp238,
-	ldrsh	r2, [r5, r3]	@ pretmp_99, ivtmp.629, tmp238
+	ldrsh	r2, [r5, r3]	@ pretmp_99, ivtmp.630, tmp238
 @ Data/FE6_FE7.c:1578:         else if (i < 2)
-	cmp	r4, #1	@ ivtmp.624,
+	cmp	r4, #1	@ ivtmp.625,
 	bls	.L486		@,
 .L471:
 @ Data/FE6_FE7.c:1574:         if (i == 7)
-	adds	r4, r4, #1	@ ivtmp.624,
+	adds	r4, r4, #1	@ ivtmp.625,
 @ Data/FE6_FE7.c:1585:             PutNumber(
 	bl	.L145		@
 @ Data/FE6_FE7.c:1574:         if (i == 7)
-	cmp	r4, #7	@ ivtmp.624,
+	cmp	r4, #7	@ ivtmp.625,
 	beq	.L487		@,
-	adds	r6, r6, #128	@ ivtmp.631,
-	adds	r5, r5, #2	@ ivtmp.629,
+	adds	r6, r6, #128	@ ivtmp.632,
+	adds	r5, r5, #2	@ ivtmp.630,
 @ Data/FE6_FE7.c:2772:     PutNumber(tm, color, number);
 	movs	r1, #3	@,
-	movs	r0, r6	@, ivtmp.631
+	movs	r0, r6	@, ivtmp.632
 @ Data/FE6_FE7.c:1581:                 gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
 	movs	r3, #0	@ tmp238,
-	ldrsh	r2, [r5, r3]	@ pretmp_99, ivtmp.629, tmp238
+	ldrsh	r2, [r5, r3]	@ pretmp_99, ivtmp.630, tmp238
 @ Data/FE6_FE7.c:1578:         else if (i < 2)
-	cmp	r4, #1	@ ivtmp.624,
+	cmp	r4, #1	@ ivtmp.625,
 	bhi	.L471		@,
 .L486:
 @ Data/FE6_FE7.c:2772:     PutNumber(tm, color, number);
 	bl	.L145		@
 @ Data/FE6_FE7.c:1574:         if (i == 7)
-	adds	r4, r4, #1	@ ivtmp.624,
-	adds	r5, r5, #2	@ ivtmp.629,
-	adds	r6, r6, #128	@ ivtmp.631,
+	adds	r4, r4, #1	@ ivtmp.625,
+	adds	r5, r5, #2	@ ivtmp.630,
+	adds	r6, r6, #128	@ ivtmp.632,
 	b	.L470		@
 .L487:
 @ Data/FE6_FE7.c:1596:     BG_EnableSyncByMask(BG0_SYNC_BIT);
@@ -4294,20 +4294,20 @@ EditMiscInit:
 	subs	r2, r2, #66	@,
 	subs	r1, r1, #75	@,
 	bl	.L27		@
-	ldr	r4, .L493+44	@ ivtmp.664,
-	movs	r7, r4	@ _75, ivtmp.664
+	ldr	r4, .L493+44	@ ivtmp.665,
+	movs	r7, r4	@ _75, ivtmp.665
 	ldr	r6, .L493+48	@ tmp216,
 	adds	r7, r7, #72	@ _75,
 .L491:
 @ Data/FE6_FE7.c:1442:         InitText(&th[i], MiscNameWidth);
-	movs	r0, r4	@, ivtmp.664
+	movs	r0, r4	@, ivtmp.665
 	movs	r1, #6	@,
 @ Data/FE6_FE7.c:1440:     for (int i = 0; i <= NumberOfMisc; ++i)
-	adds	r4, r4, #8	@ ivtmp.664,
+	adds	r4, r4, #8	@ ivtmp.665,
 @ Data/FE6_FE7.c:1442:         InitText(&th[i], MiscNameWidth);
 	bl	.L38		@
 @ Data/FE6_FE7.c:1440:     for (int i = 0; i <= NumberOfMisc; ++i)
-	cmp	r7, r4	@ _75, ivtmp.664
+	cmp	r7, r4	@ _75, ivtmp.665
 	bne	.L491		@,
 @ Data/FE6_FE7.c:1445:     RedrawMiscMenu(proc);
 	movs	r0, r5	@, proc
@@ -4499,17 +4499,17 @@ CountDebuggerMenuItems:
 	movs	r5, #0	@ i,
 @ Data/FE6_FE7.c:1942:     int result = 0;
 	movs	r2, #0	@ result,
-	ldr	r6, .L530	@ ivtmp.700,
+	ldr	r6, .L530	@ ivtmp.701,
 .L523:
 	movs	r4, r2	@ _29, result
-	ldr	r3, [r6]	@ ivtmp.697, MEM[(const struct MenuItemDef * *)_33]
+	ldr	r3, [r6]	@ ivtmp.698, MEM[(const struct MenuItemDef * *)_33]
 	adds	r4, r4, #255	@ _29,
 	b	.L522		@
 .L529:
 @ Data/FE6_FE7.c:1951:             result++;
 	adds	r2, r2, #1	@ result,
 @ Data/FE6_FE7.c:1945:         for (int c = 0; c < 255; ++c)
-	adds	r3, r3, #36	@ ivtmp.697,
+	adds	r3, r3, #36	@ ivtmp.698,
 	cmp	r2, r4	@ result, _29
 	beq	.L521		@,
 .L522:
@@ -4521,7 +4521,7 @@ CountDebuggerMenuItems:
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
 	adds	r5, r5, #1	@ i,
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
-	adds	r6, r6, #4	@ ivtmp.700,
+	adds	r6, r6, #4	@ ivtmp.701,
 	cmp	r0, r5	@ page, i
 	bne	.L523		@,
 @ Data/FE6_FE7.c:1954:     return result + page; // avoid the word 0 terminator offset
@@ -4561,17 +4561,17 @@ GetDebuggerMenuText:
 	movs	r2, #0	@ result,
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
 	movs	r5, #0	@ i,
-	ldr	r6, .L544	@ ivtmp.716,
+	ldr	r6, .L544	@ ivtmp.717,
 .L537:
 	movs	r4, r2	@ _32, result
-	ldr	r3, [r6]	@ ivtmp.713, MEM[(const struct MenuItemDef * *)_21]
+	ldr	r3, [r6]	@ ivtmp.714, MEM[(const struct MenuItemDef * *)_21]
 	adds	r4, r4, #255	@ _32,
 	b	.L536		@
 .L543:
 @ Data/FE6_FE7.c:1951:             result++;
 	adds	r2, r2, #1	@ result,
 @ Data/FE6_FE7.c:1945:         for (int c = 0; c < 255; ++c)
-	adds	r3, r3, #36	@ ivtmp.713,
+	adds	r3, r3, #36	@ ivtmp.714,
 	cmp	r2, r4	@ result, _32
 	beq	.L535		@,
 .L536:
@@ -4583,7 +4583,7 @@ GetDebuggerMenuText:
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
 	adds	r5, r5, #1	@ i,
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
-	adds	r6, r6, #4	@ ivtmp.716,
+	adds	r6, r6, #4	@ ivtmp.717,
 	cmp	r7, r5	@ _43, i
 	bgt	.L537		@,
 @ Data/FE6_FE7.c:1954:     return result + page; // avoid the word 0 terminator offset
@@ -5435,17 +5435,17 @@ DebuggerMenuItemDraw:
 	movs	r2, #0	@ result,
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
 	movs	r4, #0	@ i,
-	ldr	r5, .L632+8	@ ivtmp.777,
+	ldr	r5, .L632+8	@ ivtmp.778,
 .L623:
 	movs	r1, r2	@ _51, result
-	ldr	r3, [r5]	@ ivtmp.774, MEM[(const struct MenuItemDef * *)_41]
+	ldr	r3, [r5]	@ ivtmp.775, MEM[(const struct MenuItemDef * *)_41]
 	adds	r1, r1, #255	@ _51,
 	b	.L622		@
 .L631:
 @ Data/FE6_FE7.c:1951:             result++;
 	adds	r2, r2, #1	@ result,
 @ Data/FE6_FE7.c:1945:         for (int c = 0; c < 255; ++c)
-	adds	r3, r3, #36	@ ivtmp.774,
+	adds	r3, r3, #36	@ ivtmp.775,
 	cmp	r2, r1	@ result, _51
 	beq	.L621		@,
 .L622:
@@ -5457,7 +5457,7 @@ DebuggerMenuItemDraw:
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
 	adds	r4, r4, #1	@ i,
 @ Data/FE6_FE7.c:1943:     for (int i = 0; i < page; ++i)
-	adds	r5, r5, #4	@ ivtmp.777,
+	adds	r5, r5, #4	@ ivtmp.778,
 	cmp	r7, r4	@ _62, i
 	bgt	.L623		@,
 @ Data/FE6_FE7.c:1954:     return result + page; // avoid the word 0 terminator offset
@@ -8491,21 +8491,21 @@ SaveWExp:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	movs	r3, r0	@ ivtmp.929, proc
+	movs	r3, r0	@ ivtmp.930, proc
 	ldr	r2, [r0, #60]	@ proc_6(D)->unit, proc_6(D)->unit
-	adds	r3, r3, #64	@ ivtmp.929,
-	adds	r2, r2, #40	@ ivtmp.931,
+	adds	r3, r3, #64	@ ivtmp.930,
+	adds	r2, r2, #40	@ ivtmp.932,
 	adds	r0, r0, #80	@ _24,
 .L960:
 @ Data/FE6_FE7.c:3136:         unit->ranks[i] = proc->tmp[i];
 	ldrh	r1, [r3]	@ MEM[(short int *)_21], MEM[(short int *)_21]
 @ Data/FE6_FE7.c:3134:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r3, r3, #2	@ ivtmp.929,
+	adds	r3, r3, #2	@ ivtmp.930,
 @ Data/FE6_FE7.c:3136:         unit->ranks[i] = proc->tmp[i];
 	strb	r1, [r2]	@ MEM[(short int *)_21], MEM[(unsigned char *)_22]
 @ Data/FE6_FE7.c:3134:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r2, r2, #1	@ ivtmp.931,
-	cmp	r3, r0	@ ivtmp.929, _24
+	adds	r2, r2, #1	@ ivtmp.932,
+	cmp	r3, r0	@ ivtmp.930, _24
 	bne	.L960		@,
 @ Data/FE6_FE7.c:3138: }
 	@ sp needed	@
@@ -8952,13 +8952,13 @@ RedrawUnitWExpMenu:
 	adds	r1, r5, r3	@ tmp173, tmp129, tmp204
 	bl	.L145		@
 	ldr	r7, .L990+36	@ tmp183,
-	adds	r6, r6, #64	@ ivtmp.955,
-	adds	r5, r5, #8	@ ivtmp.959,
+	adds	r6, r6, #64	@ ivtmp.956,
+	adds	r5, r5, #8	@ ivtmp.960,
 .L988:
 	movs	r0, r4	@ i, _1
 @ Data/FE6_FE7.c:3119:         DebuggerDisplayWeaponExp(
 	movs	r1, #0	@ tmp188,
-	ldrsh	r3, [r6, r1]	@ MEM[(short int *)_42], ivtmp.955, tmp188
+	ldrsh	r3, [r6, r1]	@ MEM[(short int *)_42], ivtmp.956, tmp188
 @ Data/FE6_FE7.c:3120:             i, x - 2, Y_HAND + (i * 2), i,
 	adds	r4, r4, #1	@ _1,
 @ Data/FE6_FE7.c:3119:         DebuggerDisplayWeaponExp(
@@ -8968,14 +8968,14 @@ RedrawUnitWExpMenu:
 	movs	r3, r0	@, i
 	bl	DebuggerDisplayWeaponExp		@
 @ Data/FE6_FE7.c:3122:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
-	movs	r0, r5	@, ivtmp.959
+	movs	r0, r5	@, ivtmp.960
 	movs	r3, #0	@ tmp189,
-	ldrsh	r2, [r6, r3]	@ MEM[(short int *)_42], ivtmp.955, tmp189
+	ldrsh	r2, [r6, r3]	@ MEM[(short int *)_42], ivtmp.956, tmp189
 	movs	r1, #3	@,
 	bl	.L145		@
 @ Data/FE6_FE7.c:3117:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r6, r6, #2	@ ivtmp.955,
-	adds	r5, r5, #128	@ ivtmp.959,
+	adds	r6, r6, #2	@ ivtmp.956,
+	adds	r5, r5, #128	@ ivtmp.960,
 	cmp	r4, #8	@ _1,
 	bne	.L988		@,
 @ Data/FE6_FE7.c:3125:     SetBlendTargetA_(0, 1, 0, 0, 0);
@@ -9070,16 +9070,16 @@ EditWExpInit:
 	mov	r0, r9	@ _76, proc
 	ldr	r2, [r3, #60]	@ proc_18(D)->unit, proc_18(D)->unit
 	adds	r0, r0, #80	@ _76,
-	adds	r2, r2, #40	@ ivtmp.990,
-	adds	r3, r3, #64	@ ivtmp.992,
+	adds	r2, r2, #40	@ ivtmp.991,
+	adds	r3, r3, #64	@ ivtmp.993,
 .L993:
 @ Data/FE6_FE7.c:3026:         proc->tmp[i] = unit->ranks[i];
 	ldrb	r1, [r2]	@ MEM[(unsigned char *)_73], MEM[(unsigned char *)_73]
 	strh	r1, [r3]	@ MEM[(unsigned char *)_73], MEM[(short int *)_74]
 @ Data/FE6_FE7.c:3024:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r3, r3, #2	@ ivtmp.992,
-	adds	r2, r2, #1	@ ivtmp.990,
-	cmp	r3, r0	@ ivtmp.992, _76
+	adds	r3, r3, #2	@ ivtmp.993,
+	adds	r2, r2, #1	@ ivtmp.991,
+	cmp	r3, r0	@ ivtmp.993, _76
 	bne	.L993		@,
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
 	movs	r3, #0	@ tmp151,
@@ -9093,21 +9093,21 @@ EditWExpInit:
 @ Data/FE6_FE7.c:3037:     BG_EnableSyncByMask(BG2_SYNC_BIT);
 	movs	r0, #4	@,
 	bl	.L27		@
-	ldr	r5, .L999+40	@ ivtmp.973,
-	movs	r7, r5	@ _64, ivtmp.973
-	movs	r4, r5	@ ivtmp.982, ivtmp.973
+	ldr	r5, .L999+40	@ ivtmp.974,
+	movs	r7, r5	@ _64, ivtmp.974
+	movs	r4, r5	@ ivtmp.983, ivtmp.974
 	ldr	r6, .L999+44	@ tmp164,
 	adds	r7, r7, #120	@ _64,
 .L994:
 @ Data/FE6_FE7.c:3043:         InitText(&th[i], WExpWidth);
-	movs	r0, r4	@, ivtmp.982
+	movs	r0, r4	@, ivtmp.983
 	movs	r1, #11	@,
 @ Data/FE6_FE7.c:3041:     for (int i = 0; i < 15; ++i)
-	adds	r4, r4, #8	@ ivtmp.982,
+	adds	r4, r4, #8	@ ivtmp.983,
 @ Data/FE6_FE7.c:3043:         InitText(&th[i], WExpWidth);
 	bl	.L38		@
 @ Data/FE6_FE7.c:3041:     for (int i = 0; i < 15; ++i)
-	cmp	r4, r7	@ ivtmp.982, _64
+	cmp	r4, r7	@ ivtmp.983, _64
 	bne	.L994		@,
 	ldr	r3, .L999+48	@ tmp165,
 	mov	fp, r3	@ tmp165, tmp165
@@ -9115,32 +9115,32 @@ EditWExpInit:
 	mov	r10, r3	@ tmp166, tmp166
 	ldr	r3, .L999+56	@ tmp167,
 	mov	r8, r3	@ tmp167, tmp167
-	ldr	r4, .L999+60	@ ivtmp.975,
+	ldr	r4, .L999+60	@ ivtmp.976,
 	ldr	r7, .L999+64	@ tmp162,
 @ Data/FE6_FE7.c:3045:     for (int i = 0; i < WExpOptions; ++i)
 	ldr	r6, .L999+68	@ tmp161,
 .L995:
 @ Data/FE6_FE7.c:3047:         x = Text_GetCursor(&th[i]);
-	movs	r0, r5	@, ivtmp.973
+	movs	r0, r5	@, ivtmp.974
 	bl	.L311		@
 @ Data/FE6_FE7.c:3048:         x++;
 	adds	r1, r0, #1	@ x, tmp169,
 @ Data/FE6_FE7.c:3049:         Text_SetCursor(&th[i], x);
-	movs	r0, r5	@, ivtmp.973
+	movs	r0, r5	@, ivtmp.974
 	bl	.L310		@
 @ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
-	movs	r0, r4	@, ivtmp.975
+	movs	r0, r4	@, ivtmp.976
 	bl	.L193		@
 @ Data/FE6_FE7.c:3045:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r4, r4, #1	@ ivtmp.975,
+	adds	r4, r4, #1	@ ivtmp.976,
 @ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
 	movs	r1, r0	@ _33, tmp170
 @ Data/FE6_FE7.c:3051:         Text_DrawString(&th[i], GetStringFromIndexSafe(wexpText + i));
-	movs	r0, r5	@, ivtmp.973
+	movs	r0, r5	@, ivtmp.974
 	bl	.L145		@
 @ Data/FE6_FE7.c:3045:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r5, r5, #8	@ ivtmp.973,
-	cmp	r4, r6	@ ivtmp.975, tmp161
+	adds	r5, r5, #8	@ ivtmp.974,
+	cmp	r4, r6	@ ivtmp.976, tmp161
 	bne	.L995		@,
 @ Data/FE6_FE7.c:3056:     RedrawUnitWExpMenu(proc);
 	mov	r0, r9	@, proc
@@ -9209,22 +9209,22 @@ EditWExpIdle:
 	movs	r3, #9	@ tmp223,
 	tst	r3, r6	@ tmp223, keys
 	beq	.L1003		@,
-	movs	r3, r4	@ ivtmp.1011, proc
+	movs	r3, r4	@ ivtmp.1012, proc
 	movs	r0, r4	@ _7, proc
 	ldr	r2, [r4, #60]	@ proc_82(D)->unit, proc_82(D)->unit
-	adds	r3, r3, #64	@ ivtmp.1011,
-	adds	r2, r2, #40	@ ivtmp.1013,
+	adds	r3, r3, #64	@ ivtmp.1012,
+	adds	r2, r2, #40	@ ivtmp.1014,
 	adds	r0, r0, #80	@ _7,
 .L1004:
 @ Data/FE6_FE7.c:3136:         unit->ranks[i] = proc->tmp[i];
 	ldrh	r1, [r3]	@ MEM[(short int *)_52], MEM[(short int *)_52]
 @ Data/FE6_FE7.c:3134:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r3, r3, #2	@ ivtmp.1011,
+	adds	r3, r3, #2	@ ivtmp.1012,
 @ Data/FE6_FE7.c:3136:         unit->ranks[i] = proc->tmp[i];
 	strb	r1, [r2]	@ MEM[(short int *)_52], MEM[(unsigned char *)_53]
 @ Data/FE6_FE7.c:3134:     for (int i = 0; i < WExpOptions; ++i)
-	adds	r2, r2, #1	@ ivtmp.1013,
-	cmp	r0, r3	@ _7, ivtmp.1011
+	adds	r2, r2, #1	@ ivtmp.1014,
+	cmp	r0, r3	@ _7, ivtmp.1012
 	bne	.L1004		@,
 @ Data/FE6_FE7.c:3142:     gLCDControlBuffer.bg1cnt.priority = 0;
 	movs	r1, #3	@ tmp237,
@@ -9292,12 +9292,12 @@ EditWExpIdle:
 @ Data/FE6_FE7.c:546:     int result = 1;
 	subs	r5, r5, #45	@ result,
 	mov	r8, r3	@ tmp405, tmp405
-	adds	r3, r3, #76	@ ivtmp.1003,
+	adds	r3, r3, #76	@ ivtmp.1004,
 .L1006:
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	adds	r3, r3, #4	@ ivtmp.1003,
+	adds	r3, r3, #4	@ ivtmp.1004,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	subs	r1, r3, #4	@ tmp263, ivtmp.1003,
+	subs	r1, r3, #4	@ tmp263, ivtmp.1004,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	ldr	r1, [r1]	@ MEM[(const int *)_98 + 4294967292B], MEM[(const int *)_98 + 4294967292B]
 @ Data/FE6_FE7.c:549:         result++;
@@ -9637,69 +9637,69 @@ RedrawUnitSupportsMenu:
 	push	{r3, r4, r5, r6, r7, lr}	@
 	mov	lr, r9	@,
 	mov	r7, r8	@,
-@ Data/FE6_FE7.c:3412:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
+@ Data/FE6_FE7.c:3441:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
 	ldr	r6, .L1078	@ tmp130,
-@ Data/FE6_FE7.c:3411: {
+@ Data/FE6_FE7.c:3440: {
 	push	{r7, lr}	@
-@ Data/FE6_FE7.c:3412:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
+@ Data/FE6_FE7.c:3441:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
 	movs	r3, #0	@,
 	movs	r2, #14	@,
 	movs	r1, #9	@,
 	ldr	r4, .L1078+4	@ tmp131,
-@ Data/FE6_FE7.c:3411: {
+@ Data/FE6_FE7.c:3440: {
 	mov	r9, r0	@ proc, tmp141
-@ Data/FE6_FE7.c:3412:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
+@ Data/FE6_FE7.c:3441:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 2, Y_HAND), 9, 2 * SupportOptions, 0);
 	movs	r0, r6	@, tmp130
 	bl	.L27		@
-@ Data/FE6_FE7.c:3413:     BG_EnableSyncByMask(BG0_SYNC_BIT);
+@ Data/FE6_FE7.c:3442:     BG_EnableSyncByMask(BG0_SYNC_BIT);
 	ldr	r3, .L1078+8	@ tmp139,
 	movs	r0, #1	@,
 	mov	r8, r3	@ tmp139, tmp139
 	bl	.L17		@
 	ldr	r3, .L1078+12	@ tmp146,
 	mov	ip, r3	@ tmp146, tmp146
-	ldr	r5, .L1078+16	@ ivtmp.1037,
+	ldr	r5, .L1078+16	@ ivtmp.1038,
 	ldr	r7, .L1078+20	@ tmp140,
-	subs	r4, r6, #6	@ ivtmp.1039, tmp130,
+	subs	r4, r6, #6	@ ivtmp.1040, tmp130,
 	add	r6, r6, ip	@ _54, tmp146
 .L1074:
-@ Data/FE6_FE7.c:3419:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
-	movs	r1, r4	@, ivtmp.1039
-	movs	r0, r5	@, ivtmp.1037
-@ Data/FE6_FE7.c:3417:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r4, r4, #128	@ ivtmp.1039,
-@ Data/FE6_FE7.c:3419:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
+@ Data/FE6_FE7.c:3448:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
+	movs	r1, r4	@, ivtmp.1040
+	movs	r0, r5	@, ivtmp.1038
+@ Data/FE6_FE7.c:3446:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r4, r4, #128	@ ivtmp.1040,
+@ Data/FE6_FE7.c:3448:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(x, Y_HAND + (i * 2)));
 	bl	.L145		@
-@ Data/FE6_FE7.c:3417:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r5, r5, #8	@ ivtmp.1037,
-	cmp	r4, r6	@ ivtmp.1039, _54
+@ Data/FE6_FE7.c:3446:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r5, r5, #8	@ ivtmp.1038,
+	cmp	r4, r6	@ ivtmp.1040, _54
 	bne	.L1074		@,
-	mov	r4, r9	@ ivtmp.1026, proc
+	mov	r4, r9	@ ivtmp.1027, proc
 	mov	r7, r9	@ proc, proc
-	ldr	r5, .L1078+24	@ ivtmp.1028,
+	ldr	r5, .L1078+24	@ ivtmp.1029,
 	ldr	r6, .L1078+28	@ tmp138,
-	adds	r4, r4, #64	@ ivtmp.1026,
+	adds	r4, r4, #64	@ ivtmp.1027,
 	adds	r7, r7, #78	@ proc,
 .L1075:
-@ Data/FE6_FE7.c:3424:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
-	movs	r0, r5	@, ivtmp.1028
+@ Data/FE6_FE7.c:3453:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
+	movs	r0, r5	@, ivtmp.1029
 	movs	r3, #0	@ tmp144,
-	ldrsh	r2, [r4, r3]	@ MEM[(short int *)_42], ivtmp.1026, tmp144
+	ldrsh	r2, [r4, r3]	@ MEM[(short int *)_42], ivtmp.1027, tmp144
 	movs	r1, #3	@,
-@ Data/FE6_FE7.c:3422:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r4, r4, #2	@ ivtmp.1026,
-@ Data/FE6_FE7.c:3424:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
+@ Data/FE6_FE7.c:3451:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r4, r4, #2	@ ivtmp.1027,
+@ Data/FE6_FE7.c:3453:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
 	bl	.L38		@
-@ Data/FE6_FE7.c:3422:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r5, r5, #128	@ ivtmp.1028,
-	cmp	r4, r7	@ ivtmp.1026, _44
+@ Data/FE6_FE7.c:3451:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r5, r5, #128	@ ivtmp.1029,
+	cmp	r4, r7	@ ivtmp.1027, _44
 	bne	.L1075		@,
-@ Data/FE6_FE7.c:3428: }
+@ Data/FE6_FE7.c:3457: }
 	@ sp needed	@
-@ Data/FE6_FE7.c:3427:     BG_EnableSyncByMask(BG0_SYNC_BIT);
+@ Data/FE6_FE7.c:3456:     BG_EnableSyncByMask(BG0_SYNC_BIT);
 	movs	r0, #1	@,
 	bl	.L193		@
-@ Data/FE6_FE7.c:3428: }
+@ Data/FE6_FE7.c:3457: }
 	pop	{r6, r7}
 	mov	r9, r7
 	mov	r8, r6
@@ -9732,194 +9732,197 @@ RedrawUnitSupportsMenu:
 	.type	EditSupportsInit, %function
 EditSupportsInit:
 	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
+	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, lr}	@
 	mov	lr, fp	@,
+	mov	r6, r9	@,
 	mov	r5, r8	@,
 	mov	r7, r10	@,
-	mov	r6, r9	@,
-	mov	r8, r0	@ proc, tmp176
 	push	{r5, r6, r7, lr}	@
+	movs	r5, r0	@ proc, tmp183
+	sub	sp, sp, #20	@,,
 @ Data/FE6_FE7.c:406:     ResetTextFont();
-	ldr	r5, .L1104	@ tmp143,
-@ Data/FE6_FE7.c:3365: {
-	sub	sp, sp, #12	@,,
+	ldr	r6, .L1112	@ tmp148,
+@ Data/FE6_FE7.c:3391: {
+	str	r0, [sp, #12]	@ proc, %sfp
 @ Data/FE6_FE7.c:406:     ResetTextFont();
-	bl	.L28		@
+	bl	.L38		@
 @ Data/FE6_FE7.c:407:     SetTextFontGlyphs(0);
-	ldr	r4, .L1104+4	@ tmp144,
+	ldr	r4, .L1112+4	@ tmp149,
 	movs	r0, #0	@,
 	bl	.L27		@
 @ Data/FE6_FE7.c:410:     BG_Fill(gBG0TilemapBuffer, 0);
 	movs	r1, #0	@,
-	ldr	r0, .L1104+8	@ tmp145,
-	ldr	r3, .L1104+12	@ tmp146,
+	ldr	r0, .L1112+8	@ tmp150,
+	ldr	r3, .L1112+12	@ tmp151,
 	bl	.L17		@
 @ Data/FE6_FE7.c:411:     BG_EnableSyncByMask(BG0_SYNC_BIT);
-	ldr	r3, .L1104+16	@ tmp147,
+	ldr	r3, .L1112+16	@ tmp152,
 	movs	r0, #1	@,
 	bl	.L17		@
 @ Data/FE6_FE7.c:412:     ResetTextFont();
-	bl	.L28		@
+	bl	.L38		@
 @ Data/FE6_FE7.c:413:     SetTextFontGlyphs(0);
 	movs	r0, #0	@,
 	bl	.L27		@
 @ Data/FE6_FE7.c:414:     SetTextFont(0);
 	movs	r0, #0	@,
-	ldr	r3, .L1104+20	@ tmp150,
+	ldr	r3, .L1112+20	@ tmp155,
 	bl	.L17		@
 @ Data/FE6_FE7.c:415:     ClearBg0Bg1();
-	ldr	r3, .L1104+24	@ tmp151,
+	ldr	r3, .L1112+24	@ tmp156,
 	bl	.L17		@
 @ Data/FE6_FE7.c:416:     ResetText();
-	ldr	r3, .L1104+28	@ tmp152,
+	ldr	r3, .L1112+28	@ tmp157,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3367:     struct Unit * unit = proc->unit;
-	mov	r3, r8	@ proc, proc
-	ldr	r7, [r3, #60]	@ unit, proc_28(D)->unit
-@ Data/FE6_FE7.c:3368:     u8 * row = GetUnitBwlSupportRow(unit);
-	movs	r0, r7	@, unit
+@ Data/FE6_FE7.c:3393:     struct Unit * unit = proc->unit;
+	ldr	r3, [r5, #60]	@ unit, proc_24(D)->unit
+@ Data/FE6_FE7.c:3394:     u8 * row = GetUnitBwlSupportRow(unit);
+	movs	r0, r3	@, unit
+@ Data/FE6_FE7.c:3393:     struct Unit * unit = proc->unit;
+	mov	r9, r3	@ unit, unit
+@ Data/FE6_FE7.c:3394:     u8 * row = GetUnitBwlSupportRow(unit);
 	bl	GetUnitBwlSupportRow		@
-	mov	r2, r8	@ ivtmp.1078, proc
-	movs	r3, r0	@ ivtmp.1080, row
-	adds	r2, r2, #64	@ ivtmp.1078,
-	adds	r4, r0, #7	@ _88, row,
+	movs	r2, r5	@ ivtmp.1079, proc
+	movs	r3, r0	@ ivtmp.1081, row
+	adds	r2, r2, #64	@ ivtmp.1079,
+	adds	r4, r0, #7	@ _105, row,
 	b	.L1082		@
-.L1102:
-@ Data/FE6_FE7.c:3371:         proc->tmp[i] = row ? row[i] : 0;
-	ldrb	r1, [r3]	@ iftmp.108_21, MEM[(u8 *)_89]
-@ Data/FE6_FE7.c:3369:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r3, r3, #1	@ ivtmp.1080,
-@ Data/FE6_FE7.c:3371:         proc->tmp[i] = row ? row[i] : 0;
-	strh	r1, [r2]	@ iftmp.108_21, MEM[(short int *)_86]
-@ Data/FE6_FE7.c:3369:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r2, r2, #2	@ ivtmp.1078,
-	cmp	r3, r4	@ ivtmp.1080, _88
-	beq	.L1101		@,
+.L1110:
+@ Data/FE6_FE7.c:3397:         proc->tmp[i] = row ? row[i] : 0;
+	ldrb	r1, [r3]	@ iftmp.108_17, MEM[(u8 *)_106]
+@ Data/FE6_FE7.c:3395:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r3, r3, #1	@ ivtmp.1081,
+@ Data/FE6_FE7.c:3397:         proc->tmp[i] = row ? row[i] : 0;
+	strh	r1, [r2]	@ iftmp.108_17, MEM[(short int *)_103]
+@ Data/FE6_FE7.c:3395:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r2, r2, #2	@ ivtmp.1079,
+	cmp	r3, r4	@ ivtmp.1081, _105
+	beq	.L1109		@,
 .L1082:
-@ Data/FE6_FE7.c:3371:         proc->tmp[i] = row ? row[i] : 0;
+@ Data/FE6_FE7.c:3397:         proc->tmp[i] = row ? row[i] : 0;
 	cmp	r0, #0	@ row,
-	bne	.L1102		@,
-@ Data/FE6_FE7.c:3371:         proc->tmp[i] = row ? row[i] : 0;
-	movs	r1, #0	@ iftmp.108_21,
-@ Data/FE6_FE7.c:3369:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r3, r3, #1	@ ivtmp.1080,
-@ Data/FE6_FE7.c:3371:         proc->tmp[i] = row ? row[i] : 0;
-	strh	r1, [r2]	@ iftmp.108_21, MEM[(short int *)_86]
-@ Data/FE6_FE7.c:3369:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r2, r2, #2	@ ivtmp.1078,
-	cmp	r3, r4	@ ivtmp.1080, _88
+	bne	.L1110		@,
+@ Data/FE6_FE7.c:3397:         proc->tmp[i] = row ? row[i] : 0;
+	movs	r1, #0	@ iftmp.108_17,
+@ Data/FE6_FE7.c:3395:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r3, r3, #1	@ ivtmp.1081,
+@ Data/FE6_FE7.c:3397:         proc->tmp[i] = row ? row[i] : 0;
+	strh	r1, [r2]	@ iftmp.108_17, MEM[(short int *)_103]
+@ Data/FE6_FE7.c:3395:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r2, r2, #2	@ ivtmp.1079,
+	cmp	r3, r4	@ ivtmp.1081, _105
 	bne	.L1082		@,
-.L1101:
+.L1109:
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
-	movs	r3, #0	@ tmp156,
-	ldr	r4, .L1104+32	@ tmp157,
-	str	r3, [sp]	@ tmp156,
+	movs	r3, #0	@ tmp161,
+	ldr	r4, .L1112+32	@ tmp162,
+	str	r3, [sp]	@ tmp161,
 	movs	r2, #10	@,
 	adds	r3, r3, #16	@,
 	movs	r1, #1	@,
 	movs	r0, #11	@,
 	bl	.L27		@
-	ldr	r3, .L1104+36	@ ivtmp.1059,
-	mov	r10, r3	@ ivtmp.1059, ivtmp.1059
-	movs	r3, #120	@ _78,
-	add	r3, r3, r10	@ _78, ivtmp.1059
-	mov	fp, r3	@ _78, _78
-	ldr	r3, .L1104+40	@ tmp169,
-	mov	r4, r10	@ ivtmp.1070, ivtmp.1059
-	mov	r9, r3	@ tmp169, tmp169
-	ldr	r6, .L1104+44	@ tmp170,
-	ldr	r5, .L1104+48	@ tmp171,
+	movs	r3, #120	@ _95,
+	ldr	r7, .L1112+36	@ ivtmp.1057,
+	mov	fp, r3	@ _95, _95
+	ldr	r3, .L1112+40	@ tmp176,
+	movs	r4, r7	@ ivtmp.1071, ivtmp.1057
+	mov	r8, r3	@ tmp176, tmp176
+	ldr	r5, .L1112+44	@ tmp175,
+	ldr	r6, .L1112+48	@ tmp177,
+	add	fp, fp, r7	@ _95, ivtmp.1057
 .L1083:
-@ Data/FE6_FE7.c:3391:         InitText(&th[i], SupportWidth);
-	movs	r0, r4	@, ivtmp.1070
+@ Data/FE6_FE7.c:3417:         InitText(&th[i], SupportWidth);
+	movs	r0, r4	@, ivtmp.1071
 	movs	r1, #5	@,
-	bl	.L139		@
-@ Data/FE6_FE7.c:3392:         Text_DrawString(&th[i], "");
-	movs	r0, r4	@, ivtmp.1070
-	movs	r1, r6	@, tmp170
-@ Data/FE6_FE7.c:3389:     for (int i = 0; i < 15; ++i)
-	adds	r4, r4, #8	@ ivtmp.1070,
-@ Data/FE6_FE7.c:3392:         Text_DrawString(&th[i], "");
 	bl	.L28		@
-@ Data/FE6_FE7.c:3389:     for (int i = 0; i < 15; ++i)
-	cmp	r4, fp	@ ivtmp.1070, _78
+@ Data/FE6_FE7.c:3418:         Text_DrawString(&th[i], "");
+	movs	r0, r4	@, ivtmp.1071
+	mov	r1, r8	@, tmp176
+@ Data/FE6_FE7.c:3415:     for (int i = 0; i < 15; ++i)
+	adds	r4, r4, #8	@ ivtmp.1071,
+@ Data/FE6_FE7.c:3418:         Text_DrawString(&th[i], "");
+	bl	.L38		@
+@ Data/FE6_FE7.c:3415:     for (int i = 0; i < 15; ++i)
+	cmp	r4, fp	@ ivtmp.1071, _95
 	bne	.L1083		@,
-@ Data/FE6_FE7.c:3395:     if (unit->pCharacterData->pSupportData)
-	ldr	r3, [r7]	@ unit_30->pCharacterData, unit_30->pCharacterData
-	ldr	r3, [r3, #44]	@ prephitmp_18, _7->pSupportData
-@ Data/FE6_FE7.c:3395:     if (unit->pCharacterData->pSupportData)
-	cmp	r3, #0	@ prephitmp_18,
+@ Data/FE6_FE7.c:3368:     if (!unit || !unit->pCharacterData)
+	mov	r3, r9	@ unit, unit
+	cmp	r3, #0	@ unit,
 	beq	.L1084		@,
-@ Data/FE6_FE7.c:3403:                 Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
-	ldr	r2, .L1104+52	@ tmp172,
-	mov	r9, r2	@ tmp172, tmp172
-@ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
-	ldr	r2, .L1104+56	@ tmp174,
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	movs	r4, #0	@ i,
-@ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
-	mov	fp, r2	@ tmp174, tmp174
-@ Data/FE6_FE7.c:69:         return (void *)BlankString;
-	ldr	r6, .L1104+60	@ _46,
-	b	.L1087		@
+@ Data/FE6_FE7.c:3368:     if (!unit || !unit->pCharacterData)
+	ldr	r3, [r3]	@ _49, unit_26->pCharacterData
+	mov	r9, r3	@ _49, _49
+@ Data/FE6_FE7.c:3368:     if (!unit || !unit->pCharacterData)
+	cmp	r3, #0	@ _49,
+	beq	.L1084		@,
+@ Data/FE6_FE7.c:3373:     if (ch->pSupportData)
+	ldr	r3, [r3, #44]	@ _50, _49->pSupportData
+@ Data/FE6_FE7.c:3373:     if (ch->pSupportData)
+	cmp	r3, #0	@ _50,
+	beq	.L1111		@,
 .L1085:
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	movs	r3, #8	@ tmp190,
-	mov	ip, r3	@ tmp190, tmp190
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	adds	r4, r4, #1	@ i,
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	add	r10, r10, ip	@ ivtmp.1059, tmp190
-	cmp	r4, #7	@ i,
-	beq	.L1084		@,
-.L1103:
-@ Data/FE6_FE7.c:3400:             uid = unit->pCharacterData->pSupportData->characters[i];
-	ldr	r3, [r7]	@ unit_30->pCharacterData, unit_30->pCharacterData
-	ldr	r3, [r3, #44]	@ prephitmp_18, pretmp_19->pSupportData
-.L1087:
-@ Data/FE6_FE7.c:3400:             uid = unit->pCharacterData->pSupportData->characters[i];
-	ldrb	r0, [r3, r4]	@ uid, *prephitmp_18
-@ Data/FE6_FE7.c:3401:             if (uid)
-	cmp	r0, #0	@ uid,
-	beq	.L1085		@,
-@ Data/FE6_FE7.c:3403:                 Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
-	bl	.L139		@
-@ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
-	movs	r3, #128	@ tmp165,
-@ Data/FE6_FE7.c:3403:                 Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
-	ldrh	r0, [r0]	@ _16, *_15
-@ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
-	subs	r2, r0, #1	@ tmp164, _16,
+	movs	r4, r3	@ ivtmp.1056, _50
+	adds	r3, r3, #7	@ _89,
+	mov	r8, r3	@ _89, _89
+@ Data/FE6_FE7.c:3431:                     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+	ldr	r3, .L1112+52	@ tmp179,
+	mov	r10, r3	@ tmp179, tmp179
 @ Data/FE6_FE7.c:69:         return (void *)BlankString;
-	movs	r1, r6	@ _46, _46
+	ldr	r3, .L1112+56	@ _44,
+	mov	r9, r3	@ _44, _44
+@ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
+	ldr	r3, .L1112+60	@ tmp181,
+	mov	fp, r3	@ tmp181, tmp181
+	b	.L1090		@
+.L1088:
+@ Data/FE6_FE7.c:3426:             for (int i = 0; i < SupportOptions; ++i)
+	adds	r4, r4, #1	@ ivtmp.1056,
+	adds	r7, r7, #8	@ ivtmp.1057,
+	cmp	r4, r8	@ ivtmp.1056, _89
+	beq	.L1084		@,
+.L1090:
+@ Data/FE6_FE7.c:3428:                 uid = sdata->characters[i];
+	ldrb	r0, [r4]	@ uid, MEM[(unsigned char *)_87]
+@ Data/FE6_FE7.c:3429:                 if (uid)
+	cmp	r0, #0	@ uid,
+	beq	.L1088		@,
+@ Data/FE6_FE7.c:3431:                     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+	bl	.L310		@
 @ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
-	lsls	r3, r3, #7	@ tmp165, tmp165,
-	cmp	r2, r3	@ tmp164, tmp165
-	bcs	.L1086		@,
+	movs	r3, #128	@ tmp172,
+@ Data/FE6_FE7.c:3431:                     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+	ldrh	r0, [r0]	@ _12, *_11
+@ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
+	subs	r2, r0, #1	@ tmp171, _12,
+@ Data/FE6_FE7.c:69:         return (void *)BlankString;
+	mov	r1, r9	@ _44, _44
+@ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
+	lsls	r3, r3, #7	@ tmp172, tmp172,
+	cmp	r2, r3	@ tmp171, tmp172
+	bcs	.L1089		@,
 @ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
 	bl	.L311		@
-	movs	r1, r0	@ _46, tmp179
-.L1086:
-@ Data/FE6_FE7.c:3403:                 Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
-	mov	r0, r10	@, ivtmp.1059
-	bl	.L28		@
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	movs	r3, #8	@ tmp190,
-	mov	ip, r3	@ tmp190, tmp190
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	adds	r4, r4, #1	@ i,
-@ Data/FE6_FE7.c:3398:         for (int i = 0; i < SupportOptions; ++i)
-	add	r10, r10, ip	@ ivtmp.1059, tmp190
-	cmp	r4, #7	@ i,
-	bne	.L1103		@,
+	movs	r1, r0	@ _44, tmp187
+.L1089:
+@ Data/FE6_FE7.c:3431:                     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+	movs	r0, r7	@, ivtmp.1057
+@ Data/FE6_FE7.c:3426:             for (int i = 0; i < SupportOptions; ++i)
+	adds	r4, r4, #1	@ ivtmp.1056,
+@ Data/FE6_FE7.c:3431:                     Text_DrawString(&th[i], GetStringFromIndexSafe(GetCharacterData(uid)->nameTextId));
+	bl	.L38		@
+@ Data/FE6_FE7.c:3426:             for (int i = 0; i < SupportOptions; ++i)
+	adds	r7, r7, #8	@ ivtmp.1057,
+	cmp	r4, r8	@ ivtmp.1056, _89
+	bne	.L1090		@,
 .L1084:
-@ Data/FE6_FE7.c:3407:     RedrawUnitSupportsMenu(proc);
-	mov	r0, r8	@, proc
+@ Data/FE6_FE7.c:3436:     RedrawUnitSupportsMenu(proc);
+	ldr	r0, [sp, #12]	@, %sfp
 	bl	RedrawUnitSupportsMenu		@
-@ Data/FE6_FE7.c:3408: }
-	add	sp, sp, #12	@,,
+@ Data/FE6_FE7.c:3437: }
+	add	sp, sp, #20	@,,
 	@ sp needed	@
 	pop	{r4, r5, r6, r7}
 	mov	fp, r7
@@ -9929,9 +9932,39 @@ EditSupportsInit:
 	pop	{r4, r5, r6, r7}
 	pop	{r0}
 	bx	r0
-.L1105:
+.L1111:
+@ Data/FE6_FE7.c:3378:     for (i = 1; i <= 0x45; ++i)
+	movs	r4, #1	@ i,
+	ldr	r5, .L1112+52	@ tmp178,
+	b	.L1087		@
+.L1086:
+@ Data/FE6_FE7.c:3378:     for (i = 1; i <= 0x45; ++i)
+	adds	r4, r4, #1	@ i,
+@ Data/FE6_FE7.c:3378:     for (i = 1; i <= 0x45; ++i)
+	cmp	r4, #70	@ i,
+	beq	.L1084		@,
+.L1087:
+@ Data/FE6_FE7.c:3380:         other = GetCharacterData(i);
+	movs	r0, r4	@, i
+	bl	.L28		@
+@ Data/FE6_FE7.c:3381:         if (other && other->nameTextId == ch->nameTextId && other->pSupportData)
+	cmp	r0, #0	@ other,
+	beq	.L1086		@,
+@ Data/FE6_FE7.c:3381:         if (other && other->nameTextId == ch->nameTextId && other->pSupportData)
+	mov	r3, r9	@ _49, _49
+	ldrh	r2, [r0]	@ *other_52, *other_52
+	ldrh	r3, [r3]	@ *_49, *_49
+	cmp	r2, r3	@ *other_52, *_49
+	bne	.L1086		@,
+@ Data/FE6_FE7.c:3381:         if (other && other->nameTextId == ch->nameTextId && other->pSupportData)
+	ldr	r3, [r0, #44]	@ _50, other_52->pSupportData
+@ Data/FE6_FE7.c:3381:         if (other && other->nameTextId == ch->nameTextId && other->pSupportData)
+	cmp	r3, #0	@ _50,
+	beq	.L1086		@,
+	b	.L1085		@
+.L1113:
 	.align	2
-.L1104:
+.L1112:
 	.word	ResetTextFont
 	.word	SetTextFontGlyphs
 	.word	gBG0TilemapBuffer
@@ -9942,12 +9975,12 @@ EditSupportsInit:
 	.word	ResetText
 	.word	PutUiWindowFrame
 	.word	gStatScreen+24
-	.word	InitText
 	.word	.LC566
+	.word	InitText
 	.word	Text_DrawString
 	.word	GetCharacterData
-	.word	GetStringFromIndex
 	.word	BlankString
+	.word	GetStringFromIndex
 	.size	EditSupportsInit, .-EditSupportsInit
 	.align	1
 	.p2align 2,,3
@@ -9963,379 +9996,379 @@ EditSupportsIdle:
 	push	{r4, r5, r6, r7, lr}	@
 	mov	lr, r8	@,
 	push	{lr}	@
-@ Data/FE6_FE7.c:3449:     u16 keys = gKeyStatusPtr->repeatedKeys;
-	ldr	r3, .L1179	@ tmp198,
+@ Data/FE6_FE7.c:3478:     u16 keys = gKeyStatusPtr->repeatedKeys;
+	ldr	r3, .L1187	@ tmp198,
 	ldr	r3, [r3]	@ gKeyStatusPtr, gKeyStatusPtr
 	ldrh	r6, [r3, #6]	@ keys,
-@ Data/FE6_FE7.c:3445: {
+@ Data/FE6_FE7.c:3474: {
 	movs	r4, r0	@ proc, tmp392
-@ Data/FE6_FE7.c:3450:     if (keys & B_BUTTON)
+@ Data/FE6_FE7.c:3479:     if (keys & B_BUTTON)
 	lsls	r3, r6, #30	@ tmp394, keys,
-	bpl	.LCB7987	@
-	b	.L1172	@long jump	@
-.LCB7987:
-.L1107:
-@ Data/FE6_FE7.c:3455:     if ((keys & START_BUTTON) || (keys & A_BUTTON))
+	bpl	.LCB8015	@
+	b	.L1180	@long jump	@
+.LCB8015:
+.L1115:
+@ Data/FE6_FE7.c:3484:     if ((keys & START_BUTTON) || (keys & A_BUTTON))
 	movs	r3, #9	@ tmp210,
 	tst	r3, r6	@ tmp210, keys
-	beq	.LCB7994	@
-	b	.L1173	@long jump	@
-.LCB7994:
-.L1108:
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+	beq	.LCB8022	@
+	b	.L1181	@long jump	@
+.LCB8022:
+.L1116:
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	movs	r2, #48	@ tmp225,
-@ Data/FE6_FE7.c:3461:     if (proc->editing)
+@ Data/FE6_FE7.c:3490:     if (proc->editing)
 	movs	r5, #46	@ tmp219,
 	movs	r7, #16	@ tmp223,
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	ldrsb	r1, [r4, r2]	@ tmp226,
-@ Data/FE6_FE7.c:3461:     if (proc->editing)
+@ Data/FE6_FE7.c:3490:     if (proc->editing)
 	ldrsb	r3, [r4, r5]	@ _2,
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	adds	r1, r1, #1	@ tmp227,
 	ands	r7, r6	@ _109, keys
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	lsls	r1, r1, #4	@ _151, tmp227,
-@ Data/FE6_FE7.c:3461:     if (proc->editing)
+@ Data/FE6_FE7.c:3490:     if (proc->editing)
 	cmp	r3, #0	@ _2,
-	bne	.LCB8007	@
-	b	.L1112	@long jump	@
-.LCB8007:
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+	bne	.LCB8035	@
+	b	.L1120	@long jump	@
+.LCB8035:
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	adds	r2, r2, #1	@ tmp229,
 	ldrsb	r2, [r4, r2]	@ tmp230,
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
-	ldr	r3, .L1179+4	@ tmp228,
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+	ldr	r3, .L1187+4	@ tmp228,
 	lsls	r2, r2, #3	@ tmp231, tmp230,
 	adds	r3, r3, r2	@ tmp232, tmp228, tmp231
-@ Data/FE6_FE7.c:3463:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3492:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	ldr	r0, [r3, #120]	@ CursorLocationTable[_4].x, CursorLocationTable[_4].x
 	bl	DisplayVertUiHand		@
-	ldr	r3, .L1179+8	@ tmp379,
+	ldr	r3, .L1187+8	@ tmp379,
 @ Data/FE6_FE7.c:546:     int result = 1;
 	subs	r5, r5, #45	@ result,
 	mov	r8, r3	@ tmp379, tmp379
-	adds	r3, r3, #76	@ ivtmp.1090,
-.L1113:
+	adds	r3, r3, #76	@ ivtmp.1091,
+.L1121:
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	adds	r3, r3, #4	@ ivtmp.1090,
+	adds	r3, r3, #4	@ ivtmp.1091,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	subs	r1, r3, #4	@ tmp237, ivtmp.1090,
+	subs	r1, r3, #4	@ tmp237, ivtmp.1091,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	ldr	r1, [r1]	@ MEM[(const int *)_105 + 4294967292B], MEM[(const int *)_105 + 4294967292B]
 @ Data/FE6_FE7.c:549:         result++;
 	adds	r5, r5, #1	@ result,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	cmp	r1, #254	@ MEM[(const int *)_105 + 4294967292B],
-	ble	.L1113		@,
+	ble	.L1121		@,
 @ Data/FE6_FE7.c:551:     if (result > 9)
 	cmp	r5, #9	@ _123,
-	ble	.LCB8028	@
-	b	.L1174	@long jump	@
-.LCB8028:
-@ Data/FE6_FE7.c:3468:         if (keys & DPAD_RIGHT)
+	ble	.LCB8056	@
+	b	.L1182	@long jump	@
+.LCB8056:
+@ Data/FE6_FE7.c:3497:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _109,
-	beq	.L1115		@,
-.L1178:
-@ Data/FE6_FE7.c:3470:             if (proc->digit > 0)
+	beq	.L1123		@,
+.L1186:
+@ Data/FE6_FE7.c:3499:             if (proc->digit > 0)
 	movs	r3, #49	@ tmp239,
 	ldrsb	r3, [r4, r3]	@ _11,
-@ Data/FE6_FE7.c:3470:             if (proc->digit > 0)
+@ Data/FE6_FE7.c:3499:             if (proc->digit > 0)
 	cmp	r3, #0	@ _11,
-	bgt	.LCB8035	@
-	b	.L1116	@long jump	@
-.LCB8035:
-@ Data/FE6_FE7.c:3472:                 proc->digit--;
+	bgt	.LCB8063	@
+	b	.L1124	@long jump	@
+.LCB8063:
+@ Data/FE6_FE7.c:3501:                 proc->digit--;
 	subs	r3, r3, #1	@ tmp243,
 	lsls	r3, r3, #24	@ tmp244, tmp243,
 	asrs	r3, r3, #24	@ _15, tmp244,
-.L1117:
+.L1125:
 	movs	r2, #49	@ tmp251,
-@ Data/FE6_FE7.c:3479:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3508:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r3, [r4, r2]	@ _15, proc_82(D)->digit
 	bl	RedrawUnitSupportsMenu		@
-.L1115:
-@ Data/FE6_FE7.c:3481:         if (keys & DPAD_LEFT)
+.L1123:
+@ Data/FE6_FE7.c:3510:         if (keys & DPAD_LEFT)
 	lsls	r3, r6, #26	@ tmp395, keys,
-	bpl	.L1118		@,
-@ Data/FE6_FE7.c:3483:             if (proc->digit < (max_digits - 1))
+	bpl	.L1126		@,
+@ Data/FE6_FE7.c:3512:             if (proc->digit < (max_digits - 1))
 	movs	r3, #49	@ tmp260,
 	ldrsb	r3, [r4, r3]	@ _19,
-@ Data/FE6_FE7.c:3483:             if (proc->digit < (max_digits - 1))
+@ Data/FE6_FE7.c:3512:             if (proc->digit < (max_digits - 1))
 	subs	r5, r5, #1	@ tmp261,
-@ Data/FE6_FE7.c:3483:             if (proc->digit < (max_digits - 1))
+@ Data/FE6_FE7.c:3512:             if (proc->digit < (max_digits - 1))
 	cmp	r3, r5	@ _19, tmp261
-	bge	.LCB8057	@
-	b	.L1175	@long jump	@
-.LCB8057:
-@ Data/FE6_FE7.c:3490:                 proc->editing = false;
+	bge	.LCB8085	@
+	b	.L1183	@long jump	@
+.LCB8085:
+@ Data/FE6_FE7.c:3519:                 proc->editing = false;
 	movs	r3, #46	@ tmp265,
 	movs	r2, #0	@ tmp266,
 	strb	r2, [r4, r3]	@ tmp266, proc_82(D)->editing
-@ Data/FE6_FE7.c:3489:                 proc->digit = 0;
+@ Data/FE6_FE7.c:3518:                 proc->digit = 0;
 	movs	r3, #0	@ _25,
-.L1120:
+.L1128:
 	movs	r2, #49	@ tmp268,
-@ Data/FE6_FE7.c:3492:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3521:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r3, [r4, r2]	@ _25, proc_82(D)->digit
 	bl	RedrawUnitSupportsMenu		@
-.L1118:
-@ Data/FE6_FE7.c:3495:         if (keys & DPAD_UP)
+.L1126:
+@ Data/FE6_FE7.c:3524:         if (keys & DPAD_UP)
 	movs	r3, #64	@ tmp271,
 	tst	r3, r6	@ tmp271, keys
-	beq	.L1121		@,
-@ Data/FE6_FE7.c:3497:             if (proc->tmp[proc->id] == max)
+	beq	.L1129		@,
+@ Data/FE6_FE7.c:3526:             if (proc->tmp[proc->id] == max)
 	movs	r2, #48	@ tmp277,
 	ldrsb	r1, [r4, r2]	@ tmp278,
 	lsls	r1, r1, #1	@ tmp279, tmp278,
 	adds	r1, r4, r1	@ _146, proc, tmp279
-@ Data/FE6_FE7.c:3497:             if (proc->tmp[proc->id] == max)
+@ Data/FE6_FE7.c:3526:             if (proc->tmp[proc->id] == max)
 	ldrsh	r2, [r1, r3]	@ _28, MEM <s16> [(struct DebuggerProc *)_146 + 64B]
-@ Data/FE6_FE7.c:3497:             if (proc->tmp[proc->id] == max)
+@ Data/FE6_FE7.c:3526:             if (proc->tmp[proc->id] == max)
 	cmp	r2, #255	@ _28,
-	bne	.LCB8082	@
-	b	.L1134	@long jump	@
-.LCB8082:
-@ Data/FE6_FE7.c:3503:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+	bne	.LCB8110	@
+	b	.L1142	@long jump	@
+.LCB8110:
+@ Data/FE6_FE7.c:3532:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	movs	r3, #49	@ tmp283,
 	ldrsb	r3, [r4, r3]	@ tmp284,
-@ Data/FE6_FE7.c:3503:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3532:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	lsls	r3, r3, #2	@ tmp285, tmp284,
 	add	r3, r3, r8	@ tmp286, tmp379
-@ Data/FE6_FE7.c:3503:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3532:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	ldr	r3, [r3, #68]	@ DigitDecimalTable[_31], DigitDecimalTable[_31]
 	adds	r3, r3, r2	@ tmp291, DigitDecimalTable[_31], _28
-@ Data/FE6_FE7.c:3504:                 if (proc->tmp[proc->id] > max)
+@ Data/FE6_FE7.c:3533:                 if (proc->tmp[proc->id] > max)
 	adds	r2, r3, #0	@ tmp281, tmp291
 	lsls	r3, r3, #16	@ tmp294, tmp291,
 	asrs	r3, r3, #16	@ tmp294, tmp294,
 	cmp	r3, #255	@ tmp294,
-	ble	.L1123		@,
+	ble	.L1131		@,
 	movs	r2, #255	@ tmp281,
-.L1123:
+.L1131:
 	lsls	r3, r2, #16	@ _38, tmp281,
 	asrs	r3, r3, #16	@ _38, _38,
-.L1122:
-@ Data/FE6_FE7.c:3499:                 proc->tmp[proc->id] = min;
+.L1130:
+@ Data/FE6_FE7.c:3528:                 proc->tmp[proc->id] = min;
 	movs	r2, #64	@ tmp296,
-@ Data/FE6_FE7.c:3509:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3538:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3499:                 proc->tmp[proc->id] = min;
+@ Data/FE6_FE7.c:3528:                 proc->tmp[proc->id] = min;
 	strh	r3, [r1, r2]	@ _38, MEM <s16> [(struct DebuggerProc *)_146 + 64B]
-@ Data/FE6_FE7.c:3509:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3538:             RedrawUnitSupportsMenu(proc);
 	bl	RedrawUnitSupportsMenu		@
-.L1121:
-@ Data/FE6_FE7.c:3511:         if (keys & DPAD_DOWN)
+.L1129:
+@ Data/FE6_FE7.c:3540:         if (keys & DPAD_DOWN)
 	lsls	r6, r6, #24	@ tmp396, keys,
-	bpl	.L1106		@,
-@ Data/FE6_FE7.c:3514:             if (proc->tmp[proc->id] == min)
+	bpl	.L1114		@,
+@ Data/FE6_FE7.c:3543:             if (proc->tmp[proc->id] == min)
 	movs	r3, #48	@ tmp305,
 	ldrsb	r1, [r4, r3]	@ tmp306,
 	lsls	r1, r1, #1	@ tmp307, tmp306,
-@ Data/FE6_FE7.c:3514:             if (proc->tmp[proc->id] == min)
+@ Data/FE6_FE7.c:3543:             if (proc->tmp[proc->id] == min)
 	adds	r3, r3, #16	@ tmp308,
 	adds	r1, r4, r1	@ _8, proc, tmp307
 	ldrsh	r2, [r1, r3]	@ _39, MEM <s16> [(struct DebuggerProc *)_8 + 64B]
 	movs	r3, #255	@ _112,
-@ Data/FE6_FE7.c:3514:             if (proc->tmp[proc->id] == min)
+@ Data/FE6_FE7.c:3543:             if (proc->tmp[proc->id] == min)
 	cmp	r2, #0	@ _39,
-	bne	.L1176		@,
-@ Data/FE6_FE7.c:3516:                 proc->tmp[proc->id] = max;
+	bne	.L1184		@,
+@ Data/FE6_FE7.c:3545:                 proc->tmp[proc->id] = max;
 	movs	r2, #64	@ tmp324,
-@ Data/FE6_FE7.c:3527:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3556:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3516:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3545:                 proc->tmp[proc->id] = max;
 	strh	r3, [r1, r2]	@ _112, MEM <s16> [(struct DebuggerProc *)_8 + 64B]
-@ Data/FE6_FE7.c:3527:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3556:             RedrawUnitSupportsMenu(proc);
 	bl	RedrawUnitSupportsMenu		@
-.L1106:
-@ Data/FE6_FE7.c:3564: }
+.L1114:
+@ Data/FE6_FE7.c:3593: }
 	@ sp needed	@
 	pop	{r7}
 	mov	r8, r7
 	pop	{r4, r5, r6, r7}
 	pop	{r0}
 	bx	r0
-.L1112:
-@ Data/FE6_FE7.c:3532:         DisplayUiHand(CursorLocationTable[0].x - ((SupportWidth + 2) * 8), (Y_HAND + (proc->id * 2)) * 8);
+.L1120:
+@ Data/FE6_FE7.c:3561:         DisplayUiHand(CursorLocationTable[0].x - ((SupportWidth + 2) * 8), (Y_HAND + (proc->id * 2)) * 8);
 	movs	r0, #92	@,
-	ldr	r3, .L1179+12	@ tmp326,
+	ldr	r3, .L1187+12	@ tmp326,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3533:         if (keys & DPAD_RIGHT)
+@ Data/FE6_FE7.c:3562:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _109,
-	beq	.L1128		@,
-@ Data/FE6_FE7.c:3535:             proc->digit = 1;
+	beq	.L1136		@,
+@ Data/FE6_FE7.c:3564:             proc->digit = 1;
 	movs	r3, #1	@ tmp328,
 	movs	r2, #49	@ tmp327,
 	strb	r3, [r4, r2]	@ tmp328, proc_82(D)->digit
-@ Data/FE6_FE7.c:3536:             proc->editing = true;
+@ Data/FE6_FE7.c:3565:             proc->editing = true;
 	strb	r3, [r4, r5]	@ tmp328, proc_82(D)->editing
-.L1128:
-@ Data/FE6_FE7.c:3538:         if (keys & DPAD_LEFT)
+.L1136:
+@ Data/FE6_FE7.c:3567:         if (keys & DPAD_LEFT)
 	lsls	r3, r6, #26	@ tmp397, keys,
-	bpl	.L1129		@,
-@ Data/FE6_FE7.c:3540:             proc->digit = 0;
+	bpl	.L1137		@,
+@ Data/FE6_FE7.c:3569:             proc->digit = 0;
 	movs	r3, #49	@ tmp340,
 	movs	r2, #0	@ tmp341,
 	strb	r2, [r4, r3]	@ tmp341, proc_82(D)->digit
-@ Data/FE6_FE7.c:3541:             proc->editing = true;
+@ Data/FE6_FE7.c:3570:             proc->editing = true;
 	subs	r3, r3, #3	@ tmp343,
 	adds	r2, r2, #1	@ tmp344,
 	strb	r2, [r4, r3]	@ tmp344, proc_82(D)->editing
-.L1129:
-@ Data/FE6_FE7.c:3544:         if (keys & DPAD_UP)
+.L1137:
+@ Data/FE6_FE7.c:3573:         if (keys & DPAD_UP)
 	lsls	r3, r6, #25	@ tmp398, keys,
-	bpl	.L1130		@,
-@ Data/FE6_FE7.c:3546:             proc->id--;
+	bpl	.L1138		@,
+@ Data/FE6_FE7.c:3575:             proc->id--;
 	movs	r3, #48	@ tmp353,
-@ Data/FE6_FE7.c:3546:             proc->id--;
+@ Data/FE6_FE7.c:3575:             proc->id--;
 	ldrb	r3, [r4, r3]	@ tmp355,
 	subs	r3, r3, #1	@ tmp356,
 	lsls	r3, r3, #24	@ tmp357, tmp356,
 	asrs	r2, r3, #24	@ _58, tmp357,
-@ Data/FE6_FE7.c:3547:             if (proc->id < 0)
+@ Data/FE6_FE7.c:3576:             if (proc->id < 0)
 	cmp	r3, #0	@ tmp357,
-	blt	.L1177		@,
+	blt	.L1185		@,
 	movs	r3, #48	@ tmp361,
-@ Data/FE6_FE7.c:3551:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3580:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r2, [r4, r3]	@ _58, MEM <struct DebuggerProc> [(void *)proc_82(D)].id
 	bl	RedrawUnitSupportsMenu		@
-.L1130:
-@ Data/FE6_FE7.c:3553:         if (keys & DPAD_DOWN)
+.L1138:
+@ Data/FE6_FE7.c:3582:         if (keys & DPAD_DOWN)
 	lsls	r6, r6, #24	@ tmp399, keys,
-	bpl	.L1106		@,
-@ Data/FE6_FE7.c:3555:             proc->id++;
+	bpl	.L1114		@,
+@ Data/FE6_FE7.c:3584:             proc->id++;
 	movs	r1, #48	@ tmp370,
-@ Data/FE6_FE7.c:3558:                 proc->id = 0;
+@ Data/FE6_FE7.c:3587:                 proc->id = 0;
 	movs	r0, #6	@ tmp382,
 	movs	r5, #0	@ tmp384,
-@ Data/FE6_FE7.c:3555:             proc->id++;
+@ Data/FE6_FE7.c:3584:             proc->id++;
 	ldrb	r3, [r4, r1]	@ tmp372,
 	adds	r3, r3, #1	@ tmp373,
 	lsls	r3, r3, #24	@ tmp374, tmp373,
 	asrs	r2, r3, #24	@ _64, tmp374,
-@ Data/FE6_FE7.c:3558:                 proc->id = 0;
+@ Data/FE6_FE7.c:3587:                 proc->id = 0;
 	lsrs	r3, r3, #31	@ tmp383, tmp374,
 	cmp	r0, r2	@ tmp382, _64
 	adcs	r3, r3, r5	@ tmp381, tmp383, tmp384
 	rsbs	r3, r3, #0	@ tmp385, tmp381
 	ands	r2, r3	@ _64, tmp385
-@ Data/FE6_FE7.c:3561:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3590:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r2, [r4, r1]	@ _64, MEM <struct DebuggerProc> [(void *)proc_82(D)].id
 	bl	RedrawUnitSupportsMenu		@
-@ Data/FE6_FE7.c:3564: }
-	b	.L1106		@
-.L1174:
+@ Data/FE6_FE7.c:3593: }
+	b	.L1114		@
+.L1182:
 @ Data/FE6_FE7.c:551:     if (result > 9)
 	movs	r5, #9	@ _123,
-@ Data/FE6_FE7.c:3468:         if (keys & DPAD_RIGHT)
+@ Data/FE6_FE7.c:3497:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _109,
-	bne	.LCB8209	@
-	b	.L1115	@long jump	@
-.LCB8209:
-	b	.L1178		@
-.L1173:
-@ Data/FE6_FE7.c:3433:     u8 * row = GetUnitBwlSupportRow(unit);
+	bne	.LCB8237	@
+	b	.L1123	@long jump	@
+.LCB8237:
+	b	.L1186		@
+.L1181:
+@ Data/FE6_FE7.c:3462:     u8 * row = GetUnitBwlSupportRow(unit);
 	ldr	r0, [r4, #60]	@ proc_82(D)->unit, proc_82(D)->unit
 	bl	GetUnitBwlSupportRow		@
-@ Data/FE6_FE7.c:3434:     if (!row)
+@ Data/FE6_FE7.c:3463:     if (!row)
 	cmp	r0, #0	@ row,
-	beq	.L1111		@,
-	movs	r3, r4	@ ivtmp.1098, proc
+	beq	.L1119		@,
+	movs	r3, r4	@ ivtmp.1099, proc
 	movs	r1, r4	@ _52, proc
-	adds	r3, r3, #64	@ ivtmp.1098,
+	adds	r3, r3, #64	@ ivtmp.1099,
 	adds	r1, r1, #78	@ _52,
-.L1110:
-@ Data/FE6_FE7.c:3440:         row[i] = proc->tmp[i];
+.L1118:
+@ Data/FE6_FE7.c:3469:         row[i] = proc->tmp[i];
 	ldrh	r2, [r3]	@ MEM[(short int *)_59], MEM[(short int *)_59]
-@ Data/FE6_FE7.c:3438:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r3, r3, #2	@ ivtmp.1098,
-@ Data/FE6_FE7.c:3440:         row[i] = proc->tmp[i];
+@ Data/FE6_FE7.c:3467:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r3, r3, #2	@ ivtmp.1099,
+@ Data/FE6_FE7.c:3469:         row[i] = proc->tmp[i];
 	strb	r2, [r0]	@ MEM[(short int *)_59], MEM[(u8 *)_50]
-@ Data/FE6_FE7.c:3438:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r0, r0, #1	@ ivtmp.1100,
-	cmp	r1, r3	@ _52, ivtmp.1098
-	bne	.L1110		@,
-.L1111:
-@ Data/FE6_FE7.c:3458:         Proc_Goto(proc, RestartLabel);
+@ Data/FE6_FE7.c:3467:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r0, r0, #1	@ ivtmp.1101,
+	cmp	r1, r3	@ _52, ivtmp.1099
+	bne	.L1118		@,
+.L1119:
+@ Data/FE6_FE7.c:3487:         Proc_Goto(proc, RestartLabel);
 	movs	r1, #1	@,
 	movs	r0, r4	@, proc
-	ldr	r3, .L1179+16	@ tmp215,
+	ldr	r3, .L1187+16	@ tmp215,
 	bl	.L17		@
 @ Data/FE6_FE7.c:584: }
-	b	.L1108		@
-.L1172:
-@ Data/FE6_FE7.c:3452:         Proc_Goto(proc, RestartLabel);
+	b	.L1116		@
+.L1180:
+@ Data/FE6_FE7.c:3481:         Proc_Goto(proc, RestartLabel);
 	movs	r1, #1	@,
-	ldr	r3, .L1179+16	@ tmp206,
+	ldr	r3, .L1187+16	@ tmp206,
 	bl	.L17		@
 @ Data/FE6_FE7.c:584: }
-	b	.L1107		@
-.L1176:
-@ Data/FE6_FE7.c:3520:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+	b	.L1115		@
+.L1184:
+@ Data/FE6_FE7.c:3549:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	subs	r3, r3, #206	@ tmp311,
 	ldrsb	r3, [r4, r3]	@ tmp312,
-@ Data/FE6_FE7.c:3520:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3549:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	lsls	r3, r3, #2	@ tmp313, tmp312,
 	add	r3, r3, r8	@ tmp314, tmp379
-@ Data/FE6_FE7.c:3520:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3549:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	ldr	r0, [r3, #68]	@ DigitDecimalTable[_42], DigitDecimalTable[_42]
 	subs	r0, r2, r0	@ tmp319, _39, DigitDecimalTable[_42]
-@ Data/FE6_FE7.c:3521:                 if (proc->tmp[proc->id] < min)
+@ Data/FE6_FE7.c:3550:                 if (proc->tmp[proc->id] < min)
 	lsls	r3, r0, #16	@ tmp322, tmp319,
 	asrs	r3, r3, #16	@ tmp322, tmp322,
 	mvns	r3, r3	@ tmp387, tmp322
-@ Data/FE6_FE7.c:3516:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3545:                 proc->tmp[proc->id] = max;
 	movs	r2, #64	@ tmp324,
-@ Data/FE6_FE7.c:3521:                 if (proc->tmp[proc->id] < min)
+@ Data/FE6_FE7.c:3550:                 if (proc->tmp[proc->id] < min)
 	asrs	r3, r3, #31	@ tmp391, tmp387,
 	ands	r3, r0	@ tmp309, tmp319
 	lsls	r3, r3, #16	@ _112, tmp309,
 	asrs	r3, r3, #16	@ _112, _112,
-@ Data/FE6_FE7.c:3527:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3556:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3516:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3545:                 proc->tmp[proc->id] = max;
 	strh	r3, [r1, r2]	@ _112, MEM <s16> [(struct DebuggerProc *)_8 + 64B]
-@ Data/FE6_FE7.c:3527:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3556:             RedrawUnitSupportsMenu(proc);
 	bl	RedrawUnitSupportsMenu		@
-	b	.L1106		@
-.L1175:
-@ Data/FE6_FE7.c:3485:                 proc->digit++;
+	b	.L1114		@
+.L1183:
+@ Data/FE6_FE7.c:3514:                 proc->digit++;
 	adds	r3, r3, #1	@ tmp263,
 	lsls	r3, r3, #24	@ tmp264, tmp263,
 	asrs	r3, r3, #24	@ _25, tmp264,
-	b	.L1120		@
-.L1177:
-@ Data/FE6_FE7.c:3549:                 proc->id = SupportOptions - 1;
+	b	.L1128		@
+.L1185:
+@ Data/FE6_FE7.c:3578:                 proc->id = SupportOptions - 1;
 	movs	r2, #6	@ _58,
 	movs	r3, #48	@ tmp361,
-@ Data/FE6_FE7.c:3551:             RedrawUnitSupportsMenu(proc);
+@ Data/FE6_FE7.c:3580:             RedrawUnitSupportsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r2, [r4, r3]	@ _58, MEM <struct DebuggerProc> [(void *)proc_82(D)].id
 	bl	RedrawUnitSupportsMenu		@
-	b	.L1130		@
-.L1116:
-@ Data/FE6_FE7.c:3477:                 proc->editing = false;
+	b	.L1138		@
+.L1124:
+@ Data/FE6_FE7.c:3506:                 proc->editing = false;
 	movs	r2, #46	@ tmp248,
 	movs	r1, #0	@ tmp249,
-@ Data/FE6_FE7.c:3476:                 proc->digit = max_digits - 1;
+@ Data/FE6_FE7.c:3505:                 proc->digit = max_digits - 1;
 	subs	r3, r5, #1	@ tmp246, _123,
 	lsls	r3, r3, #24	@ tmp247, tmp246,
-@ Data/FE6_FE7.c:3477:                 proc->editing = false;
+@ Data/FE6_FE7.c:3506:                 proc->editing = false;
 	strb	r1, [r4, r2]	@ tmp249, proc_82(D)->editing
-@ Data/FE6_FE7.c:3476:                 proc->digit = max_digits - 1;
+@ Data/FE6_FE7.c:3505:                 proc->digit = max_digits - 1;
 	asrs	r3, r3, #24	@ _15, tmp247,
-	b	.L1117		@
-.L1134:
+	b	.L1125		@
+.L1142:
 	movs	r3, #0	@ _38,
-	b	.L1122		@
-.L1180:
+	b	.L1130		@
+.L1188:
 	.align	2
-.L1179:
+.L1187:
 	.word	gKeyStatusPtr
 	.word	.LANCHOR0
 	.word	.LANCHOR1
@@ -10354,30 +10387,30 @@ SaveSupports:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}	@
-@ Data/FE6_FE7.c:3431: {
+@ Data/FE6_FE7.c:3460: {
 	movs	r4, r0	@ proc, tmp130
-@ Data/FE6_FE7.c:3433:     u8 * row = GetUnitBwlSupportRow(unit);
+@ Data/FE6_FE7.c:3462:     u8 * row = GetUnitBwlSupportRow(unit);
 	ldr	r0, [r0, #60]	@ proc_9(D)->unit, proc_9(D)->unit
 	bl	GetUnitBwlSupportRow		@
 	subs	r2, r0, #0	@ row, tmp131,
-@ Data/FE6_FE7.c:3434:     if (!row)
-	beq	.L1181		@,
-	movs	r3, r4	@ ivtmp.1111, proc
+@ Data/FE6_FE7.c:3463:     if (!row)
+	beq	.L1189		@,
+	movs	r3, r4	@ ivtmp.1112, proc
 	adds	r4, r4, #78	@ _28,
-	adds	r3, r3, #64	@ ivtmp.1111,
-.L1183:
-@ Data/FE6_FE7.c:3440:         row[i] = proc->tmp[i];
+	adds	r3, r3, #64	@ ivtmp.1112,
+.L1191:
+@ Data/FE6_FE7.c:3469:         row[i] = proc->tmp[i];
 	ldrh	r1, [r3]	@ MEM[(short int *)_25], MEM[(short int *)_25]
-@ Data/FE6_FE7.c:3438:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r3, r3, #2	@ ivtmp.1111,
-@ Data/FE6_FE7.c:3440:         row[i] = proc->tmp[i];
+@ Data/FE6_FE7.c:3467:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r3, r3, #2	@ ivtmp.1112,
+@ Data/FE6_FE7.c:3469:         row[i] = proc->tmp[i];
 	strb	r1, [r2]	@ MEM[(short int *)_25], MEM[(u8 *)_26]
-@ Data/FE6_FE7.c:3438:     for (int i = 0; i < SupportOptions; ++i)
-	adds	r2, r2, #1	@ ivtmp.1113,
-	cmp	r3, r4	@ ivtmp.1111, _28
-	bne	.L1183		@,
-.L1181:
-@ Data/FE6_FE7.c:3442: }
+@ Data/FE6_FE7.c:3467:     for (int i = 0; i < SupportOptions; ++i)
+	adds	r2, r2, #1	@ ivtmp.1114,
+	cmp	r3, r4	@ ivtmp.1112, _28
+	bne	.L1191		@,
+.L1189:
+@ Data/FE6_FE7.c:3471: }
 	@ sp needed	@
 	pop	{r4}
 	pop	{r0}
@@ -10395,49 +10428,49 @@ SaveLearnedSkills:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-@ Data/FE6_FE7.c:3643:     u8 * skills = GetUnitLearnedSkillRam(proc->unit);
+@ Data/FE6_FE7.c:3672:     u8 * skills = GetUnitLearnedSkillRam(proc->unit);
 	ldr	r3, [r0, #60]	@ _1, proc_10(D)->unit
-@ Data/FE6_FE7.c:3574:     if (!unit)
+@ Data/FE6_FE7.c:3603:     if (!unit)
 	cmp	r3, #0	@ _1,
-	beq	.L1188		@,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+	beq	.L1196		@,
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r1, #11	@ tmp133,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r2, #192	@ tmp134,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	ldrsb	r1, [r3, r1]	@ tmp133,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	ands	r2, r1	@ tmp135, tmp133
-@ Data/FE6_FE7.c:3591:     return LearnedSkillCount;
+@ Data/FE6_FE7.c:3620:     return LearnedSkillCount;
 	rsbs	r1, r2, #0	@ tmp144, tmp135
 	adcs	r2, r2, r1	@ tmp143, tmp135, tmp144
 	adds	r2, r2, #6	@ _16,
-	adds	r0, r0, #64	@ ivtmp.1121,
+	adds	r0, r0, #64	@ ivtmp.1122,
 	lsls	r2, r2, #1	@ tmp137, _16,
-	adds	r3, r3, #50	@ ivtmp.1123,
-	adds	r2, r0, r2	@ _34, ivtmp.1121, tmp137
-.L1191:
-@ Data/FE6_FE7.c:3652:         skills[i] = (u8)proc->tmp[i];
+	adds	r3, r3, #50	@ ivtmp.1124,
+	adds	r2, r0, r2	@ _34, ivtmp.1122, tmp137
+.L1199:
+@ Data/FE6_FE7.c:3681:         skills[i] = (u8)proc->tmp[i];
 	ldrh	r1, [r0]	@ MEM[(short int *)_12], MEM[(short int *)_12]
-@ Data/FE6_FE7.c:3650:     for (i = 0; i < limit; ++i)
-	adds	r0, r0, #2	@ ivtmp.1121,
-@ Data/FE6_FE7.c:3652:         skills[i] = (u8)proc->tmp[i];
+@ Data/FE6_FE7.c:3679:     for (i = 0; i < limit; ++i)
+	adds	r0, r0, #2	@ ivtmp.1122,
+@ Data/FE6_FE7.c:3681:         skills[i] = (u8)proc->tmp[i];
 	strb	r1, [r3]	@ MEM[(short int *)_12], MEM[(u8 *)_11]
-@ Data/FE6_FE7.c:3650:     for (i = 0; i < limit; ++i)
-	adds	r3, r3, #1	@ ivtmp.1123,
-	cmp	r0, r2	@ ivtmp.1121, _34
-	bne	.L1191		@,
-@ Data/FE6_FE7.c:3596:     *(struct Unit **)0x0202A9D4 = NULL;
+@ Data/FE6_FE7.c:3679:     for (i = 0; i < limit; ++i)
+	adds	r3, r3, #1	@ ivtmp.1124,
+	cmp	r0, r2	@ ivtmp.1122, _34
+	bne	.L1199		@,
+@ Data/FE6_FE7.c:3625:     *(struct Unit **)0x0202A9D4 = NULL;
 	movs	r2, #0	@ tmp142,
-	ldr	r3, .L1197	@ tmp141,
+	ldr	r3, .L1205	@ tmp141,
 	str	r2, [r3]	@ tmp142, MEM[(struct Unit * *)33728980B]
-.L1188:
-@ Data/FE6_FE7.c:3655: }
+.L1196:
+@ Data/FE6_FE7.c:3684: }
 	@ sp needed	@
 	bx	lr
-.L1198:
+.L1206:
 	.align	2
-.L1197:
+.L1205:
 	.word	33728980
 	.size	SaveLearnedSkills, .-SaveLearnedSkills
 	.align	1
@@ -10452,21 +10485,21 @@ CanEditLearnedSkillsMenu:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-@ Data/FE6_FE7.c:3659:     if (!gActiveUnit)
-	ldr	r3, .L1202	@ tmp118,
-@ Data/FE6_FE7.c:3664: }
+@ Data/FE6_FE7.c:3688:     if (!gActiveUnit)
+	ldr	r3, .L1210	@ tmp118,
+@ Data/FE6_FE7.c:3693: }
 	@ sp needed	@
-@ Data/FE6_FE7.c:3659:     if (!gActiveUnit)
+@ Data/FE6_FE7.c:3688:     if (!gActiveUnit)
 	ldr	r0, [r3]	@ gActiveUnit, gActiveUnit
-@ Data/FE6_FE7.c:3663:     return usable;
+@ Data/FE6_FE7.c:3692:     return usable;
 	rsbs	r3, r0, #0	@ tmp122, gActiveUnit
 	adcs	r0, r0, r3	@ tmp121, gActiveUnit, tmp122
 	adds	r0, r0, #1	@ <retval>,
-@ Data/FE6_FE7.c:3664: }
+@ Data/FE6_FE7.c:3693: }
 	bx	lr
-.L1203:
+.L1211:
 	.align	2
-.L1202:
+.L1210:
 	.word	gActiveUnit
 	.size	CanEditLearnedSkillsMenu, .-CanEditLearnedSkillsMenu
 	.align	1
@@ -10481,25 +10514,25 @@ EditSkillsNow:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}	@
-@ Data/FE6_FE7.c:3669:     proc = Proc_Find(DebuggerProcCmd);
-	ldr	r3, .L1205	@ tmp119,
-@ Data/FE6_FE7.c:3672: }
+@ Data/FE6_FE7.c:3698:     proc = Proc_Find(DebuggerProcCmd);
+	ldr	r3, .L1213	@ tmp119,
+@ Data/FE6_FE7.c:3701: }
 	@ sp needed	@
-@ Data/FE6_FE7.c:3669:     proc = Proc_Find(DebuggerProcCmd);
-	ldr	r0, .L1205+4	@ tmp118,
+@ Data/FE6_FE7.c:3698:     proc = Proc_Find(DebuggerProcCmd);
+	ldr	r0, .L1213+4	@ tmp118,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3670:     Proc_Goto(proc, EditSkillsLabel);
+@ Data/FE6_FE7.c:3699:     Proc_Goto(proc, EditSkillsLabel);
 	movs	r1, #21	@,
-	ldr	r3, .L1205+8	@ tmp120,
+	ldr	r3, .L1213+8	@ tmp120,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3672: }
+@ Data/FE6_FE7.c:3701: }
 	movs	r0, #23	@,
 	pop	{r4}
 	pop	{r1}
 	bx	r1
-.L1206:
+.L1214:
 	.align	2
-.L1205:
+.L1213:
 	.word	Proc_Find
 	.word	DebuggerProcCmd
 	.word	Proc_Goto
@@ -10526,93 +10559,93 @@ RedrawLearnedSkillsMenu:
 	mov	r6, r9	@,
 	mov	r5, r8	@,
 	push	{r5, r6, r7, lr}	@
-@ Data/FE6_FE7.c:3719:     int limit = GetUnitLearnedSkillLimit(proc->unit);
+@ Data/FE6_FE7.c:3748:     int limit = GetUnitLearnedSkillLimit(proc->unit);
 	ldr	r3, [r0, #60]	@ _1, proc_35(D)->unit
-@ Data/FE6_FE7.c:3718: {
+@ Data/FE6_FE7.c:3747: {
 	movs	r4, r0	@ proc, tmp214
 	sub	sp, sp, #28	@,,
-@ Data/FE6_FE7.c:3583:     if (!unit)
+@ Data/FE6_FE7.c:3612:     if (!unit)
 	cmp	r3, #0	@ _1,
-	bne	.LCB8443	@
-	b	.L1208	@long jump	@
-.LCB8443:
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+	bne	.LCB8471	@
+	b	.L1216	@long jump	@
+.LCB8471:
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r2, #192	@ tmp154,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	ldrb	r3, [r3, #11]	@ tmp153,
 	lsls	r3, r3, #24	@ tmp153, tmp153,
 	asrs	r3, r3, #24	@ tmp153, tmp153,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	tst	r2, r3	@ tmp154, tmp153
-	beq	.LCB8450	@
-	b	.L1221	@long jump	@
-.LCB8450:
-@ Data/FE6_FE7.c:3591:     return LearnedSkillCount;
+	beq	.LCB8478	@
+	b	.L1229	@long jump	@
+.LCB8478:
+@ Data/FE6_FE7.c:3620:     return LearnedSkillCount;
 	movs	r3, #7	@ _51,
 	str	r3, [sp, #4]	@ _51, %sfp
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	subs	r2, r2, #178	@ prephitmp_82,
-.L1209:
-@ Data/FE6_FE7.c:3729:     for (i = 0; i < limit; ++i)
+.L1217:
+@ Data/FE6_FE7.c:3758:     for (i = 0; i < limit; ++i)
 	movs	r7, #0	@ i,
-@ Data/FE6_FE7.c:3725:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * limit, 0);
-	ldr	r6, .L1241	@ tmp156,
+@ Data/FE6_FE7.c:3754:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * limit, 0);
+	ldr	r6, .L1249	@ tmp156,
 	movs	r1, #14	@,
 	movs	r0, r6	@, tmp156
 	movs	r3, #0	@,
-	ldr	r5, .L1241+4	@ tmp157,
+	ldr	r5, .L1249+4	@ tmp157,
 	bl	.L28		@
-@ Data/FE6_FE7.c:3726:     BG_EnableSyncByMask(BG0_SYNC_BIT);
-	ldr	r3, .L1241+8	@ tmp210,
+@ Data/FE6_FE7.c:3755:     BG_EnableSyncByMask(BG0_SYNC_BIT);
+	ldr	r3, .L1249+8	@ tmp210,
 	movs	r0, #1	@,
 	str	r3, [sp, #20]	@ tmp210, %sfp
 	bl	.L17		@
-@ Data/FE6_FE7.c:3727:     ResetIconGraphics();
-	ldr	r3, .L1241+12	@ tmp159,
+@ Data/FE6_FE7.c:3756:     ResetIconGraphics();
+	ldr	r3, .L1249+12	@ tmp159,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3728:     LoadIconPalettes(4);
-	ldr	r3, .L1241+16	@ tmp160,
+@ Data/FE6_FE7.c:3757:     LoadIconPalettes(4);
+	ldr	r3, .L1249+16	@ tmp160,
 	movs	r0, #4	@,
 	bl	.L17		@
-	ldr	r3, .L1241+20	@ tmp206,
+	ldr	r3, .L1249+20	@ tmp206,
 	mov	fp, r3	@ tmp206, tmp206
-	ldr	r3, .L1241+24	@ tmp207,
+	ldr	r3, .L1249+24	@ tmp207,
 	mov	r10, r3	@ tmp207, tmp207
-	ldr	r3, .L1241+28	@ tmp208,
+	ldr	r3, .L1249+28	@ tmp208,
 	mov	r9, r3	@ tmp208, tmp208
-	ldr	r3, .L1241+32	@ tmp209,
+	ldr	r3, .L1249+32	@ tmp209,
 	mov	r8, r3	@ tmp209, tmp209
-@ Data/FE6_FE7.c:3604:         return "---";
-	ldr	r3, .L1241+36	@ _59,
+@ Data/FE6_FE7.c:3633:         return "---";
+	ldr	r3, .L1249+36	@ _59,
 	str	r3, [sp, #8]	@ _59, %sfp
-@ Data/FE6_FE7.c:3602:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
-	ldr	r3, .L1241+40	@ tmp212,
+@ Data/FE6_FE7.c:3631:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
+	ldr	r3, .L1249+40	@ tmp212,
 	str	r3, [sp, #12]	@ tmp212, %sfp
 @ Data/FE6_FE7.c:69:         return (void *)BlankString;
-	ldr	r3, .L1241+44	@ _59,
-	ldr	r5, .L1241+48	@ ivtmp.1142,
+	ldr	r3, .L1249+44	@ _59,
+	ldr	r5, .L1249+48	@ ivtmp.1143,
 	str	r3, [sp, #16]	@ _59, %sfp
-	adds	r4, r4, #64	@ ivtmp.1144,
-	subs	r6, r6, #8	@ ivtmp.1146,
-.L1219:
-@ Data/FE6_FE7.c:3731:         ClearText(&th[i]);
-	movs	r0, r5	@, ivtmp.1142
+	adds	r4, r4, #64	@ ivtmp.1145,
+	subs	r6, r6, #8	@ ivtmp.1147,
+.L1227:
+@ Data/FE6_FE7.c:3760:         ClearText(&th[i]);
+	movs	r0, r5	@, ivtmp.1143
 	bl	.L311		@
-@ Data/FE6_FE7.c:3732:         Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
+@ Data/FE6_FE7.c:3761:         Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
 	movs	r2, #0	@ tmp243,
-	ldrsh	r3, [r4, r2]	@ _8, ivtmp.1144, tmp243
-@ Data/FE6_FE7.c:3602:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
+	ldrsh	r3, [r4, r2]	@ _8, ivtmp.1145, tmp243
+@ Data/FE6_FE7.c:3631:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
 	cmp	r3, #0	@ _8,
-	beq	.L1213		@,
+	beq	.L1221		@,
 	cmp	r3, #255	@ _8,
-	beq	.L1213		@,
-@ Data/FE6_FE7.c:3602:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
+	beq	.L1221		@,
+@ Data/FE6_FE7.c:3631:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
 	ldr	r2, [sp, #12]	@ tmp212, %sfp
 	lsls	r3, r3, #1	@ tmp174, _8,
 	ldrh	r0, [r3, r2]	@ _55, SkillDescTable
-@ Data/FE6_FE7.c:3602:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
+@ Data/FE6_FE7.c:3631:     if (skillId == 0 || skillId == 0xFF || !SkillDescTable[skillId])
 	cmp	r0, #0	@ _55,
-	beq	.L1213		@,
+	beq	.L1221		@,
 @ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
 	movs	r2, #128	@ tmp176,
 @ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
@@ -10622,83 +10655,83 @@ RedrawLearnedSkillsMenu:
 @ Data/FE6_FE7.c:67:     if ((index > 0x4000) || (index <= 0))
 	lsls	r2, r2, #7	@ tmp176, tmp176,
 	cmp	r3, r2	@ tmp175, tmp176
-	bcs	.L1214		@,
+	bcs	.L1222		@,
 @ Data/FE6_FE7.c:71:     return GetStringFromIndex(index);
-	ldr	r3, .L1241+52	@ tmp177,
+	ldr	r3, .L1249+52	@ tmp177,
 	bl	.L17		@
 	subs	r1, r0, #0	@ _59, tmp215,
-@ Data/FE6_FE7.c:3607:     if (!desc)
-	beq	.L1213		@,
-.L1214:
-@ Data/FE6_FE7.c:3611:     for (char * it = desc; *it; ++it)
+@ Data/FE6_FE7.c:3636:     if (!desc)
+	beq	.L1221		@,
+.L1222:
+@ Data/FE6_FE7.c:3640:     for (char * it = desc; *it; ++it)
 	ldrb	r3, [r1]	@ _61, *_62
 	cmp	r3, #0	@ _61,
-	beq	.L1212		@,
-@ Data/FE6_FE7.c:3611:     for (char * it = desc; *it; ++it)
+	beq	.L1220		@,
+@ Data/FE6_FE7.c:3640:     for (char * it = desc; *it; ++it)
 	movs	r2, r1	@ it, _59
-	b	.L1217		@
-.L1216:
-@ Data/FE6_FE7.c:3611:     for (char * it = desc; *it; ++it)
+	b	.L1225		@
+.L1224:
+@ Data/FE6_FE7.c:3640:     for (char * it = desc; *it; ++it)
 	ldrb	r3, [r2, #1]	@ _61, MEM[(char *)it_64]
-@ Data/FE6_FE7.c:3611:     for (char * it = desc; *it; ++it)
+@ Data/FE6_FE7.c:3640:     for (char * it = desc; *it; ++it)
 	adds	r2, r2, #1	@ it,
-@ Data/FE6_FE7.c:3611:     for (char * it = desc; *it; ++it)
+@ Data/FE6_FE7.c:3640:     for (char * it = desc; *it; ++it)
 	cmp	r3, #0	@ _61,
-	beq	.L1212		@,
-.L1217:
-@ Data/FE6_FE7.c:3613:         if (*it == ':')
+	beq	.L1220		@,
+.L1225:
+@ Data/FE6_FE7.c:3642:         if (*it == ':')
 	cmp	r3, #58	@ _61,
-	bne	.L1216		@,
-@ Data/FE6_FE7.c:3615:             *it = 0;
+	bne	.L1224		@,
+@ Data/FE6_FE7.c:3644:             *it = 0;
 	movs	r3, #0	@ tmp178,
 	strb	r3, [r2]	@ tmp178, *it_75
-.L1212:
-@ Data/FE6_FE7.c:3732:         Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
-	movs	r0, r5	@, ivtmp.1142
+.L1220:
+@ Data/FE6_FE7.c:3761:         Text_DrawString(&th[i], GetLearnedSkillName(proc->tmp[i]));
+	movs	r0, r5	@, ivtmp.1143
 	bl	.L310		@
-@ Data/FE6_FE7.c:3733:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(nameX, Y_HAND + (i * 2)));
-	movs	r1, r6	@, ivtmp.1146
-	movs	r0, r5	@, ivtmp.1142
+@ Data/FE6_FE7.c:3762:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(nameX, Y_HAND + (i * 2)));
+	movs	r1, r6	@, ivtmp.1147
+	movs	r0, r5	@, ivtmp.1143
 	bl	.L139		@
-@ Data/FE6_FE7.c:3734:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
-	movs	r0, r6	@ tmp183, ivtmp.1146
+@ Data/FE6_FE7.c:3763:         PutNumber(gBG0TilemapBuffer + TILEMAP_INDEX(START_X, Y_HAND + (i * 2)), TEXT_COLOR_SYSTEM_GOLD, proc->tmp[i]);
+	movs	r0, r6	@ tmp183, ivtmp.1147
 	movs	r1, #3	@,
 	movs	r3, #0	@ tmp244,
-	ldrsh	r2, [r4, r3]	@ MEM[(short int *)_94], ivtmp.1144, tmp244
+	ldrsh	r2, [r4, r3]	@ MEM[(short int *)_94], ivtmp.1145, tmp244
 	adds	r0, r0, #24	@ tmp183,
 	bl	.L193		@
-@ Data/FE6_FE7.c:3735:         if (proc->tmp[i] && proc->tmp[i] != 0xFF)
+@ Data/FE6_FE7.c:3764:         if (proc->tmp[i] && proc->tmp[i] != 0xFF)
 	movs	r3, #0	@ tmp245,
-	ldrsh	r1, [r4, r3]	@ _47, ivtmp.1144, tmp245
-@ Data/FE6_FE7.c:3733:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(nameX, Y_HAND + (i * 2)));
+	ldrsh	r1, [r4, r3]	@ _47, ivtmp.1145, tmp245
+@ Data/FE6_FE7.c:3762:         PutText(&th[i], gBG0TilemapBuffer + TILEMAP_INDEX(nameX, Y_HAND + (i * 2)));
 	adds	r7, r7, #1	@ i,
-@ Data/FE6_FE7.c:3735:         if (proc->tmp[i] && proc->tmp[i] != 0xFF)
+@ Data/FE6_FE7.c:3764:         if (proc->tmp[i] && proc->tmp[i] != 0xFF)
 	cmp	r1, #0	@ _47,
-	beq	.L1218		@,
+	beq	.L1226		@,
 	cmp	r1, #255	@ _47,
-	beq	.L1218		@,
-@ Data/FE6_FE7.c:3737:             DrawIcon(
+	beq	.L1226		@,
+@ Data/FE6_FE7.c:3766:             DrawIcon(
 	movs	r2, #128	@,
 	adds	r1, r1, #1	@ tmp197,
-	ldr	r3, .L1241+56	@ tmp199,
+	ldr	r3, .L1249+56	@ tmp199,
 	adds	r1, r1, #255	@ tmp197,
-	subs	r0, r6, #4	@ tmp198, ivtmp.1146,
+	subs	r0, r6, #4	@ tmp198, ivtmp.1147,
 	lsls	r2, r2, #7	@,,
 	bl	.L17		@
-.L1218:
-@ Data/FE6_FE7.c:3729:     for (i = 0; i < limit; ++i)
+.L1226:
+@ Data/FE6_FE7.c:3758:     for (i = 0; i < limit; ++i)
 	ldr	r3, [sp, #4]	@ _51, %sfp
-	adds	r5, r5, #8	@ ivtmp.1142,
-	adds	r4, r4, #2	@ ivtmp.1144,
-	adds	r6, r6, #128	@ ivtmp.1146,
+	adds	r5, r5, #8	@ ivtmp.1143,
+	adds	r4, r4, #2	@ ivtmp.1145,
+	adds	r6, r6, #128	@ ivtmp.1147,
 	cmp	r7, r3	@ i, _51
-	blt	.L1219		@,
-.L1220:
-@ Data/FE6_FE7.c:3743:     BG_EnableSyncByMask(BG0_SYNC_BIT);
+	blt	.L1227		@,
+.L1228:
+@ Data/FE6_FE7.c:3772:     BG_EnableSyncByMask(BG0_SYNC_BIT);
 	movs	r0, #1	@,
 	ldr	r3, [sp, #20]	@ tmp210, %sfp
 	bl	.L17		@
-@ Data/FE6_FE7.c:3744: }
+@ Data/FE6_FE7.c:3773: }
 	add	sp, sp, #28	@,,
 	@ sp needed	@
 	pop	{r4, r5, r6, r7}
@@ -10709,40 +10742,40 @@ RedrawLearnedSkillsMenu:
 	pop	{r4, r5, r6, r7}
 	pop	{r0}
 	bx	r0
-.L1213:
-@ Data/FE6_FE7.c:3604:         return "---";
-	ldr	r1, [sp, #8]	@ _59, %sfp
-	b	.L1212		@
 .L1221:
-@ Data/FE6_FE7.c:3589:         return 6; /* keep supports[6] leader */
+@ Data/FE6_FE7.c:3633:         return "---";
+	ldr	r1, [sp, #8]	@ _59, %sfp
+	b	.L1220		@
+.L1229:
+@ Data/FE6_FE7.c:3618:         return 6; /* keep supports[6] leader */
 	movs	r3, #6	@ _51,
 	movs	r2, #12	@ prephitmp_82,
 	str	r3, [sp, #4]	@ _51, %sfp
-	b	.L1209		@
-.L1208:
-@ Data/FE6_FE7.c:3725:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * limit, 0);
+	b	.L1217		@
+.L1216:
+@ Data/FE6_FE7.c:3754:     TileMap_FillRect(gBG0TilemapBuffer + TILEMAP_INDEX(NUMBER_X - 6, Y_HAND), 14, 2 * limit, 0);
 	movs	r2, #0	@,
 	movs	r1, #14	@,
 	movs	r3, #0	@,
-	ldr	r0, .L1241	@ tmp201,
-	ldr	r4, .L1241+4	@ tmp202,
+	ldr	r0, .L1249	@ tmp201,
+	ldr	r4, .L1249+4	@ tmp202,
 	bl	.L27		@
-@ Data/FE6_FE7.c:3726:     BG_EnableSyncByMask(BG0_SYNC_BIT);
-	ldr	r3, .L1241+8	@ tmp210,
+@ Data/FE6_FE7.c:3755:     BG_EnableSyncByMask(BG0_SYNC_BIT);
+	ldr	r3, .L1249+8	@ tmp210,
 	movs	r0, #1	@,
 	str	r3, [sp, #20]	@ tmp210, %sfp
 	bl	.L17		@
-@ Data/FE6_FE7.c:3727:     ResetIconGraphics();
-	ldr	r3, .L1241+12	@ tmp204,
+@ Data/FE6_FE7.c:3756:     ResetIconGraphics();
+	ldr	r3, .L1249+12	@ tmp204,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3728:     LoadIconPalettes(4);
+@ Data/FE6_FE7.c:3757:     LoadIconPalettes(4);
 	movs	r0, #4	@,
-	ldr	r3, .L1241+16	@ tmp205,
+	ldr	r3, .L1249+16	@ tmp205,
 	bl	.L17		@
-	b	.L1220		@
-.L1242:
+	b	.L1228		@
+.L1250:
 	.align	2
-.L1241:
+.L1249:
 	.word	gBG0TilemapBuffer+150
 	.word	TileMap_FillRect
 	.word	BG_EnableSyncByMask
@@ -10775,46 +10808,46 @@ EditSkillsInit:
 	mov	r7, r9	@,
 	mov	r6, r8	@,
 	push	{r6, r7, lr}	@
-@ Data/FE6_FE7.c:3677:     int limit = GetUnitLearnedSkillLimit(proc->unit);
+@ Data/FE6_FE7.c:3706:     int limit = GetUnitLearnedSkillLimit(proc->unit);
 	ldr	r3, [r0, #60]	@ _1, proc_20(D)->unit
-@ Data/FE6_FE7.c:3675: {
+@ Data/FE6_FE7.c:3704: {
 	movs	r5, r0	@ proc, tmp198
 	sub	sp, sp, #8	@,,
-@ Data/FE6_FE7.c:3583:     if (!unit)
+@ Data/FE6_FE7.c:3612:     if (!unit)
 	cmp	r3, #0	@ _1,
-	bne	.LCB8662	@
-	b	.L1254	@long jump	@
-.LCB8662:
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+	bne	.LCB8690	@
+	b	.L1262	@long jump	@
+.LCB8690:
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r2, #192	@ tmp143,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	ldrb	r3, [r3, #11]	@ tmp142,
 	lsls	r3, r3, #24	@ tmp142, tmp142,
 	asrs	r3, r3, #24	@ tmp142, tmp142,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	tst	r2, r3	@ tmp143, tmp142
-	bne	.L1255		@,
+	bne	.L1263		@,
 	movs	r3, #16	@ prephitmp_63,
-@ Data/FE6_FE7.c:3591:     return LearnedSkillCount;
+@ Data/FE6_FE7.c:3620:     return LearnedSkillCount;
 	movs	r6, #7	@ _40,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	mov	r10, r3	@ prephitmp_63, prephitmp_63
-.L1244:
+.L1252:
 @ Data/FE6_FE7.c:406:     ResetTextFont();
-	ldr	r3, .L1261	@ tmp145,
+	ldr	r3, .L1269	@ tmp145,
 	mov	r9, r3	@ tmp145, tmp145
 	bl	.L17		@
 @ Data/FE6_FE7.c:407:     SetTextFontGlyphs(0);
 	movs	r0, #0	@,
-	ldr	r7, .L1261+4	@ tmp146,
+	ldr	r7, .L1269+4	@ tmp146,
 	bl	.L145		@
 @ Data/FE6_FE7.c:410:     BG_Fill(gBG0TilemapBuffer, 0);
 	movs	r1, #0	@,
-	ldr	r0, .L1261+8	@ tmp147,
-	ldr	r3, .L1261+12	@ tmp148,
+	ldr	r0, .L1269+8	@ tmp147,
+	ldr	r3, .L1269+12	@ tmp148,
 	bl	.L17		@
 @ Data/FE6_FE7.c:411:     BG_EnableSyncByMask(BG0_SYNC_BIT);
-	ldr	r3, .L1261+16	@ tmp191,
+	ldr	r3, .L1269+16	@ tmp191,
 	movs	r0, #1	@,
 	mov	r8, r3	@ tmp191, tmp191
 	bl	.L17		@
@@ -10825,58 +10858,58 @@ EditSkillsInit:
 	bl	.L145		@
 @ Data/FE6_FE7.c:414:     SetTextFont(0);
 	movs	r0, #0	@,
-	ldr	r3, .L1261+20	@ tmp152,
+	ldr	r3, .L1269+20	@ tmp152,
 	bl	.L17		@
 @ Data/FE6_FE7.c:415:     ClearBg0Bg1();
-	ldr	r3, .L1261+24	@ tmp153,
+	ldr	r3, .L1269+24	@ tmp153,
 	bl	.L17		@
 @ Data/FE6_FE7.c:416:     ResetText();
-	ldr	r3, .L1261+28	@ tmp154,
+	ldr	r3, .L1269+28	@ tmp154,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3683:     LoadIconPalettes(4);
+@ Data/FE6_FE7.c:3712:     LoadIconPalettes(4);
 	movs	r0, #4	@,
-	ldr	r3, .L1261+32	@ tmp155,
+	ldr	r3, .L1269+32	@ tmp155,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3596:     *(struct Unit **)0x0202A9D4 = NULL;
+@ Data/FE6_FE7.c:3625:     *(struct Unit **)0x0202A9D4 = NULL;
 	movs	r3, #0	@ tmp157,
-	ldr	r2, .L1261+36	@ tmp156,
+	ldr	r2, .L1269+36	@ tmp156,
 	str	r3, [r2]	@ tmp157, MEM[(struct Unit * *)33728980B]
-@ Data/FE6_FE7.c:3685:     skills = GetUnitLearnedSkillRam(proc->unit);
+@ Data/FE6_FE7.c:3714:     skills = GetUnitLearnedSkillRam(proc->unit);
 	ldr	r0, [r5, #60]	@ _2, proc_20(D)->unit
-@ Data/FE6_FE7.c:3574:     if (!unit)
+@ Data/FE6_FE7.c:3603:     if (!unit)
 	cmp	r0, #0	@ _2,
-	beq	.L1260		@,
-	movs	r1, r5	@ vectp.1160, proc
-@ Data/FE6_FE7.c:3688:         proc->tmp[i] = 0;
+	beq	.L1268		@,
+	movs	r1, r5	@ vectp.1161, proc
+@ Data/FE6_FE7.c:3717:         proc->tmp[i] = 0;
 	movs	r2, #76	@ tmp170,
 	str	r3, [r5, #64]	@ tmp157, MEM <vector(2) short int> [(short int *)proc_20(D) + 64B]
 	str	r3, [r5, #68]	@ tmp157, MEM <vector(2) short int> [(short int *)proc_20(D) + 68B]
 	str	r3, [r5, #72]	@ tmp157, MEM <vector(2) short int> [(short int *)proc_20(D) + 72B]
-	adds	r1, r1, #64	@ vectp.1160,
+	adds	r1, r1, #64	@ vectp.1161,
 	strh	r3, [r5, r2]	@ tmp157, proc_20(D)->tmp[6]
-@ Data/FE6_FE7.c:3692:         for (i = 0; i < limit; ++i)
+@ Data/FE6_FE7.c:3721:         for (i = 0; i < limit; ++i)
 	cmp	r6, #0	@ _40,
-	beq	.L1248		@,
+	beq	.L1256		@,
 	lsls	r7, r6, #1	@ tmp174, _40,
-	adds	r0, r0, #50	@ ivtmp.1172,
-	adds	r7, r1, r7	@ _88, ivtmp.1174, tmp174
-.L1250:
-@ Data/FE6_FE7.c:3694:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
+	adds	r0, r0, #50	@ ivtmp.1173,
+	adds	r7, r1, r7	@ _88, ivtmp.1175, tmp174
+.L1258:
+@ Data/FE6_FE7.c:3723:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
 	ldrb	r2, [r0]	@ _5, MEM[(u8 *)_82]
-@ Data/FE6_FE7.c:3694:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
+@ Data/FE6_FE7.c:3723:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
 	movs	r3, r2	@ tmp195, _5
 	subs	r3, r3, #255	@ tmp195,
 	subs	r4, r3, #1	@ tmp196, tmp195
 	sbcs	r3, r3, r4	@ tmp194, tmp195, tmp196
 	rsbs	r3, r3, #0	@ tmp197, tmp194
 	ands	r2, r3	@ _5, tmp197
-@ Data/FE6_FE7.c:3694:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
+@ Data/FE6_FE7.c:3723:             proc->tmp[i] = (skills[i] == 0xFF) ? 0 : skills[i];
 	strh	r2, [r1]	@ _5, MEM[(short int *)_83]
-@ Data/FE6_FE7.c:3692:         for (i = 0; i < limit; ++i)
-	adds	r1, r1, #2	@ ivtmp.1174,
-	adds	r0, r0, #1	@ ivtmp.1172,
-	cmp	r1, r7	@ ivtmp.1174, _88
-	bne	.L1250		@,
+@ Data/FE6_FE7.c:3721:         for (i = 0; i < limit; ++i)
+	adds	r1, r1, #2	@ ivtmp.1175,
+	adds	r0, r0, #1	@ ivtmp.1173,
+	cmp	r1, r7	@ ivtmp.1175, _88
+	bne	.L1258		@,
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
 	movs	r3, #0	@ tmp188,
 	movs	r0, #2	@,
@@ -10884,43 +10917,43 @@ EditSkillsInit:
 	movs	r2, #22	@,
 	mov	r3, r10	@, prephitmp_63
 	movs	r1, #1	@,
-	ldr	r7, .L1261+40	@ tmp189,
+	ldr	r7, .L1269+40	@ tmp189,
 	bl	.L145		@
-@ Data/FE6_FE7.c:3704:     BG_EnableSyncByMask(BG2_SYNC_BIT);
+@ Data/FE6_FE7.c:3733:     BG_EnableSyncByMask(BG2_SYNC_BIT);
 	movs	r0, #4	@,
 	bl	.L193		@
-.L1246:
-	ldr	r4, .L1261+44	@ ivtmp.1167,
+.L1254:
+	ldr	r4, .L1269+44	@ ivtmp.1168,
 	lsls	r6, r6, #3	@ tmp178, _40,
-	ldr	r7, .L1261+48	@ tmp192,
-	adds	r6, r4, r6	@ _66, ivtmp.1167, tmp178
-.L1253:
-@ Data/FE6_FE7.c:3709:         InitText(&th[i], LearnedSkillNameWidth);
-	movs	r0, r4	@, ivtmp.1167
+	ldr	r7, .L1269+48	@ tmp192,
+	adds	r6, r4, r6	@ _66, ivtmp.1168, tmp178
+.L1261:
+@ Data/FE6_FE7.c:3738:         InitText(&th[i], LearnedSkillNameWidth);
+	movs	r0, r4	@, ivtmp.1168
 	movs	r1, #12	@,
-@ Data/FE6_FE7.c:3707:     for (i = 0; i < limit; ++i)
-	adds	r4, r4, #8	@ ivtmp.1167,
-@ Data/FE6_FE7.c:3709:         InitText(&th[i], LearnedSkillNameWidth);
+@ Data/FE6_FE7.c:3736:     for (i = 0; i < limit; ++i)
+	adds	r4, r4, #8	@ ivtmp.1168,
+@ Data/FE6_FE7.c:3738:         InitText(&th[i], LearnedSkillNameWidth);
 	bl	.L145		@
-@ Data/FE6_FE7.c:3707:     for (i = 0; i < limit; ++i)
-	cmp	r4, r6	@ ivtmp.1167, _66
-	bne	.L1253		@,
-.L1252:
-@ Data/FE6_FE7.c:3711:     proc->id = 0;
+@ Data/FE6_FE7.c:3736:     for (i = 0; i < limit; ++i)
+	cmp	r4, r6	@ ivtmp.1168, _66
+	bne	.L1261		@,
+.L1260:
+@ Data/FE6_FE7.c:3740:     proc->id = 0;
 	movs	r3, #0	@ tmp180,
-@ Data/FE6_FE7.c:3713:     proc->editing = false;
+@ Data/FE6_FE7.c:3742:     proc->editing = false;
 	movs	r2, #0	@ tmp181,
-@ Data/FE6_FE7.c:3711:     proc->id = 0;
+@ Data/FE6_FE7.c:3740:     proc->id = 0;
 	strh	r3, [r5, #48]	@ tmp180, MEM <vector(2) signed char> [(signed char *)proc_20(D) + 48B]
-@ Data/FE6_FE7.c:3713:     proc->editing = false;
+@ Data/FE6_FE7.c:3742:     proc->editing = false;
 	adds	r3, r3, #46	@ tmp182,
-@ Data/FE6_FE7.c:3714:     RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3743:     RedrawLearnedSkillsMenu(proc);
 	movs	r0, r5	@, proc
-@ Data/FE6_FE7.c:3713:     proc->editing = false;
+@ Data/FE6_FE7.c:3742:     proc->editing = false;
 	strb	r2, [r5, r3]	@ tmp181, proc_20(D)->editing
-@ Data/FE6_FE7.c:3714:     RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3743:     RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-@ Data/FE6_FE7.c:3715: }
+@ Data/FE6_FE7.c:3744: }
 	add	sp, sp, #8	@,,
 	@ sp needed	@
 	pop	{r5, r6, r7}
@@ -10930,58 +10963,58 @@ EditSkillsInit:
 	pop	{r4, r5, r6, r7}
 	pop	{r0}
 	bx	r0
-.L1255:
+.L1263:
 	movs	r3, #14	@ prephitmp_63,
-@ Data/FE6_FE7.c:3589:         return 6; /* keep supports[6] leader */
+@ Data/FE6_FE7.c:3618:         return 6; /* keep supports[6] leader */
 	movs	r6, #6	@ _40,
 	mov	r10, r3	@ prephitmp_63, prephitmp_63
-	b	.L1244		@
-.L1260:
-@ Data/FE6_FE7.c:3688:         proc->tmp[i] = 0;
+	b	.L1252		@
+.L1268:
+@ Data/FE6_FE7.c:3717:         proc->tmp[i] = 0;
 	adds	r3, r3, #76	@ tmp161,
 	str	r0, [r5, #64]	@ _2, MEM <vector(2) short int> [(short int *)proc_20(D) + 64B]
 	str	r0, [r5, #68]	@ _2, MEM <vector(2) short int> [(short int *)proc_20(D) + 68B]
 	str	r0, [r5, #72]	@ _2, MEM <vector(2) short int> [(short int *)proc_20(D) + 72B]
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
 	movs	r2, #22	@,
-@ Data/FE6_FE7.c:3688:         proc->tmp[i] = 0;
+@ Data/FE6_FE7.c:3717:         proc->tmp[i] = 0;
 	strh	r0, [r5, r3]	@ _2, proc_20(D)->tmp[6]
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
 	movs	r1, #1	@,
 	str	r0, [sp]	@ _2,
 	mov	r3, r10	@, prephitmp_63
 	adds	r0, r0, #2	@,
-	ldr	r7, .L1261+40	@ tmp165,
+	ldr	r7, .L1269+40	@ tmp165,
 	bl	.L145		@
-@ Data/FE6_FE7.c:3704:     BG_EnableSyncByMask(BG2_SYNC_BIT);
+@ Data/FE6_FE7.c:3733:     BG_EnableSyncByMask(BG2_SYNC_BIT);
 	movs	r0, #4	@,
 	bl	.L193		@
-@ Data/FE6_FE7.c:3707:     for (i = 0; i < limit; ++i)
+@ Data/FE6_FE7.c:3736:     for (i = 0; i < limit; ++i)
 	cmp	r6, #0	@ _40,
-	bne	.L1246		@,
-	b	.L1252		@
-.L1254:
+	bne	.L1254		@,
+	b	.L1260		@
+.L1262:
 	movs	r3, #2	@ prephitmp_63,
-@ Data/FE6_FE7.c:3585:         return 0;
+@ Data/FE6_FE7.c:3614:         return 0;
 	movs	r6, #0	@ _40,
 	mov	r10, r3	@ prephitmp_63, prephitmp_63
-	b	.L1244		@
-.L1248:
+	b	.L1252		@
+.L1256:
 @ Data/FE6_FE7.c:60:     PutUiWindowFrame(x, y, width, height, style);
 	str	r6, [sp]	@ _40,
 	mov	r3, r10	@, prephitmp_63
 	movs	r2, #22	@,
 	movs	r1, #1	@,
 	movs	r0, #2	@,
-	ldr	r6, .L1261+40	@ tmp186,
+	ldr	r6, .L1269+40	@ tmp186,
 	bl	.L38		@
-@ Data/FE6_FE7.c:3704:     BG_EnableSyncByMask(BG2_SYNC_BIT);
+@ Data/FE6_FE7.c:3733:     BG_EnableSyncByMask(BG2_SYNC_BIT);
 	movs	r0, #4	@,
 	bl	.L193		@
-	b	.L1252		@
-.L1262:
+	b	.L1260		@
+.L1270:
 	.align	2
-.L1261:
+.L1269:
 	.word	ResetTextFont
 	.word	SetTextFontGlyphs
 	.word	gBG0TilemapBuffer
@@ -11010,222 +11043,222 @@ EditSkillsIdle:
 	push	{r4, r5, r6, r7, lr}	@
 	mov	lr, r8	@,
 	push	{lr}	@
-@ Data/FE6_FE7.c:3748:     u16 keys = gKeyStatusPtr->repeatedKeys;
-	ldr	r3, .L1344	@ tmp206,
+@ Data/FE6_FE7.c:3777:     u16 keys = gKeyStatusPtr->repeatedKeys;
+	ldr	r3, .L1352	@ tmp206,
 	ldr	r3, [r3]	@ gKeyStatusPtr, gKeyStatusPtr
 	ldrh	r6, [r3, #6]	@ keys,
-@ Data/FE6_FE7.c:3749:     int limit = GetUnitLearnedSkillLimit(proc->unit);
+@ Data/FE6_FE7.c:3778:     int limit = GetUnitLearnedSkillLimit(proc->unit);
 	ldr	r3, [r0, #60]	@ _2, proc_95(D)->unit
-@ Data/FE6_FE7.c:3747: {
+@ Data/FE6_FE7.c:3776: {
 	movs	r4, r0	@ proc, tmp455
 	sub	sp, sp, #8	@,,
-@ Data/FE6_FE7.c:3583:     if (!unit)
+@ Data/FE6_FE7.c:3612:     if (!unit)
 	cmp	r3, #0	@ _2,
-	bne	.LCB8858	@
-	b	.L1290	@long jump	@
-.LCB8858:
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+	bne	.LCB8886	@
+	b	.L1298	@long jump	@
+.LCB8886:
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r2, #11	@ tmp207,
 	ldrsb	r2, [r3, r2]	@ tmp207,
-@ Data/FE6_FE7.c:3587:     if ((unit->index & 0xC0) != 0)
+@ Data/FE6_FE7.c:3616:     if ((unit->index & 0xC0) != 0)
 	movs	r3, #192	@ tmp208,
 	ands	r3, r2	@ tmp209, tmp207
-@ Data/FE6_FE7.c:3591:     return LearnedSkillCount;
+@ Data/FE6_FE7.c:3620:     return LearnedSkillCount;
 	rsbs	r2, r3, #0	@ tmp442, tmp209
 	adcs	r3, r3, r2	@ tmp441, tmp209, tmp442
 	adds	r5, r3, #6	@ _96, tmp441,
-.L1264:
-@ Data/FE6_FE7.c:3751:     if (keys & B_BUTTON)
+.L1272:
+@ Data/FE6_FE7.c:3780:     if (keys & B_BUTTON)
 	lsls	r3, r6, #30	@ tmp458, keys,
-	bpl	.LCB8872	@
-	b	.L1336	@long jump	@
-.LCB8872:
-.L1265:
-@ Data/FE6_FE7.c:3759:     if ((keys & START_BUTTON) || (keys & A_BUTTON))
+	bpl	.LCB8900	@
+	b	.L1344	@long jump	@
+.LCB8900:
+.L1273:
+@ Data/FE6_FE7.c:3788:     if ((keys & START_BUTTON) || (keys & A_BUTTON))
 	movs	r3, #9	@ tmp235,
 	tst	r3, r6	@ tmp235, keys
-	beq	.LCB8879	@
-	b	.L1337	@long jump	@
-.LCB8879:
-.L1266:
-@ Data/FE6_FE7.c:3770:             proc->tmp[proc->id],
+	beq	.LCB8907	@
+	b	.L1345	@long jump	@
+.LCB8907:
+.L1274:
+@ Data/FE6_FE7.c:3799:             proc->tmp[proc->id],
 	movs	r7, #48	@ tmp254,
 	ldrsb	r3, [r4, r7]	@ _189,
-@ Data/FE6_FE7.c:3772:             (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3801:             (Y_HAND + (proc->id * 2)) * 8);
 	adds	r1, r3, #1	@ tmp255, _189,
-@ Data/FE6_FE7.c:3769:         TryShowSkillHelp(
+@ Data/FE6_FE7.c:3798:         TryShowSkillHelp(
 	lsls	r1, r1, #4	@ prephitmp_186, tmp255,
-@ Data/FE6_FE7.c:3767:     if (keys & SELECT_BUTTON)
+@ Data/FE6_FE7.c:3796:     if (keys & SELECT_BUTTON)
 	lsls	r2, r6, #29	@ tmp459, keys,
-	bpl	.LCB8890	@
-	b	.L1338	@long jump	@
-.LCB8890:
-.L1267:
-@ Data/FE6_FE7.c:3774:     if (proc->editing)
+	bpl	.LCB8918	@
+	b	.L1346	@long jump	@
+.LCB8918:
+.L1275:
+@ Data/FE6_FE7.c:3803:     if (proc->editing)
 	movs	r3, #46	@ tmp282,
 	movs	r7, #16	@ tmp286,
 	mov	r8, r3	@ tmp282, tmp282
 	ldrsb	r3, [r4, r3]	@ _13,
 	ands	r7, r6	@ _187, keys
-@ Data/FE6_FE7.c:3774:     if (proc->editing)
+@ Data/FE6_FE7.c:3803:     if (proc->editing)
 	cmp	r3, #0	@ _13,
-	bne	.LCB8900	@
-	b	.L1268	@long jump	@
-.LCB8900:
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+	bne	.LCB8928	@
+	b	.L1276	@long jump	@
+.LCB8928:
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	movs	r2, #49	@ tmp289,
 @ Data/FE6_FE7.c:546:     int result = 1;
 	movs	r5, #1	@ result,
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	ldrsb	r2, [r4, r2]	@ tmp290,
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
-	ldr	r3, .L1344+4	@ tmp288,
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+	ldr	r3, .L1352+4	@ tmp288,
 	lsls	r2, r2, #3	@ tmp291, tmp290,
 	adds	r3, r3, r2	@ tmp292, tmp288, tmp291
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	ldr	r0, [r3, #120]	@ CursorLocationTable[_15].x, CursorLocationTable[_15].x
 	bl	DisplayVertUiHand		@
-	ldr	r3, .L1344+8	@ tmp440,
+	ldr	r3, .L1352+8	@ tmp440,
 	mov	r8, r3	@ tmp440, tmp440
-	adds	r3, r3, #76	@ ivtmp.1184,
-.L1269:
+	adds	r3, r3, #76	@ ivtmp.1185,
+.L1277:
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	adds	r3, r3, #4	@ ivtmp.1184,
+	adds	r3, r3, #4	@ ivtmp.1185,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
-	subs	r1, r3, #4	@ tmp297, ivtmp.1184,
+	subs	r1, r3, #4	@ tmp297, ivtmp.1185,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	ldr	r1, [r1]	@ MEM[(const int *)_175 + 4294967292B], MEM[(const int *)_175 + 4294967292B]
 @ Data/FE6_FE7.c:549:         result++;
 	adds	r5, r5, #1	@ result,
 @ Data/FE6_FE7.c:547:     while (number > pDigitTable[type][result])
 	cmp	r1, #254	@ MEM[(const int *)_175 + 4294967292B],
-	ble	.L1269		@,
+	ble	.L1277		@,
 @ Data/FE6_FE7.c:551:     if (result > 9)
 	cmp	r5, #9	@ _146,
-	ble	.LCB8921	@
-	b	.L1339	@long jump	@
-.LCB8921:
-@ Data/FE6_FE7.c:3781:         if (keys & DPAD_RIGHT)
+	ble	.LCB8949	@
+	b	.L1347	@long jump	@
+.LCB8949:
+@ Data/FE6_FE7.c:3810:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _187,
-	beq	.L1271		@,
-.L1343:
-@ Data/FE6_FE7.c:3783:             if (proc->digit > 0)
+	beq	.L1279		@,
+.L1351:
+@ Data/FE6_FE7.c:3812:             if (proc->digit > 0)
 	movs	r3, #49	@ tmp299,
 	ldrsb	r3, [r4, r3]	@ _22,
-@ Data/FE6_FE7.c:3783:             if (proc->digit > 0)
+@ Data/FE6_FE7.c:3812:             if (proc->digit > 0)
 	cmp	r3, #0	@ _22,
-	bgt	.LCB8928	@
-	b	.L1272	@long jump	@
-.LCB8928:
-@ Data/FE6_FE7.c:3785:                 proc->digit--;
+	bgt	.LCB8956	@
+	b	.L1280	@long jump	@
+.LCB8956:
+@ Data/FE6_FE7.c:3814:                 proc->digit--;
 	subs	r3, r3, #1	@ tmp303,
 	lsls	r3, r3, #24	@ tmp304, tmp303,
 	asrs	r3, r3, #24	@ _26, tmp304,
-.L1273:
+.L1281:
 	movs	r2, #49	@ tmp311,
-@ Data/FE6_FE7.c:3792:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3821:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r3, [r4, r2]	@ _26, proc_95(D)->digit
 	bl	RedrawLearnedSkillsMenu		@
-.L1271:
-@ Data/FE6_FE7.c:3794:         if (keys & DPAD_LEFT)
+.L1279:
+@ Data/FE6_FE7.c:3823:         if (keys & DPAD_LEFT)
 	lsls	r3, r6, #26	@ tmp460, keys,
-	bpl	.L1274		@,
-@ Data/FE6_FE7.c:3796:             if (proc->digit < (max_digits - 1))
+	bpl	.L1282		@,
+@ Data/FE6_FE7.c:3825:             if (proc->digit < (max_digits - 1))
 	movs	r3, #49	@ tmp320,
 	ldrsb	r3, [r4, r3]	@ _30,
-@ Data/FE6_FE7.c:3796:             if (proc->digit < (max_digits - 1))
+@ Data/FE6_FE7.c:3825:             if (proc->digit < (max_digits - 1))
 	subs	r5, r5, #1	@ tmp321,
-@ Data/FE6_FE7.c:3796:             if (proc->digit < (max_digits - 1))
+@ Data/FE6_FE7.c:3825:             if (proc->digit < (max_digits - 1))
 	cmp	r3, r5	@ _30, tmp321
-	bge	.LCB8950	@
-	b	.L1340	@long jump	@
-.LCB8950:
-@ Data/FE6_FE7.c:3803:                 proc->editing = false;
+	bge	.LCB8978	@
+	b	.L1348	@long jump	@
+.LCB8978:
+@ Data/FE6_FE7.c:3832:                 proc->editing = false;
 	movs	r3, #46	@ tmp325,
 	movs	r2, #0	@ tmp326,
 	strb	r2, [r4, r3]	@ tmp326, proc_95(D)->editing
-@ Data/FE6_FE7.c:3802:                 proc->digit = 0;
+@ Data/FE6_FE7.c:3831:                 proc->digit = 0;
 	movs	r3, #0	@ _35,
-.L1276:
+.L1284:
 	movs	r2, #49	@ tmp328,
-@ Data/FE6_FE7.c:3805:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3834:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r3, [r4, r2]	@ _35, proc_95(D)->digit
 	bl	RedrawLearnedSkillsMenu		@
-.L1274:
-@ Data/FE6_FE7.c:3807:         if (keys & DPAD_UP)
+.L1282:
+@ Data/FE6_FE7.c:3836:         if (keys & DPAD_UP)
 	movs	r3, #64	@ tmp331,
 	tst	r3, r6	@ tmp331, keys
-	beq	.L1277		@,
-@ Data/FE6_FE7.c:3809:             if (proc->tmp[proc->id] == max)
+	beq	.L1285		@,
+@ Data/FE6_FE7.c:3838:             if (proc->tmp[proc->id] == max)
 	movs	r2, #48	@ tmp337,
 	ldrsb	r1, [r4, r2]	@ tmp338,
 	lsls	r1, r1, #1	@ tmp339, tmp338,
 	adds	r1, r4, r1	@ _143, proc, tmp339
-@ Data/FE6_FE7.c:3809:             if (proc->tmp[proc->id] == max)
+@ Data/FE6_FE7.c:3838:             if (proc->tmp[proc->id] == max)
 	ldrsh	r2, [r1, r3]	@ _38, MEM <s16> [(struct DebuggerProc *)_143 + 64B]
-@ Data/FE6_FE7.c:3809:             if (proc->tmp[proc->id] == max)
+@ Data/FE6_FE7.c:3838:             if (proc->tmp[proc->id] == max)
 	cmp	r2, #255	@ _38,
-	bne	.LCB8975	@
-	b	.L1292	@long jump	@
-.LCB8975:
-@ Data/FE6_FE7.c:3815:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+	bne	.LCB9003	@
+	b	.L1300	@long jump	@
+.LCB9003:
+@ Data/FE6_FE7.c:3844:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	movs	r3, #49	@ tmp343,
 	ldrsb	r3, [r4, r3]	@ tmp344,
-@ Data/FE6_FE7.c:3815:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3844:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	lsls	r3, r3, #2	@ tmp345, tmp344,
 	add	r3, r3, r8	@ tmp346, tmp440
-@ Data/FE6_FE7.c:3815:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3844:                 proc->tmp[proc->id] += DigitDecimalTable[proc->digit];
 	ldr	r3, [r3, #68]	@ DigitDecimalTable[_41], DigitDecimalTable[_41]
 	adds	r3, r3, r2	@ tmp351, DigitDecimalTable[_41], _38
-@ Data/FE6_FE7.c:3816:                 if (proc->tmp[proc->id] > max)
+@ Data/FE6_FE7.c:3845:                 if (proc->tmp[proc->id] > max)
 	adds	r2, r3, #0	@ tmp341, tmp351
 	lsls	r3, r3, #16	@ tmp354, tmp351,
 	asrs	r3, r3, #16	@ tmp354, tmp354,
 	cmp	r3, #255	@ tmp354,
-	ble	.L1279		@,
+	ble	.L1287		@,
 	movs	r2, #255	@ tmp341,
-.L1279:
+.L1287:
 	lsls	r3, r2, #16	@ _123, tmp341,
 	asrs	r3, r3, #16	@ _123, _123,
-.L1278:
-@ Data/FE6_FE7.c:3811:                 proc->tmp[proc->id] = min;
+.L1286:
+@ Data/FE6_FE7.c:3840:                 proc->tmp[proc->id] = min;
 	movs	r2, #64	@ tmp356,
-@ Data/FE6_FE7.c:3821:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3850:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3811:                 proc->tmp[proc->id] = min;
+@ Data/FE6_FE7.c:3840:                 proc->tmp[proc->id] = min;
 	strh	r3, [r1, r2]	@ _123, MEM <s16> [(struct DebuggerProc *)_143 + 64B]
-@ Data/FE6_FE7.c:3821:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3850:             RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-.L1277:
-@ Data/FE6_FE7.c:3823:         if (keys & DPAD_DOWN)
+.L1285:
+@ Data/FE6_FE7.c:3852:         if (keys & DPAD_DOWN)
 	lsls	r6, r6, #24	@ tmp461, keys,
-	bpl	.L1263		@,
-@ Data/FE6_FE7.c:3825:             if (proc->tmp[proc->id] == min)
+	bpl	.L1271		@,
+@ Data/FE6_FE7.c:3854:             if (proc->tmp[proc->id] == min)
 	movs	r3, #48	@ tmp365,
 	ldrsb	r1, [r4, r3]	@ tmp366,
 	lsls	r1, r1, #1	@ tmp367, tmp366,
-@ Data/FE6_FE7.c:3825:             if (proc->tmp[proc->id] == min)
+@ Data/FE6_FE7.c:3854:             if (proc->tmp[proc->id] == min)
 	adds	r3, r3, #16	@ tmp368,
 	adds	r1, r4, r1	@ _166, proc, tmp367
 	ldrsh	r2, [r1, r3]	@ _48, MEM <s16> [(struct DebuggerProc *)_166 + 64B]
 	movs	r3, #255	@ _47,
-@ Data/FE6_FE7.c:3825:             if (proc->tmp[proc->id] == min)
+@ Data/FE6_FE7.c:3854:             if (proc->tmp[proc->id] == min)
 	cmp	r2, #0	@ _48,
-	beq	.LCB9014	@
-	b	.L1341	@long jump	@
-.LCB9014:
-@ Data/FE6_FE7.c:3827:                 proc->tmp[proc->id] = max;
+	beq	.LCB9042	@
+	b	.L1349	@long jump	@
+.LCB9042:
+@ Data/FE6_FE7.c:3856:                 proc->tmp[proc->id] = max;
 	movs	r2, #64	@ tmp384,
-@ Data/FE6_FE7.c:3837:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3866:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3827:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3856:                 proc->tmp[proc->id] = max;
 	strh	r3, [r1, r2]	@ _47, MEM <s16> [(struct DebuggerProc *)_166 + 64B]
-@ Data/FE6_FE7.c:3837:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3866:             RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-.L1263:
-@ Data/FE6_FE7.c:3872: }
+.L1271:
+@ Data/FE6_FE7.c:3901: }
 	add	sp, sp, #8	@,,
 	@ sp needed	@
 	pop	{r7}
@@ -11233,142 +11266,142 @@ EditSkillsIdle:
 	pop	{r4, r5, r6, r7}
 	pop	{r0}
 	bx	r0
-.L1268:
-@ Data/FE6_FE7.c:3842:         DisplayUiHand(CursorLocationTable[0].x - ((LearnedSkillNameWidth + 2) * 8), (Y_HAND + (proc->id * 2)) * 8);
+.L1276:
+@ Data/FE6_FE7.c:3871:         DisplayUiHand(CursorLocationTable[0].x - ((LearnedSkillNameWidth + 2) * 8), (Y_HAND + (proc->id * 2)) * 8);
 	movs	r0, #36	@,
-	ldr	r3, .L1344+12	@ tmp386,
+	ldr	r3, .L1352+12	@ tmp386,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3843:         if (keys & DPAD_RIGHT)
+@ Data/FE6_FE7.c:3872:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _187,
-	beq	.L1284		@,
-@ Data/FE6_FE7.c:3845:             proc->digit = 1;
+	beq	.L1292		@,
+@ Data/FE6_FE7.c:3874:             proc->digit = 1;
 	movs	r3, #1	@ tmp388,
 	movs	r2, #49	@ tmp387,
 	strb	r3, [r4, r2]	@ tmp388, proc_95(D)->digit
-@ Data/FE6_FE7.c:3846:             proc->editing = true;
+@ Data/FE6_FE7.c:3875:             proc->editing = true;
 	mov	r2, r8	@ tmp282, tmp282
 	strb	r3, [r4, r2]	@ tmp388, proc_95(D)->editing
-.L1284:
-@ Data/FE6_FE7.c:3848:         if (keys & DPAD_LEFT)
+.L1292:
+@ Data/FE6_FE7.c:3877:         if (keys & DPAD_LEFT)
 	lsls	r3, r6, #26	@ tmp462, keys,
-	bpl	.L1285		@,
-@ Data/FE6_FE7.c:3850:             proc->digit = 0;
+	bpl	.L1293		@,
+@ Data/FE6_FE7.c:3879:             proc->digit = 0;
 	movs	r3, #49	@ tmp400,
 	movs	r2, #0	@ tmp401,
 	strb	r2, [r4, r3]	@ tmp401, proc_95(D)->digit
-@ Data/FE6_FE7.c:3851:             proc->editing = true;
+@ Data/FE6_FE7.c:3880:             proc->editing = true;
 	subs	r3, r3, #3	@ tmp403,
 	adds	r2, r2, #1	@ tmp404,
 	strb	r2, [r4, r3]	@ tmp404, proc_95(D)->editing
-.L1285:
-@ Data/FE6_FE7.c:3853:         if (keys & DPAD_UP)
+.L1293:
+@ Data/FE6_FE7.c:3882:         if (keys & DPAD_UP)
 	lsls	r3, r6, #25	@ tmp463, keys,
-	bpl	.L1286		@,
-@ Data/FE6_FE7.c:3855:             proc->id--;
+	bpl	.L1294		@,
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	movs	r3, #48	@ tmp413,
-@ Data/FE6_FE7.c:3855:             proc->id--;
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	ldrb	r3, [r4, r3]	@ tmp415,
 	subs	r3, r3, #1	@ tmp416,
 	lsls	r3, r3, #24	@ tmp417, tmp416,
 	asrs	r2, r3, #24	@ _67, tmp417,
-@ Data/FE6_FE7.c:3856:             if (proc->id < 0)
+@ Data/FE6_FE7.c:3885:             if (proc->id < 0)
 	cmp	r3, #0	@ tmp417,
-	bge	.LCB9072	@
-	b	.L1342	@long jump	@
-.LCB9072:
-@ Data/FE6_FE7.c:3855:             proc->id--;
+	bge	.LCB9100	@
+	b	.L1350	@long jump	@
+.LCB9100:
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	movs	r3, #48	@ tmp424,
-@ Data/FE6_FE7.c:3860:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3889:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3855:             proc->id--;
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	strb	r2, [r4, r3]	@ _67, proc_95(D)->id
-@ Data/FE6_FE7.c:3860:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3889:             RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-.L1286:
-@ Data/FE6_FE7.c:3862:         if (keys & DPAD_DOWN)
+.L1294:
+@ Data/FE6_FE7.c:3891:         if (keys & DPAD_DOWN)
 	lsls	r6, r6, #24	@ tmp464, keys,
-	bpl	.L1263		@,
-@ Data/FE6_FE7.c:3864:             proc->id++;
+	bpl	.L1271		@,
+@ Data/FE6_FE7.c:3893:             proc->id++;
 	movs	r3, #48	@ tmp433,
-@ Data/FE6_FE7.c:3864:             proc->id++;
+@ Data/FE6_FE7.c:3893:             proc->id++;
 	ldrb	r3, [r4, r3]	@ tmp435,
 	adds	r3, r3, #1	@ tmp436,
 	lsls	r3, r3, #24	@ tmp437, tmp436,
 	asrs	r3, r3, #24	@ _75, tmp437,
-@ Data/FE6_FE7.c:3865:             if (proc->id >= limit)
+@ Data/FE6_FE7.c:3894:             if (proc->id >= limit)
 	cmp	r3, r5	@ _75, _96
-	blt	.L1289		@,
-@ Data/FE6_FE7.c:3867:                 proc->id = 0;
+	blt	.L1297		@,
+@ Data/FE6_FE7.c:3896:                 proc->id = 0;
 	movs	r3, #0	@ _75,
-.L1289:
+.L1297:
 	movs	r2, #48	@ tmp438,
-@ Data/FE6_FE7.c:3869:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3898:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
 	strb	r3, [r4, r2]	@ _75, MEM <struct DebuggerProc> [(void *)proc_95(D)].id
 	bl	RedrawLearnedSkillsMenu		@
-@ Data/FE6_FE7.c:3872: }
-	b	.L1263		@
-.L1339:
+@ Data/FE6_FE7.c:3901: }
+	b	.L1271		@
+.L1347:
 @ Data/FE6_FE7.c:551:     if (result > 9)
 	movs	r5, #9	@ _146,
-@ Data/FE6_FE7.c:3781:         if (keys & DPAD_RIGHT)
+@ Data/FE6_FE7.c:3810:         if (keys & DPAD_RIGHT)
 	cmp	r7, #0	@ _187,
-	bne	.LCB9105	@
-	b	.L1271	@long jump	@
-.LCB9105:
-	b	.L1343		@
-.L1338:
-@ Data/FE6_FE7.c:3770:             proc->tmp[proc->id],
+	bne	.LCB9133	@
+	b	.L1279	@long jump	@
+.LCB9133:
+	b	.L1351		@
+.L1346:
+@ Data/FE6_FE7.c:3799:             proc->tmp[proc->id],
 	adds	r3, r3, #32	@ tmp263,
 	lsls	r3, r3, #1	@ tmp264, tmp263,
-@ Data/FE6_FE7.c:3769:         TryShowSkillHelp(
+@ Data/FE6_FE7.c:3798:         TryShowSkillHelp(
 	ldrsh	r3, [r3, r4]	@ _6, *proc_95(D)
-@ Data/FE6_FE7.c:3624:     if (skillId == 0 || skillId == 0xFF)
+@ Data/FE6_FE7.c:3653:     if (skillId == 0 || skillId == 0xFF)
 	cmp	r3, #0	@ _6,
-	bne	.LCB9117	@
-	b	.L1267	@long jump	@
-.LCB9117:
+	bne	.LCB9145	@
+	b	.L1275	@long jump	@
+.LCB9145:
 	cmp	r3, #255	@ _6,
-	bne	.LCB9123	@
-	b	.L1267	@long jump	@
-.LCB9123:
-@ Data/FE6_FE7.c:3628:     return SkillDescTable[skillId];
-	ldr	r2, .L1344+16	@ tmp276,
+	bne	.LCB9151	@
+	b	.L1275	@long jump	@
+.LCB9151:
+@ Data/FE6_FE7.c:3657:     return SkillDescTable[skillId];
+	ldr	r2, .L1352+16	@ tmp276,
 	lsls	r3, r3, #1	@ tmp277, _6,
 	ldrh	r2, [r3, r2]	@ _151, SkillDescTable
-@ Data/FE6_FE7.c:3634:     if (msg)
+@ Data/FE6_FE7.c:3663:     if (msg)
 	cmp	r2, #0	@ _151,
-	bne	.LCB9128	@
-	b	.L1267	@long jump	@
-.LCB9128:
-@ Data/FE6_FE7.c:3636:         StartHelpBox(x, y, msg);
+	bne	.LCB9156	@
+	b	.L1275	@long jump	@
+.LCB9156:
+@ Data/FE6_FE7.c:3665:         StartHelpBox(x, y, msg);
 	movs	r0, #36	@,
-	ldr	r3, .L1344+20	@ tmp278,
+	ldr	r3, .L1352+20	@ tmp278,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	ldrsb	r1, [r4, r7]	@ tmp280,
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	adds	r1, r1, #1	@ tmp281,
-@ Data/FE6_FE7.c:3776:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
+@ Data/FE6_FE7.c:3805:         DisplayVertUiHand(CursorLocationTable[proc->digit].x, (Y_HAND + (proc->id * 2)) * 8);
 	lsls	r1, r1, #4	@ prephitmp_186, tmp281,
-	b	.L1267		@
-.L1337:
-@ Data/FE6_FE7.c:3761:         CloseHelpBox();
-	ldr	r3, .L1344+24	@ tmp239,
+	b	.L1275		@
+.L1345:
+@ Data/FE6_FE7.c:3790:         CloseHelpBox();
+	ldr	r3, .L1352+24	@ tmp239,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3762:         SaveLearnedSkills(proc);
+@ Data/FE6_FE7.c:3791:         SaveLearnedSkills(proc);
 	movs	r0, r4	@, proc
 	bl	SaveLearnedSkills		@
 @ Data/FE6_FE7.c:3142:     gLCDControlBuffer.bg1cnt.priority = 0;
 	movs	r1, #3	@ tmp246,
-	ldr	r2, .L1344+28	@ tmp240,
+	ldr	r2, .L1352+28	@ tmp240,
 	ldrb	r3, [r2, #16]	@ gLCDControlBuffer.bg1cnt.priority, gLCDControlBuffer.bg1cnt.priority
 	bics	r3, r1	@ tmp245, tmp246
 	strb	r3, [r2, #16]	@ tmp245, gLCDControlBuffer.bg1cnt.priority
 @ Data/FE6_FE7.c:3143:     SetBackgroundTileDataOffset(2, 0);
 	movs	r1, #0	@,
 	movs	r0, #2	@,
-	ldr	r3, .L1344+32	@ tmp248,
+	ldr	r3, .L1352+32	@ tmp248,
 	bl	.L17		@
 @ Data/FE6_FE7.c:3144:     SetBlendTargetA_(0, 1, 0, 0, 0);
 	movs	r3, #0	@ tmp249,
@@ -11379,37 +11412,37 @@ EditSkillsIdle:
 	bl	SetBlendTargetA_		@
 @ Data/FE6_FE7.c:3145:     BG_Fill(gBG2TilemapBuffer, 0);
 	movs	r1, #0	@,
-	ldr	r0, .L1344+36	@ tmp250,
-	ldr	r3, .L1344+40	@ tmp251,
+	ldr	r0, .L1352+36	@ tmp250,
+	ldr	r3, .L1352+40	@ tmp251,
 	bl	.L17		@
 @ Data/FE6_FE7.c:3146:     BG_EnableSyncByMask(BG0_SYNC_BIT | BG1_SYNC_BIT | BG2_SYNC_BIT);
 	movs	r0, #7	@,
-	ldr	r3, .L1344+44	@ tmp252,
+	ldr	r3, .L1352+44	@ tmp252,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3764:         Proc_Goto(proc, RestartLabel);
+@ Data/FE6_FE7.c:3793:         Proc_Goto(proc, RestartLabel);
 	movs	r1, #1	@,
 	movs	r0, r4	@, proc
-	ldr	r3, .L1344+48	@ tmp253,
+	ldr	r3, .L1352+48	@ tmp253,
 	bl	.L17		@
 @ Data/FE6_FE7.c:597: }
-	b	.L1266		@
-.L1336:
-@ Data/FE6_FE7.c:3753:         CloseHelpBox();
-	ldr	r3, .L1344+24	@ tmp217,
+	b	.L1274		@
+.L1344:
+@ Data/FE6_FE7.c:3782:         CloseHelpBox();
+	ldr	r3, .L1352+24	@ tmp217,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3754:         SaveLearnedSkills(proc);
+@ Data/FE6_FE7.c:3783:         SaveLearnedSkills(proc);
 	movs	r0, r4	@, proc
 	bl	SaveLearnedSkills		@
 @ Data/FE6_FE7.c:3142:     gLCDControlBuffer.bg1cnt.priority = 0;
 	movs	r1, #3	@ tmp224,
-	ldr	r2, .L1344+28	@ tmp218,
+	ldr	r2, .L1352+28	@ tmp218,
 	ldrb	r3, [r2, #16]	@ gLCDControlBuffer.bg1cnt.priority, gLCDControlBuffer.bg1cnt.priority
 	bics	r3, r1	@ tmp223, tmp224
 	strb	r3, [r2, #16]	@ tmp223, gLCDControlBuffer.bg1cnt.priority
 @ Data/FE6_FE7.c:3143:     SetBackgroundTileDataOffset(2, 0);
 	movs	r1, #0	@,
 	movs	r0, #2	@,
-	ldr	r3, .L1344+32	@ tmp226,
+	ldr	r3, .L1352+32	@ tmp226,
 	bl	.L17		@
 @ Data/FE6_FE7.c:3144:     SetBlendTargetA_(0, 1, 0, 0, 0);
 	movs	r3, #0	@ tmp227,
@@ -11420,88 +11453,88 @@ EditSkillsIdle:
 	bl	SetBlendTargetA_		@
 @ Data/FE6_FE7.c:3145:     BG_Fill(gBG2TilemapBuffer, 0);
 	movs	r1, #0	@,
-	ldr	r0, .L1344+36	@ tmp228,
-	ldr	r3, .L1344+40	@ tmp229,
+	ldr	r0, .L1352+36	@ tmp228,
+	ldr	r3, .L1352+40	@ tmp229,
 	bl	.L17		@
 @ Data/FE6_FE7.c:3146:     BG_EnableSyncByMask(BG0_SYNC_BIT | BG1_SYNC_BIT | BG2_SYNC_BIT);
 	movs	r0, #7	@,
-	ldr	r3, .L1344+44	@ tmp230,
+	ldr	r3, .L1352+44	@ tmp230,
 	bl	.L17		@
-@ Data/FE6_FE7.c:3756:         Proc_Goto(proc, RestartLabel);
+@ Data/FE6_FE7.c:3785:         Proc_Goto(proc, RestartLabel);
 	movs	r1, #1	@,
 	movs	r0, r4	@, proc
-	ldr	r3, .L1344+48	@ tmp231,
+	ldr	r3, .L1352+48	@ tmp231,
 	bl	.L17		@
 @ Data/FE6_FE7.c:584: }
-	b	.L1265		@
-.L1341:
-@ Data/FE6_FE7.c:3831:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+	b	.L1273		@
+.L1349:
+@ Data/FE6_FE7.c:3860:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	subs	r3, r3, #206	@ tmp371,
 	ldrsb	r3, [r4, r3]	@ tmp372,
-@ Data/FE6_FE7.c:3831:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3860:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	lsls	r3, r3, #2	@ tmp373, tmp372,
 	add	r3, r3, r8	@ tmp374, tmp440
-@ Data/FE6_FE7.c:3831:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
+@ Data/FE6_FE7.c:3860:                 proc->tmp[proc->id] -= DigitDecimalTable[proc->digit];
 	ldr	r0, [r3, #68]	@ DigitDecimalTable[_51], DigitDecimalTable[_51]
 	subs	r0, r2, r0	@ tmp379, _48, DigitDecimalTable[_51]
-@ Data/FE6_FE7.c:3832:                 if (proc->tmp[proc->id] < min)
+@ Data/FE6_FE7.c:3861:                 if (proc->tmp[proc->id] < min)
 	lsls	r3, r0, #16	@ tmp382, tmp379,
 	asrs	r3, r3, #16	@ tmp382, tmp382,
 	mvns	r3, r3	@ tmp446, tmp382
-@ Data/FE6_FE7.c:3827:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3856:                 proc->tmp[proc->id] = max;
 	movs	r2, #64	@ tmp384,
-@ Data/FE6_FE7.c:3832:                 if (proc->tmp[proc->id] < min)
+@ Data/FE6_FE7.c:3861:                 if (proc->tmp[proc->id] < min)
 	asrs	r3, r3, #31	@ tmp450, tmp446,
 	ands	r3, r0	@ tmp369, tmp379
 	lsls	r3, r3, #16	@ _47, tmp369,
 	asrs	r3, r3, #16	@ _47, _47,
-@ Data/FE6_FE7.c:3837:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3866:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3827:                 proc->tmp[proc->id] = max;
+@ Data/FE6_FE7.c:3856:                 proc->tmp[proc->id] = max;
 	strh	r3, [r1, r2]	@ _47, MEM <s16> [(struct DebuggerProc *)_166 + 64B]
-@ Data/FE6_FE7.c:3837:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3866:             RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-	b	.L1263		@
-.L1340:
-@ Data/FE6_FE7.c:3798:                 proc->digit++;
+	b	.L1271		@
+.L1348:
+@ Data/FE6_FE7.c:3827:                 proc->digit++;
 	adds	r3, r3, #1	@ tmp323,
 	lsls	r3, r3, #24	@ tmp324, tmp323,
 	asrs	r3, r3, #24	@ _35, tmp324,
-	b	.L1276		@
-.L1342:
-@ Data/FE6_FE7.c:3855:             proc->id--;
+	b	.L1284		@
+.L1350:
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	movs	r3, #48	@ tmp424,
-@ Data/FE6_FE7.c:3858:                 proc->id = limit - 1;
+@ Data/FE6_FE7.c:3887:                 proc->id = limit - 1;
 	subs	r2, r5, #1	@ _67, _96,
-@ Data/FE6_FE7.c:3860:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3889:             RedrawLearnedSkillsMenu(proc);
 	movs	r0, r4	@, proc
-@ Data/FE6_FE7.c:3855:             proc->id--;
+@ Data/FE6_FE7.c:3884:             proc->id--;
 	strb	r2, [r4, r3]	@ _67, proc_95(D)->id
-@ Data/FE6_FE7.c:3860:             RedrawLearnedSkillsMenu(proc);
+@ Data/FE6_FE7.c:3889:             RedrawLearnedSkillsMenu(proc);
 	bl	RedrawLearnedSkillsMenu		@
-	b	.L1286		@
-.L1272:
-@ Data/FE6_FE7.c:3790:                 proc->editing = false;
+	b	.L1294		@
+.L1280:
+@ Data/FE6_FE7.c:3819:                 proc->editing = false;
 	movs	r2, #46	@ tmp308,
 	movs	r1, #0	@ tmp309,
-@ Data/FE6_FE7.c:3789:                 proc->digit = max_digits - 1;
+@ Data/FE6_FE7.c:3818:                 proc->digit = max_digits - 1;
 	subs	r3, r5, #1	@ tmp306, _146,
 	lsls	r3, r3, #24	@ tmp307, tmp306,
-@ Data/FE6_FE7.c:3790:                 proc->editing = false;
+@ Data/FE6_FE7.c:3819:                 proc->editing = false;
 	strb	r1, [r4, r2]	@ tmp309, proc_95(D)->editing
-@ Data/FE6_FE7.c:3789:                 proc->digit = max_digits - 1;
+@ Data/FE6_FE7.c:3818:                 proc->digit = max_digits - 1;
 	asrs	r3, r3, #24	@ _26, tmp307,
-	b	.L1273		@
-.L1292:
+	b	.L1281		@
+.L1300:
 	movs	r3, #0	@ _123,
-	b	.L1278		@
-.L1290:
-@ Data/FE6_FE7.c:3585:         return 0;
+	b	.L1286		@
+.L1298:
+@ Data/FE6_FE7.c:3614:         return 0;
 	movs	r5, #0	@ _96,
-	b	.L1264		@
-.L1345:
+	b	.L1272		@
+.L1353:
 	.align	2
-.L1344:
+.L1352:
 	.word	gKeyStatusPtr
 	.word	.LANCHOR0
 	.word	.LANCHOR1

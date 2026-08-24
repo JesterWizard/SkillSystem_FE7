@@ -78,6 +78,12 @@ class Fe7SupportSkillStorageTests(unittest.TestCase):
         self.assertIn("gBwlSupportExp", debugger)
         self.assertIn("GetUnitBwlSupportRow", debugger)
         self.assertIn("return 6; /* keep supports[6] leader */", debugger)
+        c_code = (
+            ROOT / "EngineHacks" / "ExternalHacks" / "VeslyDebugger" / "C_Code.c"
+        ).read_text(encoding="utf-8")
+        self.assertIn("gBwlSupportExp", c_code)
+        self.assertIn("GetUnitBwlSupportRow", c_code)
+        self.assertNotIn("proc->tmp[i] = unit->supports[i]", c_code)
         self.assertIn("int limit = GetUnitLearnedSkillLimit(proc->unit)", debugger)
         self.assertIn("h = (limit * 2) + 2", debugger)
         lyn = (
@@ -85,6 +91,15 @@ class Fe7SupportSkillStorageTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("SaveLearnedSkills:", lyn)
         self.assertIn("EditSkillsInit:", lyn)
+
+    def test_debugger_support_names_follow_fe7_clone_chars(self):
+        """Lyn 0x03 has NULL pSupportData; names live on clone 0x2D (same nameTextId)."""
+        debugger = (
+            ROOT / "EngineHacks" / "ExternalHacks" / "VeslyDebugger" / "Data" / "FE6_FE7.c"
+        ).read_text(encoding="utf-8")
+        self.assertIn("GetUnitSupportDataForDebug", debugger)
+        self.assertIn("other->nameTextId == ch->nameTextId", debugger)
+        self.assertIn("other->pSupportData", debugger)
 
     def test_getters_stop_at_first_empty_slot(self):
         skills = (INTERNALS / "asm" / "GetSkills.s").read_text(encoding="utf-8")
