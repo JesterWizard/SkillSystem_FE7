@@ -35,10 +35,10 @@ mov r1,#0x24
 mul r0,r1
 ldr r1,ItemTable
 add r1,r0
-ldrb r2,[r1,#7]
+ldrb r7,[r1,#7] @weapon type (keep in r7; rank loads reuse r2)
 
 @shadowgift
-cmp	r2,#7	@if dark rank
+cmp	r7,#7	@if dark rank
 bne	noShadowgift
 mov	r0,r4
 ldr	r1,ShadowgiftID
@@ -64,7 +64,7 @@ bhs	RetTrue
 noShadowgift:
 
 @lumina
-cmp	r2,#6	@if light rank
+cmp	r7,#6	@if light rank
 bne	noLumina
 mov	r0,r4
 ldr	r1,LuminaID

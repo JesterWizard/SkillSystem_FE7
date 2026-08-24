@@ -16,6 +16,13 @@ POIN CheckSkillBuffer
 WORD AmischeID
 POIN IronWeaponsList
 
+#ifndef IronSword
+#define IronSword 0x01
+#define IronLance 0x14
+#define IronAxe 0x1F
+#define IronBow 0x2C
+#endif
+
 ALIGN 4
 IronWeaponsList:
 BYTE IronSword IronLance IronAxe IronBow

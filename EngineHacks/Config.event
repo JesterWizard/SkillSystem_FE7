@@ -53,7 +53,7 @@
 
 // Shadowgift/Lumina: also check staff rank as the highest magic rank.
 #define SHADOWGIFT_VIA_STAFF_RANK False
-#define LUMINA_VIA_STAFF_RANK True
+#define LUMINA_VIA_STAFF_RANK False
 
 // If commented, Poison Strike and Grisly Wound apply even when battle damage was 0.
 #define RESIDUAL_DAMAGE_REQUIRES_BATTLE_DAMAGE

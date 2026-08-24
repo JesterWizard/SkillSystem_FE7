@@ -171,20 +171,22 @@ def _is_trampoline_at(code: bytes, idx: int) -> bool:
 
 
 def _patch_skilltester_trampoline(code: bytes, skill_present: bool) -> bytes:
+    patched = bytearray(code)
     idx = -1
+    found = False
     while True:
         idx = code.find(SKILLTESTER_CALL, idx + 1)
         if idx == -1:
-            return code  # no SkillTester trampoline here; nothing to patch
-        if _is_trampoline_at(code, idx):
             break
-    span_start = idx - 2 * (TRAMPOLINE_HALFWORDS - 1)
-    patched = bytearray(code)
-    for i in range(TRAMPOLINE_HALFWORDS - 1):
-        patched[span_start + 2 * i: span_start + 2 * i + 2] = NOP.to_bytes(2, "little")
-    movs_r0 = 0x2000 | (1 if skill_present else 0)  # `movs r0, #imm8`
-    patched[idx: idx + 2] = movs_r0.to_bytes(2, "little")
-    return bytes(patched)
+        if not _is_trampoline_at(code, idx):
+            continue
+        found = True
+        span_start = idx - 2 * (TRAMPOLINE_HALFWORDS - 1)
+        for i in range(TRAMPOLINE_HALFWORDS - 1):
+            patched[span_start + 2 * i: span_start + 2 * i + 2] = NOP.to_bytes(2, "little")
+        movs_r0 = 0x2000 | (1 if skill_present else 0)  # `movs r0, #imm8`
+        patched[idx: idx + 2] = movs_r0.to_bytes(2, "little")
+    return bytes(patched) if found else code
 
 
 class Harness:

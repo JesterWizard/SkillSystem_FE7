@@ -37,7 +37,7 @@ POP
 #include "StandaloneSkills/Lunge/Lunge.event"
 #include "StatModifierSkills/StatModifierSkills.event"
 //#include "TurnSkills/Installer.event" 
-//#include "WeaponUsabilitySkills/WeaponUsabilitySkills.event"
+#include "WeaponUsabilitySkills/WeaponUsabilitySkills.event"
 #include "WTASkills/WTASkills.event"
 #include "GrowthSkills/GrowthSkills.event"
 

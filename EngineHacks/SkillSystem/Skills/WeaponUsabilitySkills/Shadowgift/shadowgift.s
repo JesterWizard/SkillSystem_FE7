@@ -5,7 +5,7 @@
 .equ ItemTable,LuminaStaffOption+4
 .thumb
 
-push	{r4-r6, r14}
+push	{r4-r7, r14}
 
 @r4 = character pointer
 @r5 = item halfword
@@ -21,10 +21,10 @@ mov r1,#0x24
 mul r0,r1
 ldr r1,ItemTable
 add r1,r0
-ldrb r2,[r1,#7]
+ldrb r7,[r1,#7] @weapon type (keep in r7; rank loads reuse r2)
 
 @shadowgift
-cmp     r2,#7           @if dark rank
+cmp     r7,#7           @if dark rank
 bne	noShadowgift
 mov	r0,r4
 ldr	r1,ShadowgiftID
@@ -50,7 +50,7 @@ bhs	True
 noShadowgift:
 
 @lumina
-cmp     r2,#6           @if light rank
+cmp     r7,#6           @if light rank
 bne	noLumina
 mov	r0,r4
 ldr	r1,LuminaID
@@ -83,7 +83,7 @@ True:
 mov	r0,#1
 
 End:
-pop {r4-r6}
+pop {r4-r7}
 pop	{r1}
 bx	r1
 
