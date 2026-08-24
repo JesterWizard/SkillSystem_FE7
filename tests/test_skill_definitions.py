@@ -7,6 +7,7 @@ import json
 import re
 import subprocess
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -44,6 +45,25 @@ def _resolved_ids(text: str) -> dict[str, int]:
         else:
             raise AssertionError(f"{name} must use a catalog id or SKILL_OFF, got {rhs}")
     return resolved
+
+
+def _run_colorzcore(rom: Path, src: Path, attempts: int = 5) -> subprocess.CompletedProcess:
+    """Retry when another ColorzCore exclusive-opens Language Raws."""
+    last = None
+    for attempt in range(attempts):
+        last = subprocess.run(
+            [str(COLORZCORE), "A", "FE7", f"-output:{rom}", f"-input:{src}"],
+            cwd=str(COLORZCORE.parent),
+            capture_output=True,
+            text=True,
+        )
+        if last.returncode == 0:
+            return last
+        err = (last.stdout or "") + (last.stderr or "")
+        if "being used by another process" not in err:
+            return last
+        time.sleep(0.25 * (attempt + 1))
+    return last
 
 
 class SkillDefinitionToggleTests(unittest.TestCase):
@@ -92,12 +112,7 @@ class SkillDefinitionToggleTests(unittest.TestCase):
             (tmp_path / "skill_definitions.event").write_bytes(DEFS.read_bytes())
             rom.write_bytes(CLEAN_ROM.read_bytes())
             src.write_text(event, encoding="ascii")
-            result = subprocess.run(
-                [str(COLORZCORE), "A", "FE7", f"-output:{rom}", f"-input:{src}"],
-                cwd=str(COLORZCORE.parent),
-                capture_output=True,
-                text=True,
-            )
+            result = _run_colorzcore(rom, src)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertEqual(rom.read_bytes()[:5], bytes([1, 255, 199, 43, 255]))
 

@@ -52,9 +52,9 @@
 
 // Turn Skills
 #define RallyChaosID SKILL_OFF
-#define HoardersBaneID SKILL_OFF
-#define DarkBargainID SKILL_OFF
-#define SoulSapID SKILL_OFF
+#define HoardersBaneID 209
+#define DarkBargainID 208
+#define SoulSapID 210
 
 // Buff Skills
 #define EternalVanityID SKILL_OFF
@@ -141,8 +141,8 @@
 #define ArmorMarchID SKILL_OFF
 #define PassID 54
 #define KeepUpID SKILL_OFF
-#define IndoorMarchID SKILL_OFF
-#define NatureRushID SKILL_OFF
+#define IndoorMarchID 211
+#define NatureRushID 212
 
 //Mug-Loading Skills
 #define RandomMugID SKILL_OFF

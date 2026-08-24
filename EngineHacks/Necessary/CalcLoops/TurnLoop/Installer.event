@@ -1,10 +1,40 @@
 
+#ifndef HAX_PROC_DEFINITIONS_EVENT
+#include "ProcDefinitions.event"
+#endif
+
 PUSH
-ORG $59A288 // where "ResetCursorPos" was 
+ORG $B937AC // FE7 gProc_PhaseSwitchGfx
 PROC_CALL_ROUTINE_2(TurnLoopMaster)
-ORG $59A294 
-POIN NewgProc_PhaseSwitchGfx // Put ResetCursorPos at the start of this proc 
+PROC_JUMP(NewgProc_PhaseSwitchGfx)
 POP
+
+#ifndef MSG_HAS_DEBUFFS
+ALIGN 4
+ProcessDebuffs:
+SHORT $4770
+#endif
+#ifndef MSG_HAS_ARMOR_MARCH
+ALIGN 4
+ArmorMarch_StartOfTurn:
+SHORT $4770
+#endif
+#ifndef MSG_HAS_VIGOR_DANCE
+ALIGN 4
+VigorDanceReset:
+SHORT $4770
+#endif
+#ifndef MSG_HAS_RALLY_FX
+ALIGN 4
+FindMapAuraProc:
+SHORT $2000 $4770
+ALIGN 4
+StartBuffFx:
+SHORT $4770
+ALIGN 4
+RallyCommandEffect_apply:
+SHORT $4770
+#endif
 
 
 
@@ -28,18 +58,16 @@ WORD 0 0
 
 
 ALIGN 4 
-NewgProc_PhaseSwitchGfx: // Had to repoint this. I tried having my custom proc call this vanilla one as a child, which caused bugs to occur. 
-// For example, enemies were teleporting to their target rather than walking 
-PROC_YIELD // Buffer.
-PROC_NEW_CHILD(0x859AE00) // ResetCursorPos 
-PROC_CALL_ROUTINE(0x801F2AD) // Vanilla below 
-PROC_CALL_ROUTINE(0x801F2CD) 
-PROC_NEW_CHILD(0x859AEF8)
-PROC_NEW_CHILD(0x859AF40)
-PROC_NEW_CHILD(0x859AF60)
-PROC_CALL_ROUTINE(0x801F3A9) 
-PROC_LOOP_ROUTINE(0x801F491) 
-PROC_CALL_ROUTINE(0x80160D1) 
+NewgProc_PhaseSwitchGfx: // Copy of FE7 gProc_PhaseSwitchGfx at $B937AC.
+PROC_YIELD
+PROC_CALL_ROUTINE(0x801E9AD)
+PROC_CALL_ROUTINE(0x801E9CD)
+PROC_NEW_CHILD(0x8B9372C)
+PROC_NEW_CHILD(0x8B9376C)
+PROC_NEW_CHILD(0x8B9378C)
+PROC_CALL_ROUTINE(0x801EA79)
+PROC_LOOP_ROUTINE(0x801EB75)
+PROC_CALL_ROUTINE(0x8015F85)
 PROC_END 
 
 
@@ -71,7 +99,7 @@ PROC_CALL_ROUTINE(BuffAnimationSkillLoop)
 PROC_SLEEP(0)
 PROC_LOOP_ROUTINE(BuffAnimationIdle) // wait for rally animation to end. If done, goto label 0. If destructor is set (+0x30), goto label 1. 
 PROC_LABEL(2) 
-PROC_END_ALL(0x859A548) // destroy camera proc that moves to Lord at start of phase 
+PROC_END_ALL(0x8B92E38) // FE7 gProcScr_CamMove 
 PROC_CALL_ROUTINE(Buff_EnsureCamera)
 PROC_LOOP_ROUTINE(BuffWaitForCamera)
 PROC_LABEL(3)
@@ -108,6 +136,7 @@ FILL(256*8)
 
 #define StartOfTurnBuffFunctionEntry(skillID, usability, effect) "PUSH; ORG StartOfTurn_BuffSkillTable+(skillID*8); POIN usability|1 effect|1; POP" 
 
+#ifdef ENABLE_BUFF_SKILLS
 StartOfTurnBuffFunctionEntry(HoneMagID, IsHoneApplicable, HoneMag) 
 StartOfTurnBuffFunctionEntry(HoneStrID, IsHoneApplicable, HoneStr) 
 StartOfTurnBuffFunctionEntry(HoneSklID, IsHoneApplicable, HoneSkl) 
@@ -142,11 +171,11 @@ StartOfTurnBuffFunctionEntry(SturdyInitID	, IsInitApplicable,		SturdyInit)
 StartOfTurnBuffFunctionEntry(CalmInitID		, IsInitApplicable,		CalmInit	) 
 StartOfTurnBuffFunctionEntry(NimbleInitID	, IsInitApplicable,		NimbleInit) 
 StartOfTurnBuffFunctionEntry(SpectrumInitID	, IsInitApplicable,		SpectrumInit) 
-StartOfTurnBuffFunctionEntry(RallyChaosID	, IsRallyApplicable,	RallyChaosFunc) 
-
-
 StartOfTurnBuffFunctionEntry(OddFootedID, IsOddFootedApplicable, OddFooted)
 StartOfTurnBuffFunctionEntry(EvenFootedID, IsEvenFootedApplicable, EvenFooted)
+#endif
+
+StartOfTurnBuffFunctionEntry(RallyChaosID	, IsRallyApplicable,	RallyChaosFunc)
 
 #include "StartOfTurn_CalcLoop.lyn.event" 
 

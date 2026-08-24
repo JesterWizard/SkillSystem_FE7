@@ -1,7 +1,0 @@
-lyn.exe : [lyn] ERROR: Couldn't open file for read: 
-At C:\Users\Owner\AppData\Local\Temp\ps-script-0180740a-f5fb-42db-a21a-08ab4b856c70.ps1:84 char:705
-+ ... p.elf 2>&1; & "C:\devkitPro\lyn.exe" StartOfTurn_CalcLoop.elf 2>&1 |  ...
-+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: ([lyn] ERROR: Co...file for read: :String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 

@@ -33,6 +33,9 @@ WEAPON_USABILITY_ASM = [
 HP_RESTORATION_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "HPRestorationCalcLoop" / "HPRestorationCalcLoop.s",
 ]
+TURN_LOOP_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "TurnLoop" / "StartOfTurn_CalcLoop.s",
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -135,9 +138,17 @@ def convert_events() -> int:
 
 
 def stale(src: Path, *outputs: Path) -> bool:
+    """True when any output is missing or no newer than src.
+
+    Uses <= rather than <: an edit and a rebuild that land in the same
+    filesystem timestamp tick (common on Windows, where NTFS/FAT mtime
+    granularity is coarse and a build can follow an edit within it) would
+    otherwise look fresh, and the .lyn.event silently keeps stale code while
+    the build reports success.
+    """
     src_mtime = src.stat().st_mtime
     for out in outputs:
-        if not out.is_file() or out.stat().st_mtime < src_mtime:
+        if not out.is_file() or out.stat().st_mtime <= src_mtime:
             return True
     return False
 
@@ -251,7 +262,8 @@ def main() -> int:
     durability = [p for p in DURABILITY_ASM if p.is_file()]
     weapon_usability = [p for p in WEAPON_USABILITY_ASM if p.is_file()]
     hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration
+    turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop
     if args.force:
         for src in sources + extra + c_sources:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
@@ -281,7 +293,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration:
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:

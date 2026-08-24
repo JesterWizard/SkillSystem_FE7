@@ -4,6 +4,7 @@
   mov lr, \reg
   .short 0xf800
 .endm
+.equ DarkBargain_ExpSpent, 0x02026B8C
 .equ EventEngine, 0x800D07C
 .equ ActionData, 0x203A868 
 .equ VulneraryHealAmount, 0x802D1E2 
@@ -11,7 +12,12 @@
 .equ ProcGoto, 0x8004720 
 .equ GetUnit, 0x8018d0c
 .equ HasConvoyAccess, 0x802E819
-.equ ConvoySize, 0x802E7B8
+@ Convoy slot count. Do NOT read this from 0x802E7B8: that address is the
+@ `cmp r3, #0x63` instruction inside AddItemToConvoy, not a variable. The old
+@ code scraped its immediate byte as the size, which only ever worked by
+@ accident and went stale-by-one once ExpandedConvoy patched it to 0xC7 (199)
+@ for a 200-slot convoy -- hiding the last slot from the search and the pack.
+.equ ConvoyItemCount, 200
 .equ ConvoyPointer, 0x802E7B0 
 .equ GetItemAfterUse, 0x801672e
 .equ RemoveUnitBlankItems, 0x8017688 
@@ -113,8 +119,7 @@ bx lr
 
 FindItemInConvoy: 
 @ r0 = item ID 
-ldr  r3, =ConvoySize 	
-ldrb r3, [r3]                               @normally 0x63
+mov  r3, #ConvoyItemCount                   @ slots, not a scraped opcode byte
 ldr  r2, =ConvoyPointer	
 ldr  r2, [r2]
 lsl  r3, #0x01                              @end = size*2 + convoy
@@ -233,8 +238,7 @@ strh r0, [r5, r6]
 cmp r0, #0 
 bne NoPackSupply 
 
-ldr r4, =ConvoySize 
-ldrb r4, [r4] 
+mov r4, #ConvoyItemCount 
 lsl r4, #1                                  @ 2 bytes per entry 
 add r4, r5                                  @ end of convoy 
 add r5, r6                                  @ where to start 
@@ -427,62 +431,86 @@ pop {r1}
 bx r1
 .ltorg 
 
+@ r0 = unit. Hide SMS, clear grey so the MU is active. r0 = original state.
+.global HealAnim_PrepSprite
+.type HealAnim_PrepSprite, %function 
+HealAnim_PrepSprite:
+ldr r1, [r0, #0x0C] 
+mov r2, r1 
+mov r3, #0x42                       @ unselectable | has moved 
+bic r2, r3 
+mov r3, #1                          @ hidden (SMS off while MU plays) 
+orr r2, r3 
+str r2, [r0, #0x0C] 
+mov r0, r1 
+.global HealAnim_PrepSprite_Exit
+HealAnim_PrepSprite_Exit:
+bx lr 
+.ltorg 
+
+@ r0 = unit, r1 = saved state. Do not invent unselectable.
+.global HealAnim_RestoreSprite
+.type HealAnim_RestoreSprite, %function 
+HealAnim_RestoreSprite:
+str r1, [r0, #0x0C] 
+.global HealAnim_RestoreSprite_Exit
+HealAnim_RestoreSprite_Exit:
+bx lr 
+.ltorg 
+
 HealAnim:
-	push {r4-r6, lr}
+	push {r4-r7, lr}
 
         mov  r4, r0                         @ var r4 = proc
         mov  r5, r1                         @ var r5 = unit
         mov r6, r2                          @ var r6 = heal amount 
 
+        mov r0, r5 
+        bl HealAnim_PrepSprite 
+        mov r7, r0                          @ original unit state 
 
-mov r1, r6 
-        mov  r0 ,r5                         @arg1: Unit
-	                  @arg2: Heal value
-        blh  0x08035804                     @ExecFortSelfHealMotion	{U}
-	@blh  0x08035904   @ExecFortSelfHealMotion	{J}
+        mov r0, r5                          @ arg1: Unit
+        mov r1, r6                          @ arg2: Heal value
+        blh  0x08032858                     @BeginUnitHealAnim	{U}
+
+        @ Dark Bargain: EXP bar counts from expPrevious down by expGain.
+        ldr r0, =DarkBargain_ExpSpent 
+        ldrb r1, [r0] 
+        cmp r1, #0 
+        beq SkipDarkBargainExp 
+        mov r2, #0 
+        strb r2, [r0] 
+        ldr r0, =0x0203A3F0                 @ gBattleActor 
+        mov r3, #0x71 
+        ldrb r2, [r0, r3]                   @ expPrevious (copied remaining) 
+        add r2, r1 
+        strb r2, [r0, r3]                   @ original exp 
+        neg r1, r1 
+        mov r3, #0x6E 
+        strb r1, [r0, r3]                   @ expGain = -spent 
+SkipDarkBargainExp: 
 
 	@アニメーションが終わるまでイベントを待機させる
 	ldr r0, =WaitForVulneraryEndProc
 	mov r1 ,r4
         blh  0x080044f8                     @NewBlocking6C	@{U}
-	@blh  0x08002C30	@NewBlocking6C	@{J}
-	
 
-        ldr r1, =0x89A3874                  @MapAnimBattleWithMapEvents	{U}
-	@ldr r1, =0x08A13EFC	@MapAnimBattleWithMapEvents	{J}
+        ldr r1, =0x8C9D634                  @gProc_MapAnimBattle	{U}
 	add r0, #0x2c 
+	str	r7, [r0]                        @ saved unit state 
 	str	r1, [r0, #FirstFunc]
 	str	r5, [r0, #pUnit]
-	
-	mov r0, r5 
-        blh 0x8028130                       @ ShowUnitSMS
 
-ldr r0, =0x89A2C48                          @gProc_MoveUnit
+        @ Keep the MOVEUNIT visible (0 = shown). Unit Hidden keeps SMS off.
+ldr r0, =0x8C9D00C                          @gProc_MoveUnit
 blh 0x80046A8                               @ ProcFind 
 cmp r0, #0 
 beq SkipHidingInProc
-add r0, #0x40                               @this is what MU_Hide does @MU_Hide, 0x80797D4
-mov r1, #1 
-strb r1, [r0]                               @ store back 0 to show active MMS again aka @MU_Show, 0x806DADC
+add r0, #0x40 
+mov r1, #0 
+strb r1, [r0] 
 SkipHidingInProc: 
-ldr r1, [r5, #0x0C]                         @ Unit state 
-mov r2, #1                                  @ Hide 
-bic r1, r2                                  @ Show SMS @ 
-str r1, [r5, #0x0C] 
 
-	
-ldr r3, =0x03004690                         @CurrentUnit 
-ldr r3, [r3] 
-cmp r3, #0 
-beq NoActiveUnit
-
-ldr r1, [r3, #0x0C]                         @ Unit state 
-mov r2, #0x1                                @ Hide
-bic r1, r2                                  @ Show SMS @ 
-str r1, [r3, #0x0C] 
-	@mov r0, r3 @ I don't think this part is needed? 
-	@blh 0x8028130 @ ShowUnitSMS
-NoActiveUnit:
 ldr r0, =0x202E3DC                          @ Unit map	{U}
 ldr r0, [r0] 
 mov r1, #0
@@ -491,7 +519,7 @@ blh 0x08019868                              @UpdateUnitMapAndVision
 blh 0x08019A68                              @UpdateTrapHiddenStates
 blh  0x08025724                             @SMS_UpdateFromGameData
 blh  0x08019504                             @UpdateGameTilesGraphics
-pop {r4-r6} 
+pop {r4-r7} 
 pop {r0} 
 bx r0 
 .ltorg 
@@ -535,17 +563,15 @@ bne ExitWait
 
 	@もしユニットのHPが0になってしまっているなら死亡させる
         mov r0, r5                          @Arg1 Unit
-        blh 0x08032750                      @KillUnitIfNoHealth	{U}
-	@blh 0x0803269C   @KillUnitIfNoHealth	{J}
+        blh 0x08032710                      @KillUnitIfNoHealth	{U}
 
-        blh 0x080321C8                      @UpdateMapAndUnit	{U}
-	@blh 0x08032114   @UpdateMapAndUnit	{J}
+        blh 0x08019ABC                      @RefreshEntityBmMaps	{U}
 
 	@マップアニメーションが終わったのでループを抜ける
 	mov r0 ,r4
         blh 0x080046a0                      @Break6CLoop	{U}
 	@blh 0x08002DE4   @Break6CLoop	{J}
-ldr r0, =0x89A2C48                          @gProc_MoveUnit
+ldr r0, =0x8C9D00C                          @gProc_MoveUnit
 blh 0x80046A8                               @ ProcFind 
 cmp r0, #0 
 beq SkipHidingInProc2
@@ -553,18 +579,13 @@ add r0, #0x40                               @this is what MU_Hide does @MU_Hide,
 mov r1, #1 
 strb r1, [r0]                               @ store back 0 to show active MMS again aka @MU_Show, 0x80797DD
 SkipHidingInProc2: 
-ldr r1, [r5, #0x0C]                         @ Unit state 
-mov r2, #1                                  @ Hide 
-bic r1, r2                                  @ Show SMS @
-str r1, [r5, #0x0C] 
+mov r0, r5 
+ldr r1, [r4, #0x2C]                         @ state from before the anim 
+bl HealAnim_RestoreSprite 
 ldr r3, =0x03004690                         @CurrentUnit 
 ldr r3, [r3]
 cmp r3, #0 
 beq NoActiveUnit2
-@ldr r1, [r3, #0x0C] @ unit state  
-@mov r2, #2 @ Acted 
-@orr r1, r2  
-@str r1, [r3, #0x0C] @ Active unit should be greyed out now. 
 NoActiveUnit2:
 
 ldr r0, =0x202E3DC                          @ Unit map	{U}

@@ -1,0 +1,5 @@
+#include "NatureRush.lyn.event"
+
+ALIGN 4
+NatureRushIDLink:
+BYTE NatureRushID

@@ -1,8 +1,17 @@
-#include "dmp/RallyChaos.lyn.event" 
-#include "dmp/HoardersBane.lyn.event" 
+#ifndef HAX_PROC_DEFINITIONS_EVENT
+#include "../../../Necessary/CalcLoops/TurnLoop/ProcDefinitions.event"
+#endif
+
+#include "RallyChaos.lyn.event" 
+#include "HoardersBane.lyn.event" 
 WORD HOARDERS_BANE_USE_CONVOY 
-#include "dmp/DarkBargain.lyn.event" 
-#include "dmp/SoulSap.lyn.event" 
+#include "DarkBargain.lyn.event" 
+#include "SoulSap.lyn.event" 
+
+PUSH
+ORG $7006C // FE7 ProcMAExpBar_OnIncrement
+jumpToHack(MapAnimExpBar_Step)
+POP 
 
 ALIGN 4 
 RallyChaosID_Link: 

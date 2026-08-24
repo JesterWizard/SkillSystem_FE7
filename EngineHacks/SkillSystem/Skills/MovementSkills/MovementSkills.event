@@ -31,3 +31,6 @@ PassCheck:
 #include "Pass/Pass.lyn.event"
 POIN SkillTester
 WORD PassID
+
+#include "IndoorMarch/IndoorMarch.event"
+#include "NatureRush/NatureRush.event"

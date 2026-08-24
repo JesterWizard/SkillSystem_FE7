@@ -1,0 +1,20 @@
+#ifndef HAX_PROC_DEFINITIONS_EVENT
+#define HAX_PROC_DEFINITIONS_EVENT
+
+#define PROC_END                                     "SHORT 0x00 0 0 0"
+#define PROC_SET_NAME(apsNamePointer)                "SHORT 0x01 0; POIN apsNamePointer"
+#define PROC_CALL_ROUTINE(aprRoutine)                "SHORT 0x02 0; POIN aprRoutine"
+#define PROC_LOOP_ROUTINE(aprRoutine)                "SHORT 0x03 0; POIN aprRoutine"
+#define PROC_SET_DESTRUCTOR(aprRoutine)              "SHORT 0x04 0; POIN aprRoutine"
+#define PROC_NEW_CHILD(ap6CChild)                    "SHORT 0x05 0; POIN ap6CChild"
+#define PROC_NEW_CHILD_BLOCKING(ap6CChild)           "SHORT 0x06 1; POIN ap6CChild"
+#define PROC_WHILE_EXISTS(ap6CToCheck)               "SHORT 0x08 0; POIN ap6CToCheck"
+#define PROC_END_ALL(ap6CToCheck)                    "SHORT 0x09 0; POIN ap6CToCheck"
+#define PROC_LABEL(aLabelId)                         "SHORT 0x0B aLabelId 0 0"
+#define PROC_GOTO(aLabelId)                          "SHORT 0x0C aLabelId 0 0"
+#define PROC_JUMP(ap6CCode)                          "SHORT 0x0D 0; POIN ap6CCode"
+#define PROC_SLEEP(aTime)                            "SHORT 0x0E aTime 0 0"
+#define PROC_CALL_ROUTINE_2(aprRoutine)              "SHORT 0x16 0; POIN aprRoutine"
+#define PROC_YIELD "PROC_SLEEP(0)"
+
+#endif

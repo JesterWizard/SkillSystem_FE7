@@ -1,0 +1,5 @@
+#include "IndoorMarch.lyn.event"
+
+ALIGN 4
+IndoorMarchIDLink:
+BYTE IndoorMarchID

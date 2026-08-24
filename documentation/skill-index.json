@@ -690,7 +690,7 @@
       "id": "OFF",
       "off": "yes",
       "category": "TurnSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
       "folder": "EngineHacks/SkillSystem/Skills/TurnSkills",
       "installer": "EngineHacks/SkillSystem/Skills/TurnSkills/Installer.event",
@@ -708,10 +708,10 @@
     {
       "skill": "HoardersBane",
       "macro": "HoardersBaneID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "209",
+      "off": "no",
       "category": "TurnSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/TurnSkills/HoardersBane.s",
       "folder": "EngineHacks/SkillSystem/Skills/TurnSkills",
       "installer": "EngineHacks/SkillSystem/Skills/TurnSkills/Installer.event",
@@ -724,15 +724,17 @@
         "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
         "EngineHacks/SkillSystem/Skills/TurnSkills/SoulSap.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_turn_skills_dec94.py"
+      ]
     },
     {
       "skill": "DarkBargain",
       "macro": "DarkBargainID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "208",
+      "off": "no",
       "category": "TurnSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/TurnSkills/DarkBargain.s",
       "folder": "EngineHacks/SkillSystem/Skills/TurnSkills",
       "installer": "EngineHacks/SkillSystem/Skills/TurnSkills/Installer.event",
@@ -745,15 +747,17 @@
         "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
         "EngineHacks/SkillSystem/Skills/TurnSkills/SoulSap.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_turn_skills_dec94.py"
+      ]
     },
     {
       "skill": "SoulSap",
       "macro": "SoulSapID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "210",
+      "off": "no",
       "category": "TurnSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/TurnSkills/SoulSap.s",
       "folder": "EngineHacks/SkillSystem/Skills/TurnSkills",
       "installer": "EngineHacks/SkillSystem/Skills/TurnSkills/Installer.event",
@@ -766,7 +770,9 @@
         "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
         "EngineHacks/SkillSystem/Skills/TurnSkills/SoulSap.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_turn_skills_dec94.py"
+      ]
     },
     {
       "skill": "EternalVanity",
@@ -1979,38 +1985,46 @@
     {
       "skill": "IndoorMarch",
       "macro": "IndoorMarchID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "211",
+      "off": "no",
       "category": "MovementSkills",
       "live": "yes",
-      "source": "",
-      "folder": "",
+      "source": "EngineHacks/SkillSystem/Skills/MovementSkills/IndoorMarch/IndoorMarch.s",
+      "folder": "EngineHacks/SkillSystem/Skills/MovementSkills/IndoorMarch",
       "installer": "EngineHacks/SkillSystem/Skills/MovementSkills/MovementSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/MovementSkills/IndoorMarch/IndoorMarch.event",
+        "EngineHacks/SkillSystem/Skills/MovementSkills/IndoorMarch/IndoorMarch.s",
         "EngineHacks/SkillSystem/Skills/AuraSkills/AuraSkills.event",
         "EngineHacks/SkillSystem/Skills/AuraSkills/KeepUp/KeepUp.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_turn_skills_dec94.py"
+      ]
     },
     {
       "skill": "NatureRush",
       "macro": "NatureRushID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "212",
+      "off": "no",
       "category": "MovementSkills",
       "live": "yes",
-      "source": "",
-      "folder": "",
+      "source": "EngineHacks/SkillSystem/Skills/MovementSkills/NatureRush/NatureRush.s",
+      "folder": "EngineHacks/SkillSystem/Skills/MovementSkills/NatureRush",
       "installer": "EngineHacks/SkillSystem/Skills/MovementSkills/MovementSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/MovementSkills/NatureRush/NatureRush.event",
+        "EngineHacks/SkillSystem/Skills/MovementSkills/NatureRush/NatureRush.s",
         "EngineHacks/SkillSystem/Skills/AuraSkills/AuraSkills.event",
         "EngineHacks/SkillSystem/Skills/AuraSkills/KeepUp/KeepUp.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_turn_skills_dec94.py"
+      ]
     },
     {
       "skill": "RandomMug",

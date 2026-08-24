@@ -22,7 +22,7 @@
 .equ ProcStart, 0x8004494
 .equ ProcBreakLoop, 0x80046A0 
 .equ GetPhaseAbleUnitCount, 0x8023810 
-.equ gCameraProc, 0x859A548 
+.equ gCameraProc, 0x8B92E38 
 .equ ShouldMoveCamPos, 0x8015D70 
 .equ ConvoyPointer, 0x802E7B0 
 
@@ -136,7 +136,13 @@ DontAddOne:
 mov r1, r0 
 add r1, #0x40 
 mov r10, r1 @ deployment byte to stop at 
-blh GetPhaseAbleUnitCount 
+@ End of turn runs *after* everyone has acted, so GetPhaseAbleUnitCount
+@ (which masks out unit->state bit 0x02, "has acted") always returns 0
+@ here and used to skip the whole end-of-turn skill table. Ask whether the
+@ allegiance has any units on the field instead.
+mov r0, r5 @ first deployment byte (players start at 0x01) 
+mov r1, r10 @ stop deployment byte 
+bl CountUnitsOnField 
 cmp r0, #0 
 beq SkipEndOfTurn 
 
@@ -395,6 +401,33 @@ bx r0
 .ltorg 
 
 
+
+@ r0 = first deployment byte, r1 = deployment byte to stop at.
+@ Returns the number of units in [r0, r1) that are on the field.
+CountUnitsOnField:
+push {r4-r7, lr} 
+mov r5, r0 @ current deployment byte 
+mov r6, r1 @ stop at 
+mov r7, #0 @ count 
+CountOnFieldLoop: 
+cmp r5, r6 
+bge BreakCountOnField 
+mov r0, r5 
+add r5, #1 
+blh GetUnit 
+cmp r0, #0 
+beq CountOnFieldLoop 
+bl IsUnitOnField 
+cmp r0, #0 
+beq CountOnFieldLoop 
+add r7, #1 
+b CountOnFieldLoop 
+BreakCountOnField: 
+mov r0, r7 
+pop {r4-r7} 
+pop {r1} 
+bx r1 
+.ltorg 
 
 .global EndOfTurnCalcLoop_Main
 .type EndOfTurnCalcLoop_Main, %function 
