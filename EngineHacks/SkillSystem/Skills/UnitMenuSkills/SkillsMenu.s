@@ -40,6 +40,7 @@ bx r1
 
 @ FE7 StartMenu(def, parent). Blocking child; parent stays on screen.
 .equ StartMenuChild,0x804A255
+.equ EndMenu,0x0804A424
 .equ TileMap_FillRect,0x80C57BD
 .equ BG_EnableSyncByMask,0x8000FFD
 .equ gBG0TilemapBuffer,0x02022C60
@@ -181,11 +182,12 @@ mov r14,r1
 b OnEndDone
 
 DoomParent:
-mov r1,#0x63
-ldrb r0,[r5,r1]
-mov r2,#0x80                   @ MENU_STATE_DOOMED
-orr r0,r2
-strb r0,[r5,r1]
+@ A selected skill is a completed unit action. End the original unit
+@ menu immediately so the player-phase action cleanup can resume.
+mov r0,r5
+ldr r1,=EndMenu
+mov r14,r1
+.short 0xF800
 
 OnEndDone:
 pop {r4-r7}

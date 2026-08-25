@@ -242,6 +242,7 @@ class MenuSkillWiringTests(unittest.TestCase):
             ROOT / "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SkillsMenu.s"
         ).read_text(encoding="utf-8")
         self.assertIn("0x804A255", src)
+        self.assertIn("0x0804A424", src)
         self.assertIn("mov r0,#0x04", src)
         self.assertIn("bl SaveParentMenu", src)
         self.assertIn("bl RestoreParentMenu", src)
