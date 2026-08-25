@@ -9,6 +9,11 @@
 HPRestorationLoopFunc: @r5 = current unit
 push {r4-r7,r14}
 
+ldrb r2,[r5,#0x12]	@ max HP
+ldrb r3,[r5,#0x13]	@ current HP
+cmp r3,r2
+bge NoHealthToRestore
+
 ldr r1,=#0x8BE47C4 //FE8 -> #0x880C744 	@terrain heal data
 add r0,r1		
 ldrb r4,[r0]		@r4 = % to heal from terrain
@@ -40,4 +45,8 @@ mov r0,r4 @return the amount healed
 pop {r4-r7}
 pop {r1}
 bx r1
+
+NoHealthToRestore:
+mov r4,#0
+b LoopExit
 

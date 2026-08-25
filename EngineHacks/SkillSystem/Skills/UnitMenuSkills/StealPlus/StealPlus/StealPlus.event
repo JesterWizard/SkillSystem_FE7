@@ -6,13 +6,9 @@ PUSH
 ORG $17054
 jumpToHack(Rogue_Robbery)
 
-//Can this item be stolen
-ORG $2432A
-SHORT 0x0861 0x46C0 0x46C0 //lsr r1,r4,#1; nop; nop 
-
-//What color to make the items on the steal menu
-ORG $2435E
-SHORT 0x004C 0x341E 0x1824 0x8824 0x46C0 //lsl r4,r1,#1; add r4,#0x1E; add r4,r0; ldrh r4,[r4]; nop
+// The FE8 Rogue Steal patches formerly placed at $2432A and $2435E are not
+// valid for FE7. $2432A is FE7's terrain lookup, and $2435E is the second
+// half of the vanilla BL at $2435C; overwriting either breaks turn processing.
 
 //Usability check
 ORG $25BCC
