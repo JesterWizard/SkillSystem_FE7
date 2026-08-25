@@ -230,14 +230,24 @@ class MenuSkillWiringTests(unittest.TestCase):
         defn = skills.split("SkillsMenuDef:")[1].split("SkillsMenu:")[0]
         self.assertIn("POIN SkillsMenu", defn)
         self.assertNotIn("WORD 0\nWORD 0\nPOIN SkillsMenu", defn.replace("\r", ""))
-        self.assertIn("0x2176D", skills)
+        self.assertIn("BYTE 10", defn)
+        self.assertNotIn("BYTE 14", defn)
+        self.assertIn("SkillsMenuOnEnd", defn)
+        self.assertIn("SkillsMenuBPress", defn)
+        self.assertNotIn("0x2176D", skills)
         self.assertIn("0x4A9D5", skills)
         self.assertIn("0x4A909", skills)
         self.assertNotIn("0x22861", skills)
         src = (
             ROOT / "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SkillsMenu.s"
         ).read_text(encoding="utf-8")
-        self.assertIn("0x804A225", src)
+        self.assertIn("0x804A255", src)
+        self.assertIn("mov r0,#0x04", src)
+        self.assertIn("bl SaveParentMenu", src)
+        self.assertIn("bl RestoreParentMenu", src)
+        self.assertIn("strh r2,[r0,r3]", src)
+        self.assertIn("ldrh r1,[r4,r3]", src)
+        self.assertNotIn("SkillsMenuKeepParent", src)
 
     def test_gamble_and_mercy_are_in_calc_loops(self):
         self.assertIn("POIN Gamble", _active(PREBATTLE))
@@ -567,7 +577,7 @@ class MenuSkillRomTests(unittest.TestCase):
 
     def test_skills_menu_def_items_pointer_is_in_freespace(self):
         hack = HACK.read_bytes()  # FE7_Hack.gba
-        needle = bytes([1, 3, 14, 0, 0, 0, 0, 0])
+        needle = bytes([1, 3, 10, 0, 0, 0, 0, 0])
         off = 0
         found = None
         while True:
@@ -584,11 +594,13 @@ class MenuSkillRomTests(unittest.TestCase):
         helpb = struct.unpack_from("<I", hack, _i + 0x20)[0]
         self.assertEqual(helpb, 0x0804A909, hex(helpb))
         bpress = struct.unpack_from("<I", hack, _i + 0x18)[0]
-        self.assertEqual(bpress, 0x0802176D, hex(bpress))
+        self.assertTrue(0x09000000 <= (bpress & ~1) < 0x0A000000, hex(bpress))
+        onend = struct.unpack_from("<I", hack, _i + 0x10)[0]
+        self.assertTrue(0x09000000 <= (onend & ~1) < 0x0A000000, hex(onend))
 
     def test_skills_menu_command_ids_are_unique(self):
         hack = HACK.read_bytes()  # FE7_Hack.gba
-        needle = bytes([1, 3, 14, 0, 0, 0, 0, 0])
+        needle = bytes([1, 3, 10, 0, 0, 0, 0, 0])
         off = 0
         items = None
         while True:
