@@ -67,6 +67,10 @@ RallyFx_OnInit:
 
 	bl BXR3
 
+	ldr r0, =gActiveUnit
+	ldr r0, [r0]
+	bl AddMapAuraFxUnit
+
 	@ set aura fx thing speed
 
 	ldr r3, =SetMapAuraFxSpeed
@@ -201,60 +205,180 @@ RallyFx_OnLoop.break:
   mov lr, \reg
   .short 0xf800
 .endm
-StartRallyFx:
-push {lr} 
-	ldr r3, =StartProc
+	RALLY_FX_PERIOD = 0x28
+	GetUnit = 0x08018d0c|1
 
-        ldr r0, =RallyFxProc        @ arg r0 = proc scr
-        mov r1, #3                  @ arg r1 = parent
-	bl BXR3 
-pop {r3} 
+StartRallyFx:
+	push {lr}
+	ldr r0, =RallySeqProc
+	mov r1, #3
+	ldr r3, =StartProc
+	bl BXR3
+	pop {r3}
 BXR3:
 	bx r3
-.ltorg 
+.ltorg
 
-.align 
+.align
 
-.global BuffFxProc 
+.global RallySeqProc
+RallySeqProc:
+	.word 1, RallyFxProc.name
+	.word 2, RallySeq_OnInit
+	.word 3, RallySeq_OnLoop
+	.word 0, 0
+
+.align
+
+.global RallySeq_OnInit
+.type RallySeq_OnInit, %function
+RallySeq_OnInit:
+	push {r4-r6, lr}
+	mov r4, r0
+	mov r0, #0
+	str r0, [r4, #0x2C]
+	mov r1, #0x2E
+	strb r0, [r4, r1]
+	ldr r3, =RallyAuraCheck
+	bl BXR3
+	cmp r0, #0
+	beq RallySeq_OnInit.start
+	mov r5, r0
+	mov r6, r4
+	add r6, #0x38
+	mov r1, #15
+RallySeq_OnInit.copy:
+	ldrb r0, [r5]
+	strb r0, [r6]
+	add r5, #1
+	add r6, #1
+	cmp r0, #0
+	beq RallySeq_OnInit.start
+	sub r1, #1
+	bne RallySeq_OnInit.copy
+	mov r0, #0
+	strb r0, [r6]
+RallySeq_OnInit.start:
+	mov r0, r4
+	bl RallySeq_GetNextUnit
+	cmp r0, #0
+	beq RallySeq_OnInit.end
+	ldr r3, =GetUnit
+	bl BXR3
+	bl StartBarrierOnUnit
+RallySeq_OnInit.end:
+	pop {r4-r6}
+	pop {r1}
+	bx r1
+	.pool
+
+.align
+
+.global RallySeq_OnLoop
+.type RallySeq_OnLoop, %function
+RallySeq_OnLoop:
+	push {r4, lr}
+	mov r4, r0
+	ldr r1, [r4, #0x2C]
+	add r1, #1
+	str r1, [r4, #0x2C]
+	cmp r1, #RALLY_FX_PERIOD
+	blt RallySeq_OnLoop.end
+	mov r1, #0
+	str r1, [r4, #0x2C]
+	mov r0, r4
+	bl RallySeq_GetNextUnit
+	cmp r0, #0
+	beq RallySeq_OnLoop.break
+	ldr r3, =GetUnit
+	bl BXR3
+	bl StartBarrierOnUnit
+	b RallySeq_OnLoop.end
+RallySeq_OnLoop.break:
+	mov r0, r4
+	ldr r3, =BreakProcLoop
+	bl BXR3
+RallySeq_OnLoop.end:
+	pop {r4}
+	pop {r1}
+	bx r1
+	.pool
+
+.align
+
+.global RallySeq_GetNextUnit
+.type RallySeq_GetNextUnit, %function
+RallySeq_GetNextUnit:
+	mov r3, #0x2E
+	ldrb r1, [r0, r3]
+	mov r2, r0
+	add r2, #0x38
+	ldrb r3, [r2, r1]
+	cmp r3, #0
+	beq RallySeq_GetNextUnit_done
+	add r1, #1
+	mov r2, #0x2E
+	strb r1, [r0, r2]
+	mov r0, r3
+	b RallySeq_GetNextUnit_End
+RallySeq_GetNextUnit_done:
+	mov r0, #0
+.global RallySeq_GetNextUnit_End
+RallySeq_GetNextUnit_End:
+	bx lr
+
+.align
+
+.global StartBarrierOnUnit
+.type StartBarrierOnUnit, %function
+StartBarrierOnUnit:
+	push {lr}
+	cmp r0, #0
+	beq StartBarrierOnUnit.end
+	ldr r0, =gChapterData+0x41
+	ldrb r0, [r0]
+	lsl r0, r0, #0x1E
+	blt StartBarrierOnUnit.end
+	ldr r3, =m4aSongNumStart
+	mov r0, #136
+	bl BXR3
+StartBarrierOnUnit.end:
+	pop {r1}
+	bx r1
+	.pool
+
+.align
+
+.global AddMapAuraFxUnit
+.type AddMapAuraFxUnit, %function
+AddMapAuraFxUnit:
+	b StartBarrierOnUnit
+
+.align
+
+.global BuffFxProc
 BuffFxProc:
 	.word 1, RallyFxProc.name
-
 	.word 2, LockGame
-
 	.word 14, 0
-
 	.word 2, BuffFx_OnInit
 	.word 4, RallyFx_OnEnd
 	.word 3, RallyFx_OnLoop
-
 	.word 2, UnlockGame
+	.word 0, 0
+.align
 
-        .word 0, 0                  @ end
-.align 
-
-
-.type StartBuffFx, %function 
+.type StartBuffFx, %function
 .global StartBuffFx
 StartBuffFx:
-push {r4-r6, lr} 
-
-        mov r4, r0                  @ unit 
-        mov r5, r1                  @ rally bit(s) to set 
-        mov r6, r2                  @ effect range 
-        ldr r0, =BuffFxProc         @ arg r0 = proc scr
-        mov r1, #3                  @ arg r1 = parent
-	blh StartProc
-        str r4, [r0, #0x30]         @ unit 
-        str r5, [r0, #0x34]         @ bits 
-        str r6, [r0, #0x38]         @ effect range 
-
-pop {r4-r6} 
-pop {r1}
-bx r1 
+	push {lr}
+	bl StartBarrierOnUnit
+	pop {r1}
+	bx r1 
 
 
 
-.equ ProcFind, 0x8002E9D
+.equ ProcFind, 0x80046A9
 
 	.align
 .global BuffFx_OnInit

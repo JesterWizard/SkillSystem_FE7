@@ -379,6 +379,10 @@ ChargePlus:
 POIN SkillTester
 WORD ChargePlusID
 
+ALIGN 4
+Gamble:
+#include "Gamble/Gamble.lyn.event"
+
 #ifdef MODULAR_PRE_BATTLE_SKILLS
 	ALIGN 4
 	#include "ModularPreBattleSkills/ModularPreBattleSkill.event"

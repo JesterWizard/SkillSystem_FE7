@@ -106,6 +106,7 @@ This layout means:
 | EMS sizes / offsets | `EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event` | Authoritative save layout |
 | Battle-hit repoint | `EngineHacks/SkillSystem/Internals/repointbuffer_fe7.event` | Patches vanilla `gBattleHitArray` literals |
 | Skill activation flags | `EngineHacks/SkillSystem/Internals/SkillActivationFlags/` | Claims unit+0x3A/0x3B; bit assignments in `flag_assignments.event` |
+| Character BWL entries | `Documentation/BWLData.md` | 16-byte per-pid table; byte `0x0F` holds applied rally bits |
 
 ## Existing occupants
 
@@ -143,6 +144,7 @@ pool, so custom uses of it are recorded here.
 | Bytes | Owner | Notes |
 |-------|-------|-------|
 | `0x32`–`0x38` | `supports[]` reused as learned skills (DEC-59) | BWL support exp moved to `gBwlSupportExp` |
+| BWL `+0x0F` | Applied rally flags (Str–Spectrum) | Player units only; Rally Mag is `+0x0E` bit 7; see `Documentation/BWLData.md` |
 | `0x3A`–`0x3B` | Skill activation flags (DEC-85) | 16 "this skill already fired" bits, read/written as one halfword |
 | `0x47` | STR/MAG split magic stat | Behind `USE_STRMAG_SPLIT`; FE8 hacks put this at `0x3A`, this build does not |
 

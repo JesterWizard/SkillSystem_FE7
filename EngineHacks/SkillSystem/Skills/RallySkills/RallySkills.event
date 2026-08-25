@@ -1,11 +1,49 @@
 #ifndef HAX_RALLIES
 #define HAX_RALLIES
+#define MSG_HAS_RALLY_FX
 
 // Rally based on debuffs by crazycolorz5
 // Rally skills by circleseverywhere (?)
 // Rewritten by StanH_ to include cool effects
 
 #include "MapAuraFx/MapAuraFx.event"
+
+#ifndef DEBUFFS_HACK
+ALIGN 4
+DummyRallyDebuffEntry:
+FILL 16
+ALIGN 4
+GetUnitDebuffEntry:
+SHORT 0x4800 0x4770
+POIN DummyRallyDebuffEntry
+ALIGN 4
+RalliesOffset_Link:
+WORD 0
+ALIGN 4
+RalliesNumberOfBits_Link:
+WORD 16
+ALIGN 4
+SpecRallyAmount_Link:
+WORD 2
+MagRallyAmount_Link:
+WORD 4
+StrRallyAmount_Link:
+WORD 4
+SklRallyAmount_Link:
+WORD 4
+SpdRallyAmount_Link:
+WORD 4
+DefRallyAmount_Link:
+WORD 4
+ResRallyAmount_Link:
+WORD 4
+LukRallyAmount_Link:
+WORD 8
+MovRallyAmount_Link:
+WORD 2
+ALIGN 2
+SHORT $4770
+#endif
 
 #include "asm/Rally.lyn.event"
 #include "asm/RallyFx.lyn.event"
@@ -24,9 +62,7 @@ RallySkillList:
 	BYTE RallyLukID
 	BYTE RallyMovID
 	BYTE RallySpectrumID
-	#ifdef USE_STRMAG_SPLIT
-		BYTE RallyMagID
-	#endif // USE_STRMAG_SPLIT
+	BYTE RallyMagID
 	BYTE 0
 
 ALIGN 4
@@ -39,9 +75,7 @@ RallyFxPaletteLookup:
 	POIN gRallyLuckPalette       // Rally luck
 	POIN gRallyMovePalette       // Rally mov
 	POIN gRallyGenericPalette    // Rally spectrum
-	#ifdef USE_STRMAG_SPLIT
-		POIN gRallyMagicPalette // Rally mag
-	#endif // USE_STRMAG_SPLIT
+	POIN gRallyMagicPalette // Rally mag
 
 gpRallyDebuffsAddr:
 	WORD DebuffTableRam
@@ -79,10 +113,8 @@ ALIGN 4
 gRallyMovePalette:
 	#incext Png2Dmp "data/fx-move.png" --palette-only
 	
-#ifdef USE_STRMAG_SPLIT
-	ALIGN 4
-	gRallyMagicPalette:
-		#incext Png2Dmp "data/fx-magic.png" --palette-only
-#endif // USE_STRMAG_SPLIT
+ALIGN 4
+gRallyMagicPalette:
+	#incext Png2Dmp "data/fx-magic.png" --palette-only
 
 #endif // HAX_RALLIES

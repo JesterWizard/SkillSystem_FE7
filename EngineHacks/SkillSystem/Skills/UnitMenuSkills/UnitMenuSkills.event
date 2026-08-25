@@ -63,5 +63,9 @@ MercyEffect:
 #include "Mercy/MercyEffect.lyn.event"
 
 
+#include "SkillsMenu.event"
+
+#ifdef COMBAT_ARTS
 #include "CombatArts/CombatArts.event"
+#endif // COMBAT_ARTS
 

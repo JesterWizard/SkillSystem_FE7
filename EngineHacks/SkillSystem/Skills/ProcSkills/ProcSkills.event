@@ -90,6 +90,12 @@ Proc_Lethality:
 POIN SkillTester
 WORD LethalityID
 
+ALIGN 4
+Proc_Mercy:
+#include "Mercy/proc_mercy.lyn.event"
+
+ALIGN 4
+
 /*
 ALIGN 4
 Proc_Devil:
@@ -167,9 +173,6 @@ Proc_Miracle:
 #include "Miracle/proc_miracle.lyn.event"
 POIN SkillTester
 WORD MiracleID
-
-Proc_Mercy:
-#include "Mercy/proc_mercy.lyn.event"
 
 Proc_Impale:
 #include "Impale/proc_impale.lyn.event"

@@ -1,9 +1,9 @@
 #ifndef HAX_HEROES_MOVEMENTS_EVENT
 #define HAX_HEROES_MOVEMENTS_EVENT
 
-#ifndef _FE8_
-	ERROR HEROES MOVEMENT is for FE8
-#endif // _FE8_
+#ifndef _FE7_
+	ERROR HEROES MOVEMENT is for FE7
+#endif // _FE7_
 
 #include "Tools/Tool Helpers.txt"
 #include "../../../../Necessary/MSG/InstallHelpers.event"

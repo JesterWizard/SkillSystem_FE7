@@ -4,6 +4,69 @@
 ## UM_RallyDesc
 Buff nearby allies.[X]
 
+## UM_RallyStr
+ Rally Str[X]
+
+## UM_RallyStrDesc
++4 Strength to allies[N]
+within 2 spaces.[X]
+
+## UM_RallyMag
+ Rally Mag[X]
+
+## UM_RallyMagDesc
++4 Magic to allies[N]
+within 2 spaces.[X]
+
+## UM_RallySkl
+ Rally Skl[X]
+
+## UM_RallySklDesc
++4 Skill to allies[N]
+within 2 spaces.[X]
+
+## UM_RallySpd
+ Rally Spd[X]
+
+## UM_RallySpdDesc
++4 Speed to allies[N]
+within 2 spaces.[X]
+
+## UM_RallyDef
+ Rally Def[X]
+
+## UM_RallyDefDesc
++4 Defense to allies[N]
+within 2 spaces.[X]
+
+## UM_RallyRes
+ Rally Res[X]
+
+## UM_RallyResDesc
++4 Resistance to allies[N]
+within 2 spaces.[X]
+
+## UM_RallyLuk
+ Rally Luk[X]
+
+## UM_RallyLukDesc
++8 Luck to allies[N]
+within 2 spaces.[X]
+
+## UM_RallyMov
+ Rally Mov[X]
+
+## UM_RallyMovDesc
++2 Movement to allies[N]
+within 2 spaces.[X]
+
+## UM_RallySpectrum
+ Rally Spectrum[X]
+
+## UM_RallySpectrumDesc
++2 to all stats for allies[N]
+within 2 spaces.[X]
+
 ## UM_Lunge
  Lunge[X]
 
@@ -83,10 +146,10 @@ stats to capture an enemy.[X]
 DEBUG: Edit this unit's skill set.[X]
 
 ## UM_CombatArts
- Combat Arts[X]
+Skills[X]
  
 ## UM_CombatArtsDesc
-Select an alternative attack.[X]
+Select a skill to use.[X]
 
 ## UM_Adept
  Adept[X]

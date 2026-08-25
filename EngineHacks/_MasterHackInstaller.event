@@ -24,6 +24,14 @@
   ALIGN 4
   #include "SkillSystem/SkillSystemInstaller.event"
 
+  // Unit menu commands and extra action IDs (Shove/Pivot/Sacrifice/…).
+  // After SkillSystem so usability/effect labels exist.
+  ALIGN 4
+  #include "Necessary/UnitMenu/UnitMenu.event"
+
+  ALIGN 4
+  #include "Necessary/UnitActionRework/UnitActionRework.event"
+
   #include "Necessary/DurabilityBasedItems/DurabilityBasedItems.event"
 
   ALIGN 4

@@ -38,6 +38,7 @@ HalfStrFunc:  prPassThrough
 ALIGN 4
 HalfMagFunc:  prPassThrough
 
+#ifndef MSG_HAS_RALLY_FX
 ALIGN 4
 prRallyStr:   prPassThrough
 ALIGN 4
@@ -54,6 +55,7 @@ ALIGN 4
 prRallyLuk:   prPassThrough
 ALIGN 4
 prRallyMov:   prPassThrough
+#endif // MSG_HAS_RALLY_FX
 
 ALIGN 4
 prDebuffStr:  prPassThrough
@@ -81,7 +83,7 @@ MaxMovCap:    prPassThrough
 
 #ifndef MSG_HAS_VIGOR_DANCE
 ALIGN 4
-VigorDanceCheck: prPassThrough
+VigorDanceCheck: SHORT 0x4770 0x46C0 // bx lr ; nop (keep 4-byte size)
 #endif // MSG_HAS_VIGOR_DANCE
 
 #ifndef MSG_HAS_CAPTURE

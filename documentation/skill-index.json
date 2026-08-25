@@ -6040,10 +6040,10 @@
     {
       "skill": "RallyStr",
       "macro": "RallyStrID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "225",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6052,15 +6052,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallyMag",
       "macro": "RallyMagID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "226",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6069,15 +6071,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallySkl",
       "macro": "RallySklID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "227",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6086,15 +6090,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallySpd",
       "macro": "RallySpdID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "228",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6103,15 +6109,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallyLuk",
       "macro": "RallyLukID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "229",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6120,15 +6128,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallyDef",
       "macro": "RallyDefID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "230",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6137,15 +6147,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallyRes",
       "macro": "RallyResID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "231",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6154,15 +6166,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallyMov",
       "macro": "RallyMovID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "232",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6171,15 +6185,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "RallySpectrum",
       "macro": "RallySpectrumID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "233",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6188,15 +6204,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/RallySkills/RallySkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Capture",
       "macro": "CaptureID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "234",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/After_Battle_Rescue.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6224,15 +6242,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Portrait_Fix1.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Portrait_Fix2.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Dance",
       "macro": "DanceID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "235",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/NewDanceUsability.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6242,13 +6262,15 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/NewDanceUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Gamble",
       "macro": "GambleID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "236",
+      "off": "no",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/Gamble/Gamble.s",
@@ -6262,7 +6284,9 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/CombatArts/CombatArtUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Gamble/GambleUsability.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Lunge",
@@ -6290,8 +6314,8 @@
     {
       "skill": "Mercy",
       "macro": "MercyID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "237",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Mercy/proc_mercy.s",
@@ -6304,15 +6328,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Mercy/MercyUsability.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Summon",
       "macro": "SummonID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "238",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6322,15 +6348,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Supply",
       "macro": "SupplyID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "239",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Supply/NewSupplyUsability.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Supply",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6341,15 +6369,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Supply/NewSupplyUsability_old.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Shove",
       "macro": "ShoveID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "240",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6359,15 +6389,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Smite",
       "macro": "SmiteID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "241",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6377,15 +6409,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Pivot",
       "macro": "PivotID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "242",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6395,15 +6429,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Reposition",
       "macro": "RepositionID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "243",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6413,15 +6449,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Swap",
       "macro": "SwapID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "244",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6431,15 +6469,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Swarp",
       "macro": "SwarpID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "245",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6449,15 +6489,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Steal",
       "macro": "StealID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "246",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6467,15 +6509,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/Can_Unit_Steal.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "StealPlus",
       "macro": "StealPlusID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "247",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/Can_Unit_Steal.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6488,15 +6532,17 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/Most_Valuable_Item.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "DrawBack",
       "macro": "DrawBackID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "248",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6505,15 +6551,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Sacrifice",
       "macro": "SacrificeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "249",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6522,15 +6570,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "ArdentSacrifice",
       "macro": "ArdentSacrificeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "250",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6539,15 +6589,17 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "ReciprocalAid",
       "macro": "ReciprocalAidID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "251",
+      "off": "no",
       "category": "UnitMenuSkills",
-      "live": "no",
+      "live": "yes",
       "source": "",
       "folder": "",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
@@ -6556,7 +6608,9 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_menu_skills_dec99.py"
+      ]
     },
     {
       "skill": "Savior",

@@ -10,42 +10,30 @@
 
 	RALLY_EFFECT_RANGE = 2
 
+@ Event ASMC. Do not blh 0x0800BC50: that site is pop/bx, not
+@ GetUnitByEventParameter. Menu select used to land here.
 .global BuffAnim_ASMC
-.type BuffAnim_ASMC, %function 
+.type BuffAnim_ASMC, %function
+.global BuffFx_ASMC
+.type BuffFx_ASMC, %function
 BuffAnim_ASMC:
-push {r4-r5, lr} 
-ldr r4, =MemorySlot 
-ldr r0, [r4, #4*1]                      @ s1 as unit 
-blh GetUnitByEventParameter 
-mov r5, r0 
-bl IsUnitOnField 
-cmp r0, #0 
-beq Break_ASMC
-mov r0, r5                              @ unit 
-mov r1, #1 
-ldr r3, [r4, #4*3]                      @ s3 as rally bit 
-lsl r2, r1, #9                          @ 0x200 
-lsl r1, r3                              @ 0x01 - 0x100 
-cmp r1, r2 
-bge Break_ASMC 
-ldr r2, [r4, #4*4]                      @ s4 as range (0 = self) 
-bl StartBuffFx
+BuffFx_ASMC:
+	bx lr
+	.align
 
-Break_ASMC: 
-pop {r4-r5} 
-pop {r0} 
-bx r0 
-.ltorg 
-
-.equ MemorySlot, 0x30004B8
-.equ GetUnitByEventParameter, 0x0800BC50
 	GetUnit = 0x08018d0c|1
 	StartProc = 0x08004494|1
 	FindProc = 0x080046A8|1
 	EndProc = 0x08004584|1
+	BWL_GetEntry = 0x080A0550|1
 
 	gActiveUnit = 0x03004690
-	gActionData = 0x0203A868
+	gActionData = 0x0203A85C
+	gChapterData = 0x0202BBF8
+	BWL_RALLY_BYTE = 0x0F
+	BWL_RALLY_MAG_BYTE = 0x0E
+	BWL_RALLY_MAG_BIT = 0x80
+	BWL_PID_MAX = 0x45
 
 	.type   RallyCommandUsability, function
 	.global RallyCommandUsability
@@ -66,34 +54,50 @@ bx r0
 	.global ForEachRalliedUnit
 
 	.type RallyAuraCheck, function
+	.global RallyAuraCheck
 
-.global BuffFx_ASMC
-.type BuffFx_ASMC, %function 
-BuffFx_ASMC: 
-push {r4, lr} 
-ldr r0, =MemorySlot 
-ldr r0, [r0, #4]                        @ slot 1 as unit 
-blh GetUnitByEventParameter 
-mov r4, r0 
-bl IsUnitOnField 
-cmp r0, #0 
-beq Exit_StrBuffFx 
-ldr r3, =MemorySlot 
-ldr r1, [r3, #4*3]                      @ s3 as bitfield to use for the anim (see StrAnim, SklAnim, etc.) 
-ldr r2, [r3, #4*4]                      @ s4 as range (0 for self) 
-mov r3, #2 
-lsl r3, #8                              @ 0x200 
-cmp r1, r3 
-bge Exit_StrBuffFx                      @ ensure slot3 was valid 
-mov r0, r4 
-bl StartBuffFx 
-
-Exit_StrBuffFx: 
-pop {r4} 
-pop {r0} 
-bx r0 
-.ltorg 
-
+	.type   GetUnitBwlRallyFlags, function
+	.global GetUnitBwlRallyFlags
+	.type   GetUnitRallyMagFlag, function
+	.global GetUnitRallyMagFlag
+	.type   ClearBwlRallies, function
+	.global ClearBwlRallies
+	.type   RallyStrCommandUsability, function
+	.global RallyStrCommandUsability
+	.type   RallyMagCommandUsability, function
+	.global RallyMagCommandUsability
+	.type   RallySklCommandUsability, function
+	.global RallySklCommandUsability
+	.type   RallySpdCommandUsability, function
+	.global RallySpdCommandUsability
+	.type   RallyDefCommandUsability, function
+	.global RallyDefCommandUsability
+	.type   RallyResCommandUsability, function
+	.global RallyResCommandUsability
+	.type   RallyLukCommandUsability, function
+	.global RallyLukCommandUsability
+	.type   RallyMovCommandUsability, function
+	.global RallyMovCommandUsability
+	.type   RallySpectrumCommandUsability, function
+	.global RallySpectrumCommandUsability
+	.type   RallyStrCommandEffect, function
+	.global RallyStrCommandEffect
+	.type   RallyMagCommandEffect, function
+	.global RallyMagCommandEffect
+	.type   RallySklCommandEffect, function
+	.global RallySklCommandEffect
+	.type   RallySpdCommandEffect, function
+	.global RallySpdCommandEffect
+	.type   RallyDefCommandEffect, function
+	.global RallyDefCommandEffect
+	.type   RallyResCommandEffect, function
+	.global RallyResCommandEffect
+	.type   RallyLukCommandEffect, function
+	.global RallyLukCommandEffect
+	.type   RallyMovCommandEffect, function
+	.global RallyMovCommandEffect
+	.type   RallySpectrumCommandEffect, function
+	.global RallySpectrumCommandEffect
 
 RallyCommandUsability:
 	push {lr}
@@ -141,6 +145,114 @@ RallyCommandUsability.end:
 	.pool
 	.align
 
+RallyStrCommandUsability:
+	mov r1, #0
+	b RallyIndexedUsability
+RallyMagCommandUsability:
+	mov r1, #8
+	b RallyIndexedUsability
+RallySklCommandUsability:
+	mov r1, #1
+	b RallyIndexedUsability
+RallySpdCommandUsability:
+	mov r1, #2
+	b RallyIndexedUsability
+RallyDefCommandUsability:
+	mov r1, #3
+	b RallyIndexedUsability
+RallyResCommandUsability:
+	mov r1, #4
+	b RallyIndexedUsability
+RallyLukCommandUsability:
+	mov r1, #5
+	b RallyIndexedUsability
+RallyMovCommandUsability:
+	mov r1, #6
+	b RallyIndexedUsability
+RallySpectrumCommandUsability:
+	mov r1, #7
+	b RallyIndexedUsability
+
+RallyIndexedUsability:
+	push {r4-r5, lr}
+	mov r5, r1
+	ldr r0, =gActiveUnit
+	ldr r4, [r0]
+	ldr r1, [r4, #0x0C]
+	mov r2, #0x40
+	tst r1, r2
+	bne RallyIndexedUsability.no
+	ldr r2, =RallySkillList
+	ldrb r1, [r2, r5]
+	mov r0, r4
+	ldr r3, =SkillTester
+	mov lr, r3
+	.short 0xF800
+	cmp r0, #0
+	beq RallyIndexedUsability.no
+	bl RallyAuraCheck
+	cmp r0, #0
+	beq RallyIndexedUsability.no
+	mov r0, #1
+	b RallyIndexedUsability.end
+RallyIndexedUsability.no:
+	mov r0, #3
+RallyIndexedUsability.end:
+	pop {r4-r5}
+	pop {r1}
+	bx r1
+
+	.pool
+	.align
+
+RallyStrCommandEffect:
+	mov r1, #0x01
+	b RallyBitCommandEffect
+RallyMagCommandEffect:
+	mov r1, #1
+	lsl r1, r1, #8
+	b RallyBitCommandEffect
+RallySklCommandEffect:
+	mov r1, #0x02
+	b RallyBitCommandEffect
+RallySpdCommandEffect:
+	mov r1, #0x04
+	b RallyBitCommandEffect
+RallyDefCommandEffect:
+	mov r1, #0x08
+	b RallyBitCommandEffect
+RallyResCommandEffect:
+	mov r1, #0x10
+	b RallyBitCommandEffect
+RallyLukCommandEffect:
+	mov r1, #0x20
+	b RallyBitCommandEffect
+RallyMovCommandEffect:
+	mov r1, #0x40
+	b RallyBitCommandEffect
+RallySpectrumCommandEffect:
+	mov r1, #0x80
+	b RallyBitCommandEffect
+
+RallyBitCommandEffect:
+	push {lr}
+	adr r0, RallyCommandEffect_apply
+	add r0, #1
+	ldr r2, =gActiveUnit
+	ldr r2, [r2]
+	bl ForEachRalliedUnit
+	ldr r3, =StartRallyFx
+	bl  BXR3
+	ldr  r0, =gActionData
+	mov  r1, #1
+	strb r1, [r0, #0x11]
+	mov r0, #0x17
+	pop {r1}
+	bx r1
+
+	.pool
+	.align
+
 RallyCommandEffect:
 	push {lr}
 
@@ -169,7 +281,7 @@ RallyCommandEffect:
 	pop {r1}
 	bx r1
 	
-.equ ProcFind, 0x80046A8
+.equ ProcFind, 0x80046A9
 .ltorg 
 .global RallyCommandEffect_NoneActive
 .type RallyCommandEffect_NoneActive, %function 
@@ -214,72 +326,126 @@ RallyCommandEffect_NoneActive:
 .type RallyCommandEffect_apply, %function 
 RallyCommandEffect_apply:
 	@ args: r0 = unit, r1 = rally bits
+	@ bits 0-7 OR into BWL+0x0F; bit 8 sets BWL+0x0E bit 7 (Rally Mag)
 
-	push {r4-r5,lr}
-	mov r4,r1
-	@ r0 = unit struct 
-	bl GetUnitDebuffEntry
-        mov r5, r0                      @ debuff entry 
-	ldr r1, =RalliesOffset_Link
-	ldr r1, [r1] 
-	ldr r2, =RalliesNumberOfBits_Link
-	ldr r2, [r2] 
-	bl UnpackData 
-        mov r3, r0                      @ data 
-        mov r0, r5                      @ debuff entry 
-	ldr r1, =RalliesOffset_Link
-	ldr r1, [r1] 
-	ldr r2, =RalliesNumberOfBits_Link
-	ldr r2, [r2] 
-        orr r3, r4                      @ data to store 
-	bl PackData 
-	pop {r4-r5}
-	pop {r0}
-	bx r0
+	push {r4, lr}
+	mov r4, r1
+	bl GetBwlEntryForUnit
+	cmp r0, #0
+	beq RallyCommandEffect_apply.end
+	ldrb r1, [r0, #BWL_RALLY_BYTE]
+	orr r1, r4
+	strb r1, [r0, #BWL_RALLY_BYTE]
+	lsr r1, r4, #8
+	cmp r1, #0
+	beq RallyCommandEffect_apply.end
+	ldrb r1, [r0, #BWL_RALLY_MAG_BYTE]
+	mov r2, #BWL_RALLY_MAG_BIT
+	orr r1, r2
+	strb r1, [r0, #BWL_RALLY_MAG_BYTE]
+RallyCommandEffect_apply.end:
+	pop {r4}
+	pop {r1}
+	bx r1
 
 	.pool
 	.align
 
 RallyCommandSwitchIn:
-	push {lr}
-
-	@ start map aura fx
-
-	ldr r3, =StartProc
-
-	ldr r0, =RallyPreviewFxProc
-	mov r1, #3
-
-	bl  BXR3
-
-        mov r0, #0                      @ no menu effect
-
-	pop {r1}
-	bx r1
-
-	.pool
-	.align
-
 RallyCommandSwitchOut:
-	push {lr}
-
-	@ end map aura fx
-
-	ldr r0, =RallyPreviewFxProc
-
-	ldr r3, =FindProc
-	bl  BXR3
-
-	ldr r3, =EndProc
-	bl BXR3
-
-        mov r0, #0                      @ no menu effect
-
-	pop {r1}
-	bx r1
+	@ Preview proc StartProc(..., 3) is FE8 tree-root. On FE7 that
+	@ parent is not a tree id; execution lands in BuffAnim_ASMC
+	@ ($902276C, next to RalliesNumberOfBits_Link). Aura is already stubbed.
+        mov r0, #0
+	bx lr
 
 	.pool
 	.align
+
+GetBwlEntryForUnit:
+	@ r0 = unit -> r0 = BWL entry or 0
+	push {lr}
+	cmp r0, #0
+	beq GetBwlEntryForUnit.fail
+	ldr r0, [r0]
+	cmp r0, #0
+	beq GetBwlEntryForUnit.fail
+	ldrb r0, [r0, #4]
+	cmp r0, #1
+	blt GetBwlEntryForUnit.fail
+	cmp r0, #BWL_PID_MAX
+	bgt GetBwlEntryForUnit.fail
+	blh BWL_GetEntry
+	pop {r1}
+	bx r1
+GetBwlEntryForUnit.fail:
+	mov r0, #0
+	pop {r1}
+	bx r1
+
+	.align
+	.pool
+
+GetUnitBwlRallyFlags:
+	@ r0 = unit -> r0 = applied rally bits (BWL+0x0F), or 0
+	push {lr}
+	bl GetBwlEntryForUnit
+	cmp r0, #0
+	beq GetUnitBwlRallyFlags.end
+	ldrb r0, [r0, #BWL_RALLY_BYTE]
+GetUnitBwlRallyFlags.end:
+	pop {r1}
+	bx r1
+
+	.align
+	.pool
+
+GetUnitRallyMagFlag:
+	@ r0 = unit -> r0 = 1 if Rally Mag is applied
+	push {lr}
+	bl GetBwlEntryForUnit
+	cmp r0, #0
+	beq GetUnitRallyMagFlag.end
+	ldrb r0, [r0, #BWL_RALLY_MAG_BYTE]
+	lsr r0, r0, #7
+GetUnitRallyMagFlag.end:
+	pop {r1}
+	bx r1
+
+	.align
+	.pool
+
+ClearBwlRallies:
+	@ Player phase: zero BWL+0x0F for pid 1..0x45 (rallies last one turn).
+	push {r4, lr}
+	ldr r0, =gChapterData
+	ldrb r0, [r0, #0x0F]
+	cmp r0, #0
+	bne ClearBwlRallies.end
+	mov r4, #1
+ClearBwlRallies.lop:
+	mov r0, r4
+	blh BWL_GetEntry
+	cmp r0, #0
+	beq ClearBwlRallies.next
+	mov r1, #0
+	strb r1, [r0, #BWL_RALLY_BYTE]
+	ldrb r1, [r0, #BWL_RALLY_MAG_BYTE]
+	mov r2, #0x7F
+	and r1, r2
+	strb r1, [r0, #BWL_RALLY_MAG_BYTE]
+ClearBwlRallies.next:
+	add r4, #1
+	cmp r4, #BWL_PID_MAX
+	ble ClearBwlRallies.lop
+ClearBwlRallies.end:
+	mov r0, #0
+	pop {r4}
+	pop {r1}
+	bx r1
+
+	.align
+	.pool
 
 GetUnitRallyBits:
 	@ Arguments: r0 = unit

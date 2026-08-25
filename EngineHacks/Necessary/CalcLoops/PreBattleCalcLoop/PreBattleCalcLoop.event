@@ -43,6 +43,7 @@ POIN StancesASM
 POIN AirRaidSkillCheck
 POIN CriticalCheck
 POIN LethalitySkill NonGBALethalitySkill
+POIN Gamble
 POIN 0
 
 #define AuraSkillEntry(skillID) "PUSH; ORG AuraSkillTable + skillID; BYTE 0x1; POP"

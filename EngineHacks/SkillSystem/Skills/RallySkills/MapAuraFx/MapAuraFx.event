@@ -1,9 +1,20 @@
 #ifndef HAX_MAP_AURA_FX
 #define HAX_MAP_AURA_FX
 
-// Utility providing an interface for displaying cool aura on units
-// hack by Stan.
+// FE8 aura unpack reads another game's ROM. LZ77 never returns on FE7; Rally hover hangs.
+// Stub until FE7 tiles and SMS blend are ported.
 
-#include "Src/MapAuraFx.lyn.event"
+ALIGN 4
+StartMapAuraFx:
+EndMapAuraFx:
+SetMapAuraFxSpeed:
+SetMapAuraFxBlend:
+SetMapAuraFxPalette:
+SHORT $4770
+
+ALIGN 4
+IsMapAuraFxActive:
+FindMapAuraProc:
+SHORT $2000 $4770
 
 #endif // HAX_MAP_AURA_FX

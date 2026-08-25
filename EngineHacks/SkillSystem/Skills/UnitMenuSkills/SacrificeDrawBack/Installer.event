@@ -50,18 +50,20 @@ ALIGN 4
 WaitForMotionEndName:
 String(WaitForMotionEnd);	BYTE 0x0
 
+ALIGN 4
+CopySlot2ToSlot1:
+#include "CopySlot2ToSlot1.lyn.event"
+
 ALIGN 4  
 HarmAndHealEvent:
 ASMC ASMC_SelfDamageLikeBomb|1
-SADD s1 s2 s0 // unit to heal 
+ASMC CopySlot2ToSlot1|1
 ASMC ASMC_HealLikeVulnerary|1
-NoFade 
 ENDA 
 
 ALIGN 4  
 HealTargetEvent:
 ASMC ASMC_HealLikeVulnerary|1
-NoFade 
 ENDA 
 
 

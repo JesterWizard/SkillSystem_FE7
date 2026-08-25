@@ -1,9 +1,9 @@
 #ifndef HAX_ACTION_APPLICATION_REWORK_EVENT
 #define HAX_ACTION_APPLICATION_REWORK_EVENT
 
-#ifndef _FE8_
-	ERROR _file_ is to be assembled for FE8
-#endif // _FE8_
+#ifndef _FE7_
+	ERROR _file_ is to be assembled for FE7
+#endif // _FE7_
 
 #include "Extensions/Hack Installation.txt"
 #include "EAstdlib.event"
@@ -14,8 +14,7 @@ POP
 
 ALIGN 4
 prNewActionApplication:
-	#incbin "asm/ApplyAction.bin"
-	POIN pActionRoutineTable
+#include "asm/ApplyAction.lyn.event"
 
 ALIGN 4
 prWaitAction:

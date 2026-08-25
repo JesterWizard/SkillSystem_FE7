@@ -1,7 +1,9 @@
 //FE8 Capture
 //By Tequila
 
-#ifdef _FE8_
+#ifdef _FE7_
+
+	#define MSG_HAS_CAPTURE
 
 	#include "Extensions/Hack Installation.txt"
 	#include EAstdlib.event
@@ -13,11 +15,10 @@
 	//Maximum value is 100
 	#define  GIVE_DROP_EXP	10
 
+	// FE8 Capture ORGs are mid-function on FE7 and loop chapter start.
+	#ifdef CAPTURE_VANILLA_HOOKS
 	PUSH
 
-	//ORG $59D1F8 //Don't need this because the skill system has its own
-	//POIN Unit_Menu_Table
-	
 	ORG $22CD0
 	jumpToHack(New_Attack_Map)
 	
@@ -68,7 +69,8 @@
 	jumpToHack(GiveDropExp)
 	
 	POP
-	
+	#endif // CAPTURE_VANILLA_HOOKS
+
 	#ifdef CAPTURE_SKILL_REQUIRED
 	ALIGN 4
 	Capture_Usability:
@@ -113,7 +115,7 @@
     ALIGN 4
     Show_Red_Squares:
     #include "Show_Red_Squares.lyn.event"
-    POIN Is_Capture_Set All_Weapons_One_Square
+    POIN Is_Capture_Set 0x08016EBC
 	
 	ALIGN 4
 	Is_Capture_Set:
@@ -175,5 +177,5 @@
 	setMugEntry(0x1, Blank_Portrait, 3, 5, 3, 3)
 	
 #else
-	ERROR "You're not assembling FE8 events!"
+	ERROR "You're not assembling FE7 events!"
 #endif

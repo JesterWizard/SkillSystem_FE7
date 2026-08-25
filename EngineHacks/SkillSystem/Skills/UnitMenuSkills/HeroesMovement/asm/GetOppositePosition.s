@@ -15,7 +15,8 @@ GetOppositePosition:
                 add r2, r3  @ r2 = unit.y + direction.y*2
 	
 	_MakePair r0, r1, r2
-	
+
+GetOppositePosition_End:
 	bx lr
 
 .ltorg

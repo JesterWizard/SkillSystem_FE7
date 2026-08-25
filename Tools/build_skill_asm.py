@@ -36,6 +36,9 @@ HP_RESTORATION_ASM = [
 TURN_LOOP_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "TurnLoop" / "StartOfTurn_CalcLoop.s",
 ]
+STAT_GETTER_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "RallyStat.s",
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -264,7 +267,8 @@ def main() -> int:
     weapon_usability = [p for p in WEAPON_USABILITY_ASM if p.is_file()]
     hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
     turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop
+    stat_getter = [p for p in STAT_GETTER_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter
     if args.force:
         for src in sources + extra + c_sources:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
@@ -294,7 +298,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop:
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:

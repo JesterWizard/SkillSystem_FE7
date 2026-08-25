@@ -1,0 +1,85 @@
+#include "../../../Necessary/UnitMenu/_UnitMenuDefs.event"
+
+#define FE7_AttackHover $21B35
+#define FE7_AttackUnhover $21B9D
+
+// Unique ASCII names + command IDs below 0x80. FE7 vanilla IDs stop at
+// Wait ($67); bit 7 set ($80+) ends the item list after the first command.
+#define SkillsMenuCommand(nm,name,description,cmd,usability,effect) "POIN nm; SHORT name description; BYTE 0 cmd; SHORT 0; POIN usability|1; WORD 0; POIN effect|1; WORD 0 0 0"
+#define SkillsMenuCommand(nm,name,description,cmd,usability,effect, unknown1, unknown2) "POIN nm; SHORT name description; BYTE 0 cmd; SHORT 0; POIN usability|1; WORD 0; POIN effect|1; POIN 0 unknown1|1 unknown2|1"
+
+ALIGN 4
+#include "SkillsMenu.lyn.event"
+
+ALIGN 4
+SkillMenuName80: BYTE $41 0
+SkillMenuName81: BYTE $42 0
+SkillMenuName82: BYTE $43 0
+SkillMenuName83: BYTE $44 0
+SkillMenuName84: BYTE $45 0
+SkillMenuName85: BYTE $46 0
+SkillMenuName86: BYTE $47 0
+SkillMenuName87: BYTE $48 0
+SkillMenuName88: BYTE $49 0
+SkillMenuName89: BYTE $4A 0
+SkillMenuName8A: BYTE $4B 0
+SkillMenuName8B: BYTE $4C 0
+SkillMenuName8C: BYTE $4D 0
+SkillMenuName8D: BYTE $4E 0
+SkillMenuName8E: BYTE $4F 0
+SkillMenuName8F: BYTE $50 0
+SkillMenuName90: BYTE $51 0
+SkillMenuName91: BYTE $52 0
+SkillMenuName92: BYTE $53 0
+SkillMenuName93: BYTE $54 0
+SkillMenuName94: BYTE $55 0
+SkillMenuName95: BYTE $56 0
+SkillMenuName96: BYTE $57 0
+
+ALIGN 4
+SkillsMenuDef:
+BYTE 1
+BYTE 3
+BYTE 14
+BYTE 0
+WORD 0
+POIN SkillsMenu
+WORD 0
+WORD 0
+WORD 0
+POIN 0x2176D
+POIN 0x4A9D5
+POIN 0x4A909
+
+ALIGN 4
+SkillsMenu:
+
+#ifdef HAX_RALLIES
+  SkillsMenuCommand(SkillMenuName80, UM_RallyStr, UM_RallyStrDesc, $68, RallyStrCommandUsability, RallyStrCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName96, UM_RallyMag, UM_RallyMagDesc, $7E, RallyMagCommandUsability, RallyMagCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName81, UM_RallySkl, UM_RallySklDesc, $69, RallySklCommandUsability, RallySklCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName82, UM_RallySpd, UM_RallySpdDesc, $6A, RallySpdCommandUsability, RallySpdCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName83, UM_RallyDef, UM_RallyDefDesc, $6B, RallyDefCommandUsability, RallyDefCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName84, UM_RallyRes, UM_RallyResDesc, $6C, RallyResCommandUsability, RallyResCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName85, UM_RallyLuk, UM_RallyLukDesc, $6D, RallyLukCommandUsability, RallyLukCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName86, UM_RallyMov, UM_RallyMovDesc, $6E, RallyMovCommandUsability, RallyMovCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+  SkillsMenuCommand(SkillMenuName87, UM_RallySpectrum, UM_RallySpectrumDesc, $6F, RallySpectrumCommandUsability, RallySpectrumCommandEffect, RallyCommandSwitchIn, RallyCommandSwitchOut)
+#endif
+
+SkillsMenuCommand(SkillMenuName88, UM_Lunge, UM_LungeDesc, $70, LungeUsability, LungeEffect, FE7_AttackHover, FE7_AttackUnhover)
+SkillsMenuCommand(SkillMenuName89, UM_Mercy, UM_MercyDesc, $71, MercyUsability, MercyEffect, FE7_AttackHover, FE7_AttackUnhover)
+SkillsMenuCommand(SkillMenuName8A, UM_Gamble, UM_GambleDesc, $72, GambleUsability, GambleEffect, FE7_AttackHover, FE7_AttackUnhover)
+SkillsMenuCommand(SkillMenuName8B, UM_Capture, UM_CaptureDesc, $73, Capture_Usability, Capture_Effect_Func, FE7_AttackHover, FE7_AttackUnhover)
+
+SkillsMenuCommand(SkillMenuName8C, UM_Shove,      UM_ShoveDesc,      $74, prShoveCommand_Usability,      prShoveCommand_Effect)
+SkillsMenuCommand(SkillMenuName8D, UM_Smite,      UM_SmiteDesc,      $75, prSmiteCommand_Usability,      prSmiteCommand_Effect)
+SkillsMenuCommand(SkillMenuName8E, UM_Pivot,      UM_PivotDesc,      $76, prPivotCommand_Usability,      prPivotCommand_Effect)
+SkillsMenuCommand(SkillMenuName8F, UM_Reposition, UM_RepositionDesc, $77, prRepositionCommand_Usability, prRepositionCommand_Effect)
+SkillsMenuCommand(SkillMenuName90, UM_Swap,       UM_SwapDesc,       $78, prSwapCommand_Usability,       prSwapCommand_Effect)
+SkillsMenuCommand(SkillMenuName91, UM_Swarp,      UM_SwarpDesc,      $79, prSwarpCommand_Usability,      prSwarpCommand_Effect)
+SkillsMenuCommand(SkillMenuName92, UM_DrawBack, UM_DrawBackDesc, $7A, DrawBack_Usability, DrawBack_Effect)
+SkillsMenuCommand(SkillMenuName93, UM_Sacrifice, UM_SacrificeDesc, $7B, Sacrifice_Usability, Sacrifice_Effect)
+SkillsMenuCommand(SkillMenuName94, UM_ArdentSacrifice, UM_ArdentSacrificeDesc, $7C, ArdentSacrifice_Usability, ArdentSacrifice_Effect)
+SkillsMenuCommand(SkillMenuName95, UM_ReciprocalAid, UM_ReciprocalAidDesc, $7D, ReciprocalAid_Usability, ReciprocalAid_Effect)
+
+UM_Separator
