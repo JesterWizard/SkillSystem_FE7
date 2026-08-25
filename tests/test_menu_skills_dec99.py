@@ -213,7 +213,9 @@ class MenuSkillWiringTests(unittest.TestCase):
         self.assertNotIn("AddMapAuraFxUnit", start_fx)
         self.assertIn("RallySeq_GetNextUnit", rally_fx)
         start_bar = rally_fx.split("StartBarrierOnUnit:")[1].split("StartBarrierOnUnit.end:")[0]
-        self.assertIn("m4aSongNumStart", start_bar)
+        self.assertIn("0x08073878", start_bar)
+        self.assertNotIn("0x0802A3B0", start_bar)
+        self.assertNotIn("0x08C9D634", start_bar)
         self.assertNotIn("RallyBarrierProc", start_bar)
         self.assertNotIn("UNIT_STATE_HIDDEN", rally_fx)
         self.assertNotIn("BeginUnitHealAnim", start_bar)
@@ -459,6 +461,35 @@ class RallyNamedMenuAndBwlTests(unittest.TestCase):
         self.assertIn("Rally Mag", doc)
 
 
+class RallyBarrierFxTests(unittest.TestCase):
+    def test_seq_proc_locks_until_unlock(self):
+        text = RALLY_FX_S.read_text(encoding="utf-8")
+        seq = text.split("RallySeqProc:")[1].split("RallySeq_OnInit:")[0]
+        self.assertIn("LockGame", seq)
+        self.assertIn("UnlockGame", seq)
+
+    def test_barrier_ap_on_unit_skips_map_anim_battle(self):
+        text = RALLY_FX_S.read_text(encoding="utf-8")
+        start = text.split("StartBarrierOnUnit:")[1].split(
+            "AddMapAuraFxUnit:"
+        )[0]
+        self.assertIn("0x08073878", start)
+        self.assertIn("0x08C9DD24", start)
+        self.assertIn("0x080044F8", start)
+        self.assertNotIn("0x0802A3B0", start)
+        self.assertNotIn("0x08C9D634", start)
+        self.assertNotIn("0x0802A4B4", start)
+        self.assertNotIn("0x08032858", start)
+        self.assertNotIn("0x08075115", start)
+        self.assertNotIn("0x0806CCB8", start)
+        wait = text.split("WaitForBarrierEnd:")[1].split(
+            "WaitForBarrierEndProc:"
+        )[0]
+        self.assertIn("0x080046A8", wait)
+        self.assertNotIn("0x08029c24", wait)
+        self.assertNotIn("0x0806CCB8", wait)
+
+
 class RallySeqNextUnitTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -491,6 +522,17 @@ class RallySeqNextUnitTests(unittest.TestCase):
 
     def test_terminator_returns_zero(self):
         self.assertEqual(self._next(2, b"\x01\x02\x00"), (0, 2))
+
+    def test_barrier_null_unit_skips_ap(self):
+        code = th.assemble(RALLY_FX_S)
+        offs = th.symbol_offsets(RALLY_FX_S)
+        h = th.Harness(code, skill_present=False)
+        regs = h.run(
+            offs["StartBarrierOnUnit_End"],
+            {"r0": 0, "r1": 0},
+            offs["StartBarrierOnUnit"],
+        )
+        self.assertEqual(regs["r0"], 0)
 
 
 @unittest.skipUnless(HACK.exists() and CLEAN.exists(), "FE7_Hack.gba or FE7_clean.gba missing")

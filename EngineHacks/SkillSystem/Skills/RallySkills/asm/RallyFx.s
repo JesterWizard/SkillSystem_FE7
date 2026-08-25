@@ -224,8 +224,10 @@ BXR3:
 .global RallySeqProc
 RallySeqProc:
 	.word 1, RallyFxProc.name
+	.word 2, LockGame
 	.word 2, RallySeq_OnInit
 	.word 3, RallySeq_OnLoop
+	.word 2, UnlockGame
 	.word 0, 0
 
 .align
@@ -265,6 +267,7 @@ RallySeq_OnInit.start:
 	beq RallySeq_OnInit.end
 	ldr r3, =GetUnit
 	bl BXR3
+	mov r1, r4
 	bl StartBarrierOnUnit
 RallySeq_OnInit.end:
 	pop {r4-r6}
@@ -279,19 +282,13 @@ RallySeq_OnInit.end:
 RallySeq_OnLoop:
 	push {r4, lr}
 	mov r4, r0
-	ldr r1, [r4, #0x2C]
-	add r1, #1
-	str r1, [r4, #0x2C]
-	cmp r1, #RALLY_FX_PERIOD
-	blt RallySeq_OnLoop.end
-	mov r1, #0
-	str r1, [r4, #0x2C]
 	mov r0, r4
 	bl RallySeq_GetNextUnit
 	cmp r0, #0
 	beq RallySeq_OnLoop.break
 	ldr r3, =GetUnit
 	bl BXR3
+	mov r1, r4
 	bl StartBarrierOnUnit
 	b RallySeq_OnLoop.end
 RallySeq_OnLoop.break:
@@ -332,27 +329,64 @@ RallySeq_GetNextUnit_End:
 .global StartBarrierOnUnit
 .type StartBarrierOnUnit, %function
 StartBarrierOnUnit:
-	push {lr}
+	@ r0 = unit, r1 = parent proc (blocking). Map Barrier AP at unit x/y.
+	@ Do not start MapAnimBattle: that spawns a dummy at (0,0) and death quotes.
+	push {r4-r6, lr}
 	cmp r0, #0
 	beq StartBarrierOnUnit.end
-	ldr r0, =gChapterData+0x41
-	ldrb r0, [r0]
-	lsl r0, r0, #0x1E
-	blt StartBarrierOnUnit.end
-	ldr r3, =m4aSongNumStart
-	mov r0, #136
-	bl BXR3
+	mov r5, r0
+	mov r6, r1
+	blh 0x08073878
+	cmp r6, #0
+	beq StartBarrierOnUnit.end
+	ldr r0, =WaitForBarrierEndProc
+	mov r1, r6
+	blh 0x080044F8
+	add r0, #0x2C
+	ldr r1, =0x08C9DD24
+	str r1, [r0, #0x10]
 StartBarrierOnUnit.end:
+	pop {r4-r6}
+	pop {r1}
+.global StartBarrierOnUnit_End
+StartBarrierOnUnit_End:
+	bx r1
+	.pool
+
+.align
+
+.global WaitForBarrierEnd
+.type WaitForBarrierEnd, %function
+WaitForBarrierEnd:
+	push {r4, lr}
+	mov r4, r0
+	add r0, #0x2C
+	ldr r0, [r0, #0x10]
+	blh 0x080046A8
+	cmp r0, #0
+	bne WaitForBarrierEnd.busy
+	mov r0, r4
+	blh 0x080046A0
+WaitForBarrierEnd.busy:
+	pop {r4}
 	pop {r1}
 	bx r1
 	.pool
 
 .align
 
+.global WaitForBarrierEndProc
+WaitForBarrierEndProc:
+	.word 1, RallyFxProc.name
+	.word 3, WaitForBarrierEnd
+	.word 0, 0
+
+.align
+
 .global AddMapAuraFxUnit
 .type AddMapAuraFxUnit, %function
 AddMapAuraFxUnit:
-	b StartBarrierOnUnit
+	bx lr
 
 .align
 
