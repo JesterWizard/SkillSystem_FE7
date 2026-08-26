@@ -4,9 +4,9 @@
 .equ DanceID,SkillTester+4
 .equ AlsoUseVanillaCheck,DanceID+4
 
-.equ gActiveUnit,0x3004690
-.equ gGameState,0x202BCB0
-.equ GetDancerTargetResult,0x80230F1
+.equ gActiveUnit,0x03004690
+.equ gBmSt,0x0202BBB8
+.equ GetDancerTargetResult,0x08021FB5
 
 .macro blh to, reg=r3
 	ldr \reg, =\to
@@ -14,7 +14,7 @@
 	.short 0xF800
 .endm
 
-@old at 8023194
+@old at 8022058
 
 push {r4,r14}
 mov r4,r0
@@ -49,7 +49,7 @@ cmp r0,#0
 beq ReturnFalse
 
 CheckTargetList:
-ldr r1,=gGameState
+ldr r1,=gBmSt
 mov r0,#0xA5
 strh r0,[r1,#0x2C]
 mov r0,r4

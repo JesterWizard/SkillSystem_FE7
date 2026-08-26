@@ -14,6 +14,20 @@ POIN SkillTester
 WORD DanceID
 WORD ALSO_USE_VANILLA_DANCE_CHECK
 
+PUSH
+ORG $22058
+jumpToHack(NewDanceUsability)
+POP
+
+ALIGN 4
+DanceAction:
+#include "Dance/DanceAction.lyn.event"
+
+PUSH
+ORG $2F4C4
+jumpToHack(DanceAction)
+POP
+
 ALIGN 4
 NewSupplyUsability:
 #include "Supply/NewSupplyUsability.lyn.event"

@@ -6256,12 +6256,13 @@
       "off": "no",
       "category": "UnitMenuSkills",
       "live": "yes",
-      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/NewDanceUsability.s",
+      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/DanceAction.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/DanceAction.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/NewDanceUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
