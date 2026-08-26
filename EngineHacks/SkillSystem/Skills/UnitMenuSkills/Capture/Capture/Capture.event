@@ -26,6 +26,10 @@
 	ORG $17E90
 	jumpToHack(Preserve_Captured_Enemy)
 
+	// Dropping a captured enemy ends its temporary life at 1 HP.
+	ORG $17E08
+	jumpToHack(Drop_Dead_Enemy)
+
 	// Include carried captured enemies in the trade target list.
 	ORG $23CC0
 	jumpToHack(Trade_Target_List)

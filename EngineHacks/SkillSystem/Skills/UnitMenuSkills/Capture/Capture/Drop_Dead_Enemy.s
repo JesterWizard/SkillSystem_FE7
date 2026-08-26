@@ -1,56 +1,83 @@
 .thumb
 .org 0x0
-.macro blh to, reg=r3
-  ldr \reg, =\to
-  mov lr, \reg
-  .short 0xf800
-.endm
 
+@ FE7 replacement for UnitDrop (0x08017E08).
+@ r0 = carrier, r1 = destination x, r2 = destination y.
+@ Captured enemies are kept at 1 HP while carried so the trade menu can use
+@ their unit data.  Once dropped, they must follow the normal dead-enemy
+@ cleanup path instead of remaining as a live unit with 1 HP.
 
-@set bit 0x1 of byte 1 if unit has 0 hp when being dropped
-@jumped to from 183B0
-@r2=char data of droppee
+	push	{r4, r5, r6, r7, lr}
+	mov	r5, r0
+	mov	r6, r1
+	mov	r7, r2
 
-@r5 = dropper
-@r6 = x coord (or 0 if giving/taking)
-@r7 = y coord (or 0 if giving/taking)
+	@ Resolve the unit currently carried by the carrier.
+	ldr	r1, UnitLookup
+	ldrb	r2, [r5, #0x1B]
+	lsl	r0, r2, #2
+	add	r0, r0, r1
+	ldr	r2, [r0]
+	mov	r4, r2
+	cmp	r4, #0
+	beq	End
 
-strb	r0,[r5,#0x1B]
-strb	r0,[r4,#0x1B]
-strb	r6,[r4,#0x10]
-strb	r7,[r4,#0x11]
+	@ Vanilla FE7 UnitDrop: clear rescue state from both units.
+	ldr	r0, [r5, #0xC]
+	movs	r1, #0x31
+	neg	r1, r1
+	and	r0, r1
+	str	r0, [r5, #0xC]
 
-@drop check
-@The Drop can only be compared with the r14.
-ldr             r0, =0x0803223C+1   @FE8U
-cmp		r0, r14
-bne		End
+	ldr	r3, [r4, #0xC]
+	movs	r0, #0x32
+	neg	r0, r0
+	and	r3, r0
 
-ldrb	r0,[r4,#0x13]
-cmp             r0,#0x1             @HP 1 <=
-bgt		End
+	@ Preserve vanilla's same-faction dropped-unit state adjustment.
+	movs	r0, #0xC0
+	ldrb	r1, [r4, #0xB]
+	and	r0, r1
+	ldr	r1, ChapterData
+	ldrb	r1, [r1, #0xF]
+	cmp	r0, r1
+	bne	StoreDroppedState
+	movs	r0, #2
+	orr	r3, r0
 
-ldrb    r0,[r5,#0xB]                @myself
-ldrb    r1,[r4,#0xB]                @target
-blh 0x080238B0                      @AreUnitsAllied
-cmp		r0, #0x1
-beq		End
+StoreDroppedState:
+	str	r3, [r4, #0xC]
+	movs	r0, #0
+	strb	r0, [r5, #0x1B]
+	strb	r0, [r4, #0x1B]
+	strb	r6, [r4, #0x10]
+	strb	r7, [r4, #0x11]
 
+	@ A captured enemy is an enemy unit with the temporary 1 HP value.
+	ldrb	r0, [r4, #0xB]
+	movs	r1, #0x80
+	tst	r0, r1
+	beq	End
+	ldrb	r0, [r4, #0x13]
+	cmp	r0, #1
+	bhi	End
 
-ldr r0, [r4]
-ldrb r0, [r0, #0x4]                 @EnemyUnitID
-blh 0x080835dc                      @DisplayDeathQuoteForChar
-
-ldr		r0,[r4,#0xC]
-mov             r1,#0xD             @make them dead
-orr		r0,r1
-str		r0,[r4,#0xC]
-
-mov     r0, #0x0
-str             r0, [r4]            @Clear EnemyStruct
-strb    r0, [r4, #0x13]             @HP=0
+	@ Match FE7's dead-enemy cleanup: mark dead, clear character data, HP=0.
+	ldr	r0, [r4, #0xC]
+	movs	r1, #0xD
+	orr	r0, r1
+	str	r0, [r4, #0xC]
+	movs	r0, #0
+	str	r0, [r4]
+	strb	r0, [r4, #0x13]
 
 End:
-pop		{r4-r7}
-pop		{r0}
-bx		r0
+	pop	{r4, r5, r6, r7}
+	pop	{r0}
+	bx	r0
+
+.align
+UnitLookup:
+	.long	0x08B92EB0
+ChapterData:
+	.long	0x0202BBF8

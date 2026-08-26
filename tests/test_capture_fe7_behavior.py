@@ -59,6 +59,18 @@ class CaptureFe7BehaviorTests(unittest.TestCase):
         self.assertIn("str\tr0, [r4]", source)
         self.assertIn("0x08026844", source)
 
+    def test_dropping_a_captured_enemy_installs_dead_cleanup(self):
+        event = (CAPTURE / "Capture.event").read_text()
+        source = (CAPTURE / "Drop_Dead_Enemy.s").read_text()
+
+        self.assertIn("ORG $17E08", event)
+        self.assertIn("jumpToHack(Drop_Dead_Enemy)", event)
+        self.assertIn("0x08017E08", source)
+        self.assertIn("[r4, #0x13]", source)
+        self.assertIn("movs\tr1, #0xD", source)
+        self.assertIn("str\tr0, [r4]", source)
+        self.assertIn("strb\tr0, [r4, #0x13]", source)
+
     def test_trade_target_list_allows_a_carried_one_hp_enemy(self):
         source = (CAPTURE / "Trade_Target_List.s").read_text()
 
