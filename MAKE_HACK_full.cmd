@@ -57,7 +57,7 @@ cd "%base_dir%"
 python "%base_dir%Tools\build_skill_asm.py"
 if errorlevel 1 (
   echo Skill ASM build failed.
-  pause
+  if defined MAKE_HACK_PAUSE pause
   exit /b 1
 )
 
@@ -70,7 +70,7 @@ echo Refreshing derived skill index
 python "%base_dir%Tools\build_skill_index.py"
 if errorlevel 1 (
   echo Skill index generation failed.
-  pause
+  if defined MAKE_HACK_PAUSE pause
   exit /b 1
 )
 
@@ -79,7 +79,7 @@ echo Running source tests
 python "%base_dir%tests\run_tests.py" --pre-assemble
 if errorlevel 1 (
   echo Source tests failed.
-  pause
+  if defined MAKE_HACK_PAUSE pause
   exit /b 1
 )
 
@@ -109,7 +109,7 @@ if /I not [%1]==[quick] (
 
 if not "%assemble_error%"=="0" (
   echo Assemble failed.
-  pause
+  if defined MAKE_HACK_PAUSE pause
   exit /b %assemble_error%
 )
 
@@ -118,7 +118,7 @@ echo Running ROM tests
 python "%base_dir%tests\run_tests.py" --rom
 if errorlevel 1 (
   echo ROM tests failed.
-  pause
+  if defined MAKE_HACK_PAUSE pause
   exit /b 1
 )
 
@@ -129,4 +129,5 @@ taskkill /F /IM no$gba.exe >nul 2>&1
 echo Launching NO$GBA
 start "" "%base_dir%..\no$gba\NO$GBA.EXE" "%target_rom%"
 
-pause
+if defined MAKE_HACK_PAUSE pause
+exit /b 0

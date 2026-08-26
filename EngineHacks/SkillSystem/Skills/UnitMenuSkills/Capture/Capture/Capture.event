@@ -15,61 +15,40 @@
 	//Maximum value is 100
 	#define  GIVE_DROP_EXP	10
 
-	// FE8 Capture ORGs are mid-function on FE7 and loop chapter start.
-	#ifdef CAPTURE_VANILLA_HOOKS
 	PUSH
 
-	ORG $22CD0
-	jumpToHack(New_Attack_Map)
-	
-	//Only select targets in 1 range if you have a >1-range weapon
-	ORG $22D08
-	callHack_r3(New_Weapon_Select)
-	
-	//Only show 1 square for >1-range weapons if capturing
-	ORG $22DAC
-	callHack_r3(Show_Red_Squares)
-	
-	//clear the capturing bit when cancelling (shouldn't need this) EDIT: I actually do need this
-	ORG $22878
-	callHack_r3(Cancel_Capture)
-	
-	//After battle, set the attacker and defender's rescue data
-	ORG $328F0
-	callHack_r3(After_Battle_Rescue)
-	SHORT 0xE014
+	// Replace FE7's post-battle death handler so a defeated target can be
+	// rescued before vanilla death processing runs.
+	ORG $2F960
+	jumpToHack(After_Battle_Rescue)
 
-	//Prevent enemy character data pointer from being zero'd out after dying (set byte 0x4 instead) (NOTE: This may lead to issues with saving/endgame? I hope not)
-//	ORG $18400
-//	jumpToHack(Should_Dead_Unit_Be_Cleared)
-	
-	//Set bit 0x1 of byte 0xC if dropping a dead enemy
-	ORG $183B0
-	jumpToHack(Drop_Dead_Enemy)
-	
-	//Modify the trade check to be able to trade captured enemies
+	// Keep a rescued enemy's unit data from being cleared by KillUnit.
+	ORG $17E90
+	jumpToHack(Preserve_Captured_Enemy)
+
+	// Include carried captured enemies in the trade target list.
+	ORG $23CC0
+	jumpToHack(Trade_Target_List)
+
+	// Modify the trade checks so captured enemies can be traded while
+	// preserving vanilla ally trading.
 	ORG $25224
 	callHack_r3(Trade_Captured_Enemy1)
 	SHORT 0x46C0
 	ORG $25298
 	callHack_r3(Trade_Captured_Enemy2)
 	SHORT 0xD00E
-	
-	//Fix the portraits when trading
-	ORG $2D7D4
+
+	// Use the blank mug when a trade participant has no valid portrait.
+	// These are the two FE7 portrait getter calls in TradeMenu_Init.
+	ORG $2B0D4
 	callHack_r3(Trade_Portrait_Fix1)
-	ORG $2D7EC
+	ORG $2B0EC
 	callHack_r3(Trade_Portrait_Fix2)
-	
-	//Stop DeathQuote
-	ORG 0x846E4
-	jumpToHack(StopDeathQuote)
-	
-	ORG 0x32264
-	jumpToHack(GiveDropExp)
-	
+	ORG $2AE14
+	callHack_r3(Trade_Item_Usability_Fix)
+
 	POP
-	#endif // CAPTURE_VANILLA_HOOKS
 
 	#ifdef CAPTURE_SKILL_REQUIRED
 	ALIGN 4
@@ -131,6 +110,14 @@
 	POIN Is_Capture_Set
 	
 	ALIGN 4
+	Trade_Target_List:
+	#include "Trade_Target_List.lyn.event"
+
+	ALIGN 4
+	Preserve_Captured_Enemy:
+	#include "Preserve_Captured_Enemy.lyn.event"
+
+	ALIGN 4
 	Drop_Dead_Enemy:
 	#include "Drop_Dead_Enemy.lyn.event"
 	
@@ -148,7 +135,11 @@
 	ALIGN 4
 	Trade_Portrait_Fix2:
 	#include "Trade_Portrait_Fix2.lyn.event"
-	
+
+	ALIGN 4
+	Trade_Item_Usability_Fix:
+	#include "Trade_Item_Usability_Fix.lyn.event"
+
 //	ALIGN 4
 //	Should_Dead_Unit_Be_Cleared:
 //	#include "Should_Dead_Unit_Be_Cleared.lyn.event"

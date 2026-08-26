@@ -4,9 +4,6 @@
 #include "Extensions/Hack Installation.txt"
 #include "_UnitMenuDefs.event"
 
-#define FE7_AttackHover $21B35
-#define FE7_AttackUnhover $21B9D
-
 // FE7 gMenu_UnitMenu is at 0x08B95AAC. Only the items pointer at +0x08
 // is replaced. Do not patch FE8 menu geometry ORGs.
 

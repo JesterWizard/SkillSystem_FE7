@@ -6234,13 +6234,16 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Is_Capture_Set.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/New_Attack_Map.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/New_Weapon_Select.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Preserve_Captured_Enemy.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Should_Dead_Unit_Be_Cleared.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Show_Red_Squares.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/StopDeathQuote.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Captured_Enemy1.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Captured_Enemy2.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Item_Usability_Fix.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Portrait_Fix1.s",
-        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Portrait_Fix2.s"
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Portrait_Fix2.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Target_List.s"
       ],
       "tests": [
         "tests/test_menu_skills_dec99.py"

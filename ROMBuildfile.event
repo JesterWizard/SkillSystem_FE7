@@ -1,7 +1,6 @@
 #ifdef _FE7_
     #include "EAstdlib.event"
     #include "CustomDefinitions.event"
-PROTECT $23DE0 //FE8 -> $25224 
     ORG FreeSpace
 
     #include "repointedTextTable.event"
