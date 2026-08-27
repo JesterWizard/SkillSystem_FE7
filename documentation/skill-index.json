@@ -6350,10 +6350,12 @@
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonAction.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_summon_usability_execution.py"
       ]
     },
     {

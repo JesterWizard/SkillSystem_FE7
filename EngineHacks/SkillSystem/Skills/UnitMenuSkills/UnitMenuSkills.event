@@ -35,12 +35,66 @@ POIN SkillTester
 WORD SupplyID
 WORD ALSO_USE_VANILLA_SUPPLY_CHECK
 
+// Summon.  FE7 has no summon of its own, so the whole command is custom: the
+// tile picker is modelled on Drop and the action rides FE7's own
+// ApplyUnitAction (0x0802F218) through action id 0x05, which vanilla never
+// writes.  UnitActionRework's table is FE8 data and is not involved.
+// The dragon is created at the summoner's level with the autolevel bit set, so
+// LoadUnit runs the player autolevel path (0x08017BC0).  That path grows the
+// unit by (level - characterData.baseLevel) rolls of the CHARACTER's growths,
+// so a character whose base level is 20 -- as vanilla "Dragon" is -- gains
+// nothing.  SUMMON_FIXUPS below drops that base level to 1.
+#ifndef SUMMON_CHARACTER_ID
+  #define SUMMON_CHARACTER_ID 0x86   // "Dragon"
+#endif
+#ifndef SUMMON_CLASS_ID
+  #define SUMMON_CLASS_ID 0x46       // Fire Dragon
+#endif
+#ifndef SUMMON_ITEM_ID
+  #define SUMMON_ITEM_ID 0x8F        // Flametongue
+#endif
+
+// --- Summon data fixups ----------------------------------------------------
+// Only the autolevel base is a table edit.  The weapon rank is NOT: the byte
+// CanUnitUseAsWeapon reads for Flametongue is unit+0x33 (0x28 + weaponType
+// 0x0B), and LoadUnitStats copies only eight rank bytes (class+0x2C ->
+// unit+0x28..0x2F), so no class-table value can ever reach it.  SummonAction.s
+// writes it on the spawned unit instead, along with the HP clamp.
+//
+// Autolevel base: the player autolevel path (0x08017BC0) grows a unit by
+// (level - characterData.baseLevel) rolls.  Character 0x86 ships at base level
+// 20 -- as vanilla "Dragon" -- which makes that count zero or negative for any
+// sane summon level and skips every growth.
+#ifndef SUMMON_SKIP_DATA_FIXUPS
+PUSH
+ORG CharacterTable + 0x34*SUMMON_CHARACTER_ID + 0x0B
+BYTE 1                           // base level 1, so autolevel actually grows
+POP
+#endif
+
 ALIGN 4
 NewSummonUsability:
 #include "Summon/NewSummonUsability.lyn.event"
 POIN SkillTester
 WORD SummonID
-WORD ALSO_USE_VANILLA_SUMMON_CHECK
+
+ALIGN 4
+#include "Summon/SummonAction.lyn.event"
+WORD SUMMON_CHARACTER_ID
+WORD SUMMON_CLASS_ID
+WORD SUMMON_ITEM_ID
+WORD UM_SummonSelect
+
+// UnitActionFunctionPointer (0x0802F248) is indexed by actionId - 1.
+PUSH
+ORG ($2F248 + 4*(5-1))
+POIN SummonActionEntry
+POP
+
+PUSH
+ORG $12B5C
+replaceWithHack(SummonSetNextChapter)
+POP
 
 ALIGN 4
 AttackEffect:

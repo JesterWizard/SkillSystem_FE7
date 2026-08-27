@@ -44,7 +44,6 @@ UnitMenuTable:
 #endif
 
   UM_Steal
-  MenuCommand(0x10D0, 0x35C, NormalText, NewSummonUsability, 0x22B79)
   UM_Summon_DK
 
   UM_Talk

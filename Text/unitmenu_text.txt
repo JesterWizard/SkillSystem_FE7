@@ -151,6 +151,15 @@ Skills[X]
 ## UM_CombatArtsDesc
 Select a skill to use.[X]
 
+## UM_SummonName
+ Summon[X]
+
+## UM_SummonDesc
+Conjure a Fire Dragon to fight with you.[X]
+
+## UM_SummonSelect
+Select a space to summon into.[X]
+
 ## UM_Adept
  Adept[X]
  

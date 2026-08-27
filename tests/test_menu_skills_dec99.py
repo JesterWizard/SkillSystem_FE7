@@ -174,10 +174,15 @@ class MenuSkillWiringTests(unittest.TestCase):
             self.assertNotIn(token, menu, token)
         for token in (
             "NewDanceUsability",
-            "NewSummonUsability",
             "NewSupplyUsability",
         ):
             self.assertIn(token, menu, token)
+        self.assertNotIn("NewSummonUsability", menu)
+        self.assertIn(
+        "SkillsMenuCommand(SkillMenuName97, UM_SummonName, UM_SummonDesc, "
+        "$7F, NewSummonUsability, SummonEffect",
+            skills,
+        )
 
     def test_rally_hover_does_not_use_fe8_proc_or_gfx(self):
         rally_s = (

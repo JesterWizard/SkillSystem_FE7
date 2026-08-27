@@ -3,9 +3,9 @@
 
 @ FE7 ApplyUnitAction replacement. r0 = parent 6C.
 
-.set pActionStruct, 0x0203A868
+.set pActionStruct, 0x0203A85C
 .set ppActiveUnit,  0x03004690
-.set prUnit_GetStruct, 0x08018D0C
+.set prUnit_GetStruct, 0x08018D0D
 
 ApplyAction:
 	push {r4-r5, lr}

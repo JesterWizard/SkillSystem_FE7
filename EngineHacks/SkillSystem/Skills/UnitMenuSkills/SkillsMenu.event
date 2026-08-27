@@ -35,6 +35,7 @@ SkillMenuName93: BYTE $54 0
 SkillMenuName94: BYTE $55 0
 SkillMenuName95: BYTE $56 0
 SkillMenuName96: BYTE $57 0
+SkillMenuName97: BYTE $58 0
 
 ALIGN 4
 SkillsMenuDef:
@@ -81,5 +82,6 @@ SkillsMenuCommand(SkillMenuName92, UM_DrawBack, UM_DrawBackDesc, $7A, DrawBack_U
 SkillsMenuCommand(SkillMenuName93, UM_Sacrifice, UM_SacrificeDesc, $7B, Sacrifice_Usability, Sacrifice_Effect)
 SkillsMenuCommand(SkillMenuName94, UM_ArdentSacrifice, UM_ArdentSacrificeDesc, $7C, ArdentSacrifice_Usability, ArdentSacrifice_Effect)
 SkillsMenuCommand(SkillMenuName95, UM_ReciprocalAid, UM_ReciprocalAidDesc, $7D, ReciprocalAid_Usability, ReciprocalAid_Effect)
+SkillsMenuCommand(SkillMenuName97, UM_SummonName, UM_SummonDesc, $7F, NewSummonUsability, SummonEffect, SummonHover, SummonUnhover)
 
 UM_Separator
