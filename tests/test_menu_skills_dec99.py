@@ -159,21 +159,30 @@ class MenuSkillWiringTests(unittest.TestCase):
             "RallyLukCommandUsability",
             "RallyMovCommandUsability",
             "RallySpectrumCommandUsability",
-            # Shove is FE7-native now; HeroesMovement's blob is FE8 and the
-            # menu must not reach it. See Tests/test_shove_execution.py.
+            # Heroes movement commands are FE7-native; HeroesMovement's
+            # blobs are FE8 and the menu must not reach them.
             "ShoveUsability",
-            "prSmiteCommand_Usability",
-            "prPivotCommand_Usability",
-            "prRepositionCommand_Usability",
-            "prSwapCommand_Usability",
-            "prSwarpCommand_Usability",
-            "DrawBack_Usability",
+            "SmiteUsability",
+            "PivotUsability",
+            "RepositionUsability",
+            "SwapUsability",
+            "SwarpUsability",
+            "DrawBackUsability",
             "Sacrifice_Usability",
             "ArdentSacrifice_Usability",
             "ReciprocalAid_Usability",
         ):
             self.assertIn(token, skills, token)
             self.assertNotIn(token, menu, token)
+        for token in (
+            "prSmiteCommand_Usability",
+            "prPivotCommand_Usability",
+            "prRepositionCommand_Usability",
+            "prSwapCommand_Usability",
+            "prSwarpCommand_Usability",
+            "DrawBack_Usability",
+        ):
+            self.assertNotIn(token, skills, token)
         for token in (
             "NewDanceUsability",
             "NewSupplyUsability",

@@ -200,6 +200,80 @@ ORG ($2F248 + 4*(SHOVE_ACTION_ID-1))
 POIN ShoveActionEntry
 POP
 
+// Same FE7-native rebuild as Shove.  Ids must be ones ApplyUnitAction
+// dispatches (1..0x1B) AND that PlayerPhase's table at 0x0801CA80 sends
+// down the default path 0x0801CB68.  0x09/0x0A are Take/Give: that table
+// jumps to 0x0801CB40 and the command cancels after the target is picked.
+#ifndef PIVOT_ACTION_ID
+  #define PIVOT_ACTION_ID 0x16
+#endif
+#ifndef SWAP_ACTION_ID
+  #define SWAP_ACTION_ID 0x1B
+#endif
+#ifndef SMITE_ACTION_ID
+  #define SMITE_ACTION_ID 0x11
+#endif
+#ifndef REPOSITION_ACTION_ID
+  #define REPOSITION_ACTION_ID 0x13
+#endif
+#ifndef SWARP_ACTION_ID
+  #define SWARP_ACTION_ID 0x14
+#endif
+#ifndef DRAWBACK_ACTION_ID
+  #define DRAWBACK_ACTION_ID 0x15
+#endif
+
+ALIGN 4
+#include "Smite/SmiteAction.lyn.event"
+POIN SkillTester
+WORD SmiteID
+WORD UM_SmiteDesc
+
+ALIGN 4
+#include "Pivot/PivotAction.lyn.event"
+POIN SkillTester
+WORD PivotID
+WORD UM_PivotDesc
+
+ALIGN 4
+#include "Reposition/RepositionAction.lyn.event"
+POIN SkillTester
+WORD RepositionID
+WORD UM_RepositionDesc
+
+ALIGN 4
+#include "Swap/SwapAction.lyn.event"
+POIN SkillTester
+WORD SwapID
+WORD UM_SwapDesc
+
+ALIGN 4
+#include "Swarp/SwarpAction.lyn.event"
+POIN SkillTester
+WORD SwarpID
+WORD UM_SwarpDesc
+
+ALIGN 4
+#include "DrawBack/DrawBackAction.lyn.event"
+POIN SkillTester
+WORD DrawBackID
+WORD UM_DrawBackDesc
+
+PUSH
+ORG ($2F248 + 4*(PIVOT_ACTION_ID-1))
+POIN PivotActionEntry
+ORG ($2F248 + 4*(SWAP_ACTION_ID-1))
+POIN SwapActionEntry
+ORG ($2F248 + 4*(SMITE_ACTION_ID-1))
+POIN SmiteActionEntry
+ORG ($2F248 + 4*(REPOSITION_ACTION_ID-1))
+POIN RepositionActionEntry
+ORG ($2F248 + 4*(SWARP_ACTION_ID-1))
+POIN SwarpActionEntry
+ORG ($2F248 + 4*(DRAWBACK_ACTION_ID-1))
+POIN DrawBackActionEntry
+POP
+
 ALIGN 4
 AttackEffect:
 #include "Attack/AttackEffect.lyn.event"
