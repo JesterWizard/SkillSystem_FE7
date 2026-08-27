@@ -6247,6 +6247,7 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Capture/Capture/Trade_Target_List.s"
       ],
       "tests": [
+        "tests/test_capture_fe7_behavior.py",
         "tests/test_menu_skills_dec99.py"
       ]
     },

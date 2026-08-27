@@ -11,6 +11,9 @@
 	.short	0xF800
 .endm
 
+.equ SkillTester, Is_Capture_Set+4
+.equ CaptureID, SkillTester+4
+
 	push	{r4, r5, r6, lr}
 	mov	r5, r0
 
@@ -51,6 +54,15 @@
 	and	r0, r1
 	str	r0, [r6, #0xC]
 
+	@ Winning unit must have Capture; the menu flag is not enough.
+	mov	r0, r6
+	ldr	r1, CaptureID
+	ldr	r3, SkillTester
+	mov	lr, r3
+	.short	0xF800
+	cmp	r0, #0
+	beq	KillUnits
+
 	@ Only rescue a defeated enemy while the capturer is still alive.
 	ldrb	r0, [r4, #0x13]
 	cmp	r0, #0
@@ -82,5 +94,9 @@ KillUnits:
 	bx	r0
 
 .align
+.ltorg
+
+.align
 Is_Capture_Set:
-@
+@SkillTester
+@CaptureID

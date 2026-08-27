@@ -46,6 +46,9 @@ class CaptureFe7BehaviorTests(unittest.TestCase):
         self.assertIn("0x0802F754", source)
         self.assertIn("0x08017DE4", source)
         self.assertIn("0x0802F808", source)
+        self.assertIn("SkillTester", source)
+        self.assertIn("CaptureID", source)
+        self.assertIn(".ltorg", source)
         self.assertIn("strb\tr0, [r4, #0x13]", source)
 
     def test_preserves_rescued_enemy_unit_data_from_fe7_kill_unit(self):

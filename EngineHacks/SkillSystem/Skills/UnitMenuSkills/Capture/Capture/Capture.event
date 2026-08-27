@@ -111,7 +111,8 @@
 	ALIGN 4
 	After_Battle_Rescue:
 	#include "After_Battle_Rescue.lyn.event"
-	POIN Is_Capture_Set
+	POIN Is_Capture_Set SkillTester
+	WORD CaptureID
 	
 	ALIGN 4
 	Trade_Target_List:
