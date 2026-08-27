@@ -168,9 +168,9 @@ class MenuSkillWiringTests(unittest.TestCase):
             "SwapUsability",
             "SwarpUsability",
             "DrawBackUsability",
-            "Sacrifice_Usability",
-            "ArdentSacrifice_Usability",
-            "ReciprocalAid_Usability",
+            "SacrificeUsability",
+            "ArdentSacrificeUsability",
+            "ReciprocalAidUsability",
         ):
             self.assertIn(token, skills, token)
             self.assertNotIn(token, menu, token)
@@ -181,6 +181,8 @@ class MenuSkillWiringTests(unittest.TestCase):
             "prSwapCommand_Usability",
             "prSwarpCommand_Usability",
             "DrawBack_Usability",
+            "ArdentSacrifice_Usability",
+            "ReciprocalAid_Usability",
         ):
             self.assertNotIn(token, skills, token)
         for token in (

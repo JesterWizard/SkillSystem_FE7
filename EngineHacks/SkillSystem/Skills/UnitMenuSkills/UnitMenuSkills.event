@@ -259,7 +259,37 @@ POIN SkillTester
 WORD DrawBackID
 WORD UM_DrawBackDesc
 
+// Sacrifice.  FE8's Sacrifice.c used action 0x29, which ApplyUnitAction
+// drops (cmp r0,#0x1A after sub #1).  The pointer table at 0x0802F248 is
+// flush against the Wait handler, so 0x1C cannot be appended there.
+// ApplyUnitActionFE7 (in SacrificeAction.s) keeps 1..0x1B on that table
+// and sends 0x1C through HighActionTable.  PlayerPhase already accepts
+// 0x1C (cmp r0,#0x1F at 0x0801CA66; table[0x1C] is 0x0801CB68).
+#ifndef SACRIFICE_ACTION_ID
+  #define SACRIFICE_ACTION_ID 0x1C
+#endif
+#ifndef ARDENT_SACRIFICE_ACTION_ID
+  #define ARDENT_SACRIFICE_ACTION_ID 0x1D
+#endif
+#ifndef RECIPROCAL_AID_ACTION_ID
+  #define RECIPROCAL_AID_ACTION_ID 0x1E
+#endif
+
+ALIGN 4
+#include "Sacrifice/SacrificeAction.lyn.event"
+POIN SkillTester
+WORD SacrificeID
+WORD UM_SacrificeDesc
+WORD ArdentSacrificeID
+WORD UM_ArdentSacrificeDesc
+WORD ReciprocalAidID
+WORD UM_ReciprocalAidDesc
+
 PUSH
+ORG $2F218
+jumpToHack(ApplyUnitActionFE7)
+ORG $1CAF8
+WORD $801CB68
 ORG ($2F248 + 4*(PIVOT_ACTION_ID-1))
 POIN PivotActionEntry
 ORG ($2F248 + 4*(SWAP_ACTION_ID-1))

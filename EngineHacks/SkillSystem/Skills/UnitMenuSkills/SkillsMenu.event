@@ -80,9 +80,9 @@ SkillsMenuCommand(SkillMenuName8F, UM_Reposition, UM_RepositionDesc, $77, Reposi
 SkillsMenuCommand(SkillMenuName90, UM_Swap,       UM_SwapDesc,       $78, SwapUsability,       SwapEffect)
 SkillsMenuCommand(SkillMenuName91, UM_Swarp,      UM_SwarpDesc,      $79, SwarpUsability,      SwarpEffect)
 SkillsMenuCommand(SkillMenuName92, UM_DrawBack,   UM_DrawBackDesc,   $7A, DrawBackUsability,   DrawBackEffect)
-SkillsMenuCommand(SkillMenuName93, UM_Sacrifice, UM_SacrificeDesc, $7B, Sacrifice_Usability, Sacrifice_Effect)
-SkillsMenuCommand(SkillMenuName94, UM_ArdentSacrifice, UM_ArdentSacrificeDesc, $7C, ArdentSacrifice_Usability, ArdentSacrifice_Effect)
-SkillsMenuCommand(SkillMenuName95, UM_ReciprocalAid, UM_ReciprocalAidDesc, $7D, ReciprocalAid_Usability, ReciprocalAid_Effect)
+SkillsMenuCommand(SkillMenuName93, UM_Sacrifice, UM_SacrificeDesc, $7B, SacrificeUsability, SacrificeEffect)
+SkillsMenuCommand(SkillMenuName94, UM_ArdentSacrifice, UM_ArdentSacrificeDesc, $7C, ArdentSacrificeUsability, ArdentSacrificeEffect)
+SkillsMenuCommand(SkillMenuName95, UM_ReciprocalAid, UM_ReciprocalAidDesc, $7D, ReciprocalAidUsability, ReciprocalAidEffect)
 SkillsMenuCommand(SkillMenuName97, UM_SummonName, UM_SummonDesc, $7F, NewSummonUsability, SummonEffect, SummonHover, SummonUnhover)
 
 UM_Separator

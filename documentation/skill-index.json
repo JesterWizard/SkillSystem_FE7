@@ -6589,16 +6589,19 @@
       "off": "no",
       "category": "UnitMenuSkills",
       "live": "yes",
-      "source": "",
-      "folder": "",
+      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Sacrifice/SacrificeAction.s",
+      "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Sacrifice",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Sacrifice/SacrificeAction.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_sacrifice_execution.py"
       ]
     },
     {
@@ -6614,9 +6617,12 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Sacrifice/SacrificeAction.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
       "tests": [
+        "tests/test_ardent_reciprocal_execution.py",
         "tests/test_menu_skills_dec99.py"
       ]
     },
@@ -6633,9 +6639,12 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Sacrifice/SacrificeAction.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/SacrificeDrawBack/Installer.event"
       ],
       "tests": [
+        "tests/test_ardent_reciprocal_execution.py",
         "tests/test_menu_skills_dec99.py"
       ]
     },
