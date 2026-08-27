@@ -6351,6 +6351,9 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonAction.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonClassCardFace.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonPopup.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonPortraitGuard.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
       "tests": [

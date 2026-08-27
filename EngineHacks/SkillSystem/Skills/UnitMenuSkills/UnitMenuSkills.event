@@ -53,6 +53,34 @@ WORD ALSO_USE_VANILLA_SUPPLY_CHECK
 #ifndef SUMMON_ITEM_ID
   #define SUMMON_ITEM_ID 0x8F        // Flametongue
 #endif
+// Text id of the summoned class's name, for the "Summoned a ..." map popup.
+// This is ClassTable + 0x54*SUMMON_CLASS_ID + 0x00, so it must be changed
+// whenever SUMMON_CLASS_ID is; Tests/test_summon_popup_and_class_card.py fails
+// the build if the two ever drift apart.
+#ifndef SUMMON_CLASS_NAME_TEXT
+  #define SUMMON_CLASS_NAME_TEXT 0x04D0   // "Fire Dragon"
+#endif
+// Popup sound, copied from the steal popup this replaces.
+#ifndef SUMMON_POPUP_SFX
+  #define SUMMON_POPUP_SFX 0x037A
+#endif
+// Portrait shown in the battle forecast and stat screen.
+//
+// Left as vanilla on purpose, so the dragon shows its CLASS CARD.
+//
+// Character 0x86 has portrait 0, and GetUnitPortraitId (0x08018BD8) already
+// handles that: it falls back to the class's own id at class+0x08, which for
+// Fire Dragon is 0xDE -- the Fire Dragon class card.  That entry is valid.
+// Portrait entries are 0x1C bytes (the getter at 0x08006B20 computes id*28),
+// not 0x24, and a class card carries its PALETTE at +0x08 and its GRAPHICS at
+// +0x10, while the two mug pointers at +0x00 and +0x04 are legitimately zero.
+// Every vanilla class card 0xBE..0xE3 has that shape.  That zero at +0x00 is
+// what the sprite face proc used to decompress from, which is the weapon-select
+// crash; see Summon/SummonClassCardFace.s.
+//
+// So no override is needed, and forcing one (0x67 was tried) only replaces the
+// class card with an unrelated face.  Define SUMMON_PORTRAIT_ID yourself if you
+// do want a specific portrait; leaving it undefined keeps the class card.
 
 // --- Summon data fixups ----------------------------------------------------
 // Only the autolevel base is a table edit.  The weapon rank is NOT: the byte
@@ -69,6 +97,10 @@ WORD ALSO_USE_VANILLA_SUPPLY_CHECK
 PUSH
 ORG CharacterTable + 0x34*SUMMON_CHARACTER_ID + 0x0B
 BYTE 1                           // base level 1, so autolevel actually grows
+#ifdef SUMMON_PORTRAIT_ID
+ORG CharacterTable + 0x34*SUMMON_CHARACTER_ID + 0x06
+SHORT SUMMON_PORTRAIT_ID         // only when the user asked for a specific face
+#endif
 POP
 #endif
 
@@ -94,6 +126,51 @@ POP
 PUSH
 ORG $12B5C
 replaceWithHack(SummonSetNextChapter)
+POP
+
+// GetUnitPortraitId returns 0 for a unit with no character portrait and no
+// class portrait, and NewFace cannot draw id 0 -- it resolves the id as
+// base + id*0x1C with no bounds check and dereferences entry 0's header as a
+// graphics pointer, hanging the weapon-select popup.  Of every id tested
+// (0x00-0x0F, 0xBE-0xE3) that is the only one that faults.  The guard returns
+// the generic class card 0xDE instead of 0.
+ALIGN 4
+SummonPortraitGuard:
+#include "Summon/SummonPortraitGuard.lyn.event"
+
+PUSH
+ORG $18BD8
+replaceWithHack(SummonPortraitGuard)
+POP
+
+// The sprite face proc loads its graphics from portraitEntry+0x00, which is
+// NULL for a class card -- the summon's weapon-select crash.  Give it the
+// branch DisplayBgFaceCore (0x080072D0) already has.
+ALIGN 4
+#include "Summon/SummonClassCardFace.lyn.event"
+
+PUSH
+ORG $6B9C
+replaceWithHack(SummonClassCardFace)
+POP
+
+// "Summoned a <class>" in place of the map battle sequence's steal popup.
+ALIGN 4
+SummonPopupDef:
+WORD $0C SUMMON_POPUP_SFX      // popup sound
+WORD $08 0                     // segment
+WORD $06 UM_SummonedPopup      // "Summoned a"
+WORD $01 4                     // 4px gap
+WORD $06 SUMMON_CLASS_NAME_TEXT
+WORD $00 0                     // end
+
+ALIGN 4
+#include "Summon/SummonPopup.lyn.event"
+POIN SummonPopupDef
+
+PUSH
+ORG $6E2FC
+replaceWithHack(SummonPopupHook)
 POP
 
 ALIGN 4

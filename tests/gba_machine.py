@@ -103,7 +103,11 @@ class Gba:
         uc.reg_write(UC_ARM_REG_LR, (address + 2) | 1)
         uc.reg_write(UC_ARM_REG_PC, target | 1)
 
-    def run(self, entry: int, *, sp: int = IWRAM + 0x7F00, timeout=30_000_000):
+    # Unicorn's timeout is wall-clock microseconds and is spent in full when a
+    # run ends by any means other than reaching the stop address, so an
+    # over-generous value costs real seconds on every call.  The summon chain
+    # is ~3M instructions; 3s leaves ample headroom.
+    def run(self, entry: int, *, sp: int = IWRAM + 0x7F00, timeout=3_000_000):
         self.uc.reg_write(UC_ARM_REG_SP, sp)
         self.uc.reg_write(UC_ARM_REG_LR, RETURN_MAGIC | 1)
         self.uc.emu_start(entry | 1, RETURN_MAGIC, timeout=timeout)

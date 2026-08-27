@@ -26,6 +26,7 @@
 .equ gActiveUnit,        0x03004690
 .equ gChapterData,       0x0202BBF8
 .equ gTargetArray,       0x0203DCF8
+.equ gBattleTarget,      0x0203A470
 .equ ppMapUnit,          0x0202E3DC
 .equ ppMapTerrain,       0x0202E3E0
 .equ ppMapMovement,      0x0202E3E4
@@ -47,23 +48,27 @@
 .equ ClearBG0BG1,            0x0804A041
 .equ SelectionBackToUnitMenu,0x08021655
 .equ SummonAnimation,        0x08073879  @ r0=unit; barrier-style map effect
-.equ SummonAnimationProcs,   0x08C9DD24  @ the proc script SummonAnimation runs
-.equ Find6C,                 0x080046A9  @ r0=proc script -> r0=proc or 0
-.equ InsertChild6C,          0x080045DD  @ r0=proc, r1=new parent
-.equ Isolate6C,              0x080045F1  @ r0=proc; unlink from its current list
 .equ GetUnit,                0x08018D0D
 .equ ClearUnitStruct,        0x08017509
 .equ LoadUnit,               0x08017789  @ r0=UnitDefinition* -> r0=Unit*
 .equ RefreshEntityMaps,      0x08019ABD
 .equ RefreshUnitSprites,     0x08025725
 .equ GetGameControlProc,     0x08012B39
-.equ SetupBattleStructForStaffUser, 0x0802A4B5  @ r0=Unit, r1=weapon slot (-1 none)
-.equ GiveInstigator10Exp,    0x0802A5D1  @ r0=Unit; +10 exp, then blocks on the exp bar
-.equ gBattleStatsBitfield,   0x0203A3D8
+
+@ The no-combat "act on a unit, gain 10 exp, show the bar" sequence.  These five
+@ are ActionSteal's tail (0x0802F64C..0x0802F676) in order; see SummonAction.
+.equ SetupBattleStructForStaffUser, 0x0802A4B5  @ r0=unit, r1=weapon slot (-1)
+.equ CopyUnitToBattleStruct,        0x080285D5  @ r0=battle struct, r1=unit
+.equ GiveInstigator10Exp,           0x0802A5D1  @ r0=proc; blocking child
+.equ ClearMoveUnits,                0x0806CCB9
+.equ StartMapBattleSequence,        0x0806F0DD  @ news up 0x08C9D50C; draws the bar
+
+@ NOT an exp bar.  0x0802B678 is StartTradeMenu -- see SummonAction's tail.
+.equ DoNotCall_StartTradeMenu,      0x0802B679
 
 .equ SummonActionID,         0x05
 .equ LastPlayerUnitID,       0x40        @ player deployment slots are 1..0x3F
-.equ SignedStatMax,          0x7F        @ GetUnitMaxHP reads maxHP with LDRSB
+.equ PlayerHPCap,            60          @ the cap every player unit is held to
 
 .macro blh to, reg=r3
 	ldr \reg, =\to
@@ -361,13 +366,23 @@ SummonActionEntry:
 @ the chosen tile with the summoner's level and let autolevelling fill it in,
 @ then award the summoner 10 EXP through the blocking exp-bar proc.
 @
-@ Returns 0, not 1: the handler has parked a blocking child on the parent proc,
-@ so ApplyUnitAction must yield rather than tear the action down immediately --
-@ this is what keeps the map UI hidden until the exp bar is done.  Every vanilla
-@ handler that blocks (ActionDance, ActionArena, ActionStaff) returns 0 too.
+@ Returns 0, like every vanilla handler that leaves something running
+@ (ActionCombat, ActionArena, ActionDance, ActionSteal).
+@
+@ What that return actually does, since it is easy to get wrong: ApplyUnitAction
+@ is not called from code at all.  It is entry 0x0802F219 of the map-main proc
+@ script, run under proc command 0x16 (handler 0x0800490C), which calls the
+@ routine and returns its sign-extended byte to the script interpreter at
+@ 0x08004B84.  Nonzero means "run the next script command in this same frame";
+@ zero means "stop the script for this frame" -- the command pointer has already
+@ advanced, so next frame resumes at the FOLLOWING command.
+@
+@ So returning 0 buys exactly one frame.  It does not block and it does not
+@ repeat.  What holds the action open is the blocking child GiveInstigator10Exp
+@ parks on this proc (proc+0x28), plus the game lock the map-battle proc takes.
 @ ---------------------------------------------------------------------------
 SummonAction:
-	push {r4,r5,r6,lr}
+	push {r4,r5,r6,r7,lr}
 	sub sp,#0x14                @ 0x00 UnitDefinition, 0x10 parent proc
 	str r0,[sp,#0x10]
 	add r4,sp,#0
@@ -427,19 +442,21 @@ SummonAction_LevelReady:
 	@
 	@ HP.  Fire Dragon's class base HP is 120 (it is a boss class meant to be
 	@ fielded at level 1), and autolevelling adds an 85%-growth roll per level on
-	@ top.  GetUnitMaxHP reads maxHP with LDRSB, so anything over 127 goes
-	@ negative and the stat screen shows 0/0.  Clamp to the class's own HP cap.
+	@ top.  Two separate reasons that has to be brought down here:
+	@
+	@   * GetUnitMaxHP reads maxHP with LDRSB, so anything over 127 goes negative
+	@     and the stat screen shows 0/0.
+	@   * every player unit in this hack is held to 60 HP, and a summon the
+	@     player controls is a player unit like any other.
+	@
+	@ 60 is below the signed-byte limit, so clamping to it satisfies both; the
+	@ class's own cap (127 for Fire Dragon) is deliberately NOT used, because it
+	@ is boss data and would leave the dragon at roughly double a player's HP.
 	mov r0,#0x33
 	mov r1,#0xFF
 	strb r1,[r4,r0]             @ S rank in the dragonstone slot
 
-	ldr r0,[r4,#4]              @ pClassData
-	ldrb r0,[r0,#0x13]          @ class maxHP cap
-	mov r1,#SignedStatMax
-	cmp r0,r1
-	bls SummonAction_HPCapReady
-	mov r0,r1
-SummonAction_HPCapReady:
+	mov r0,#PlayerHPCap
 	ldrb r1,[r4,#0x12]          @ maxHP as autolevelling left it
 	cmp r1,r0
 	bls SummonAction_HPReady
@@ -448,46 +465,19 @@ SummonAction_HPCapReady:
 SummonAction_HPReady:
 	strb r1,[r4,#0x13]          @ spawn at full HP
 
-	@ --- barrier animation, converted into a blocking child ------------------
-	@ The animation must finish before the exp bar starts, or the two run at
-	@ once -- that is the summon "glitching".
+	@ --- barrier animation ---------------------------------------------------
+	@ SummonAnimation (0x08073878) ends in New6C(script, 3) -- a ROOT proc at
+	@ priority 3, not a child of anything.  Leave it that way.
 	@
-	@ SummonAnimation (0x08073878) builds its proc with New6C(script, 3): a
-	@ priority-3 *main* proc, neither a child nor blocking, and it discards the
-	@ pointer.  So it is called for its side effects (it does the camera math
-	@ that fills proc +0x30/+0x34, which is not worth duplicating here), and the
-	@ proc it just made is then found by its script and re-hung as a blocking
-	@ child of the action proc.  That is exactly the state NewBlocking6C leaves
-	@ a proc in:
-	@
-	@   +0x27 |= 2      mark blocked
-	@   +0x14  = parent (via InsertChild6C, after Isolate6C unlinks the old list)
-	@   parent[+0x28]++ count one outstanding blocker
+	@ It was briefly rebuilt here with NewBlocking6C so the action would wait
+	@ for the effect instead of racing it, and that build froze.  The freeze was
+	@ almost certainly the StartTradeMenu call below, which was present in the
+	@ same build -- 0x08C9DD24 is SLEEP / CALL / REPEAT / CALL / END and does
+	@ terminate, so it would survive being a blocking child.  Left at root
+	@ anyway: that is how vanilla runs it, and with the map-battle sequence now
+	@ holding the game lock the race it used to lose no longer exists.
 	mov r0,r4
 	blh SummonAnimation
-
-	ldr r0,=SummonAnimationProcs
-	blh Find6C
-	cmp r0,#0
-	beq SummonAction_Refresh
-
-	mov r6,r0                   @ gActionData is not needed past this point
-	blh Isolate6C               @ r0 still the animation proc
-	mov r0,r6
-	ldr r1,[sp,#0x10]           @ parent proc, saved by SummonActionEntry
-	blh InsertChild6C
-
-	mov r0,#0x27
-	ldrb r1,[r6,r0]
-	mov r2,#2
-	orr r1,r2
-	strb r1,[r6,r0]
-
-	ldr r0,[sp,#0x10]
-	mov r1,#0x28
-	ldrb r2,[r0,r1]
-	add r2,#1
-	strb r2,[r0,r1]
 
 SummonAction_Refresh:
 	blh RefreshEntityMaps
@@ -499,42 +489,67 @@ SummonAction_Refresh:
 	orr r0,r1
 	str r0,[r5,#0xC]
 
-	@ --- 10 EXP for the summoner, on a blocking proc ------------------------
-	@ Modelled on ActionSteal (0x0802F62C), NOT on ActionDance.  Both award the
-	@ same flat +10 through 0x0802A5D0, but Dance follows it with
-	@ BeginBattleAnimations, and a summon must not:
+	@ --- 10 EXP for the summoner, with the bar on screen ---------------------
+	@ This is ActionSteal's tail (0x0802F64C..0x0802F676), which is the vanilla
+	@ action shaped exactly like a summon: no combat, one unit acting on another,
+	@ 10 flat exp, exp bar on the map.  All five calls are needed and the order
+	@ is vanilla's.
 	@
-	@   BeginBattleAnimations -> NewEkrBattleDeamon (0x0804B1AC) starts a full
-	@   battle-animation sequence, which reads gBattleTarget.  Dance can afford
-	@   that because it fills the target in first (SetupBattleStructForStaffTarget
-	@   at 0x0802F4EC); a summon has no target, so the deamon would run on
-	@   whatever the previous combat left behind and jump through a stale
-	@   pointer.  That is the 0x030031F4 crash after the barrier animation.
+	@ Do NOT reach for 0x0802B678 here.  It was named StartExpBar in this file
+	@ and it is not an exp bar at all -- it is StartTradeMenu.  Its only caller
+	@ in the whole ROM is 0x08021E88, the A-button handler of the Trade target
+	@ selection at 0x08B95C78, and the script it news up (0x08B942F8) opens with
+	@ LockGame, draws a portrait for BOTH units, lists both inventories, and then
+	@ runs an interactive cursor.  Calling it here opened a trade window between
+	@ the summoner and the dragon, with the game locked and no way out.  That was
+	@ the freeze.  It also explains why no bar ever appeared: there is no exp
+	@ anywhere on that path.
 	@
-	@ Steal is the right shape: set up the actor, award the exp, and let the
-	@ exp-bar proc own the screen.  Order still matters --
-	@ SetupBattleStructForStaffUser copies the summoner into gBattleActor and
-	@ GiveInstigator10Exp reads that copy, not the Unit, so it has to run first.
-	@ r1 = -1 means no weapon slot; this is not an attack.
+	@ The piece that actually draws the bar is StartMapBattleSequence
+	@ (0x0806F0DC) -- it news up 0x08C9D50C, which takes the game lock and plays
+	@ the map sequence through to the exp bar and the unlock.  An earlier attempt
+	@ called GiveInstigator10Exp alone; that banks the exp (into gBattleActor,
+	@ committed a frame later by its blocking child) but nothing renders it.
 	@
-	@ GiveInstigator10Exp ends in NewBlocking6C on the exp-bar proc script
-	@ (0x08B942A0 -> SaveInstigatorFromBattle), which banks the exp onto the Unit
-	@ and keeps the map UI suppressed until the bar finishes.
+	@ GiveInstigator10Exp also can NOT be called bare: it ends in
+	@ SaveInstigatorFromBattle, which writes gBattleActor back over the unit
+	@ named by gBattleActor+0x0B.  Without the setup call below that is whatever
+	@ unit fought last, so a bare call scribbles a stale battle struct onto an
+	@ unrelated unit.
+	@
+	@ When LoadUnit failed there is no dragon and SummonAction_Refresh reaches
+	@ here with r4 = 0, so the whole sequence is skipped rather than staged
+	@ against null.
+	cmp r4,#0
+	beq SummonAction_Done
+
+	@ gBattleActor = the summoner, weapon slot -1 (acting with no weapon)
 	mov r0,r5
 	mov r1,#1
 	neg r1,r1
 	blh SetupBattleStructForStaffUser
 
-	ldr r1,=gBattleStatsBitfield
-	mov r0,#0x40
-	strh r0,[r1,#0]
+	@ gBattleTarget = the dragon.  ActionSteal pins terrainId (+0x55) to 1 before
+	@ the copy so the sequence does not read terrain for a unit it never placed.
+	ldr r0,=gBattleTarget
+	mov r1,#0x55
+	mov r2,#1
+	strb r2,[r0,r1]
+	mov r1,r4
+	blh CopyUnitToBattleStruct
 
-	ldr r0,[sp,#0x10]           @ parent proc, saved by SummonActionEntry
+	@ +10 exp on gBattleActor, then a blocking child on the action proc that
+	@ commits it to the summoner
+	ldr r0,[sp,#0x10]
 	blh GiveInstigator10Exp
 
+	blh ClearMoveUnits
+	blh StartMapBattleSequence
+
+SummonAction_Done:
 	add sp,#0x14
 	mov r0,#0
-	pop {r4,r5,r6}
+	pop {r4,r5,r6,r7}
 	pop {r1}
 	bx r1
 

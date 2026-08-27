@@ -35,6 +35,12 @@ SUMMON_ITEM_ID = 0x8F
 RANK_BLOCK = 0x28
 # LoadUnit's player autolevel path (0x08017BC0) reads characterData +0x0B.
 BASE_LEVEL = 0x0B
+# GetUnitPortraitId (0x08018BD8): character +0x06, else class +0x08.
+PORTRAIT_ID = 0x06
+PORTRAIT_TABLE = 0xC96584
+PORTRAIT_ENTRY = 0x1C
+ROM_START = 0x08000000
+ROM_END = 0x0A000000
 
 
 def _rom() -> bytes:
@@ -116,6 +122,71 @@ class SummonDataFixupTests(unittest.TestCase):
                     f"class 0x{SUMMON_CLASS_ID:02X}+0x{off:02X} was patched; "
                     "that byte cannot affect weapon usability",
                 )
+
+
+    def test_the_summon_character_keeps_its_class_card(self):
+        """The dragon shows the Fire Dragon class card, not an override.
+
+        Character 0x86's own portrait is 0, and GetUnitPortraitId (0x08018BD8)
+        already handles that by falling back to the class's id at class+0x08.
+        The installer must leave both alone so that fallback happens.
+        """
+        import struct as _struct
+
+        pid = _struct.unpack_from(
+            "<H", self.hack, CHAR_TABLE + CHAR_ENTRY * SUMMON_CHARACTER_ID + PORTRAIT_ID
+        )[0]
+        self.assertEqual(
+            pid, 0,
+            "the character portrait was overridden; that replaces the class "
+            "card with an unrelated face",
+        )
+
+        card = _struct.unpack_from(
+            "<H", self.hack, CLASS_TABLE + CLASS_ENTRY * SUMMON_CLASS_ID + 0x08
+        )[0]
+        self.assertNotEqual(card, 0, "the class supplies no card to fall back to")
+
+    def test_the_class_card_entry_is_drawable(self):
+        """A class card carries gfx at +0x08 and palette at +0x10.
+
+        This is the shape every vanilla card 0xBE..0xDE has.  The two
+        portrait-only pointers at +0x00 and +0x04 are legitimately zero on a
+        card, so requiring them to be ROM addresses -- as an earlier version of
+        this test did -- misreads a valid entry as a null one.
+        """
+        import struct as _struct
+
+        card = _struct.unpack_from(
+            "<H", self.hack, CLASS_TABLE + CLASS_ENTRY * SUMMON_CLASS_ID + 0x08
+        )[0]
+        entry = PORTRAIT_TABLE + PORTRAIT_ENTRY * card
+        for off, what in ((0x08, "graphics"), (0x10, "palette")):
+            ptr = _struct.unpack_from("<I", self.hack, entry + off)[0]
+            with self.subTest(pointer=what):
+                self.assertTrue(
+                    ROM_START <= ptr < ROM_END,
+                    f"class card 0x{card:02X} {what} pointer is {ptr:#010x}, "
+                    "not a ROM address; the forecast would crash on it",
+                )
+
+    def test_the_class_card_matches_the_vanilla_entry(self):
+        """Nothing in this hack may repoint the card out from under the dragon."""
+        import struct as _struct
+
+        clean_path = ROOT / "FE7_clean.gba"
+        if not clean_path.exists():
+            raise unittest.SkipTest("FE7_clean.gba not available")
+        clean = clean_path.read_bytes()
+        card = _struct.unpack_from(
+            "<H", self.hack, CLASS_TABLE + CLASS_ENTRY * SUMMON_CLASS_ID + 0x08
+        )[0]
+        entry = PORTRAIT_TABLE + PORTRAIT_ENTRY * card
+        self.assertEqual(
+            self.hack[entry:entry + PORTRAIT_ENTRY],
+            clean[entry:entry + PORTRAIT_ENTRY],
+            f"class card 0x{card:02X}'s portrait-table entry was modified",
+        )
 
 
 if __name__ == "__main__":

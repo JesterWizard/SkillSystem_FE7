@@ -45,14 +45,41 @@ SUMMON_ACTION_ID = 0x05
 SETUP_BATTLE_STRUCT_FOR_STAFF_USER = 0x0802A4B4
 GIVE_INSTIGATOR_10_EXP = 0x0802A5D0
 NEW_BLOCKING_6C = 0x080044F8
-EXP_BAR_PROC_SCRIPT = 0x08B942A0
+# GiveInstigator10Exp's blocking child: sleep 1, SaveInstigatorFromBattle, end.
+EXP_SAVE_SCRIPT = 0x08B942A0
 BEGIN_BATTLE_ANIMATIONS = 0x0802A3B0
 NEW_EKR_BATTLE_DEAMON = 0x0804B1AC
+SETUP_BATTLE_STRUCT_FOR_STAFF_TARGET = 0x0802A560
+COPY_UNIT_TO_BATTLE_STRUCT = 0x080285D4
+CLEAR_MOVE_UNITS = 0x0806CCB8
+
+# The routine that actually renders the map exp bar: it news up 0x08C9D50C,
+# which takes the game lock and plays the sequence through to the bar.
+START_MAP_BATTLE_SEQUENCE = 0x0806F0DC
+MAP_BATTLE_SCRIPT = 0x08C9D50C
+
+# NOT an exp bar.  0x0802B678 is StartTradeMenu -- its only caller in the whole
+# ROM is 0x08021E88, the A-button handler of the Trade target selection at
+# 0x08B95C78.  Calling it from the summon opened a locked trade window between
+# the summoner and the dragon; that was the freeze.
+START_TRADE_MENU = 0x0802B678
+TRADE_MENU_SCRIPT = 0x08B942F8
+G_TRADE_MENU_PROC = 0x0203A514
+PROC_TREE_ROOTS = 0x02026A30
 SUMMON_ANIMATION_PROCS = 0x08C9DD24
 FIND_6C = 0x080046A8
+INITIALIZE_6C_ENGINE = 0x08004420
+# Any script works as a stand-in parent; the summon only ever uses it as a
+# blocking anchor. 0x08B93460's own script is the real one.
+PARENT_PROC_SCRIPT = 0x08B93440
+NEW_6C = 0x08004494
+PROC_PARENT = 0x14
+PROC_BLOCK_COUNT = 0x28
 ITEM_TABLE_FILE = 0xBE222C
 ITEM_ENTRY = 0x24
 SIGNED_STAT_MAX = 0x7F
+# Every player unit in this hack is held to 60 HP; a summon is no exception.
+PLAYER_HP_CAP = 60
 U_RANK_BLOCK = 0x28
 PROC_FLAGS = 0x27
 PROC_BLOCKED = 0x02
@@ -85,10 +112,64 @@ U_EXP = 0x09
 # InstigatorAdd10Exp (0x0802A05C) writes into the gBattleActor copy; the exp bar
 # proc's SaveInstigatorFromBattle (0x0802A5B4) is what puts it back on the Unit.
 G_BATTLE_ACTOR = 0x0203A3F0
+G_BATTLE_TARGET = 0x0203A470
 BATTLE_EXP_GAIN = 0x6E
 EXP_FOR_SUMMONING = 10
 
 WIDTH, HEIGHT = 15, 10
+
+
+
+def _init_proc_engine(g):
+    """Initialize6CEngine (0x08004420), done in Python.
+
+    Running the real routine under Unicorn costs ~30s per call because it walks
+    64 proc slots a word at a time.  The state it produces is pure data, so it
+    is written directly instead: every slot zeroed, the alloc list filled with
+    pointers to those slots, the head pointing at the first, and the eight tree
+    roots cleared.
+    """
+    proc_list = 0x02024E28
+    alloc_list = 0x02026928
+    alloc_head = 0x02026A2C
+    tree_roots = 0x02026A30
+    count = 64
+    size = 0x6C
+
+    g.uc.mem_write(proc_list, bytes(size * count))
+    for i in range(count):
+        g.w32(alloc_list + 4 * i, proc_list + size * i)
+    g.w32(alloc_list + 4 * count, 0)
+    g.w32(alloc_head, alloc_list)
+    for i in range(8):
+        g.w32(tree_roots + 4 * i, 0)
+
+
+EXEC_6C = 0x08004690
+
+
+def run_frames(g, limit=600):
+    """Drive the proc engine like the game's main loop does.
+
+    This is the check that isolated calls cannot make.  Creating a proc and
+    asserting on its fields proves the routine that created it did not fault;
+    it says nothing about whether the proc ever finishes.  A blocking child
+    that never deletes itself, or a script whose callback faults three frames
+    in, passes every structural assertion and freezes the game.
+
+    Returns the number of frames until the tree is empty, or None if it was
+    still running at `limit` -- which is what a hang looks like from here.
+    """
+    for frame in range(limit):
+        alive = False
+        for root in range(8):
+            if g.r32(0x02026A30 + 4 * root):
+                alive = True
+                break
+        if not alive:
+            return frame
+        g.run(EXEC_6C)
+    return None
 
 
 @unittest.skipUnless(Uc is not None, f"Unicorn unavailable: {UNICORN_ERROR}")
@@ -179,9 +260,20 @@ class SummonEndToEndTests(unittest.TestCase):
         g.w8(G_ACTION_DATA + 0x13, tile[0])       # chosen tile
         g.w8(G_ACTION_DATA + 0x14, tile[1])
 
-        g.uc.mem_write(IWRAM, bytes(0x2000))  # proc free list
         g.w32(G_ACTIVE_UNIT, SUMMONER_SLOT)
 
+        # Bring the proc engine up for real and give the action a live parent
+        # proc, the way the game does: ApplyUnitAction is a proc callback
+        # (command 0x16 in the script at 0x08B93460), so r0 is a valid proc.
+        # Passing 0 here would let a null parent slip through unnoticed -- which
+        # is exactly how the exp bar came to be created with no parent to block.
+        _init_proc_engine(g)
+        g.set_args(PARENT_PROC_SCRIPT, 3)
+        g.run(NEW_6C)
+        parent = g.r0
+        assert parent, "could not allocate a parent proc"
+
+        g.set_args(parent)
         try:
             g.run(APPLY_UNIT_ACTION)
         except Exception as exc:  # UcError
@@ -189,6 +281,7 @@ class SummonEndToEndTests(unittest.TestCase):
                 f"summon chain crashed at pc={g.pc:#010x} "
                 f"(swis={g.swi_counts}, unmapped={g.unmapped[:6]}): {exc}"
             )
+        g.parent_proc = parent
         return g
 
     # -- helpers ---------------------------------------------------------
@@ -336,12 +429,37 @@ class SummonEndToEndTests(unittest.TestCase):
                 )
                 self.assertGreater(mx, 0)
 
-    def test_the_dragon_never_exceeds_its_class_hp_cap(self):
+    def test_the_dragon_is_held_to_the_player_hp_cap(self):
+        """A player-controlled summon obeys the same 60 HP ceiling as everyone.
+
+        The class's own cap is deliberately not used: Fire Dragon is boss data
+        and caps at 127, which would leave the dragon at roughly double a real
+        player unit.  Checked at the top level, where autolevelling has had the
+        most chances to push past it.
+        """
+        for level in (10, 20, 0x1F):
+            with self.subTest(level=level):
+                g = self._summon(level=level)
+                mx = g.r8(self._dragon(g) + U_MAXHP)
+                self.assertLessEqual(
+                    mx, PLAYER_HP_CAP,
+                    f"maxHP {mx} is above the {PLAYER_HP_CAP} player cap",
+                )
+
+    def test_the_clamp_is_a_ceiling_not_a_constant(self):
+        """A dragon that rolls under the cap keeps its own lower number.
+
+        Guards against 'fixing' the cap by assigning 60 unconditionally, which
+        would pass every ceiling assertion while erasing autolevelling.
+        """
         g = self._summon(level=0x1F)
         slot = self._dragon(g)
         pclass = g.r32(slot + U_PCLASS)
         cap = self.rom[(pclass - ROM_LOAD) + 0x13]
-        self.assertLessEqual(g.r8(slot + U_MAXHP), min(cap, SIGNED_STAT_MAX))
+        self.assertLessEqual(
+            g.r8(slot + U_MAXHP), min(cap, PLAYER_HP_CAP),
+            "the clamp let maxHP past the class's own cap",
+        )
 
     def test_the_dragon_spawns_at_full_hp_after_the_clamp(self):
         """Clamping maxHP without curHP would leave it wounded on arrival."""
@@ -350,135 +468,215 @@ class SummonEndToEndTests(unittest.TestCase):
         self.assertEqual(g.r8(slot + U_CURHP), g.r8(slot + U_MAXHP))
 
     # -- animation / exp sequencing ---------------------------------------
-    def test_the_barrier_animation_blocks_the_action(self):
-        """Otherwise the exp bar comes up on top of the animation.
+    def test_the_action_blocks_only_on_a_script_that_ends_itself(self):
+        """The freeze signature the harness can actually decide.
 
-        SummonAnimation builds a non-blocking priority-3 main proc, so the
-        action would carry straight on to the exp bar.  The proc is re-hung as
-        a blocking child; this checks the flag and the parent's blocker count,
-        which is the state NewBlocking6C would have produced.
+        Draining the proc tree is NOT a usable oracle here: the barrier, exp
+        save and map-battle scripts all depend on graphics state this harness
+        does not emulate, so none of them advance even in a build that works in
+        game.  What IS decidable is structural -- who parked a blocker on the
+        action proc, and whether that blocker's script can reach END.
+
+        "No blockers at all" is the wrong invariant, and asserting it is how a
+        frozen build stayed green: every vanilla action that leaves something
+        running parks exactly this blocker.  ActionSteal and ActionDance both
+        call GiveInstigator10Exp, which does NewBlocking6C(0x08B942A0, proc) --
+        SLEEP 1, SaveInstigatorFromBattle, END.  It clears itself in two frames.
+
+        What must never appear is a blocker whose script cannot terminate, or a
+        second unrelated blocker nothing will clear.
         """
-        found = {}
+        g = self._summon()
+        parent = g.parent_proc
 
-        def watch(uc, address, size, _user):
-            if (address & ~1) == FIND_6C:
-                found["called"] = True
+        blockers = []
+        node = g.r32(parent + 0x18)
+        while node:
+            if g.r8(node + PROC_FLAGS) & PROC_BLOCKED:
+                blockers.append(g.r32(node))
+            node = g.r32(node + 0x20)
 
-        g = self._summon(hook=watch)
-        self.assertTrue(
-            found.get("called"),
-            "the animation proc was never looked up, so it cannot be blocking",
-        )
-
-    # -- experience -------------------------------------------------------
-    def test_the_summoner_is_awarded_exactly_ten_exp(self):
-        """The whole point of routing through 0x0802A5D0 rather than += 10."""
-        g = self._summon(level=10)
         self.assertEqual(
-            g.r8(G_BATTLE_ACTOR + BATTLE_EXP_GAIN),
-            EXP_FOR_SUMMONING,
-            "summoning did not stage a 10 exp gain",
+            [hex(b) for b in blockers], [hex(EXP_SAVE_SCRIPT)],
+            "the action proc's blockers are not the single self-clearing one "
+            "ActionSteal leaves; anything else here hangs the summon",
+        )
+        self.assertEqual(
+            g.r8(parent + PROC_BLOCK_COUNT), len(blockers),
+            "the block count does not match the blocking children",
         )
 
-    def test_the_exp_gain_runs_on_a_blocking_proc(self):
-        """NewBlocking6C is what suppresses the map UI until the bar is done.
+    def test_the_trade_menu_is_never_opened(self):
+        """The actual freeze, and the guard against reintroducing it.
 
-        Asserted from execution, not from the source: an exp gain applied
-        inline would leave the map interactive while the bar was still up,
-        which is the bug being fixed.
-
-        NewBlocking6C is reached by an ordinary `bl` inside vanilla ROM code
-        rather than through the project's `blh` trampoline, so it does not show
-        up in ``g.calls``; a PC trace is what catches it.
+        0x0802B678 was named StartExpBar in SummonAction.s.  It is
+        StartTradeMenu: its only caller in the ROM is 0x08021E88, the A-button
+        handler of the Trade target selection at 0x08B95C78, and the script it
+        news up (0x08B942F8) opens with LockGame, draws a portrait for BOTH
+        units with NewFace, lists both inventories and then runs an interactive
+        cursor.  Calling it from the summon opened a trade window between the
+        summoner and a dragon that has no portrait, with the game locked.
         """
-        seen = set()
-
-        def watch(uc, address, size, _user):
-            seen.add(address & ~1)
-
-        g = self._summon(hook=watch)
-        self.assertIn(
-            NEW_BLOCKING_6C,
-            seen,
-            "no blocking proc was started; the exp bar would not gate the UI",
+        g = self._summon()
+        self.assertNotIn(
+            START_TRADE_MENU, [c & ~1 for c in g.calls],
+            "the summon called StartTradeMenu (0x0802B678); this locks the "
+            "game in a trade window and is the freeze",
+        )
+        self.assertEqual(
+            g.r32(G_TRADE_MENU_PROC), 0,
+            "a trade menu proc was recorded at 0x0203A514",
         )
 
-    def test_the_blocking_child_is_the_vanilla_exp_bar_script(self):
-        """The blocking child has to be the exp bar, not just any proc.
+    def test_the_barrier_animation_stays_a_root_proc(self):
+        """SummonAnimation's proc must be left where SummonAnimation put it."""
+        g = self._summon()
 
-        0x08B942A0 is the script ActionDance blocks on, and its callback is
-        SaveInstigatorFromBattle -- the routine that banks the exp onto the
-        Unit.  Blocking on some other script would hide the UI but never bank
-        the exp.
-
-        The callback itself cannot be observed here: NewBlocking6C only
-        *schedules* the proc, and nothing in this run drives the proc
-        scheduler.  What is checked instead is the argument the summon path
-        hands it, read out of r0 at the moment of the call.
-        """
-        script = []
-
-        def watch(uc, address, size, _user):
-            if (address & ~1) == NEW_BLOCKING_6C:
-                script.append(uc.reg_read(UC_ARM_REG_R0))
-
-        self._summon(hook=watch)
-        self.assertIn(
-            EXP_BAR_PROC_SCRIPT,
-            script,
-            f"blocked on {[hex(v) for v in script]}, not the exp bar script",
+        children = set()
+        node = g.r32(g.parent_proc + 0x18)
+        while node:
+            children.add(g.r32(node))
+            node = g.r32(node + 0x20)
+        self.assertNotIn(
+            SUMMON_ANIMATION_PROCS, children,
+            "the animation was re-hung under the action proc; SummonAnimation "
+            "makes it a root (New6C(script, 3)) and vanilla parentage is what "
+            "the map sequence's own game lock is timed against",
         )
 
-    def test_no_battle_animation_sequence_is_started(self):
-        """A summon has no target, so it must not enter the battle animator.
+        found = False
+        for root in range(8):
+            node = g.r32(PROC_TREE_ROOTS + 4 * root)
+            while node:
+                if g.r32(node) == SUMMON_ANIMATION_PROCS:
+                    found = True
+                node = g.r32(node + 0x20)
+        self.assertTrue(found, "the barrier animation proc was never created")
 
-        BeginBattleAnimations -> NewEkrBattleDeamon reads gBattleTarget, which a
-        summon never fills in; on hardware that ran on whatever the previous
-        combat left behind and crashed at 0x030031F4 once the barrier animation
-        finished.  ActionSteal awards the same +10 exp without it, and that is
-        the shape this action follows.
-        """
-        seen = set()
+    def test_the_map_battle_sequence_is_started(self):
+        """The bar must actually be rendered, not just the exp banked.
 
-        def watch(uc, address, size, _user):
-            seen.add(address & ~1)
+        GiveInstigator10Exp (0x0802A5D0) only adds the number and blocks on
+        0x08B942A0 (sleep, SaveInstigatorFromBattle, end); nothing about it
+        draws.  An earlier revision called it alone, which is exactly why the
+        exp arrived and no bar ever appeared.
 
-        self._summon(hook=watch)
-        for name, addr in (
-            ("BeginBattleAnimations", BEGIN_BATTLE_ANIMATIONS),
-            ("NewEkrBattleDeamon", NEW_EKR_BATTLE_DEAMON),
-        ):
-            with self.subTest(routine=name):
-                self.assertNotIn(
-                    addr, seen,
-                    f"{name} ran; a summon has no gBattleTarget to animate",
-                )
-
-    def test_the_battle_struct_is_prepared_before_exp_is_read(self):
-        """InstigatorAdd10Exp reads gBattleActor, so setup has to come first.
-
-        Reversing these two is silent -- the exp lands on whatever unit was in
-        the battle struct from the previous combat.
+        StartMapBattleSequence (0x0806F0DC) is the piece ActionSteal calls
+        after it: it news up 0x08C9D50C, which opens with LockGame and plays
+        the map sequence through to the exp bar and the unlock.
         """
         g = self._summon()
         calls = [c & ~1 for c in g.calls]
-        self.assertIn(SETUP_BATTLE_STRUCT_FOR_STAFF_USER, calls)
-        self.assertIn(GIVE_INSTIGATOR_10_EXP, calls)
-        self.assertLess(
-            calls.index(SETUP_BATTLE_STRUCT_FOR_STAFF_USER),
-            calls.index(GIVE_INSTIGATOR_10_EXP),
-            "exp was read out of a battle struct that was never set up",
+        self.assertIn(
+            START_MAP_BATTLE_SEQUENCE, calls,
+            "StartMapBattleSequence was never called, so nothing renders the "
+            "exp bar",
         )
 
-    def test_the_exp_is_credited_to_the_summoner_not_the_dragon(self):
+    def test_the_map_battle_proc_is_created_at_root(self):
+        """0x08C9D50C must exist and must not hang off the action proc.
+
+        It takes the game lock itself, so it does not need to block the action;
+        ActionSteal leaves it at root (New6C(script, 3)).
+        """
         g = self._summon()
-        self.assertEqual(
-            g.s8(G_BATTLE_ACTOR + U_INDEX),
-            g.r8(SUMMONER_SLOT + U_INDEX),
-            "the battle struct holds someone other than the summoner",
+
+        children = set()
+        node = g.r32(g.parent_proc + 0x18)
+        while node:
+            children.add(g.r32(node))
+            node = g.r32(node + 0x20)
+        self.assertNotIn(
+            MAP_BATTLE_SCRIPT, children,
+            "the map battle sequence was re-hung under the action proc",
         )
 
-    # -- autolevelling ----------------------------------------------------
+        found = False
+        for root in range(8):
+            node = g.r32(PROC_TREE_ROOTS + 4 * root)
+            while node:
+                if g.r32(node) == MAP_BATTLE_SCRIPT:
+                    found = True
+                node = g.r32(node + 0x20)
+        self.assertTrue(found, "the map battle proc was never created")
+
+    def test_ten_exp_is_banked_on_the_summoner(self):
+        """The exp lands on gBattleActor, credited to the summoner.
+
+        SaveInstigatorFromBattle commits gBattleActor back onto the unit named
+        by gBattleActor+0x0B, so if the struct was never set up for the
+        summoner the exp goes to whoever fought last -- and a stale battle
+        struct gets written over that unit.  That is why
+        SetupBattleStructForStaffUser has to run first and cannot be skipped.
+        """
+        g = self._summon()
+        calls = [c & ~1 for c in g.calls]
+        self.assertIn(
+            SETUP_BATTLE_STRUCT_FOR_STAFF_USER, calls,
+            "gBattleActor was never set up; GiveInstigator10Exp would commit a "
+            "stale battle struct onto an unrelated unit",
+        )
+        self.assertEqual(
+            g.r8(G_BATTLE_ACTOR + BATTLE_EXP_GAIN), EXP_FOR_SUMMONING,
+            "the summoner was not credited 10 exp",
+        )
+        self.assertEqual(
+            g.r8(G_BATTLE_ACTOR + U_INDEX), g.r8(SUMMONER_SLOT + U_INDEX),
+            "gBattleActor names a unit other than the summoner, so the exp "
+            "would be committed to the wrong unit",
+        )
+
+    def test_the_battle_animator_is_never_started(self):
+        """A summon must not call BeginBattleAnimations.  This is a softlock.
+
+        ActionDance calls it; ActionSteal does not.  Dance can, because the
+        danced-at unit is a real battle target with a sequence to play.  A
+        summon has no battle at all -- the dragon is created a few instructions
+        earlier and has no attack -- so the animator is handed two allied units
+        and no script, and never terminates.  Steal is the right model: flat
+        exp, no animation.
+
+        An earlier revision added this call chasing a missing exp bar and hung
+        the game.  The bar is not worth a softlock; this test is the guard.
+        """
+        seen = set()
+
+        def watch(uc, address, size, _user):
+            seen.add(address & ~1)
+
+        self._summon(hook=watch)
+        self.assertNotIn(
+            BEGIN_BATTLE_ANIMATIONS, seen,
+            "BeginBattleAnimations ran -- two allied units enter the battle "
+            "animator with no script and the game softlocks",
+        )
+
+    def test_the_battle_target_is_staged_as_the_dragon(self):
+        """gBattleTarget must name the dragon, ActionSteal's way.
+
+        Steal stages the unit it acted on with CopyUnitToBattleStruct, not with
+        SetupBattleStructForStaffTarget -- the latter is ActionDance's shape and
+        pairs with BeginBattleAnimations, which softlocks here.  Leaving
+        gBattleTarget stale instead is how the map sequence ends up drawing
+        whoever fought last.
+        """
+        g = self._summon()
+        calls = [c & ~1 for c in g.calls]
+        self.assertIn(
+            COPY_UNIT_TO_BATTLE_STRUCT, calls,
+            "the dragon was never copied into gBattleTarget",
+        )
+        self.assertNotIn(
+            SETUP_BATTLE_STRUCT_FOR_STAFF_TARGET, calls,
+            "gBattleTarget was set up ActionDance's way; that pairs with the "
+            "battle animator, which has nothing to play for a summon",
+        )
+        self.assertEqual(
+            g.r8(G_BATTLE_TARGET + U_INDEX),
+            g.r8(self._dragon(g) + U_INDEX),
+            "gBattleTarget does not name the summoned dragon",
+        )
+
     def test_a_higher_level_summon_is_stronger(self):
         """Autolevel grows by (level - baseLevel); a base of 20 would flatten it.
 
@@ -496,6 +694,33 @@ class SummonEndToEndTests(unittest.TestCase):
             f"level 20 summon ({high}) is no stronger than level 2 ({low}); "
             "autolevelling is not being applied",
         )
+
+
+EXEC_6C = 0x08004690
+
+
+def run_frames(g, limit=600):
+    """Drive the proc engine like the game's main loop does.
+
+    This is the check that isolated calls cannot make.  Creating a proc and
+    asserting on its fields proves the routine that created it did not fault;
+    it says nothing about whether the proc ever finishes.  A blocking child
+    that never deletes itself, or a script whose callback faults three frames
+    in, passes every structural assertion and freezes the game.
+
+    Returns the number of frames until the tree is empty, or None if it was
+    still running at `limit` -- which is what a hang looks like from here.
+    """
+    for frame in range(limit):
+        alive = False
+        for root in range(8):
+            if g.r32(0x02026A30 + 4 * root):
+                alive = True
+                break
+        if not alive:
+            return frame
+        g.run(EXEC_6C)
+    return None
 
 
 @unittest.skipUnless(Uc is not None, f"Unicorn unavailable: {UNICORN_ERROR}")

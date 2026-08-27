@@ -160,6 +160,11 @@ Conjure a Fire Dragon to fight with you.[X]
 ## UM_SummonSelect
 Select a space to summon into.[X]
 
+// Map popup after the summon lands.  The class name is a second text id drawn
+// straight after this one, so the phrase stops at "a".
+## UM_SummonedPopup
+Summoned a[X]
+
 ## UM_Adept
  Adept[X]
  
