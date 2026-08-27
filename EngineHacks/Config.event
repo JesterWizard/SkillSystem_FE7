@@ -132,6 +132,11 @@
 #define FORCE_WHEN_BELOW_AVERAGE_BY_AMOUNT 3
 #define PREVENT_WHEN_ABOVE_AVERAGE_BY_AMOUNT 5
 
+// If uncommented, page 3 lists all weapon ranks plus skill names, and
+// Support Levels move to page 4 with cumulative Atk/Def/Hit/Avoid/Crit/Ddg.
+// Skill-capacity is not drawn. Comment out to keep the vanilla 3-page layout.
+#define ALTERNATE_SKILL_SUPPORT_PAGES
+
 #define FIXED_GROWTHS_DONT_BOOST True
 #define ENEMY_NPC_FIXED_GROWTHS True
 #define STACKABLE_GROWTH_BOOSTS True

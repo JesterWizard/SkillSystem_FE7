@@ -116,6 +116,15 @@ ldr r0,=TalkTextIDLink
 ldrh r0,[r0]
 draw_talk_text_at 21, 11
 
+ldr r0, =AlternatePagesLink
+ldrh r0, [r0]
+cmp r0, #0
+beq DrawPage1Skills
+draw_trv_text_at 21, 13
+b SkillEnd
+.ltorg
+DrawPage1Skills:
+
 ldr r0,=SkillsTextIDLink
 ldrh r0, [r0]
 draw_textID_at 21, 13, width=8, colour=White @skills

@@ -45,6 +45,8 @@ MSS_PAGES = [
     MSS_PAGES_DIR / "mss_page1_skills.s",
     MSS_PAGES_DIR / "mss_page2_original.s",
     MSS_PAGES_DIR / "mss_page3_original.s",
+    MSS_PAGES_DIR / "mss_page3_weapons_skills.s",
+    MSS_PAGES_DIR / "mss_page4_supports.s",
     MSS_PAGES_DIR / "mss_leftstatscreen.s",
 ]
 # .s files the pages pull in with .include; mtime changes here restale every page.

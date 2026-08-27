@@ -121,6 +121,34 @@ Unit's essence emanates animus.[N]
 ## SS_AffinText
 Affin[X]
 
+## SS_WeaponSkillsText
+Weapon & Skills[X]
+
+## SS_SupportLevelText
+Support Level[X]
+
+## SS_BonusText
+Bonus[X]
+
+## SS_AtkShortText
+Atk[X]
+
+## SS_HitShortText
+Hit[X]
+
+## SS_AvoidText
+Avoid[X]
+
+## SS_CritShortText
+Crit[X]
+
+## SS_DdgText
+Ddg[X]
+
+## SS_DdgRText
+Critical avoid granted by[N]
+this unit's support ranks.[X]
+
 ## SS_MovRText
 Movement. The normal distance[N]
 you can cross in 1 turn.[X]

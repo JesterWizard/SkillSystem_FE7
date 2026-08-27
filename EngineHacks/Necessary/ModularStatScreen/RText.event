@@ -68,17 +68,29 @@
   #define WRankGetter 0x816BD //FE8 -> 0x88B95
   #define SupportsConditional 0x81739 //FE8 -> 0x88C15
 
+#ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  #define ST_Skills ST_Trv
+  #define ST_Skill1 0
+  #define ST_Skill2 0
+  #define ST_Skill3 0
+  #define ST_Skill4 0
+  #define ST_Skill5 0
+  #define ST_Skill6 0
+#endif
+
   PUSH
   
     ORG 0x8152C //FE8 -> 0x889D8
       POIN RText_Page1
     ORG 0x81534 //FE8 -> 0x889E0
       POIN RText_Page2
-    ORG 0x8154C //FE8 -> 0x889F8
+	ORG 0x8154C //FE8 -> 0x889F8
 	    POIN RText_Page3
 	
+	#ifndef ALTERNATE_SKILL_SUPPORT_PAGES
 	ORG 0x81524 //FE8 -> $889d0
       SHORT $e010 //Temporary r-text fix to prevent freezing
+	#endif
 
 	
   POP
@@ -157,6 +169,12 @@
   ST_Talk:
     RMenu(ST_Affin,ST_Skills,ST_Luck,0,0xA6,0x58,SS_TalkRText)
 
+#ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  ST_Trv:
+    RMenu(ST_Talk,0,ST_Def,0,0xA6,0x68,HTID_Trv)
+#endif
+
+#ifndef ALTERNATE_SKILL_SUPPORT_PAGES
   ST_Skills:
     RMenu(ST_Talk,ST_Skill1,ST_Def,0,0xA6,0x68,SS_SkillsRText)
 
@@ -177,6 +195,7 @@
 
   ST_Skill6:
     RMenu(ST_Skill3,0,ST_Skill5,0,0xd6,0x88,5,RTextLoop,SkillDescGetter+20)
+#endif
 
 
 /*  === PAGE 2 ===  */
@@ -235,6 +254,114 @@
 
 // /*  === PAGE 3 ===  */
 
+#ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+
+  ALIGN 4
+  RText_Page3:
+
+  ST_WRank1:
+  RMenu(0,ST_WRank2,ST_Name3,ST_P3Skill1,0x68,0x18,0x348)
+
+  ST_WRank2:
+  RMenu(ST_WRank1,ST_WRank3,ST_Name3,ST_P3Skill2,0x68,0x28,0x349)
+
+  ST_WRank3:
+  RMenu(ST_WRank2,ST_WRank4,ST_Name3,ST_P3Skill3,0x68,0x38,0x34A)
+
+  ST_WRank4:
+  RMenu(ST_WRank3,ST_WRank5,ST_Name3,ST_P3Skill4,0x68,0x48,0x34B)
+
+  ST_WRank5:
+  RMenu(ST_WRank4,ST_WRank6,ST_Name3,ST_P3Skill5,0x68,0x58,0x34C)
+
+  ST_WRank6:
+  RMenu(ST_WRank5,ST_WRank7,ST_Name3,ST_P3Skill6,0x68,0x68,0x34D)
+
+  ST_WRank7:
+  RMenu(ST_WRank6,ST_WRank8,ST_Name3,ST_P3Skill6,0x68,0x78,0x34E)
+
+  ST_WRank8:
+  RMenu(ST_WRank7,0,ST_HP3,ST_P3Skill6,0x68,0x88,0x34F)
+
+  ST_P3Skill1:
+  RMenu(0,ST_P3Skill2,ST_WRank1,0,0xA6,0x18,0,RTextLoop,SkillDescGetter)
+
+  ST_P3Skill2:
+  RMenu(ST_P3Skill1,ST_P3Skill3,ST_WRank2,0,0xA6,0x28,1,RTextLoop,SkillDescGetter+4)
+
+  ST_P3Skill3:
+  RMenu(ST_P3Skill2,ST_P3Skill4,ST_WRank3,0,0xA6,0x38,2,RTextLoop,SkillDescGetter+8)
+
+  ST_P3Skill4:
+  RMenu(ST_P3Skill3,ST_P3Skill5,ST_WRank4,0,0xA6,0x48,3,RTextLoop,SkillDescGetter+12)
+
+  ST_P3Skill5:
+  RMenu(ST_P3Skill4,ST_P3Skill6,ST_WRank5,0,0xA6,0x58,4,RTextLoop,SkillDescGetter+16)
+
+  ST_P3Skill6:
+  RMenu(ST_P3Skill5,0,ST_WRank6,0,0xA6,0x68,5,RTextLoop,SkillDescGetter+20)
+
+  ST_Name3:
+  RMenu(0,ST_Class3,0,ST_WRank6,0x18,0x50,0,NameDescGetter)
+
+  ST_Class3:
+  RMenu(ST_Name3,ST_Level3,0,ST_WRank7,0x6,0x68,HTID_Class,ClassDescGetter)
+
+  ST_Level3:
+  RMenu(ST_Class3,ST_HP3,0,ST_Exp3,0x6,0x78,HTID_Level)
+
+  ST_Exp3:
+  RMenu(ST_Class3,ST_HP3,ST_Level3,ST_WRank8,0x26,0x78,HTID_Exp)
+
+  ST_HP3:
+  RMenu(ST_Level3,0,0,ST_WRank8,0x6,0x88,HTID_HP)
+
+
+// /*  === PAGE 4 ===  */
+
+  ALIGN 4
+  RText_Page4:
+
+  ST_Bonus:
+  RMenu(0,ST_Atk4,ST_Name4,ST_Supports4,0x66,0x18,HTID_Affin)
+
+  ST_Atk4:
+  RMenu(ST_Bonus,ST_Def4,ST_Name4,ST_Supports4,0x66,0x28,HTID_Atk)
+
+  ST_Def4:
+  RMenu(ST_Atk4,ST_Hit4,ST_Class4,ST_Supports4,0x66,0x38,HTID_Def)
+
+  ST_Hit4:
+  RMenu(ST_Def4,ST_Avo4,ST_Class4,ST_Supports4,0x66,0x48,HTID_Hit)
+
+  ST_Avo4:
+  RMenu(ST_Hit4,ST_Crit4,ST_Name4,ST_Supports4,0x66,0x58,HTID_Avo)
+
+  ST_Crit4:
+  RMenu(ST_Avo4,ST_Ddg4,ST_Level4,ST_Supports4,0x66,0x68,HTID_Crit)
+
+  ST_Ddg4:
+  RMenu(ST_Crit4,0,ST_HP4,ST_Supports4,0x66,0x78,SS_DdgRText)
+
+  ST_Supports4:
+  RMenu_Cond(0,ST_Name4,ST_Bonus,0,0xA0,0x18,HTID_Supports,SupportsConditional)
+
+  ST_Name4:
+  RMenu(0,ST_Class4,0,ST_Supports4,0x18,0x50,0,NameDescGetter)
+
+  ST_Class4:
+  RMenu(ST_Name4,ST_Level4,0,ST_Supports4,0x6,0x68,HTID_Class,ClassDescGetter)
+
+  ST_Level4:
+  RMenu(ST_Class4,ST_HP4,0,ST_Exp4,0x6,0x78,HTID_Level)
+
+  ST_Exp4:
+  RMenu(ST_Class4,ST_HP4,ST_Level4,ST_Supports4,0x26,0x78,HTID_Exp)
+
+  ST_HP4:
+  RMenu(ST_Level4,0,0,ST_Supports4,0x6,0x88,HTID_HP)
+
+#else
 
   ALIGN 4
   RText_Page3:
@@ -269,4 +396,6 @@
 
   ST_HP3:
   RMenu(ST_Level3,0,0,ST_Supports,0x6,0x88,HTID_HP)
+
+#endif
 

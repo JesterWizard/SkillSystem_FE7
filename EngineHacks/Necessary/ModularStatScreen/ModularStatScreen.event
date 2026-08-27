@@ -14,7 +14,11 @@
   #define Spd_Arrow_X 0x78
   #define Spd_Arrow_Y 0x48
   #define Trv_Icon_X 0xB8
+  #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  #define Trv_Icon_Y 0x6E
+  #else
   #define Trv_Icon_Y 0x2E
+  #endif
   
   #include "DisplayGrowthsOptions/DisplayGrowthsOptions.event"
   #include "WeaponRankStatScreen/WeaponRankStatScreen.event"
@@ -23,10 +27,18 @@
   PUSH
     // FE7 loads page routines from 08404B60 (see 080804D0).
     ORG 0x404B60  //FE8 -> 0x205b24
-      POIN MSS_page1|1 MSS_page2|1 MSS_page3|1 //MSS_page4|1
+    #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+      POIN MSS_page1|1 MSS_page2|1 MSS_page3|1 MSS_page4|1
+    #else
+      POIN MSS_page1|1 MSS_page2|1 MSS_page3|1
+    #endif
 
     ORG $811BC //FE8 -> $88690
+    #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+      BYTE 4
+    #else
       BYTE 3 // 3 pages
+    #endif
 
     // Make all the arrows line up with the stats and stuff
 
@@ -51,6 +63,15 @@
     ORG $813EE //FE8 -> $88896
       SHORT 0x46C0
       jumpToHack(Button_Branch)
+
+    #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+    // Page 1's vanilla `beq $81526` lands inside jumpToHack's literal at $81520.
+    // Send page 0 through HelpPageSelect instead; pages 1-2 keep the vanilla loads.
+    ORG $81516
+      SHORT $D003
+    ORG $81520
+      jumpToHack(MSS_HelpPageSelect)
+    #endif
 
     // Remember whether we were looking at growths or stats
 
@@ -80,13 +101,52 @@
   AffinTextIDLink:
   SHORT SS_AffinText
   ALIGN 4
+  AlternatePagesLink:
+  #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  SHORT 1
+  #else
+  SHORT 0
+  #endif
+  ALIGN 4
   Display_Growth_Options_Link:
   WORD Growth_Options
+
+  #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  ALIGN 4
+  WeaponSkillsTextIDLink:
+  SHORT SS_WeaponSkillsText
+  ALIGN 4
+  SupportLevelTextIDLink:
+  SHORT SS_SupportLevelText
+  ALIGN 4
+  BonusTextIDLink:
+  SHORT SS_BonusText
+  ALIGN 4
+  AtkShortTextIDLink:
+  SHORT SS_AtkShortText
+  ALIGN 4
+  HitShortTextIDLink:
+  SHORT SS_HitShortText
+  ALIGN 4
+  AvoidTextIDLink:
+  SHORT SS_AvoidText
+  ALIGN 4
+  CritShortTextIDLink:
+  SHORT SS_CritShortText
+  ALIGN 4
+  DdgTextIDLink:
+  SHORT SS_DdgText
+  #endif
 
   #include "pages/signed_bonus_number.lyn.event"
   #include "pages/mss_page1_skills.lyn.event"
   #include "pages/mss_page2_original.lyn.event"
+  #ifdef ALTERNATE_SKILL_SUPPORT_PAGES
+  #include "pages/mss_page3_weapons_skills.lyn.event"
+  #include "pages/mss_page4_supports.lyn.event"
+  #else
   #include "pages/mss_page3_original.lyn.event"
+  #endif
   #include "pages/mss_leftstatscreen.lyn.event"
   
   ALIGN 4
