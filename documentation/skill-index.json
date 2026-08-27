@@ -2227,7 +2227,8 @@
         "EngineHacks/SkillSystem/Skills/PostBattleSkills/PostBattleSkills.event"
       ],
       "tests": [
-        "tests/test_postbattle_skills_dec97.py"
+        "tests/test_postbattle_skills_dec97.py",
+        "tests/test_skill_scroll_id.py"
       ]
     },
     {

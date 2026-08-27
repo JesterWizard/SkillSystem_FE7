@@ -36,6 +36,8 @@ Resolve_Loop:
 Resolve_Hit:
 	mov r0, r3
 	lsr r0, r0, #8
+	lsl r0, r0, #24
+	lsr r0, r0, #24
 	ldrb r1, [r2, #1]
 	lsl r1, r1, #8
 	orr r1, r0

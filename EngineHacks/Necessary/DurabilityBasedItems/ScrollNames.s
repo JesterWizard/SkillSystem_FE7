@@ -64,6 +64,8 @@ ldr r1,[r5,#4]
 
 mov r0,r4
 lsr r0,r0,#8 @just durability
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1 @*2
 
 add r0,r1
@@ -137,6 +139,8 @@ LoopStatExit:
 ldr r1,[r3,#4]
 mov r0,r9
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1
 add r0,r1
 ldrh r0,[r0]
@@ -196,6 +200,8 @@ LoopMenuAExit:
 ldr r1,[r3,#4]
 mov r0,r6
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1
 add r0,r1
 ldrh r0,[r0]
@@ -255,6 +261,8 @@ LoopMenuBExit:
 ldr r1,[r3,#4]
 mov r0,r8
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1
 add r0,r1
 ldrh r0,[r0]
@@ -318,6 +326,8 @@ LoopMenuCExit:
 ldr r1,[r3,#4]
 mov r0,r6
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1
 add r0,r1
 ldrh r0,[r0]
@@ -383,6 +393,8 @@ b NameIdLoopStart
 NameIdLoopExit:
 mov r0,r4
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1
 ldr r1,[r2,#4]
 add r0,r1
@@ -423,6 +435,8 @@ b DescLoopStart
 DescLoopExit:
 mov r0,r4
 lsr r0,r0,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 lsl r0,r0,#1 @*2
 
 ldr r1,[r2,#4]

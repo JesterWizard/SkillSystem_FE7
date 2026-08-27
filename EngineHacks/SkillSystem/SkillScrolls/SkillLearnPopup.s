@@ -381,6 +381,8 @@ LearnScrollSkill:
     mov r4, r0
     mov r5, r1
     mov r6, r2
+    lsl r5, r5, #24
+    lsr r5, r5, #24
 
     mov r0, r4
     mov r1, r5

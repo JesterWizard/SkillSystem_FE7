@@ -51,7 +51,9 @@ mov r0,#1
 b GoBack
 
 RetActualDurability:
-asr r0,r2,#8
+lsr r0,r2,#8
+lsl r0,r0,#24
+lsr r0,r0,#24
 b GoBack
 
 .ltorg

@@ -9,6 +9,8 @@ push {r4-r6,lr}
 
 mov r6, r0 @ unit
 mov r5, r1 @ skill
+lsl r5, r5, #24
+lsr r5, r5, #24
 
 ldrb r1, [r6, #0x0B]
 mov r2, #0xC0

@@ -51,7 +51,9 @@ MultiScrollUsability:
     mov r4, r3
     mov r5, r2
 
-    lsr r1, r5, #8
+    mov r0, r5
+    bl GetScrollSkillId
+    mov r1, r0
     mov r0, r4
     blh SkillTester
     cmp r0, #1
@@ -92,7 +94,9 @@ MultiScrollPrepUsability:
     mov r5, r4
     mov r4, r0
 
-    lsr r1, r5, #8
+    mov r0, r5
+    bl GetScrollSkillId
+    mov r1, r0
     mov r0, r4
     blh SkillTester
     cmp r0, #1
@@ -143,8 +147,9 @@ MultiScrollEffect:
     add r2, #0x1E
     lsl r1, r4, #1
     add r2, r1
-    ldrh r7, [r2]
-    lsr r7, r7, #8
+    ldrh r0, [r2]
+    bl GetScrollSkillId
+    mov r7, r0
 
     mov r0, #0
     strh r0, [r2]
@@ -168,9 +173,10 @@ MultiScrollEffect:
 @ Prep effect — r4=unit, r6=item, r7=slot; returns text id
 @-----------------------------------------------------------------------------
 MultiScrollPrepEffect:
+    mov r0, r6
+    bl GetScrollSkillId
+    mov r1, r0
     mov r0, r4
-    mov r1, r6
-    lsr r1, r1, #8
     blh SkillAdder
 
     mov r1, r7
@@ -232,7 +238,9 @@ MultiScrollTargeting:
 @   r4=unit, r5=item, stack={r4,r5,lr}
 @ Return 1 → Use enabled; 0 → Use grayed.
 @ (Byte item+0x1E must also be nonzero or Use is hidden entirely.)
-    lsr r1, r5, #8
+    mov r0, r5
+    bl GetScrollSkillId
+    mov r1, r0
     mov r0, r4
     blh SkillTester
     cmp r0, #1
@@ -266,6 +274,20 @@ TargetingReturn:
 @-----------------------------------------------------------------------------
 @ Helpers
 @-----------------------------------------------------------------------------
+@ r0 = item halfword (ldrsh-safe). r0 = skill id 0-255.
+.global GetScrollSkillId
+.type GetScrollSkillId, %function
+GetScrollSkillId:
+    lsr r0, r0, #8
+    lsl r0, r0, #24
+    lsr r0, r0, #24
+GetScrollSkillId_Done:
+    bx lr
+
+.ltorg
+.align
+
+
 CountLearnedSkills:
     push {r4-r5, lr}
     mov r4, r0

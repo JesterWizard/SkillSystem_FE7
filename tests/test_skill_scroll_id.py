@@ -3,11 +3,15 @@
 Writing 0x9F into the vanilla ItemTable at 0xBE222C overlaps Lord
 movement-cost data at 0xBE3888 and zeroes map movement.
 """
+import re
 import struct
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 DEFS = ROOT / "CustomDefinitions.event"
 SCROLLS = ROOT / "EngineHacks" / "SkillSystem" / "SkillScrolls" / "SkillScrolls.event"
 ITEM_BIN = (
@@ -144,6 +148,112 @@ class SkillScrollIdTests(unittest.TestCase):
         code = rom[off : off + 0x40]
         # pop {r4,r5}; pop {r4}; pop {r1}; bx r1
         self.assertIn(bytes.fromhex("30bc10bc02bc0847"), code)
+
+    def test_skill_id_extract_masks_to_unsigned_byte(self):
+        """Item halfwords are ldrsh; skill IDs 128-255 set the sign bit.
+
+        lsr #8 of 0xFFFF809F is 0xFFFF80, not 0x80. Mask in GetScrollSkillId.
+        """
+        src = _text(
+            ROOT
+            / "EngineHacks"
+            / "SkillSystem"
+            / "SkillScrolls"
+            / "MultiSkillScrolls.s"
+        )
+        self.assertRegex(
+            src,
+            r"GetScrollSkillId:\s*\n\s*lsr r0,\s*r0,\s*#8\s*\n\s*lsl r0,\s*r0,\s*#24\s*\n\s*lsr r0,\s*r0,\s*#24",
+        )
+        self.assertGreaterEqual(src.count("bl GetScrollSkillId"), 5)
+
+    def test_durability_name_and_icon_mask_ids_above_127(self):
+        names = _text(
+            ROOT
+            / "EngineHacks"
+            / "Necessary"
+            / "DurabilityBasedItems"
+            / "ScrollNames.s"
+        )
+        icons = _text(
+            ROOT
+            / "EngineHacks"
+            / "Necessary"
+            / "DurabilityBasedItems"
+            / "SkillBookIconDraw.s"
+        )
+        uses = _text(
+            ROOT
+            / "EngineHacks"
+            / "Necessary"
+            / "DurabilityBasedItems"
+            / "ScrollDurability.s"
+        )
+        name_masked = re.findall(
+            r"lsr r(\d+),\s*r\d+,\s*#8[^\n]*\n\s*lsl r\1,\s*r\1,\s*#24[^\n]*\n\s*lsr r\1,\s*r\1,\s*#24",
+            names,
+        )
+        name_raw = re.findall(r"lsr r\d+,\s*r\d+,\s*#8", names)
+        self.assertEqual(len(name_masked), len(name_raw))
+        self.assertGreaterEqual(len(name_masked), 7)
+        self.assertRegex(
+            icons,
+            r"lsr r0,\s*r0,\s*#8[^\n]*\n\s*lsl r0,\s*r0,\s*#24[^\n]*\n\s*lsr r0,\s*r0,\s*#24",
+        )
+        self.assertRegex(
+            uses,
+            r"lsr r0,\s*r2,\s*#8[^\n]*\n\s*lsl r0,\s*r0,\s*#24[^\n]*\n\s*lsr r0,\s*r0,\s*#24",
+        )
+        self.assertNotRegex(uses, r"(?m)^\s*asr r0, r2, #8\s*$")
+
+
+class SkillScrollHighIdExecutionTests(unittest.TestCase):
+    """DEC-116: skill ID 128 from a sign-extended item halfword must stay 128."""
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            from Tools.thumb_harness import assemble, symbol_offsets
+        except ImportError as exc:
+            raise unittest.SkipTest(f"thumb harness unavailable: {exc}")
+        from Tools.thumb_harness import AS
+
+        if not Path(AS).exists():
+            raise unittest.SkipTest("devkitARM not installed")
+        cls.src = (
+            ROOT
+            / "EngineHacks"
+            / "SkillSystem"
+            / "SkillScrolls"
+            / "MultiSkillScrolls.s"
+        )
+        if not cls.src.is_file():
+            raise unittest.SkipTest(f"missing {cls.src}")
+        cls.code = assemble(cls.src)
+        cls.offsets = symbol_offsets(cls.src)
+
+    def _skill_id_from_item(self, item: int) -> int:
+        from Tools.thumb_harness import Harness
+
+        entry = self.offsets.get("GetScrollSkillId")
+        stop = self.offsets.get("GetScrollSkillId_Done")
+        if entry is None or stop is None:
+            self.fail("GetScrollSkillId / GetScrollSkillId_Done missing")
+        h = Harness(self.code, skill_present=False)
+        regs = h.run(
+            stop,
+            regs={"r0": item},
+            entry_offset=entry,
+        )
+        return regs["r0"] & 0xFFFFFFFF
+
+    def test_sign_extended_skill_128_stays_128(self):
+        # ldrsh of item 0x809F (SkillScroll + FuryID 128)
+        self.assertEqual(self._skill_id_from_item(0xFFFF809F), 128)
+
+    def test_skill_127_and_1_still_extract(self):
+        self.assertEqual(self._skill_id_from_item(0x00007F9F), 127)
+        self.assertEqual(self._skill_id_from_item(0x0000019F), 1)
 
 
 if __name__ == "__main__":
