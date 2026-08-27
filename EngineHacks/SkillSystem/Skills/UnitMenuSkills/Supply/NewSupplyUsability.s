@@ -2,6 +2,7 @@
 @1.Anyone with the Supply skill can access the convoy.
 @2.Adjacent ones with Supply skills have access to convoys.
 @3.If AlsoUseVanillaCheck is enabled, check the vanilla routine in addition to the above.
+@  Keep this off while SupplyID is enabled so Merlinus's class is not a convoy.
 @4.If the above conditions are not met, the convoy will not be available.
 @
 
@@ -108,7 +109,7 @@ ldsb r7, [r0, r7]               @RAMUnit->X
 mov r6, #0x11
 ldsb r6, [r0, r6]               @RAMUnit->Y
 mov r5, #0x0
-ldr r4, =0x080D7C04             @AjaxFourSides[4]
+ldr r4, =AdjacentOffsets
 
 IsAdjacent_Loop:
 mov r2, #0x0
@@ -120,11 +121,11 @@ add r0 ,r6, r0
 ldr r1, =0x0202E3DC             @(gMapUnit )
 ldr r1, [r1, #0x0]
 
-lsl r0 ,r0 ,#0x2                @gMapUnit[x]
+lsl r0 ,r0 ,#0x2                @gMapUnit[y]
 add r0 ,r0, r1
 ldr r0, [r0, #0x0]
 
-add r0 ,r0, r2                  @gMapUnit[x][y]
+add r0 ,r0, r2                  @gMapUnit[y][x]
 ldrb r1, [r0, #0x0]
 mov r0, #0x80                   @???
 and r0 ,r1
@@ -163,6 +164,13 @@ pop {r4,r5,r6,r7}
 pop {r1}
 bx r1
 
+
+.align 2
+AdjacentOffsets:
+.byte  0, -1
+.byte  0,  1
+.byte -1,  0
+.byte  1,  0
 
 .ltorg
 .align

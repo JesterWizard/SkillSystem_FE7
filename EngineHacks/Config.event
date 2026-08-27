@@ -72,7 +72,9 @@
 #define DOES_BARGAIN_STACK False
 
 #define ALSO_USE_VANILLA_DANCE_CHECK False
-#define ALSO_USE_VANILLA_SUPPLY_CHECK True
+// False while SupplyID is enabled: convoy is skill/adjacent-skill only.
+// Merlinus's transporter class does not open Supply by itself.
+#define ALSO_USE_VANILLA_SUPPLY_CHECK False
 #define ALSO_USE_VANILLA_SUMMON_CHECK False
 #define ALSO_USE_VANILLA_STEAL_CHECK True
 

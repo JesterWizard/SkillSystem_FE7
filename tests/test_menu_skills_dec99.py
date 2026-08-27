@@ -159,7 +159,9 @@ class MenuSkillWiringTests(unittest.TestCase):
             "RallyLukCommandUsability",
             "RallyMovCommandUsability",
             "RallySpectrumCommandUsability",
-            "prShoveCommand_Usability",
+            # Shove is FE7-native now; HeroesMovement's blob is FE8 and the
+            # menu must not reach it. See Tests/test_shove_execution.py.
+            "ShoveUsability",
             "prSmiteCommand_Usability",
             "prPivotCommand_Usability",
             "prRepositionCommand_Usability",

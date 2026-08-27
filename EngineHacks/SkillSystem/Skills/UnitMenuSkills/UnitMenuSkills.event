@@ -173,6 +173,33 @@ ORG $6E2FC
 replaceWithHack(SummonPopupHook)
 POP
 
+// Shove.  HeroesMovement's Shove is unported FE8 (its .bin literal pools hold
+// gActiveUnit 0x03004E50, gActionData 0x0203A958, StartTargetSelection
+// 0x0804FA3C, ...), and its action id 0x26 is above the 0x1B ceiling FE7's
+// ApplyUnitAction enforces, so it could never run.  Rebuilt against FE7's own
+// routines in Shove/ShoveAction.s; see the header there.
+//
+// Must stay equal to ShoveActionID in ShoveAction.s -- the .s writes it into
+// gActionData and this repoints the table slot it dispatches through.
+// Tests/test_shove_execution.py fails the build if the two ever drift apart.
+#ifndef SHOVE_ACTION_ID
+  #define SHOVE_ACTION_ID 0x0B
+#endif
+
+ALIGN 4
+#include "Shove/ShoveAction.lyn.event"
+POIN SkillTester
+WORD ShoveID
+WORD UM_ShoveDesc
+
+// UnitActionFunctionPointer (0x0802F248) is indexed by actionId - 1.  Action
+// id 0x0B is never written by vanilla FE7 and its entry is the do-nothing
+// handler 0x0802F31E.
+PUSH
+ORG ($2F248 + 4*(SHOVE_ACTION_ID-1))
+POIN ShoveActionEntry
+POP
+
 ALIGN 4
 AttackEffect:
 #include "Attack/AttackEffect.lyn.event"

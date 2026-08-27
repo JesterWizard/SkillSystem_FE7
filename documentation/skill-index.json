@@ -6379,7 +6379,8 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_supply_usability_execution.py"
       ]
     },
     {
@@ -6389,17 +6390,20 @@
       "off": "no",
       "category": "UnitMenuSkills",
       "live": "yes",
-      "source": "",
-      "folder": "",
+      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Shove/ShoveAction.s",
+      "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Shove",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Shove/ShoveAction.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement.event",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/HeroesMovement/HeroesMovement_Internal.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_shove_execution.py"
       ]
     },
     {
