@@ -1,8 +1,10 @@
 .thumb
 .org 0x0
 
-@ UnitLoadStatsFromCharacter — write Mag base to unit+0x47
+@ UnitLoadStatsFromCharacter — Mag to unit+0x47, then Def and Res.
 @ r1 = char data, r2 = class data, r4 = unit
+@ ColorzCore callHack_r3 at 0x17958 is 12 bytes and overwrites the vanilla
+@ Res loads, so this routine must store Res itself and resume at Luck.
 
 ldrb	r0, [r1, #0x4]		@ char num
 ldr		r3, MagCharTable
@@ -26,8 +28,14 @@ ldrb	r5, [r1, #0x10]
 add		r0, r0, r5
 strb	r0, [r4, #0x17]
 ldrb	r0, [r2, #0x10]
-ldrb	r2, [r1, #0x11]
-bx		r14
+ldrb	r5, [r1, #0x11]
+add		r0, r0, r5
+strb	r0, [r4, #0x18]
+ldr		r0, ReturnAddr
+bx		r0
 
 .align
+.ltorg
+ReturnAddr:
+.long 0x08017969
 MagCharTable:
