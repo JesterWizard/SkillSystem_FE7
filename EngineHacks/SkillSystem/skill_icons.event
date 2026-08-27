@@ -1111,13 +1111,13 @@ ORG SkillIcon(AdvantageChaserID)
 #incbin "SkillIcons/AdvantageChaser.dmp"
 
 ORG SkillIcon(DrawBackID)
-#incbin "SkillIcons/Acrobat.dmp"
+#incbin "SkillIcons/WIP.dmp"
 ORG SkillIcon(SacrificeID)
-#incbin "SkillIcons/Acrobat.dmp"
+#incbin "SkillIcons/WIP.dmp"
 ORG SkillIcon(ArdentSacrificeID)
-#incbin "SkillIcons/Acrobat.dmp"
+#incbin "SkillIcons/WIP.dmp"
 ORG SkillIcon(ReciprocalAidID)
-#incbin "SkillIcons/Acrobat.dmp"
+#incbin "SkillIcons/WIP.dmp"
 ORG SkillIcon(FailGaleID)
 #incbin "SkillIcons/FailGale.dmp"
 
