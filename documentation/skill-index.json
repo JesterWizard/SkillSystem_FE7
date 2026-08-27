@@ -6533,7 +6533,8 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_steal_execution.py"
       ]
     },
     {
@@ -6556,7 +6557,8 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
       ],
       "tests": [
-        "tests/test_menu_skills_dec99.py"
+        "tests/test_menu_skills_dec99.py",
+        "tests/test_steal_execution.py"
       ]
     },
     {

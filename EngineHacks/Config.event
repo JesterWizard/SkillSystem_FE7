@@ -42,8 +42,8 @@
 // If true, both the Canto skill and the vanilla canto ability apply.
 #define ENABLE_LEGACY_CANTO False
 
-// If commented, Steal+ AI steals as in vanilla.
-#define ENABLE_AI_STEAL_PLUS
+// If uncommented, Steal+ AI uses FE8 inline sites that are not steal AI on FE7.
+// #define ENABLE_AI_STEAL_PLUS
 
 // If commented, Steal is a character ability and Steal+ requires vanilla steal.
 #define ENABLE_STEAL_SKILL

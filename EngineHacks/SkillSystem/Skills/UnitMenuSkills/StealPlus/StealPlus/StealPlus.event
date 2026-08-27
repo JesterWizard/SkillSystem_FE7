@@ -1,24 +1,20 @@
-//FE8 Rogue Steal, player version
-//By Tequila
+// FE7 Steal / Steal+.
+// IsItemStealable is 0x08016D38 (FE8's 0x08017054 is a different function).
+// StealCommandUsability is 0x08022F78.
 
 PUSH
 
-ORG $17054
+ORG $16D38
 jumpToHack(Rogue_Robbery)
 
-// The FE8 Rogue Steal patches formerly placed at $2432A and $2435E are not
-// valid for FE7. $2432A is FE7's terrain lookup, and $2435E is the second
-// half of the vanilla BL at $2435C; overwriting either breaks turn processing.
+// Adjacent-unit steal callback: pass target unit + slot instead of item short.
+// jumpToHack is 8 bytes here; the veneer returns to $244D8 (cmp r0,#0).
+ORG $244D0
+jumpToHack(StealSlotCheck)
 
-//Usability check
-ORG $25BCC
-SHORT 0x1C28 0x1C31 //mov r0,r5; mov r1,r6
-BL(0x17054)
-SHORT 0x2800 0xD00B 0x7C28 //cmp r0,#0; beq place; ldrb r0,[r5,#0x10]
-	
-//Target select menu
-ORG $34D9A
-SHORT 0x004E 0x9802 0x361E 0x1836 0x8836 0x46C0 //lsl r6,r1,#1; ldr r0,[sp,#8]; add r6,#0x1E; add r6,r0; ldrh r6,[r6]; nop
+// Steal item submenu: r0 is unit+0x1E, r4 is slot*2. Veneer returns to $23118.
+ORG $23110
+jumpToHack(StealMenuSlotCheck)
 
 POP
 
@@ -30,57 +26,27 @@ POIN SkillTester
 WORD StealPlusID
 WORD WatchfulID
 
-//#ifndef prConGetter
-//	ALIGN 4
-//	prConGetter:
-//	BYTE $00 $B5 $41 $68 $11 $22 $89 $56 $02 $68 $13 $23 $D2 $56 $89 $18 $1A $22 $80 $56 $40 $18 $02 $BC $08 $47
-//#endif
+ALIGN 4
+StealSlotCheck:
+SHORT 0xB500 0x1C28 0x1C31
+BL(Rogue_Robbery)
+SHORT 0x0600 0xBC02 0x468E 0x4B00 0x4718
+POIN($244D8+1)
 
-#ifdef ENABLE_AI_STEAL_PLUS
+ALIGN 4
+StealMenuSlotCheck:
+SHORT 0xB500 0x381E 0x1C21 0x0849
+BL(Rogue_Robbery)
+SHORT 0xBC02 0x468E 0x4B00 0x4718
+POIN($23118+1)
 
-	PUSH
-	
-	ORG $3DB70
-	SHORT 0x2100 //mov r1,#0
-	ORG $3DC66
-	SHORT 0x2B00 //cmp r3,#0
-	
-	ORG $3DC0C
-	#include "Find_Most_Valuable_Item.lyn.event"
-	POIN Most_Valuable_Item
-	
-	POP
-	
-	ALIGN 4
-	Most_Valuable_Item:
-	#include "Most_Valuable_Item.lyn.event"
-
-#endif
-
-//The following changes the checks for steal ability (0x4 of byte 1) to a check for either the Steal skill or Steal+
 #ifdef ENABLE_STEAL_SKILL
-	
+
 	PUSH
-	
-	//Steal menu option usability
-	ORG $24190
-	SHORT 0x6820 0 //ldr r0,[r4]; nop
-	callHack_r3(Can_Unit_Steal)
-	SHORT 0x2800 0xD00B 0x6822 0x68D0 0x2140 0x4208 //cmp r0,#0; beq RetFalse; ldr r2,[r4]; ldr r0,[r2,#0xC]; mov r1,#0x40; tst r0,r1
-	
-	//Some AI (NOTE: MUST DO CMP R0,#0 BEFORE RETURNING)
-	ORG $3D4C4
-	SHORT 0x1C18 0 //mov r0,r3; nop
-	callHack_r3(Can_Unit_Steal)
-	SHORT 0xD011 0x6830 //beq Somewhere; ldr r0,[r6]
-	
-	//Some other AI
-	ORG $3EE56
-	SHORT 0
-	callHack_r3(Can_Unit_Steal)
-	
+	ORG $22F78
+	jumpToHack(Can_Unit_Steal)
 	POP
-	
+
 	ALIGN 4
 	Can_Unit_Steal:
 	#include "Can_Unit_Steal.lyn.event"
@@ -88,6 +54,10 @@ WORD WatchfulID
 	WORD StealID
 	WORD StealPlusID
 	WORD ALSO_USE_VANILLA_STEAL_CHECK
-	
+
 #endif
-	
+
+#ifdef ENABLE_AI_STEAL_PLUS
+	// FE8 AI steal inline sites ($3DB70, $3DC0C, $3DC66) are not steal AI
+	// on FE7. Enemy steal stays vanilla (items only).
+#endif
