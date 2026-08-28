@@ -172,7 +172,7 @@
 .set prTCS_New,                  0x08011FC4 @ arguments: r0 = ROM source, r1 = OAM Index?
 .set prTCS_SetSubIndex,          0x0801225c @ arguments: r0 = TCS, r1 = Index
 .set prTCS_Draw,                 0x08012000 @ arguments: r0 = TCS, r1 = Display X, r2 = Display Y
-.set prTCS_Free,                 0x08011FE8 @ arguments: r0 = TCS
+.set prTCS_Free,                 0x08011FEC @ arguments: r0 = TCS (0x08011FE8 is TCS_New's epilogue, not this function)
 
 .set prAIS_New,                  0x08004F48 @ arguments: r0 = Frame Data pointer, r1 = Depth (or Priority?); returns: r0 = AIS
 .set prAIS_Free,                 0x08005004 @ arguments: r0 = AIS

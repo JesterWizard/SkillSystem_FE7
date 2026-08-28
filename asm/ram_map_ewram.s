@@ -56,3 +56,9 @@ _kernel_malloc_ewram gPostCombatProc, 0x4
 @ from HandlePostActionTraps so PlayerPhase CALL_2 yields this frame.
 @ Downward bump: 0x0203FE0C - 0x4 = 0x0203FE08
 _kernel_malloc_ewram gPostCombatYield, 0x4
+
+@ Scratch for Support After Battle allegiance / partner-index lists.
+@ Downward bump: 0x0203FE08 - 0x10 = 0x0203FDF8
+_kernel_malloc_ewram gSupportAuraDisplayArray, 0x10
+@ Downward bump: 0x0203FDF8 - 0x8 = 0x0203FDF0
+_kernel_malloc_ewram gSupportIndexArray, 0x8

@@ -39,6 +39,11 @@ TURN_LOOP_ASM = [
 STAT_GETTER_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "RallyStat.s",
 ]
+SUPPORT_POST_BATTLE_ASM = [
+    ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "PostBattleSupports.s",
+    ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "MapEmoticon" / "Show_map_emotion_by_params.s",
+    ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "MapEmoticon" / "Show_map_emotion_Destructor.s",
+]
 
 MSS_PAGES = [
     MSS_PAGES_DIR / "signed_bonus_number.s",
@@ -270,7 +275,9 @@ def main() -> int:
     hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
     turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
     stat_getter = [p for p in STAT_GETTER_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + [
+        p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
+    ]
     if args.force:
         for src in sources + extra + c_sources:
             src.with_suffix(".lyn.event").unlink(missing_ok=True)
@@ -300,7 +307,9 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter:
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + [
+        p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
+    ]:
         try:
             build_one(src)
         except subprocess.CalledProcessError as exc:

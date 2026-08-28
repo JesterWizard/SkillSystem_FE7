@@ -74,13 +74,17 @@ if errorlevel 1 (
   exit /b 1
 )
 
-echo:
-echo Running source tests
-python "%base_dir%tests\run_tests.py" --pre-assemble
-if errorlevel 1 (
-  echo Source tests failed.
-  if defined MAKE_HACK_PAUSE pause
-  exit /b 1
+if /I not [%1]==[quick] (
+
+  echo:
+  echo Running source tests
+  python "%base_dir%tests\run_tests.py" --pre-assemble
+  if errorlevel 1 (
+    echo Source tests failed.
+    if defined MAKE_HACK_PAUSE pause
+    exit /b 1
+  )
+
 )
 
 echo:
@@ -113,13 +117,17 @@ if not "%assemble_error%"=="0" (
   exit /b %assemble_error%
 )
 
-echo:
-echo Running ROM tests
-python "%base_dir%tests\run_tests.py" --rom
-if errorlevel 1 (
-  echo ROM tests failed.
-  if defined MAKE_HACK_PAUSE pause
-  exit /b 1
+if /I not [%1]==[quick] (
+
+  echo:
+  echo Running ROM tests
+  python "%base_dir%tests\run_tests.py" --rom
+  if errorlevel 1 (
+    echo ROM tests failed.
+    if defined MAKE_HACK_PAUSE pause
+    exit /b 1
+  )
+
 )
 
 echo Closing existing NO$GBA

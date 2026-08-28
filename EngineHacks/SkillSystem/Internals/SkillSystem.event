@@ -385,6 +385,8 @@ ORG $26694
 jumpToHack(GetUnitSupportLevel_Bwl)
 ORG $26744
 jumpToHack(AddSupportPoints_Bwl)
+ORG $26778
+jumpToHack(CanUnitSupportNow_Bwl)
 POP
 
 #define gBwlSupportExp 0x0203FE10

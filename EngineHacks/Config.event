@@ -129,6 +129,27 @@
 // Flag that hides battle animation numbers when set (same default as FE8 Skill System).
 #define BATTLE_ANIMATION_NUMBERS_FLAG 0xEE
 
+// If uncommented, nearby support partners gain points after combat / heal
+// staff / dance instead of standing adjacent at player-phase start.
+// Hearts display on the map. Vesly: https://github.com/Veslyquix/ASM/tree/main/SupportPostBattle
+#define SUPPORT_AFTER_BATTLE
+
+// BWL support points per qualifying action. A kill uses KILL instead of COMBAT,
+// not both. 0 for combat means only a kill scores.
+#define SUPPORT_RATE_COMBAT 50
+#define SUPPORT_RATE_KILL 50
+#define SUPPORT_RATE_STAFF 2
+#define SUPPORT_RATE_DANCE 2
+
+// Manhattan distance within which both units must stand to score.
+#define SUPPORT_AFTER_BATTLE_DISTANCE 3
+
+// 1 = player phase only, 0 = every phase.
+#define SUPPORT_AFTER_BATTLE_PLAYER_PHASE_ONLY 1
+
+// Frames the heart stays on the map.
+#define SUPPORT_AFTER_BATTLE_HEART_FRAMES 60
+
 #define FORCE_WHEN_BELOW_AVERAGE_BY_AMOUNT 3
 #define PREVENT_WHEN_ABOVE_AVERAGE_BY_AMOUNT 5
 

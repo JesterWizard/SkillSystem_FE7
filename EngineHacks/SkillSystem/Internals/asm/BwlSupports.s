@@ -8,7 +8,12 @@
 	BWL_GetEntry = 0x080A0550|1
 	GetUnitSupporterCount = 0x08026628|1
 	GetUnitSupporterInitialExp = 0x080267F4|1
+	GetUnitTotalSupportLevel = 0x080266B8|1
+	GetUnitSupporterUnit = 0x0802664C|1
+	UnitSupportSlotBitCheck = 0x08026BF0|1
 	AddSupportPoints_VanillaContinue = 0x08026753
+	gChapterData = 0x0202BBF8
+	SupportExpNextTable = 0x08B94184
 
 	SUPPORT_SLOTS = 7
 
@@ -16,6 +21,7 @@
 	.global InitBwlSupportsForUnit
 	.global GetUnitSupportLevel_Bwl
 	.global AddSupportPoints_Bwl
+	.global CanUnitSupportNow_Bwl
 	.global ClearBwlSupportExp
 	.global SUD_SaveBwlSupports
 	.global SUD_LoadBwlSupports
@@ -126,7 +132,7 @@ GetUnitSupportLevel_Bwl.not_a:
 	b GetUnitSupportLevel_Bwl.end
 GetUnitSupportLevel_Bwl.not_b:
 	cmp r0, #0x50
-	blt GetUnitSupportLevel_Bwl.zero
+	ble GetUnitSupportLevel_Bwl.zero
 	mov r0, #1
 	b GetUnitSupportLevel_Bwl.end
 GetUnitSupportLevel_Bwl.zero:
@@ -165,6 +171,72 @@ AddSupportPoints_Bwl.cont:
 
 AddSupportPoints_Bwl.fail:
 	pop {r4}
+	pop {r1}
+	bx r1
+
+@ Replaces FE7 CanUnitSupportNow (0x08026778).
+@ Vanilla gates, but exp from gBwlSupportExp (unit+0x32 is learned skills).
+CanUnitSupportNow_Bwl:
+	push {r4-r7, lr}
+	mov r4, r0
+	mov r5, r1
+	ldr r0, =gChapterData
+	ldrb r1, [r0, #20]
+	mov r0, #0x80
+	and r0, r1
+	bne CanUnitSupportNow_Bwl.false
+	mov r0, #8
+	and r0, r1
+	bne CanUnitSupportNow_Bwl.false
+	mov r0, r4
+	mov r1, r5
+	blh UnitSupportSlotBitCheck
+	lsl r0, r0, #24
+	cmp r0, #0
+	bne CanUnitSupportNow_Bwl.false
+	mov r0, r4
+	blh GetUnitTotalSupportLevel
+	cmp r0, #4
+	bgt CanUnitSupportNow_Bwl.false
+	mov r0, r4
+	mov r1, r5
+	blh GetUnitSupporterUnit
+	blh GetUnitTotalSupportLevel
+	cmp r0, #4
+	bgt CanUnitSupportNow_Bwl.false
+	ldr r0, [r4]
+	cmp r0, #0
+	beq CanUnitSupportNow_Bwl.false
+	ldrb r0, [r0, #4]
+	cmp r0, #1
+	blt CanUnitSupportNow_Bwl.false
+	cmp r0, #0x45
+	bgt CanUnitSupportNow_Bwl.false
+	mov r1, #SUPPORT_SLOTS
+	mul r0, r1
+	ldr r1, =gBwlSupportExp
+	add r0, r1
+	ldrb r7, [r0, r5]
+	cmp r7, #0xF1
+	beq CanUnitSupportNow_Bwl.false
+	mov r0, r4
+	mov r1, r5
+	bl GetUnitSupportLevel_Bwl
+	lsl r0, r0, #2
+	ldr r1, =SupportExpNextTable
+	add r0, r0, r1
+	ldr r0, [r0]
+	mov r1, #0
+	cmp r7, r0
+	bne CanUnitSupportNow_Bwl.ret
+	mov r1, #1
+CanUnitSupportNow_Bwl.ret:
+	mov r0, r1
+	b CanUnitSupportNow_Bwl.end
+CanUnitSupportNow_Bwl.false:
+	mov r0, #0
+CanUnitSupportNow_Bwl.end:
+	pop {r4-r7}
 	pop {r1}
 	bx r1
 

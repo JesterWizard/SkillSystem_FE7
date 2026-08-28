@@ -1,0 +1,121 @@
+// Vesly Support After Battle (FE7U).
+// https://github.com/Veslyquix/ASM/tree/main/SupportPostBattle
+// Nearby support partners gain points after combat / heal staff / dance,
+// instead of at player-phase start. Hearts display on the map.
+
+#include "EAstdlib.event"
+
+PUSH
+// ProcessSupportGains at player-phase start (BL 0x08026898).
+ORG $1536E
+SHORT $46C0 $46C0
+POP
+
+// Holds the post-combat proc for exactly as long as the heart is on screen.
+ALIGN 4
+HeartWaitProc:
+SHORT 0x0E SUPPORT_AFTER_BATTLE_HEART_FRAMES 0 0
+SHORT 0x00 0 0 0
+
+ALIGN 4
+#include "PostBattleSupports.lyn.event"
+
+ALIGN 4
+#include "MapEmoticon/Show_map_emotion_by_params.lyn.event"
+
+ALIGN 4
+#include "MapEmoticon/Show_map_emotion_Destructor.lyn.event"
+
+// Overwrite the defaults baked into the assembly with the Config.event values.
+PUSH
+ORG SupportRateCombat;    WORD SUPPORT_RATE_COMBAT
+ORG SupportRateKill;      WORD SUPPORT_RATE_KILL
+ORG SupportRateStaff;     WORD SUPPORT_RATE_STAFF
+ORG SupportRateDance;     WORD SUPPORT_RATE_DANCE
+ORG SupportDistanceLink;  WORD SUPPORT_AFTER_BATTLE_DISTANCE
+ORG PlayerPhaseOnly;      WORD SUPPORT_AFTER_BATTLE_PLAYER_PHASE_ONLY
+ORG HeartDisplayFrames;   WORD SUPPORT_AFTER_BATTLE_HEART_FRAMES
+POP
+
+ALIGN 4
+Show_map_emotion_Proc:
+SHORT 0x03 0
+POIN (Show_map_emotion_Destructor|1)
+SHORT 0x00 0
+WORD 0
+
+ALIGN 4
+MapEmotionAP:
+SHORT (MapEmotionAP_Frames - MapEmotionAP)
+SHORT (MapEmotionAP_Anims - MapEmotionAP)
+MapEmotionAP_Anims:
+SHORT (MapEmotionAP_Anim0 - MapEmotionAP_Anims)
+MapEmotionAP_Anim0:
+SHORT SUPPORT_AFTER_BATTLE_HEART_FRAMES
+SHORT 0
+SHORT 0
+SHORT 0xFFFF
+MapEmotionAP_Frames:
+SHORT (MapEmotionAP_Oam - MapEmotionAP_Frames)
+MapEmotionAP_Oam:
+// Four 8x8 objects. The graphic only has pixels in tiles 0, 1, 32, 33
+// (16x16 in 2D OBJ order). One 16x16 object uses tiles 0-3 under 1D mapping
+// and only the top strip shows; 8x8 objects address each tile directly.
+SHORT 4
+SHORT 0x0000
+SHORT 0x0000
+SHORT 0x0000
+SHORT 0x0000
+SHORT 0x0008
+SHORT 0x0001
+SHORT 0x0008
+SHORT 0x0000
+SHORT 0x0020
+SHORT 0x0008
+SHORT 0x0008
+SHORT 0x0021
+
+ALIGN 32
+emotion02_heart:
+#incbin "MapEmoticon/png/02_heart_16x16.bin"
+
+ALIGN 32
+emotion21_goldheart:
+#incbin "MapEmoticon/png/21_goldheart_16x16.bin"
+
+ALIGN 32
+emotion02_palette:
+#incbin "MapEmoticon/png/02_heart_pal.dmp"
+
+ALIGN 32
+emotion21_palette:
+#incbin "MapEmoticon/png/21_goldheart_pal.dmp"
+
+#define EmotionEntry(img, palId, palPtr) "POIN img; POIN MapEmotionAP; POIN Show_map_emotion_Proc; SHORT 0x77 palId; POIN palPtr"
+#define EmotionEmpty "WORD 0 0; POIN Show_map_emotion_Proc; SHORT 0 1; POIN 0"
+
+ALIGN 4
+Show_map_emotion_Table:
+EmotionEmpty                                          // 0
+EmotionEmpty                                          // 1
+EmotionEntry(emotion02_heart, 0xE, emotion02_palette)   // 2 heart
+EmotionEmpty                                          // 3
+EmotionEmpty                                          // 4
+EmotionEmpty                                          // 5
+EmotionEmpty                                          // 6
+EmotionEmpty                                          // 7
+EmotionEmpty                                          // 8
+EmotionEmpty                                          // 9
+EmotionEmpty                                          // 10
+EmotionEmpty                                          // 11
+EmotionEmpty                                          // 12
+EmotionEmpty                                          // 13
+EmotionEmpty                                          // 14
+EmotionEmpty                                          // 15
+EmotionEmpty                                          // 16
+EmotionEmpty                                          // 17
+EmotionEmpty                                          // 18
+EmotionEmpty                                          // 19
+EmotionEmpty                                          // 20
+EmotionEntry(emotion21_goldheart, 0xA, emotion21_palette) // 21 support level up
+WORD 0 0 0 0 0

@@ -50,10 +50,13 @@ class Fe7SupportSkillStorageTests(unittest.TestCase):
         self.assertIn("gBwlSupportExp = 0x0203FE10", text)
         self.assertIn("GetUnitSupportLevel_Bwl", text)
         self.assertIn("AddSupportPoints_Bwl", text)
+        self.assertIn("CanUnitSupportNow_Bwl", text)
         self.assertIn("InitBwlSupportsForUnit", text)
         skill_sys = (INTERNALS / "SkillSystem.event").read_text(encoding="utf-8")
         self.assertIn("jumpToHack(GetUnitSupportLevel_Bwl)", skill_sys)
         self.assertIn("jumpToHack(AddSupportPoints_Bwl)", skill_sys)
+        self.assertIn("jumpToHack(CanUnitSupportNow_Bwl)", skill_sys)
+        self.assertIn("ORG $26778", skill_sys)
 
     def test_ems_chunk_declared(self):
         text = (EMS / "ExModularSave.event").read_text(encoding="utf-8")
