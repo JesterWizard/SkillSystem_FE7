@@ -1,11 +1,6 @@
 #ifndef DEBUFFS_HACK
 #define DEBUFFS_HACK
-
-// Debuffs
-// hack by CrazyColorz5, with additions by circleseverywhere and Kirb
-// Largely rewritten by Vesly 
-
-#ifdef _FE8_
+#define MSG_HAS_DEBUFFS
 
 
 
@@ -33,14 +28,14 @@ WORD RequireDamageToDebuff
 #define LukBuffOffset_ASMC 6 
 #define MovBuffOffset_ASMC 7
  
-#define SetBuffUnit(unitID, stat, amount) "SVAL s1 unitID; SVAL s3 stat; SVAL s4 amount; ASMC SetUnitDebuff_ASMC" 
-#define SetDebuffUnit(unitID, stat, amount) "SVAL s1 unitID; SVAL s3 stat; SVAL s4 (-amount); ASMC SetUnitDebuff_ASMC" 
+#define SetBuffUnit(unitID, stat, amount) "SVAL 0x1 unitID; SVAL 0x3 stat; SVAL 0x4 amount; ASMC SetUnitDebuff_ASMC" 
+#define SetDebuffUnit(unitID, stat, amount) "SVAL 0x1 unitID; SVAL 0x3 stat; SVAL 0x4 (-amount); ASMC SetUnitDebuff_ASMC" 
 
-#define BuffUnit(unitID, stat, amount) "SVAL s1 unitID; SVAL s3 stat; SVAL s4 amount; ASMC AddUnitDebuff_ASMC" 
-#define DebuffUnit(unitID, stat, amount) "SVAL s1 unitID; SVAL s3 stat; SVAL s4 amount; ASMC SubUnitDebuff_ASMC" 
+#define BuffUnit(unitID, stat, amount) "SVAL 0x1 unitID; SVAL 0x3 stat; SVAL 0x4 amount; ASMC AddUnitDebuff_ASMC" 
+#define DebuffUnit(unitID, stat, amount) "SVAL 0x1 unitID; SVAL 0x3 stat; SVAL 0x4 amount; ASMC SubUnitDebuff_ASMC" 
 
 // Overwrites all buffs/debuffs/rallies etc. 
-#define OverwriteBuffUnit(unitID, value1, value2) "SVAL s1 unitID; SVAL s3 value1; SVAL s4 value2; ASMC OverwriteUnitDebuff_ASMC"
+#define OverwriteBuffUnit(unitID, value1, value2) "SVAL 0x1 unitID; SVAL 0x3 value1; SVAL 0x4 value2; ASMC OverwriteUnitDebuff_ASMC"
 
 
 
@@ -48,6 +43,21 @@ WORD RequireDamageToDebuff
 ALIGN 4 
 EternalVanity_Link: 
 WORD EternalVanityID 
+
+// Init skills last the chapter; ProcessDebuffs must not tick them down.
+ALIGN 4
+InitSkillIDList:
+BYTE SpectrumInitID
+BYTE CleverInitID
+BYTE StrongInitID
+BYTE DeftInitID
+BYTE QuickInitID
+BYTE LuckyInitID
+BYTE SturdyInitID
+BYTE CalmInitID
+BYTE NimbleInitID
+BYTE 0
+ALIGN 4 
 
 
 SpecRallyAmount_Link: 
@@ -205,6 +215,7 @@ TeamDebuffTables:
   WORD OUDebuffTable
   }
   
+  #ifdef _FE8_
   {
 
   PUSH
@@ -287,6 +298,7 @@ TeamDebuffTables:
     WORD $0D $8591924
 
   }
+  #endif // _FE8_
 
   ALIGN 4
   setDebuffs:
@@ -318,12 +330,5 @@ WORD DebuffTableRam
 ALIGN 4 
 DebuffTableSize_Link: 
 WORD DebuffTableSize 
-
-
-
-
-#else // _FE8_
-  ERROR Suspend Expansion and Debuff hack is for FE8
-#endif // _FE8_
 
 #endif // DEBUFFS_HACK

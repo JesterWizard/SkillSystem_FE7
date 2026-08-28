@@ -43,7 +43,7 @@ SHORT $4770
 
 ALIGN 4 
 TurnCalcLoop_Silent: // Effects that do not pause the game 
-POIN ProcessDebuffs ArmorMarch_StartOfTurn VigorDanceReset ClearBwlRallies // Standalone things that loop through all units and do not pause the game 
+POIN ClearDebuffsOnNewChapter ProcessDebuffs ArmorMarch_StartOfTurn VigorDanceReset ClearBwlRallies // Standalone things that loop through all units and do not pause the game 
 WORD 0 
 
 

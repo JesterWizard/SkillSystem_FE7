@@ -8,6 +8,8 @@ mov r5, r0 @stat
 mov r4, r1 @unit
 mov r0, r4 @ unit 
 bl GetUnitDebuffEntry 
+cmp r0, #0
+beq ExitHp
 @hp/2 Debuff NOTE TO SELF: off of base only.
 
 ldr r1, =HalfHpBitOffset_Link
@@ -35,6 +37,8 @@ mov r5, r0 @stat
 mov r4, r1 @unit
 mov r0, r4 @ unit 
 bl GetUnitDebuffEntry 
+cmp r0, #0
+beq ExitStr
 @str/2 Debuff NOTE TO SELF: off of base only.
 ldr r1, =HalfStrBitOffset_Link
 ldr r1, [r1] 
@@ -60,6 +64,8 @@ mov r5, r0 @stat
 mov r4, r1 @unit
 mov r0, r4 @ unit 
 bl GetUnitDebuffEntry 
+cmp r0, #0
+beq ExitMag
 ldr r1, =HalfStrBitOffset_Link
 ldr r1, [r1] 
 bl CheckBit 

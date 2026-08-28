@@ -1,5 +1,6 @@
 .thumb
 	CpuSet           = 0x080BFA10|1
+	ChapterData      = 0x0202BBF8
 
 .global ClearAllDebuffs 
 .type ClearAllDebuffs, %function 
@@ -28,6 +29,25 @@ ClearAllDebuffs:
 
 BXR3:
 	bx r3
+.ltorg 
+
+@ Wipe leftover Init/Hone/Taker buffs when a new chapter's first player phase starts.
+.global ClearDebuffsOnNewChapter
+.type ClearDebuffsOnNewChapter, %function
+ClearDebuffsOnNewChapter:
+	push {lr}
+	ldr r0, =ChapterData
+	ldrh r1, [r0, #0x10]
+	cmp r1, #1
+	bne ClearDebuffsOnNewChapter.done
+	ldrb r1, [r0, #0xF]
+	cmp r1, #0
+	bne ClearDebuffsOnNewChapter.done
+	bl ClearAllDebuffs
+ClearDebuffsOnNewChapter.done:
+	mov r0, #0
+	pop {r1}
+	bx r1
 .ltorg 
 
 .global ClearUnitDebuffs 

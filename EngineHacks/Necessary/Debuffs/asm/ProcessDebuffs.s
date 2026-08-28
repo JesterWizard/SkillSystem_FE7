@@ -41,7 +41,8 @@ bx r3
 ProcessDebuffs: 
 push {r4-r7, lr} 
 mov r4, r8 
-push {r4} 
+mov r5, r9 
+push {r4, r5} 
 ldr r0, =ChapterData 
 ldrb r7, [r0, #0xF] @ phase / starting deployment ID 
 mov r3, #0x40 
@@ -66,11 +67,29 @@ beq UnitLoop
 
 mov r0, r4 
 bl GetUnitDebuffEntry
+cmp r0, #0
+beq UnitLoop
 mov r5,r0
+mov r9, r4 @ keep unit 
 mov r0, r4 @ unit 
 ldr r1, =EternalVanity_Link 
 ldr r1, [r1] 
 bl SkillTester 
+cmp r0, #0 
+bne HaveDepleteSkip 
+ldr r4, =InitSkillIDList 
+InitListLoop: 
+ldrb r1, [r4] 
+add r4, #1 
+cmp r1, #0 
+beq HaveDepleteSkip 
+mov r0, r9 
+push {r4} 
+bl SkillTester 
+pop {r4} 
+cmp r0, #0 
+beq InitListLoop 
+HaveDepleteSkip: 
 mov r4, r0 @ @ if true, do not deplete buffed stats 
 
 
@@ -208,8 +227,9 @@ bl PackData
 
 b UnitLoop
 DoneProcessDebuffs:
-pop {r4} 
+pop {r4, r5} 
 mov r8, r4 
+mov r9, r5 
 mov r0, #0 @ no blocking proc / animation 
 pop {r4-r7}
 pop {r1} 

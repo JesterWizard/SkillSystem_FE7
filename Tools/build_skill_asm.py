@@ -37,7 +37,20 @@ TURN_LOOP_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "TurnLoop" / "StartOfTurn_CalcLoop.s",
 ]
 STAT_GETTER_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "Bitpack.s",
+    ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "DebuffStat.s",
+    ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "HalfStatFunctions.s",
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "RallyStat.s",
+]
+DEBUFF_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "ClearDebuffs.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "DebuffGivenTableEntry.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "GetUnitDebuffEntry.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "InitDebuffs.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "ProcessDebuffs.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "Reload.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "SetDebuffs.s",
+    ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "SetUnitDebuffASMC.s",
 ]
 SUPPORT_POST_BATTLE_ASM = [
     ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "PostBattleSupports.s",
@@ -275,7 +288,8 @@ def main() -> int:
     hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
     turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
     stat_getter = [p for p in STAT_GETTER_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + [
+    debuffs = [p for p in DEBUFF_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]
     if args.force:
@@ -307,7 +321,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + [
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]:
         try:

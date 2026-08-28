@@ -1,20 +1,20 @@
 
+#ifndef ENABLE_BUFF_SKILLS
+#define ENABLE_BUFF_SKILLS
+#endif
+
 ALIGN 4 
 ShowBuffEvent: 
-SVAL s1 (-1) // active unit 
-//SVAL s3 1 // str // This event is called from asm that stores a value to s3 
-SVAL s4 0 // range (self) 
 ASMC BuffFx_ASMC 
-NoFade 
 ENDA 
 
-#include "dmp/TakerSkills.lyn.event" 
-#include "dmp/HoneSkills.lyn.event" 
-#include "dmp/OathSkills.lyn.event" 
-#include "dmp/RouseSkills.lyn.event" 
-#include "dmp/InitiativeSkills.lyn.event" 
-#include "dmp/OddFooted.lyn.event"
-#include "dmp/EvenFooted.lyn.event"
+#include "TakerSkills.lyn.event" 
+#include "HoneSkills.lyn.event" 
+#include "OathSkills.lyn.event" 
+#include "RouseSkills.lyn.event" 
+#include "InitiativeSkills.lyn.event" 
+#include "OddFooted.lyn.event"
+#include "EvenFooted.lyn.event"
 
 ALIGN 4 
 CleverInitAmount_Link: 

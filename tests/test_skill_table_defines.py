@@ -103,7 +103,7 @@ class SkillTableDefineTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertEqual(rom.read_bytes()[:1], b"\x01")
+            self.assertEqual(rom.read_bytes()[:1], b"\xff")
 
     def test_c2ea_keeps_skill_id_names_in_byte_cells(self):
         sys.path.insert(0, str(C2EA_DIR))

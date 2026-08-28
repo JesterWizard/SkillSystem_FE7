@@ -6,7 +6,7 @@
   mov lr, \reg
   .short 0xf800
 .endm
-.equ ActionStruct, 0x203A868 
+.equ ActionStruct, 0x0203A85C 
 .equ EventEngine, 0x800D07C
 .equ MemorySlot,0x30004B8
 .equ StrAnim, 0x01 
@@ -106,14 +106,6 @@ ldr r2, [r2]
 mov r0, r4                          @ debuff entry 
 bl PackData_Signed 
 
-ldr r3, =MemorySlot 
-mov r2, r8                          @ anim 
-str r2, [r3, #4*3]                  @ s3 as anim to show 
-
-ldr r0, =ShowBuffEvent 
-mov r1, #1                          @ EV_TYPE_CUTSCENE 
-blh EventEngine 
-
 EndTaker: 
 pop {r7} 
 mov r8, r7 
@@ -136,6 +128,8 @@ cmp	r3, #0x00
 beq	RetFalse
 
 @check if killed enemy
+cmp	r1, #0
+beq	RetFalse
 ldrb    r3, [r1,#0x13]              @currhp
 cmp	r3, #0
 bne	RetFalse

@@ -26,6 +26,8 @@ push {r4, lr}
 mov r4, r2 @ bit offset 
 mov r0, r1 @ unit 
 bl GetUnitDebuffEntry 
+cmp r0, #0
+beq DebuffAmountZero
 mov r1, r4 @ bit offset 
 ldr r2, =DebuffStatNumberOfBits_Link
 ldr r2, [r2] 
@@ -33,6 +35,12 @@ bl UnpackData_Signed
 pop {r4} 
 pop {r1} 
 bx r1 
+.ltorg 
+DebuffAmountZero:
+mov r0, #0
+pop {r4}
+pop {r1}
+bx r1
 .ltorg 
 @ 203F310
 .global prDebuffMag
