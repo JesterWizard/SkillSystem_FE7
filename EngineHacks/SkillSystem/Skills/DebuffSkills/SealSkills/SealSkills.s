@@ -1,4 +1,4 @@
-@hook at 802c088 with jumptohack
+@hook at FE7 08029AD0 (BattleApplyUnitUpdates) with jumptohack
 .thumb
 .equ SealSkillList, SkillTester+4
 .equ ExtraUnitData, SealSkillList+4
@@ -20,7 +20,7 @@ mov lr, r3
 b ApplySeals
 
 loc_2c0a4:
-ldr r0, =0x802c984                          @SaveSnagWallFromBattle
+ldr r0, =0x802A315                          @FE7 BattleApplyBallistaUpdates
 mov lr, r0
 mov r0, r4
 .short 0xf800

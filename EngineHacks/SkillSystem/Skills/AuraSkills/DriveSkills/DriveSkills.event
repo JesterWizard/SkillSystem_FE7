@@ -27,3 +27,15 @@ DriveStr:
 #include "DriveStr/DriveStr.lyn.event"
 POIN NewAuraSkillCheck
 WORD DriveStrID
+
+ALIGN 4
+DriveSkl:
+#include "DriveSkl/DriveSkl.lyn.event"
+POIN NewAuraSkillCheck
+WORD DriveSklID
+
+ALIGN 4
+DriveLuk:
+#include "DriveLuk/DriveLuk.lyn.event"
+POIN NewAuraSkillCheck
+WORD DriveLukID

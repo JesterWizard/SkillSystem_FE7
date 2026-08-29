@@ -8,9 +8,12 @@
 #include "Extensions/Hack Installation.txt"
 #include "EAstdlib.event"
 
-PUSH; ORG 0x3200C	
-	replaceWithHack(prNewActionApplication)
-POP
+// Do not hook FE8 ApplyUnitAction (0x0803200C).  On FE7U that address is
+// 16 bytes into StartUnitRescueInfoWindowsCore (0x08031FFC).  Patching it
+// crashes Rescue when target select opens the rescue info windows.
+// Vanilla actions (incl. Rescue = id 0x07) go through ApplyUnitActionFE7
+// at 0x0802F218 and the table at 0x0802F248.  This table stays in freespace
+// for SetUnitAction / high action ids.
 
 ALIGN 4
 prNewActionApplication:

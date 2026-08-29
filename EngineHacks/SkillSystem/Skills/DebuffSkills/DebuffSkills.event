@@ -1,7 +1,7 @@
 PUSH
 
 //Seal Skills
-ORG $2c088
+ORG $29AD0  // FE7 BattleApplyUnitUpdates (FE8 was $2c088)
 jumpToHack(SealSkills)
 
 POP

@@ -11,10 +11,11 @@ mov	r5, r1
 CheckName:
 ldr	r0,[r4]
 ldrh	r0,[r0]
-ldr	r1,=#0x815D48C
-lsl	r0,#2
-add	r0,r1
-ldr	r0,[r0]
+ldr	r1, =0x08012C61        @GetStringFromIndex (FE7)
+mov	lr, r1
+.short	0xf800
+cmp	r0, #0
+beq	Done
 ldrb	r1,[r0]
 cmp	r1,#0x41
 bne	Done

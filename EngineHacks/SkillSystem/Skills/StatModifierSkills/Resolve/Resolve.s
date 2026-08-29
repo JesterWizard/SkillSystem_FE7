@@ -39,6 +39,7 @@ mov r4,r0               @put back the stat
 
 GoBack:
 mov r0, r4
+GotResult:
 mov r1, r5
 pop {r4-r6,pc}
 

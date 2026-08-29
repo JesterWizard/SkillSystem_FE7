@@ -6,7 +6,7 @@
 
 ALIGN 4 
 DebuffRestorePerTurnAmount_Link:
-WORD 2 
+WORD 1
 
 ALIGN 4 
 BuffDepletePerTurnAmount_Link:

@@ -27,3 +27,15 @@ SpurRes:
 #include "SpurRes/SpurRes.lyn.event"
 POIN NewAuraSkillCheck
 WORD SpurResID
+
+ALIGN 4
+SpurSkl: 
+#include "SpurSkl/SpurSkl.lyn.event"
+POIN NewAuraSkillCheck
+WORD SpurSklID
+
+ALIGN 4
+SpurLuk: 
+#include "SpurLuk/SpurLuk.lyn.event"
+POIN NewAuraSkillCheck
+WORD SpurLukID

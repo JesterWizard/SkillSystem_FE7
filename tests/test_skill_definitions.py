@@ -76,8 +76,13 @@ class SkillDefinitionToggleTests(unittest.TestCase):
         resolved = _resolved_ids(text)
         expected = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
         self.assertEqual(resolved, expected)
-        self.assertEqual(resolved["EvenFootedID"], 1)
-        self.assertEqual(resolved["CantoID"], SKILL_OFF)
+        self.assertEqual(resolved["EvenFootedID"], SKILL_OFF)
+        self.assertEqual(resolved["AnathemaID"], SKILL_OFF)
+        self.assertEqual(resolved["EternalVanityID"], 1)
+        self.assertEqual(resolved["GutsID"], 2)
+        self.assertEqual(resolved["ResolveID"], 3)
+        self.assertEqual(resolved["SealDefID"], 4)
+        self.assertEqual(resolved["CantoID"], 252)
         self.assertEqual(resolved["AmischeID"], 199)
         self.assertEqual(resolved["ShadowgiftID"], 197)
         self.assertEqual(resolved["LuminaID"], 198)
@@ -115,7 +120,7 @@ class SkillDefinitionToggleTests(unittest.TestCase):
             src.write_text(event, encoding="ascii")
             result = _run_colorzcore(rom, src)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertEqual(rom.read_bytes()[:5], bytes([255, 255, 199, 43, 255]))
+            self.assertEqual(rom.read_bytes()[:5], bytes([252, 255, 199, 43, 255]))
 
 
 if __name__ == "__main__":

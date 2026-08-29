@@ -1,0 +1,25 @@
+ALIGN 4
+#include "KeepUp.lyn.event"
+
+// MakeMoveMapWithMov (0x19BE0) is the player/AI walk fill. After it returns,
+// drop tiles that only Keep Up's +2 could reach if they are outside the aura.
+// Veneer sits in the dead Mov-getter body after jumpToHack at 0x18B44 (8 bytes).
+PUSH
+ORG $18B4C
+KeepUpFillVeneer:
+BYTE $00 $4B $18 $47
+POIN KeepUpAfterMoveMap|1
+
+ORG $1B09E
+BL(KeepUpFillVeneer)
+ORG $1C4EC
+BL(KeepUpFillVeneer)
+ORG $3145C
+BL(KeepUpFillVeneer)
+ORG $375A2
+BL(KeepUpFillVeneer)
+ORG $39578
+BL(KeepUpFillVeneer)
+ORG $3989E
+BL(KeepUpFillVeneer)
+POP

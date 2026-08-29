@@ -208,6 +208,12 @@ ORG SkillIcon(SpurDefID)
 ORG SkillIcon(SpurResID)
 #incbin "SkillIcons/SpurRes.dmp"
 
+ORG SkillIcon(SpurSklID)
+#incbin "SkillIcons/WIP.dmp"
+
+ORG SkillIcon(SpurLukID)
+#incbin "SkillIcons/WIP.dmp"
+
 ORG SkillIcon(NihilID)
 #incbin "SkillIcons/Nihil.dmp"
 
@@ -652,8 +658,14 @@ ORG SkillIcon(DriveStrID)
 ORG SkillIcon(DriveMagID)
 #incbin "SkillIcons/DriveMag.dmp"
 
+ORG SkillIcon(DriveSklID)
+#incbin "SkillIcons/WIP.dmp"
+
 ORG SkillIcon(DriveSpdID)
 #incbin "SkillIcons/DriveSpd.dmp"
+
+ORG SkillIcon(DriveLukID)
+#incbin "SkillIcons/WIP.dmp"
 
 ORG SkillIcon(DriveDefID)
 #incbin "SkillIcons/DriveDef.dmp"

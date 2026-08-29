@@ -28,10 +28,10 @@ class SkillIndexTests(unittest.TestCase):
     def test_live_categories_match_installer(self):
         self.assertIn("AISkills", self.live)
         self.assertIn("PreBattleSkills", self.live)
+        self.assertIn("AuraSkills", self.live)
         self.assertIn("StandaloneSkills/Bargain", self.live)
         self.assertIn("StandaloneSkills/Lunge", self.live)
         self.assertIn("StandaloneSkills", self.dead)
-        self.assertIn("AuraSkills", self.dead)
         self.assertIn("PostActionSkills", self.dead)
         self.assertNotIn("charge_table.event", self.live)
         self.assertNotIn("charge_table.event", self.dead)
@@ -49,7 +49,14 @@ class SkillIndexTests(unittest.TestCase):
         self.assertEqual(row["id"], "OFF")
         self.assertEqual(row["off"], "yes")
         self.assertEqual(row["category"], "AuraSkills")
-        self.assertEqual(row["live"], "no")
+        self.assertEqual(row["live"], "yes")
+
+    def test_eternal_vanity_is_live_buff(self):
+        row = self.rows["EternalVanityID"]
+        self.assertEqual(row["id"], "1")
+        self.assertEqual(row["off"], "no")
+        self.assertEqual(row["category"], "BuffSkills")
+        self.assertEqual(row["live"], "yes")
 
     def test_blood_tide_is_skill_off(self):
         row = self.rows["BloodTideID"]
@@ -68,7 +75,7 @@ class SkillIndexTests(unittest.TestCase):
         by_name = lookup("Provoke")
         by_macro = lookup("AnathemaID")
         self.assertEqual(by_name["live"], "yes")
-        self.assertEqual(by_macro["live"], "no")
+        self.assertEqual(by_macro["live"], "yes")
         self.assertIsNone(lookup("NotARealSkill"))
 
     def test_skill_cli_prints_a_live_row(self):

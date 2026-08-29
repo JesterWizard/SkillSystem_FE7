@@ -1,180 +1,180 @@
-.equ ArmorMarchID, AuraSkillCheck+4
-.equ SkillTester, ArmorMarchID+4
-.equ ArmorMarchList, SkillTester+4
 .thumb
+.macro blh to, reg=r3
+  ldr \reg, =\to
+  mov lr, \reg
+  .short 0xf800
+.endm
 
-.set gChapterData,                 0x0202BBF8
-.set GetUnit,                      0x08018d0c
-	@ arguments:
-		@r0 = unit deployment id
-	@returns:
-		@r0 = unit pointer
+.equ ChapterData, 0x0202BBF8
+.equ GetUnit,     0x08018D0C
 
+.global ArmorMarch_StartOfTurn
+.type ArmorMarch_StartOfTurn, %function
 
+ArmorMarch_StartOfTurn:
+    push {r4-r7, lr}
+    mov r0, r8
+    push {r0}
 
-ArmorMarch_StartOfTurn: 
-push	{r4-r6, lr}
-@unset everyone
-mov	r4,#1
-unsetLoop:
+    @ 1. Unset the ArmorMarch bit for all units of the current phase
+    ldr r0, =ChapterData
+    ldrb r4, [r0, #0xF]        @ phase: 0x00 (Player), 0x40 (NPC), 0x80 (Enemy)
+    mov r5, #0x40
+    add r5, r4                 @ end deployment ID for this phase
+    cmp r4, #0
+    bne UnsetPhaseLoop
+    add r4, #1                 @ player units start at 1
 
-@unset the bit for this skill in the debuff table entry for the unit
-mov r0,r4
-ldr r2,=GetUnit
-mov lr,r2
-.short 0xf800
-cmp r0,#0
-beq unsetReit
-bl GetUnitDebuffEntry 
-ldr r1, =ArmorMarchBitOffset_Link
-ldr r1, [r1] 
-bl UnsetBit 
-unsetReit:
-add	r4,#1
-cmp	r4,#0xB3
-beq	allUnset
-b	unsetLoop
+UnsetPhaseLoop:
+    cmp r4, r5
+    bge DoneUnset
+    mov r0, r4
+    blh GetUnit
+    cmp r0, #0
+    beq NextUnsetUnit
+    bl GetUnitDebuffEntry
+    cmp r0, #0
+    beq NextUnsetUnit
+    ldr r1, =ArmorMarchBitOffset_Link
+    ldr r1, [r1]
+    bl UnsetBit
+NextUnsetUnit:
+    add r4, #1
+    b UnsetPhaseLoop
 
-allUnset:
-ldr	r2,=gChapterData
-ldrb    r4,[r2,#0xF]    @phase
-add	r4,#1
+DoneUnset:
+    @ 2. Loop over each unit in the current phase and check if it gets the Armor March buff
+    ldr r0, =ChapterData
+    ldrb r4, [r0, #0xF]        @ phase: 0x00, 0x40, 0x80
+    mov r5, #0x40
+    add r5, r4                 @ end deployment ID
+    cmp r4, #0
+    bne UnitPhaseLoop
+    add r4, #1                 @ player units start at 1
 
-Loop:
-mov	r0,r4
-ldr     r1,=GetUnit     @get char data
-mov	lr,r1
-.short	0xf800
-mov     r5,r0           @r5 = pointer to unit in ram
+UnitPhaseLoop:
+    cmp r4, r5
+    blt ContinueUnitPhaseLoop
+    b DoneTurnLoop
 
-@check if there is a unit
-cmp	r5,#0
-beq	Next
-ldr	r0,[r5]
-cmp	r0,#0
-beq	Next
-ldrb	r0,[r5,#0x0C]
-mov     r1,#0xC         @ dead or undeployed 
-tst r0, r1 
-bne	Next
+ContinueUnitPhaseLoop:
+    mov r0, r4
+    blh GetUnit
+    mov r6, r0                 @ r6 = current unit struct (Unit*)
+    cmp r6, #0
+    beq NextUnit
 
-@check if this unit is an armor
-ldr	r0,ArmorMarchList
-ldr	r1,[r5,#0x4]
-ldrb    r1,[r1,#0x4]    @class id
-armorLoop:
-ldrb	r2,[r0]
-cmp	r2,#0
-beq	notArmor
-cmp	r2,r1
-beq	Armor
-add	r0,#1
-b	armorLoop
+    bl IsUnitOnField
+    cmp r0, #0
+    beq NextUnit
 
-Armor:
-@check for the skill from nearby units
-ldr	r0,AuraSkillCheck
-mov	lr,r0
-mov     r0,r5           @unit to check
-ldr	r1,ArmorMarchID
-mov     r2,#0           @can_trade
-mov     r3,#1           @range
-.short	0xf800
-mov	r6,r0
-cmp	r6,#0
-bne	Set
+    @ Check if this unit qualifies for Armor March:
+    @ Case 1: Unit has ArmorMarchID skill AND is adjacent to an ally armor
+    mov r0, r6
+    ldr r1, =ArmorMarchID_Link
+    ldr r1, [r1]
+    bl SkillTester
+    cmp r0, #0
+    beq CheckCase2
 
-notArmor:
-@check if the unit has the skill
-ldr	r0,SkillTester
-mov	lr,r0
-mov     r0,r5           @unit to check
-ldr	r1,ArmorMarchID
-.short	0xf800
-mov	r6,r0
-cmp	r6,#0
-beq	Set
+    @ Unit has ArmorMarchID. Check if any adjacent ally is an armor.
+    mov r0, r6
+    mov r1, #0                 @ allyOption: 0 (allies / same faction)
+    mov r2, #1                 @ range: 1 (adjacent)
+    bl GetUnitsInRange
+    cmp r0, #0
+    beq CheckCase3             @ No adjacent allies, check KeepUp
 
-@get nearby units
-ldr	r0,AuraSkillCheck
-mov	lr,r0
-mov     r0,r5           @unit to check
-mov	r1,#0
-mov     r2,#0           @can_trade
-mov     r3,#1           @range
-.short	0xf800
+    mov r7, r0                 @ r7 = pointer to unit range buffer
+CheckAdjacentArmorLoop:
+    ldrb r0, [r7]
+    cmp r0, #0
+    beq CheckCase3             @ No adjacent armor found, check KeepUp
+    add r7, #1
+    blh GetUnit
+    cmp r0, #0
+    beq CheckAdjacentArmorLoop
+    @ Check if ally's class is in ArmorMarchList
+    ldr r1, [r0, #4]           @ pClassData
+    cmp r1, #0
+    beq CheckAdjacentArmorLoop
+    ldrb r1, [r1, #4]          @ class ID
+    ldr r2, =ArmorMarchList
+CheckClassLoop1:
+    ldrb r3, [r2]
+    cmp r3, #0
+    beq CheckAdjacentArmorLoop
+    cmp r3, r1
+    beq ApplyArmorMarch        @ Found adjacent armor ally! Apply buff!
+    add r2, #1
+    b CheckClassLoop1
 
-@check if any nearby unit is an armor
-ldr     r6,=#0x202B256  @bugger for the nearby units
-checkArmorsLoop:
-ldrb	r0,[r6]
-cmp	r0,#0
-beq	noArmors
-ldr     r1,=GetUnit     @get char data
-mov	lr,r1
-.short  0xf800          @r0 = pointer to unit in ram
-mov	r3,r0
-ldr	r0,ArmorMarchList
-ldr	r1,[r3,#0x4]
-ldrb    r1,[r1,#0x4]    @class id
-armorLoop2:
-ldrb	r2,[r0]
-cmp	r2,#0
-beq	checkArmorsLoopNext
-cmp	r2,r1
-beq	armorFound
-add	r0,#1
-b	armorLoop2
-checkArmorsLoopNext:
-add	r6,#1
-b	checkArmorsLoop
+CheckCase2:
+    @ Case 2: Unit is an armor AND is adjacent to an ally with ArmorMarchID skill
+    ldr r0, [r6, #4]           @ pClassData
+    cmp r0, #0
+    beq CheckCase3
+    ldrb r1, [r0, #4]          @ unit class ID
+    ldr r2, =ArmorMarchList
+CheckUnitIsArmorLoop:
+    ldrb r3, [r2]
+    cmp r3, #0
+    beq CheckCase3             @ Unit is not an armor class, check KeepUp
+    cmp r3, r1
+    beq UnitIsArmor
+    add r2, #1
+    b CheckUnitIsArmorLoop
 
-noArmors:
-mov	r6,#0
-b	Set
+UnitIsArmor:
+    @ Unit is an armor. Check if any adjacent ally has ArmorMarchID.
+    mov r0, r6
+    mov r1, #0                 @ allyOption: 0 (allies)
+    mov r2, #1                 @ range: 1 (adjacent)
+    bl GetUnitsInRange
+    cmp r0, #0
+    beq CheckCase3             @ No adjacent allies, check KeepUp
 
-armorFound:
-mov	r6,#1
+    mov r7, r0                 @ r7 = pointer to unit range buffer
+CheckAdjacentSkillLoop:
+    ldrb r0, [r7]
+    cmp r0, #0
+    beq CheckCase3             @ No adjacent ally with skill, check KeepUp
+    add r7, #1
+    blh GetUnit
+    cmp r0, #0
+    beq CheckAdjacentSkillLoop
+    ldr r1, =ArmorMarchID_Link
+    ldr r1, [r1]
+    bl SkillTester
+    cmp r0, #0
+    bne ApplyArmorMarch        @ Found adjacent ally with ArmorMarch! Apply buff!
+    b CheckAdjacentSkillLoop
 
+CheckCase3:
+    @ Keep Up is live in prArmorMarchCheck, not a start-of-turn bit.
+    b NextUnit
 
-Set:
-@set or unset the bit for this skill in the debuff table entry for the unit
-mov r0,r4
-ldr r2,=GetUnit
-mov lr,r2
-.short 0xf800
-bl GetUnitDebuffEntry 
-ldr r1, =ArmorMarchBitOffset_Link
-ldr r1, [r1] 
-cmp     r6,#0           @check if the skill check was successful or not
-beq	Unset
-bl SetBit 
-b	Next
+ApplyArmorMarch:
+    mov r0, r6                 @ r6 = current unit (Unit*)
+    bl GetUnitDebuffEntry
+    cmp r0, #0
+    beq NextUnit
+    ldr r1, =ArmorMarchBitOffset_Link
+    ldr r1, [r1]
+    bl SetBit
+    b NextUnit
 
-Unset:
-bl UnsetBit 
+NextUnit:
+    add r4, #1
+    b UnitPhaseLoop
 
-Next:
-add	r4,#1
-cmp	r4,#0x3F
-beq	End
-cmp	r4,#0x55
-beq	End
-cmp	r4,#0xB3
-beq	End
-b	Loop
-
-
-End:
-mov r0, #0              @ no blocking proc / animation 
-pop	{r4-r6}
-pop	{r1}
-bx	r1
+DoneTurnLoop:
+    mov r0, #0                 @ no blocking proc / animation
+    pop {r0}
+    mov r8, r0
+    pop {r4-r7}
+    pop {r1}
+    bx r1
 
 .align
 .ltorg
-AuraSkillCheck:
-@POIN AuraSkillCheck
-@WORD ArmorMarchID
-@POIN SkillTester
-@POIN ArmorMarchList

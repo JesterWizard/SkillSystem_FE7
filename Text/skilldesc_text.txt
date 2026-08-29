@@ -286,6 +286,14 @@ take -4 physical damage.[X]
 Spur Resistance: Adjacent allies[N]
 take -4 magical damage.[X]
 
+## SD_SpurSkl
+Spur Skill: Adjacent allies[NL]
+gain +4 skill in combat.[X]
+
+## SD_SpurLuk
+Spur Luck: Adjacent allies[NL]
+gain +4 luck in combat.[X]
+
 ## SD_Nihil
 Nihil: Cancels the opponent's[N]
 skills in combat.[X]
@@ -441,31 +449,31 @@ when on terrain with effects.[X]
 
 ## SD_SealStr
 Seal Strength: Debuff opponent's Str[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealSkl
 Seal Skill: Debuff opponent's Skl[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealSpd
 Seal Speed: Debuff opponent's Spd[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealLuk
 Seal Luck: Debuff opponent's Luck[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealDef
 Seal Defense: Debuff opponent's Def[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealRes
 Seal Resistance: Debuff opponent's Res[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_SealMag
 Seal Magic: Debuff opponent's Mag[N]
-by 6 after combat. (Recover 2/turn)[X]
+by 6 after combat. (Recover 1/turn)[X]
 
 ## SD_Gamble
 Gamble: A reckless attack with[N]
@@ -1521,17 +1529,18 @@ your turn, give adjacent allies[N]
 up to +3 Mov.[X]
 
 ## SD_EternalVanity
-Eternal Vanity: Your temporary[N]
-stat buffs do not deplete.[X]
+Eternal Vanity: Your buffed stats[N]
+do not deplete each turn.[X]
 
 ## SD_Guts
-Guts: +5 Str while afflicted[N]
-by any status condition.[X]
+Guts: +5 Str while under any[N]
+status condition. (Includes[N]
+dancer rings.)[X]
 
 ## SD_StrongConstitution 
-Strong Constitution: +5[N]
-Def/Res while afflicted by[N]
-any status condition.[X]
+Strong Constitution: +5 Def/Res[N]
+while under any status condition.[N]
+(Includes dancer rings.)[X]
 
 ## SD_ShrewdPotential
 Shrewd Potential: Stat Boosters[N]

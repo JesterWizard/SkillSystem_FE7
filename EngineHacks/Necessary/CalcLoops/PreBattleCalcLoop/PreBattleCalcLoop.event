@@ -44,6 +44,9 @@ POIN AirRaidSkillCheck
 POIN CriticalCheck
 POIN LethalitySkill NonGBALethalitySkill
 POIN Gamble
+POIN Demoiselle Gentilhomme MaleficAura Intimidate Inspiration DivinelyInspiring Charm Charisma VoiceOfPeace Tantivy Focus Anathema Hex LilysPoise UpWithArch Solidarity Daunt BloodTide WhitePool NightTide Infiltrator Armorboost Horseguard Skyguard
+POIN SpurStr SpurMag SpurSpd SpurDef SpurRes SpurSkl SpurLuk
+POIN DriveStr DriveMag DriveSpd DriveDef DriveRes DriveSkl DriveLuk
 POIN 0
 
 #define AuraSkillEntry(skillID) "PUSH; ORG AuraSkillTable + skillID; BYTE 0x1; POP"
@@ -54,6 +57,38 @@ FILL 256
 AuraSkillEntry(NiceThighsID)
 AuraSkillEntry(AmaterasuID)
 AuraSkillEntry(BondID)
+AuraSkillEntry(AnathemaID)
+AuraSkillEntry(BloodTideID)
+AuraSkillEntry(CharismaID)
+AuraSkillEntry(CharmID)
+AuraSkillEntry(DauntID)
+AuraSkillEntry(DemoiselleID)
+AuraSkillEntry(DivinelyInspiringID)
+AuraSkillEntry(DriveStrID)
+AuraSkillEntry(DriveMagID)
+AuraSkillEntry(DriveSklID)
+AuraSkillEntry(DriveSpdID)
+AuraSkillEntry(DriveLukID)
+AuraSkillEntry(DriveDefID)
+AuraSkillEntry(DriveResID)
+AuraSkillEntry(GentilhommeID)
+AuraSkillEntry(HexID)
+AuraSkillEntry(InspirationID)
+AuraSkillEntry(IntimidateID)
+AuraSkillEntry(LilysPoiseID)
+AuraSkillEntry(MaleficAuraID)
+AuraSkillEntry(NightTideID)
+AuraSkillEntry(SolidarityID)
+AuraSkillEntry(SpurStrID)
+AuraSkillEntry(SpurMagID)
+AuraSkillEntry(SpurSklID)
+AuraSkillEntry(SpurSpdID)
+AuraSkillEntry(SpurLukID)
+AuraSkillEntry(SpurDefID)
+AuraSkillEntry(SpurResID)
+AuraSkillEntry(VoiceOfPeaceID)
+AuraSkillEntry(WhitePoolID)
+AuraSkillEntry(BlueFlameID)
 
 PUSH
 ORG 0x28484 //FE7 -> FE8 0x2a3f8

@@ -102,7 +102,7 @@ WORD LilysPoiseID
 ALIGN 4
 UpWithArch:
 #include "UpWithArch/UpWithArch.lyn.event"
-POIN NewAuraSkillCheck
+POIN AuraSkillCheck
 WORD UpWithArchID
 
 ALIGN 4
@@ -144,7 +144,8 @@ POIN SkillTester
 POIN GetUnitsInRange
 WORD InfiltratorID
 
-//#include "ArmorMarch/ArmorMarch.event"
+#include "ArmorMarch/ArmorMarch.event"
+#include "KeepUp/KeepUp.event"
 
 ALIGN 4
 BlueFlameAura:
@@ -152,19 +153,4 @@ BlueFlameAura:
 POIN NewAuraSkillCheck
 WORD BlueFlameID
 
-ALIGN 4
-KeepUp:
-//#include "KeepUp/KeepUp.lyn.event"
-POIN NewAuraSkillCheck
-POIN SkillTester
-//POIN ArmorMarchList
-POIN IndoorTerrainList
-//POIN ForagerList
-//WORD KeepUpID
-WORD IndoorMarchID
-WORD NatureRushID
-WORD CantoID
-WORD CantoPlusID
-
 #include "ClassTypeSkills/ClassTypeSkills.event"
-

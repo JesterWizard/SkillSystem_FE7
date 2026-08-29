@@ -2,8 +2,11 @@
 
 
 ALIGN 4
-prArmorMarchCheck: // Armor March aura bits are not installed; pass the stat through
-SHORT $4770
+prArmorMarchCheck:
+#include "ArmorMarch/armormarchcheck.lyn.event"
+ALIGN 4
+ArmorMarchBoost:
+WORD 2
 
 ALIGN 4
 #include "DefiantSkills/DefiantSkills.event"
