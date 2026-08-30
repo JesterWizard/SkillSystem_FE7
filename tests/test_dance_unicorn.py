@@ -346,12 +346,19 @@ class DanceUnicornTests(unittest.TestCase):
         self.assertEqual(result["parent_lock"], 0)
         self.assertEqual(result["child_attached"], 0)
 
+    def test_vanilla_fe7_dance_usability_writes_item_9d(self):
+        clean = ROOT / "FE7_clean.gba"
+        if not clean.is_file():
+            raise unittest.SkipTest("FE7_clean.gba missing")
+        # 0x08022074: mov r0, #0x9D
+        self.assertEqual(clean.read_bytes()[0x22074:0x22076], b"\x9d\x20")
+
     def test_fe7_usability_hook_executes_for_skill_at_fe7_entry(self):
         result = self._run_usability(
             skill_present=True, class_attributes=0
         )
         self.assertEqual(result["result"], 1)
-        self.assertEqual(result["status"], 0xA5)
+        self.assertEqual(result["status"], 0x9D)
         self.assertEqual(result["calls"], 2)
 
     def test_fe7_usability_rejects_non_dancer_without_skill(self):

@@ -49,11 +49,14 @@ cmp r0,#0
 beq ReturnFalse
 
 CheckTargetList:
+@ FE7 dummy Dance item is 0x9D (vanilla 0x08022074). 0xA5 is FE8.
 ldr r1,=gBmSt
-mov r0,#0xA5
+mov r0,#0x9D
 strh r0,[r1,#0x2C]
 mov r0,r4
-blh GetDancerTargetResult,r4 
+blh GetDancerTargetResult,r4
+lsl r0,r0,#24
+lsr r0,r0,#24
 b GoBack
 
 ReturnFalse:

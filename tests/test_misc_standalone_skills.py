@@ -7,6 +7,7 @@ stubbed by the harness; these tests do not assign skills to units.
 import re
 import struct
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from typing import List, Optional
@@ -870,6 +871,146 @@ class RallyChaosSourceTests(unittest.TestCase):
         text = RALLYCHAOS.read_text(encoding='utf-8')
         self.assertIn('mov r0, #1', text)
         self.assertIn('RallyCommandEffect_apply', text)
+        self.assertNotIn('bl StartBuffFx', text)
+        self.assertNotIn('bl GetUnitsInRange', text)
+
+
+class RallyChaosExecutionTests(unittest.TestCase):
+    """RallyChaosFunc: random bit on self and same-faction units within range 2.
+
+    NextRN_N / GetUnit are blh (0xF800). RallyCommandEffect_apply is stubbed
+    to OR r1 into unit+0x30 so the test can see who was buffed.
+    """
+
+    GET_UNIT = 0x08018D0D
+    NEXT_RN = 0x08000E31
+    APPLY = 0x0800F001
+    STOP = 0x08FFFFF0
+    SP = 0x03007F00
+    UNIT_STRIDE = 0x48
+    UNITS = 0x02010000
+    CHAR = 0x02018000
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            from unicorn import Uc, UC_ARCH_ARM, UC_HOOK_CODE, UC_MODE_THUMB
+            from unicorn.arm_const import (
+                UC_ARM_REG_LR,
+                UC_ARM_REG_PC,
+                UC_ARM_REG_R0,
+                UC_ARM_REG_R1,
+                UC_ARM_REG_SP,
+            )
+        except ImportError as exc:
+            raise unittest.SkipTest(f"unicorn unavailable: {exc}") from exc
+        cls.Uc = Uc
+        cls.UC_ARCH_ARM = UC_ARCH_ARM
+        cls.UC_HOOK_CODE = UC_HOOK_CODE
+        cls.UC_MODE_THUMB = UC_MODE_THUMB
+        cls.UC_ARM_REG_LR = UC_ARM_REG_LR
+        cls.UC_ARM_REG_PC = UC_ARM_REG_PC
+        cls.UC_ARM_REG_R0 = UC_ARM_REG_R0
+        cls.UC_ARM_REG_R1 = UC_ARM_REG_R1
+        cls.UC_ARM_REG_SP = UC_ARM_REG_SP
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                src = Path(tmp) / "RallyChaos_test.s"
+                text = RALLYCHAOS.read_text(encoding="utf-8").replace(
+                    "bl RallyCommandEffect_apply",
+                    "blh 0x0800F001",
+                )
+                src.write_text(text, encoding="utf-8")
+                cls.code = assemble(src)
+                cls.offs = symbol_offsets(src)
+        except Exception as extra:
+            raise unittest.SkipTest(f"thumb harness unavailable: {extra}") from extra
+
+    def _unit(self, uid: int) -> int:
+        return self.UNITS + uid * self.UNIT_STRIDE
+
+    def _run(self, rn: int, caster: int, units: dict) -> dict:
+        from unicorn import UcError
+
+        uc = self.Uc(self.UC_ARCH_ARM, self.UC_MODE_THUMB)
+        uc.mem_map(CODE_BASE, (len(self.code) + 0xFFF) & ~0xFFF)
+        uc.mem_write(CODE_BASE, self.code)
+        uc.mem_map(0x02000000, 0x20000)
+        uc.mem_map(0x03000000, 0x10000)
+        uc.mem_write(self.CHAR, b"\x01" * 8)
+        lookup = {}
+        for uid, spec in units.items():
+            addr = self._unit(uid)
+            buf = bytearray(self.UNIT_STRIDE)
+            struct.pack_into("<I", buf, 0, self.CHAR)
+            buf[0x0B] = uid
+            struct.pack_into("<I", buf, 0xC, spec.get("state", 0))
+            buf[0x10] = spec["x"]
+            buf[0x11] = spec["y"]
+            buf[0x30] = 0
+            uc.mem_write(addr, bytes(buf))
+            lookup[uid] = addr
+
+        def on_code(uc_, addr, _size, _user_data):
+            if struct.unpack("<H", bytes(uc_.mem_read(addr, 2)))[0] != 0xF800:
+                return
+            target = uc_.reg_read(self.UC_ARM_REG_LR) & ~1
+            if target == (self.NEXT_RN & ~1):
+                uc_.reg_write(self.UC_ARM_REG_R0, rn)
+            elif target == (self.GET_UNIT & ~1):
+                uid = uc_.reg_read(self.UC_ARM_REG_R0) & 0xFF
+                uc_.reg_write(self.UC_ARM_REG_R0, lookup.get(uid, 0))
+            elif target == (self.APPLY & ~1):
+                unit = uc_.reg_read(self.UC_ARM_REG_R0)
+                bit = uc_.reg_read(self.UC_ARM_REG_R1) & 0xFF
+                cur = uc_.mem_read(unit + 0x30, 1)[0]
+                uc_.mem_write(unit + 0x30, bytes([cur | bit]))
+            else:
+                raise AssertionError(f"unexpected blh {target:08X}")
+            ret = (addr + 2) | 1
+            uc_.reg_write(self.UC_ARM_REG_LR, ret)
+            uc_.reg_write(self.UC_ARM_REG_PC, ret)
+
+        uc.hook_add(self.UC_HOOK_CODE, on_code)
+        uc.reg_write(self.UC_ARM_REG_SP, self.SP)
+        uc.reg_write(self.UC_ARM_REG_LR, self.STOP | 1)
+        uc.reg_write(self.UC_ARM_REG_R0, self._unit(caster))
+        try:
+            uc.emu_start(
+                (CODE_BASE + self.offs["RallyChaosFunc"]) | 1,
+                self.STOP,
+                timeout=10_000_000,
+                count=2_000_000,
+            )
+        except UcError as exc:
+            pc = uc.reg_read(self.UC_ARM_REG_PC)
+            raise AssertionError(f"Unicorn fault at {pc:08X}: {exc}") from exc
+        out = {}
+        for uid in units:
+            out[uid] = uc.mem_read(self._unit(uid) + 0x30, 1)[0]
+        return out
+
+    def test_applies_to_self_and_ally_at_range_2(self):
+        got = self._run(
+            0,
+            1,
+            {
+                1: {"x": 5, "y": 5},
+                2: {"x": 5, "y": 7},
+                3: {"x": 5, "y": 8},
+                4: {"x": 6, "y": 5, "state": 0x04},
+                0x80: {"x": 5, "y": 6},
+            },
+        )
+        self.assertEqual(got[1], 1)
+        self.assertEqual(got[2], 1)
+        self.assertEqual(got[3], 0)
+        self.assertEqual(got[4], 0)
+        self.assertEqual(got[0x80], 0)
+
+    def test_rn_3_writes_bit_8(self):
+        got = self._run(3, 1, {1: {"x": 1, "y": 1}})
+        self.assertEqual(got[1], 8)
 
 
 class IdentityMugExecutionTests(unittest.TestCase):
