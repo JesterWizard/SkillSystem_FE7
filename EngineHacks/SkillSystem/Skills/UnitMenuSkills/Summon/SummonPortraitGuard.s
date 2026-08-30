@@ -92,27 +92,41 @@ SummonPortraitGuard_Out:
 	.short 0xf800
 	cmp r0,#0
 	beq SummonPortraitGuard_Keep
-	ldr r1,IdentityRamByte
-	ldrb r0,[r1]
-	cmp r0,#3
+	ldr r0,IdentityProblemsMugs
+	bl CountMugs
+	cmp r0,#0
+	beq SummonPortraitGuard_Keep
+	mov r1,r0
+	ldr r2,IdentityRamByte
+	ldrb r0,[r2]
+	cmp r0,r1
 	blo SummonPortraitGuard_IdMug
-	mov r0,#3
+	mov r0,r1
 	ldr r3,=NextRN_N
 	mov lr,r3
-	mov r1,r1
+	nop
+	nop
+	nop
+	nop
 	.short 0xf800
-	ldr r1,IdentityRamByte
-	strb r0,[r1]
+	ldr r2,IdentityRamByte
+	strb r0,[r2]
 SummonPortraitGuard_IdMug:
 	ldr r1,IdentityProblemsMugs
 	ldrb r5,[r1,r0]
 	b SummonPortraitGuard_Keep
 
 SummonPortraitGuard_Quantum:
-	mov r0,#8
+	ldr r0,IdentityMugs
+	bl CountMugs
+	cmp r0,#0
+	beq SummonPortraitGuard_Keep
 	ldr r3,=NextRN_N
 	mov lr,r3
-	mov r1,r1
+	nop
+	nop
+	nop
+	nop
 	.short 0xf800
 	ldr r1,IdentityMugs
 	ldrb r5,[r1,r0]
@@ -125,6 +139,19 @@ SummonPortraitGuard_HaveMug:
 	bx r1
 
 SummonPortraitGuard_Return:
+	bx lr
+
+@ r0 = byte list. Returns entry count (stops at 0).
+CountMugs:
+	mov r1, r0
+	mov r0, #0
+CountMugsLoop:
+	ldrb r2, [r1, r0]
+	cmp r2, #0
+	beq CountMugsDone
+	add r0, #1
+	b CountMugsLoop
+CountMugsDone:
 	bx lr
 
 .align

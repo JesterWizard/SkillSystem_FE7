@@ -2,9 +2,10 @@
 #define MODULAR_GETTER_COMMON_EVENT
 
 prHalveIfRescuing:
-	rIfUnitHasState(US_RESCUING)
-		rIfUnitHasNotSkill(SaviorID)
-			rHalved
+#include "_asm/HalveIfRescuing.lyn.event"
+POIN SkillTester
+WORD SaviorID
+ALIGN 4
 
 prHalveIfCapturing:
 	#incbin "_asm/HalveIfCapturing.bin"

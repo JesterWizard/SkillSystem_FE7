@@ -104,6 +104,13 @@ class StatScreenBoostColorTests(unittest.TestCase):
         self.assertRegex(src, r"draw_con_bar_at\s+24,\s*3")
         self.assertNotRegex(src, r"draw_con_number_at")
 
+    def test_status_duration_uses_fe7_tilemap(self):
+        src = MSS_DEFS.read_text(encoding="utf-8")
+        macro = _macro(src, "draw_status_text_at,")
+        self.assertIn("tile_origin", macro)
+        self.assertIn(r"\tile_x+7", macro)
+        self.assertNotIn("0x2003CA2", macro)
+
 
 class NegativeModifierColourTests(unittest.TestCase):
     """A signed three-way compare, not equal/not-equal, in every number macro."""

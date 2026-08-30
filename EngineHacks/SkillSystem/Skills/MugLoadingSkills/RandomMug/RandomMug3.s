@@ -3,11 +3,11 @@
 .equ IdentityProblemsID, RandomMugID+4
 .equ IdentityRamByte, IdentityProblemsID+4
 .equ IdentityProblemsMugs, IdentityRamByte+4
+.equ NextRN_N, 0x08000E31
 
 .thumb
-@ Edited to fit the mug loading calculation loop. - Snek
 @ r0 = this control code.
-push { r4, lr }
+push { r4, r5, lr }
 mov r4, r0
 
 ldr	r0,=#0xFFFF
@@ -22,18 +22,16 @@ ldr	r0,=#0xFFE0
 cmp	r4,r0
 beq	GetRandom2
 
-b End                   @ This is neither control code. Return 0.
-
+b End
 
 CurrentChar:
 ldr	r0,=#0x3004690
 ldr	r0,[r0]
 cmp	r0,#0x00
-beq	NoChar
+beq	End
 
-Condition:
 ldr	r1,RandomMugID
-ldr     r2,SkillTester  @test for skill
+ldr     r2,SkillTester
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0x01
@@ -42,7 +40,7 @@ beq	GetRandom
 ldr	r0,=#0x3004690
 ldr	r0,[r0]
 ldr	r1,IdentityProblemsID
-ldr     r2,SkillTester  @test for skill
+ldr     r2,SkillTester
 mov	r14,r2
 .short	0xF800
 cmp	r0,#0x00
@@ -50,42 +48,62 @@ beq	End
 b	GetRandom2
 
 GetRandom:
-ldr	r0,=#0x8000E04
-mov	lr,r0
-.short  0xF800          @ Get RN
-GetMug:
+ldr	r0,MugList
+bl	CountMugList
+cmp	r0,#0
+beq	End
+ldr	r3,=NextRN_N
+mov	lr,r3
+nop
+nop
+nop
+nop
+.short	0xF800
 ldr	r2,MugList
-ldrb	r4,[r2,r0]
-ldr	r2,=#0x100
-add	r4,r2
-b Return                @ Return this mug
+ldrb	r0,[r2,r0]
+b Return
 
 GetRandom2:
-ldr	r0,=#0x8000E04
-mov	lr,r0
-.short  0xF800          @ Get RN
-
-mov	r1,r0
-
-cmp	r1,#33
-bhi	_not0
-mov	r0,#0
-b	GetMug2
-_not0:
-mov	r0,#1
-cmp	r1,#66
-blo	GetMug2
-mov	r0,#2
-
-GetMug2:
+ldr	r0,IdentityProblemsMugs
+bl	CountMugList
+cmp	r0,#0
+beq	End
+mov	r5,r0
+ldr	r1,IdentityRamByte
+ldrb	r0,[r1]
+cmp	r0,r5
+blo	HaveIdMug
+mov	r0,r5
+ldr	r3,=NextRN_N
+mov	lr,r3
+nop
+nop
+nop
+nop
+.short	0xF800
+ldr	r1,IdentityRamByte
+strb	r0,[r1]
+HaveIdMug:
 ldr	r2,IdentityProblemsMugs
 ldrb	r0,[r2,r0]
-b Return                @ Return this mug.
+b Return
+
+CountMugList:
+	mov r1, r0
+	mov r0, #0
+CountMugListLoop:
+	ldrb r2, [r1, r0]
+	cmp r2, #0
+	beq CountMugListDone
+	add r0, #1
+	b CountMugListLoop
+CountMugListDone:
+	bx lr
 
 End:
 mov r0, #0x00
 Return:
-pop { r4 }
+pop { r4, r5 }
 pop { r1 }
 bx r1
 

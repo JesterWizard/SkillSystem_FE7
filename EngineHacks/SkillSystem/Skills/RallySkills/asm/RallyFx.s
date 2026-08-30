@@ -405,10 +405,25 @@ BuffFxProc:
 .type StartBuffFx, %function
 .global StartBuffFx
 StartBuffFx:
-	@ FE7: callers pass (unit, anim bits, range). Do not forward that to
-	@ StartBarrierOnUnit, which takes (unit, parent proc) — anim bits as a
-	@ proc pointer hard-crashes on the first Hone/Oath/Init/Footed tick.
-	bx lr 
+	@ r0 = unit, r1 = anim bits, r2 = range. Parent 0: FE7 has no tree id 3.
+	push {r4-r6, lr}
+	mov r4, r0
+	mov r5, r1
+	mov r6, r2
+	ldr r0, =BuffFxProc
+	mov r1, #0
+	ldr r3, =StartProc
+	bl BXR3
+	cmp r0, #0
+	beq StartBuffFxDone
+	str r4, [r0, #0x30]
+	str r5, [r0, #0x34]
+	str r6, [r0, #0x38]
+StartBuffFxDone:
+	pop {r4-r6}
+	pop {r1}
+	bx r1
+	.ltorg 
 
 
 

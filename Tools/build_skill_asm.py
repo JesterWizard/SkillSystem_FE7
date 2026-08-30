@@ -40,6 +40,7 @@ STAT_GETTER_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "Bitpack.s",
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "DebuffStat.s",
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "HalfStatFunctions.s",
+    ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "HalveIfRescuing.s",
     ROOT / "EngineHacks" / "Necessary" / "StatGetters" / "_asm" / "RallyStat.s",
 ]
 DEBUFF_ASM = [
@@ -59,6 +60,8 @@ SUPPORT_POST_BATTLE_ASM = [
 ]
 
 MSS_PAGES = [
+    MSS_PAGES_DIR / "AdjustBarBaseForSavior.s",
+    MSS_PAGES_DIR / "SkipRescueArrowsIfSavior.s",
     MSS_PAGES_DIR / "signed_bonus_number.s",
     MSS_PAGES_DIR / "mss_page1_skills.s",
     MSS_PAGES_DIR / "mss_page2_original.s",

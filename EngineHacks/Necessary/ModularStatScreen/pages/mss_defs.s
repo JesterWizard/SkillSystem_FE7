@@ -373,7 +373,22 @@
 .endm
 
 .macro draw_skl_bar_at, bar_x, bar_y
-  draw_bar_at \bar_x, \bar_y, SklGetter, 0x15, 2
+  mov     r0, r8
+  blh     SklGetter
+  mov     r1, r8
+  mov     r2, #0x15
+  blh     AdjustBarBaseForSavior, r4
+  str     r0, [sp]
+  mov     r1, r8
+  ldr     r0, [r1, #0x4]
+  ldrb    r0, [r0, #0x15]
+  lsl     r0, r0, #0x18
+  asr     r0, r0, #0x18
+  str     r0, [sp, #0x4]
+  mov     r0, #2
+  mov     r1, #(\bar_x-11)
+  mov     r2, #(\bar_y-2)
+  blh     DrawBar, r4
 .endm
 
 .macro draw_skl_reduced_bar_at, bar_x, bar_y @for rescuing
@@ -381,7 +396,22 @@
 .endm
 
 .macro draw_spd_bar_at, bar_x, bar_y
-  draw_bar_at \bar_x, \bar_y, SpdGetter, 0x16, 3
+  mov     r0, r8
+  blh     SpdGetter
+  mov     r1, r8
+  mov     r2, #0x16
+  blh     AdjustBarBaseForSavior, r4
+  str     r0, [sp]
+  mov     r1, r8
+  ldr     r0, [r1, #0x4]
+  ldrb    r0, [r0, #0x16]
+  lsl     r0, r0, #0x18
+  asr     r0, r0, #0x18
+  str     r0, [sp, #0x4]
+  mov     r0, #3
+  mov     r1, #(\bar_x-11)
+  mov     r2, #(\bar_y-2)
+  blh     DrawBar, r4
 .endm
 
 .macro draw_spd_reduced_bar_at, bar_x, bar_y @for rescuing
@@ -831,7 +861,7 @@
   ldrb    r2, [r1]
   cmp     r2, #0
   beq     NoStatusCount
-  ldr     r0, =(0x2003CA2+(0x20*2*\tile_y)+(2*\tile_x))
+  ldr     r0, =(tile_origin+(0x20*2*\tile_y)+(2*(\tile_x+7)))
   lsr     r2, #4
   mov     r1, #0
   blh     DrawUiSmallNumber

@@ -51,6 +51,24 @@ IDENTITY = ROOT / "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/Identity
 PORTRAIT = ROOT / "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonPortraitGuard.s"
 BOON = ROOT / "EngineHacks/SkillSystem/Skills/StandaloneSkills/Boon/Boon.s"
 UNITMENU = ROOT / "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event"
+SAVIOR = ROOT / "EngineHacks/Necessary/StatGetters/_asm/HalveIfRescuing.s"
+SBN = (
+    ROOT
+    / "EngineHacks/Necessary/ModularStatScreen/pages/signed_bonus_number.s"
+)
+ADJUST = (
+    ROOT
+    / "EngineHacks/Necessary/ModularStatScreen/pages/AdjustBarBaseForSavior.s"
+)
+SKIP_ARROWS = (
+    ROOT
+    / "EngineHacks/Necessary/ModularStatScreen/pages/SkipRescueArrowsIfSavior.s"
+)
+MSS_DEFS = (
+    ROOT / "EngineHacks/Necessary/ModularStatScreen/pages/mss_defs.s"
+)
+LIVE = ROOT / "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServe.s"
+RALLYCHAOS = ROOT / "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s"
 
 ATTACKER = 0x0203A3F0
 DEFENDER = 0x0203A470
@@ -155,7 +173,41 @@ class StandaloneSourceTests(unittest.TestCase):
         menu = UNITMENU.read_text(encoding="utf-8")
         self.assertIn("ORG $A8AC", menu)
         self.assertIn("ORG $23078", menu)
+        self.assertIn("ORG $7FA98", menu)
+        self.assertIn("ORG $94508", menu)
         self.assertIn("IdentityProblemsNames", menu)
+        self.assertIn("IdentityMugList:", menu)
+        self.assertIn("BYTE 0x02 0x04 0x05", menu)
+        self.assertNotIn("BYTE 0x01 0x02 0x03 0x09 0x0A 0x0C 0x22 0x23", menu)
+        rally = (
+            ROOT
+            / "EngineHacks"
+            / "SkillSystem"
+            / "Skills"
+            / "RallySkills"
+            / "asm"
+            / "RallyFx.s"
+        ).read_text(encoding="utf-8")
+        self.assertIn("ldr r0, =BuffFxProc", rally)
+        common = (
+            ROOT
+            / "EngineHacks"
+            / "Necessary"
+            / "StatGetters"
+            / "_Common.event"
+        ).read_text(encoding="utf-8")
+        self.assertIn("HalveIfRescuing.lyn.event", common)
+        live = (
+            ROOT
+            / "EngineHacks"
+            / "SkillSystem"
+            / "Skills"
+            / "StandaloneSkills"
+            / "LiveToServe"
+            / "LiveToServe.s"
+        ).read_text(encoding="utf-8")
+        self.assertIn("0x0203A3F0", live)
+        self.assertIn("VanillaEpilogue", live)
 
 
 class VantageExecutionTests(unittest.TestCase):
@@ -517,7 +569,7 @@ class IdentityNameExecutionTests(unittest.TestCase):
         pool = off['SkillTester']
         h.seed(CODE_BASE + pool + 8, struct.pack('<I', RAMBYTE))
         h.seed(CODE_BASE + pool + 12, struct.pack('<I', NAMES))
-        h.seed(NAMES, struct.pack('<HHH', NAME_CAMUS, NAME_ZEKE, NAME_SIRIUS))
+        h.seed(NAMES, struct.pack('<HHHH', NAME_CAMUS, NAME_ZEKE, NAME_SIRIUS, 0))
         h.seed(RAMBYTE, bytes([idx]))
         char = bytearray(8)
         struct.pack_into('<H', char, 0, CHAR_NAME)
@@ -548,6 +600,277 @@ class IdentityNameExecutionTests(unittest.TestCase):
             raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
         self.assertEqual(self._run(False, 1), CHAR_NAME)
 
+    def test_trv_hook_resumes_after_getstring(self):
+        text = IDENTITY.read_text(encoding='utf-8')
+        self.assertIn('IdentityName_18CD4, 0x08018CE9', text)
+        self.assertNotIn('0x08018CDD', text)
+
+    def test_skill_uses_index_past_three(self):
+        try:
+            assemble(IDENTITY)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        raw = assemble(IDENTITY)
+        off = symbol_offsets(IDENTITY)
+        h = Harness(raw, skill_present=True)
+        pool = off['SkillTester']
+        names = 0x02000400
+        extra = 0x0D50
+        h.seed(CODE_BASE + pool + 8, struct.pack('<I', RAMBYTE))
+        h.seed(CODE_BASE + pool + 12, struct.pack('<I', names))
+        h.seed(names, struct.pack('<HHHHH', NAME_CAMUS, NAME_ZEKE, NAME_SIRIUS, extra, 0))
+        h.seed(RAMBYTE, bytes([3]))
+        char = bytearray(8)
+        struct.pack_into('<H', char, 0, CHAR_NAME)
+        unit = bytearray(8)
+        struct.pack_into('<I', unit, 0, CHAR)
+        h.seed(CHAR, bytes(char))
+        h.seed(UNIT, bytes(unit))
+        regs = h.run(
+            off['IdentityNameIdDone'],
+            regs={'r0': UNIT},
+            entry_offset=off['IdentityNameId'],
+        )
+        self.assertEqual(regs['r0'], extra)
+
+
+class SaviorExecutionTests(unittest.TestCase):
+    """HalveIfRescuing calls SkillTester via bl+bx, not a lone 0xF800.
+
+    The harness F800 patch would hide a broken trampoline, so these tests map a
+    real Thumb stub at the POIN and let the routine bx to it.
+    """
+
+    STUB = 0x02010000
+
+    def _run(self, present, rescuing, stat=10):
+        raw = bytearray(assemble(SAVIOR))
+        off = symbol_offsets(SAVIOR)
+        need = off['SkillTester'] + 8
+        if len(raw) < need:
+            raw.extend(b'\x00' * (need - len(raw)))
+        struct.pack_into('<I', raw, off['SkillTester'], self.STUB | 1)
+        struct.pack_into('<I', raw, off['SkillTester'] + 4, 164)
+        h = Harness(bytes(raw))
+        stub = bytes.fromhex('01207047' if present else '00207047')
+        h.seed(self.STUB, stub)
+        unit = bytearray(0x10)
+        if rescuing:
+            struct.pack_into('<I', unit, 0xC, 0x10)
+        h.seed(UNIT, bytes(unit))
+        regs = h.run(
+            off['HalveIfRescuingDone'],
+            regs={'r0': stat, 'r1': UNIT},
+            entry_offset=off['HalveIfRescuing'],
+        )
+        return regs['r0']
+
+    def test_call_is_bl_bx_not_f800(self):
+        text = SAVIOR.read_text(encoding='utf-8')
+        self.assertIn('bl CallTester', text)
+        self.assertNotIn('\t.short 0xf800', text)
+        self.assertNotIn('\t.short 0xF800', text)
+
+    def test_savior_skips_rescue_half(self):
+        try:
+            assemble(SAVIOR)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(True, True), 10)
+
+    def test_no_skill_halves_while_rescuing(self):
+        try:
+            assemble(SAVIOR)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(False, True), 5)
+
+    def test_not_rescuing_keeps_stat(self):
+        try:
+            assemble(SAVIOR)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(False, False), 10)
+
+
+@unittest.skipUnless(HACK.exists(), 'FE7_Hack.gba missing')
+class SaviorRomExecutionTests(unittest.TestCase):
+    """Walk the built GetUnitSkill chain and run HalveIfRescuing off the ROM."""
+
+    GET_SKL = 0x18AF0
+    STUB = 0x02010000
+    SIG = bytes.fromhex('30b5041c0d1ce8681021')
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            from Tools.thumb_harness import Harness  # noqa: F401
+        except ImportError as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        cls.rom = HACK.read_bytes()
+        if cls.rom[cls.GET_SKL: cls.GET_SKL + 4] != bytes.fromhex('004b1847'):
+            raise unittest.SkipTest('GetUnitSkill is not hooked')
+
+    def _routine(self) -> bytes:
+        getter = struct.unpack_from('<I', self.rom, self.GET_SKL + 4)[0]
+        goff = (getter & ~1) - 0x08000000
+        mods = struct.unpack_from('<I', self.rom, goff + 24)[0]
+        cursor = (mods & ~1) - 0x08000000
+        while True:
+            ptr = struct.unpack_from('<I', self.rom, cursor)[0]
+            if ptr == 0:
+                break
+            off = (ptr & ~1) - 0x08000000
+            body = self.rom[off: off + 64]
+            if body.startswith(self.SIG):
+                end = body.find(bytes.fromhex('a4000000'))
+                if end < 4:
+                    raise AssertionError('SaviorID word missing from HalveIfRescuing')
+                return bytearray(body[: end + 4])
+            cursor += 4
+        raise AssertionError('HalveIfRescuing not in the Skill modifier chain')
+
+    def _run(self, present: bool, rescuing: bool, stat: int = 10) -> int:
+        from Tools.thumb_harness import Harness
+
+        body = self._routine()
+        done = body.find(bytes.fromhex('201c30bc'))
+        if done < 0:
+            raise AssertionError('HalveIfRescuingDone (mov r0,r4; pop) missing')
+        struct.pack_into('<I', body, len(body) - 8, self.STUB | 1)
+        h = Harness(bytes(body))
+        h.seed(self.STUB, bytes.fromhex('01207047' if present else '00207047'))
+        unit = bytearray(0x10)
+        if rescuing:
+            struct.pack_into('<I', unit, 0xC, 0x10)
+        h.seed(UNIT, bytes(unit))
+        regs = h.run(done + 2, regs={'r0': stat, 'r1': UNIT})
+        return regs['r0']
+
+    def test_rom_savior_skips_rescue_half(self):
+        self.assertEqual(self._run(True, True), 10)
+
+    def test_rom_no_skill_halves_while_rescuing(self):
+        self.assertEqual(self._run(False, True), 5)
+
+
+class SaviorStatArrowTests(unittest.TestCase):
+    """DrawBar prints r3 as the big number. Rescuing must use the getter so a
+    non-Savior half is visible; Savior's unhalved getter is visible the same way.
+    """
+
+    RAW = 10
+    GETTER = 5
+
+    def _run(self, rescuing):
+        raw = assemble(ADJUST)
+        off = symbol_offsets(ADJUST)
+        h = Harness(raw)
+        unit = bytearray(0x20)
+        if rescuing:
+            struct.pack_into('<I', unit, 0xC, 0x10)
+        unit[0x15] = self.RAW
+        h.seed(UNIT, bytes(unit))
+        regs = h.run(
+            off['AdjustBarBaseDone'],
+            regs={'r0': self.GETTER, 'r1': UNIT, 'r2': 0x15},
+            entry_offset=off['AdjustBarBaseForSavior'],
+        )
+        return regs['r0'], regs['r3']
+
+    def test_mss_skl_spd_bars_call_adjust(self):
+        text = MSS_DEFS.read_text(encoding='utf-8')
+        self.assertIn('AdjustBarBaseForSavior', text)
+        self.assertGreaterEqual(text.count('AdjustBarBaseForSavior'), 2)
+
+    def test_rescuing_uses_getter_as_base(self):
+        try:
+            assemble(ADJUST)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        total, base = self._run(True)
+        self.assertEqual(total, self.GETTER)
+        self.assertEqual(base, self.GETTER)
+
+    def test_not_rescuing_keeps_raw_base(self):
+        try:
+            assemble(ADJUST)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        total, base = self._run(False)
+        self.assertEqual(total, self.GETTER)
+        self.assertEqual(base, self.RAW)
+
+
+class RescueMinusHideTests(unittest.TestCase):
+    """Rescue half is the getter. Hiding every minus while rescuing also hid
+    the non-Savior penalty. DrawSignedBonusNumber must print negatives again.
+    """
+
+    def test_does_not_skip_minus_while_rescuing(self):
+        text = SBN.read_text(encoding='utf-8')
+        self.assertNotIn('SBN_RescueHidesMinus', text)
+
+
+class SkipRescueArrowSpriteTests(unittest.TestCase):
+    """Page-0 OBJ arrows at 0x08080F90. Savior resumes past them, still at Trv."""
+
+    STUB = 0x02010000
+    DRAW = 0x08080F91
+    SKIP = 0x08080FA5
+    NONE = 0x08080FD1
+
+    def _run(self, present, rescuing):
+        raw = bytearray(assemble(SKIP_ARROWS))
+        off = symbol_offsets(SKIP_ARROWS)
+        need = off['SkillTester'] + 8
+        if len(raw) < need:
+            raw.extend(b'\x00' * (need - len(raw)))
+        struct.pack_into('<I', raw, off['SkillTester'], self.STUB | 1)
+        struct.pack_into('<I', raw, off['SkillTester'] + 4, 164)
+        h = Harness(bytes(raw))
+        h.seed(self.STUB, bytes.fromhex('01207047' if present else '00207047'))
+        ss = 0x0200310C
+        unit = bytearray(0x10)
+        if rescuing:
+            struct.pack_into('<I', unit, 0xC, 0x10)
+        h.seed(UNIT, bytes(unit))
+        h.seed(ss + 0xC, struct.pack('<I', UNIT))
+        regs = h.run(
+            off['SkipRescueArrowsDone'],
+            regs={'r4': ss},
+            entry_offset=off['SkipRescueArrowsIfSavior'],
+        )
+        return regs['r0']
+
+    def test_savior_rescuing_skips_arrow_sprites(self):
+        try:
+            assemble(SKIP_ARROWS)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(True, True), self.SKIP)
+
+    def test_no_skill_rescuing_keeps_arrow_sprites(self):
+        try:
+            assemble(SKIP_ARROWS)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(False, True), self.DRAW)
+
+    def test_not_rescuing_skips_arrow_block(self):
+        try:
+            assemble(SKIP_ARROWS)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run(True, False), self.NONE)
+
+
+class RallyChaosSourceTests(unittest.TestCase):
+    def test_is_always_applicable(self):
+        text = RALLYCHAOS.read_text(encoding='utf-8')
+        self.assertIn('mov r0, #1', text)
+        self.assertIn('RallyCommandEffect_apply', text)
+
 
 class IdentityMugExecutionTests(unittest.TestCase):
     def test_identity_uses_stored_mug(self):
@@ -561,7 +884,7 @@ class IdentityMugExecutionTests(unittest.TestCase):
         h.seed(CODE_BASE + pool + 12, struct.pack('<I', RAMBYTE))
         h.seed(CODE_BASE + pool + 16, struct.pack('<I', TABLE))
         h.seed(CODE_BASE + pool + 20, struct.pack('<I', MUGS))
-        h.seed(MUGS, bytes([0x0C, 0x09, 0x0A]))
+        h.seed(MUGS, bytes([0x0C, 0x09, 0x0A, 0x00]))
         h.seed(RAMBYTE, b'\x01')
         char = bytearray(8)
         struct.pack_into('<H', char, 6, 0x0042)
@@ -636,6 +959,8 @@ class StandaloneRomTests(unittest.TestCase):
         rom = HACK.read_bytes()
         self.assertEqual(rom[0xA8AC:0xA8B0], JUMP)
         self.assertEqual(rom[0x23078:0x2307C], JUMP)
+        self.assertEqual(rom[0x7FA98:0x7FA9C], JUMP)
+        self.assertEqual(rom[0x94508:0x9450C], JUMP)
 
     def test_boon_hooks_status_tick_at_18390(self):
         rom = HACK.read_bytes()
