@@ -120,6 +120,7 @@ static inline void SetUnitMag(struct Unit * unit, s8 mag)
 #define WExpLabel 16
 #define SupportLabel 17
 #define EditSkillsLabel 21
+#define PromoLabel 22
 #define SupplyLabel 18
 #define ListLabel 19
 #define LoopLabel 20
@@ -163,6 +164,8 @@ int RestartNow(DebuggerProc * proc); // goto restart label
 void LoopDebuggerProc(DebuggerProc * proc);
 void PickupUnitIdle(DebuggerProc * proc);
 void SetupUnitFunc(void);
+void MakePromote(struct Unit * unit, int itemSlotIndex, int hasMovedFlag);
+void StartPromotionAnim(void);
 int PromoAction(DebuggerProc * proc);
 int ArenaAction(DebuggerProc * proc);
 int LevelupAction(DebuggerProc * proc);
@@ -265,6 +268,11 @@ const struct ProcCmd DebuggerProcCmd[] = {
     PROC_CALL_2(EnsureCameraOntoActiveUnitPosition),
     PROC_CALL(CallPlayerPhase_FinishAction),
     PROC_GOTO(EndLabel),
+
+    PROC_LABEL(PromoLabel),
+    PROC_SLEEP(2),
+    PROC_WHILE(GetGameLock),
+    PROC_GOTO(RestartLabel),
 
     PROC_LABEL(LevelupLabel), // Levelup
     // ProcScr_EndManim 664E4C @
@@ -2774,9 +2782,21 @@ void PutNumberHex(u16 * tm, int color, int number)
 
 int PromoAction(DebuggerProc * proc)
 {
+#ifdef FE7
+    // FE7 ActionPromote (StartBmPromotion) reads itemSlotIndex as u8, so the
+    // debugger's -1 becomes 0xFF: OOB item read/remove, then PostActionLabel
+    // resets PlayerPhase while the promo anim still holds the game lock.
+    UnlockGameIfNeeded();
+    MakePromote(gActiveUnit, -1, 0);
+    MU_EndAll();
+    StartPromotionAnim();
+    Proc_Goto(proc, PromoLabel);
+    return 0;
+#else
     StartBmPromotion(proc);
     Proc_Goto(proc, PostActionLabel);
     return 0;
+#endif
 }
 int ArenaAction(DebuggerProc * proc)
 {

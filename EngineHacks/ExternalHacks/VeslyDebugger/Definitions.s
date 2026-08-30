@@ -287,6 +287,8 @@ SET_FUNC HandlePostActionTraps, 0x8034521
 SET_FUNC RunPotentialWaitEvents, 0x801CC4D
 SET_FUNC EnsureCameraOntoActiveUnitPosition, 0x801CC69
 SET_FUNC StartBmPromotion, 0x0802cc69 
+SET_FUNC MakePromote, 0x0802cbad
+SET_FUNC StartPromotionAnim, 0x0802a3b1
 SET_FUNC StartArenaScreen, 0x80b267D
 SET_FUNC StartBmSupply, 0x080974CD
 SET_FUNC GetUnitEquippedWeapon, 0x8016765
