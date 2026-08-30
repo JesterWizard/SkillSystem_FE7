@@ -1,4 +1,4 @@
-"""FE7 wiring for the standalone FE8 skill ports.
+﻿"""FE7 wiring for the standalone FE8 skill ports.
 
 Unicorn executes Vantage (HP gate and Vantage+), Discipline (double WEXP),
 LockTouch (0xFF), and Biorhythm (Tempest/Serenity/none). SkillTester is
@@ -78,6 +78,7 @@ STORE_DEF = 0x02001004
 UNIT = 0x02000000
 CHAR = 0x02000100
 TABLE = 0x02000200
+CHAR_SIZE = 0x34
 HIT = 50
 
 
@@ -150,6 +151,9 @@ class StandaloneSourceTests(unittest.TestCase):
         self.assertIn("ORG $29028", text)
         self.assertIn("ORG $29B88", text)
         self.assertIn("ORG $2C360", text)
+        for org in ("ORG $5314C", "ORG $531B0"):
+            self.assertIn(org, text)
+        self.assertNotIn("ORG $4DD8C", text)
         self.assertIn("ORG $18524", text)
         self.assertIn("ORG $2CD60", text)
         self.assertIn("ORG $27594", text)
@@ -176,7 +180,22 @@ class StandaloneSourceTests(unittest.TestCase):
         self.assertIn("ORG $23078", menu)
         self.assertIn("ORG $7FA98", menu)
         self.assertIn("ORG $94508", menu)
-        self.assertIn("IdentityProblemsNames", menu)
+        self.assertIn("ORG $18BF4", menu)
+        self.assertIn("ORG $85134", menu)
+        self.assertIn("ORG $86CB4", menu)
+        self.assertIn("SummonMiniPortraitGuard", menu)
+        self.assertIn("WORD (CharacterTable+0x08000000)", menu)
+        mss_left = (
+            ROOT
+            / "EngineHacks"
+            / "Necessary"
+            / "ModularStatScreen"
+            / "pages"
+            / "mss_leftstatscreen.s"
+        ).read_text(encoding="utf-8")
+        self.assertIn("MssIdentityName", mss_left)
+        mss_defs = MSS_DEFS.read_text(encoding="utf-8")
+        self.assertIn("MssIdentityName", mss_defs)
         self.assertIn("IdentityMugList:", menu)
         self.assertIn("BYTE 0x02 0x04 0x05", menu)
         self.assertNotIn("BYTE 0x01 0x02 0x03 0x09 0x0A 0x0C 0x22 0x23", menu)
@@ -390,6 +409,7 @@ class BiorhythmExecutionTests(unittest.TestCase):
 
 CLASS = 0x02000180
 RAMBYTE = 0x0203AA00
+CLOCK = 0x03000010
 NAMES = 0x02000400
 MUGS = 0x02000410
 NAME_CAMUS = 0xD53
@@ -397,6 +417,22 @@ NAME_ZEKE = 0xD55
 NAME_SIRIUS = 0xD54
 CHAR_NAME = 0x0123
 JUMP = bytes.fromhex('004b1847')
+
+
+def _char_table(*entries):
+    buf = bytearray(CHAR_SIZE * (len(entries) + 1))
+    for i, (name, portrait) in enumerate(entries, start=1):
+        off = CHAR_SIZE * i
+        struct.pack_into('<H', buf, off, name)
+        struct.pack_into('<H', buf, off + 6, portrait)
+    return bytes(buf)
+
+
+CHAR_POOL = (
+    (NAME_CAMUS, 0x02),
+    (NAME_ZEKE, 0x0C),
+    (NAME_SIRIUS, 0x09),
+)
 
 
 class ShrewdPotentialExecutionTests(unittest.TestCase):
@@ -563,15 +599,17 @@ class CunningFogExecutionTests(unittest.TestCase):
 
 
 class IdentityNameExecutionTests(unittest.TestCase):
-    def _run(self, present, idx):
+    def _run(self, present, idx=0, last_unit=0, last_clock=0, clock=0):
         raw = assemble(IDENTITY)
         off = symbol_offsets(IDENTITY)
         h = Harness(raw, skill_present=present)
         pool = off['SkillTester']
         h.seed(CODE_BASE + pool + 8, struct.pack('<I', RAMBYTE))
-        h.seed(CODE_BASE + pool + 12, struct.pack('<I', NAMES))
-        h.seed(NAMES, struct.pack('<HHHH', NAME_CAMUS, NAME_ZEKE, NAME_SIRIUS, 0))
-        h.seed(RAMBYTE, bytes([idx]))
+        h.seed(CODE_BASE + pool + 12, struct.pack('<I', TABLE))
+        h.seed(CODE_BASE + pool + 16, struct.pack('<I', 3))
+        h.seed(TABLE, _char_table(*CHAR_POOL))
+        h.seed(RAMBYTE, bytes([idx, 0, 0, 0]) + struct.pack('<II', last_unit, last_clock))
+        h.seed(CLOCK, struct.pack('<I', clock))
         char = bytearray(8)
         struct.pack_into('<H', char, 0, CHAR_NAME)
         unit = bytearray(8)
@@ -585,14 +623,13 @@ class IdentityNameExecutionTests(unittest.TestCase):
         )
         return regs['r0']
 
-    def test_skill_uses_stored_name(self):
+    def test_skill_rolls_name(self):
         try:
             assemble(IDENTITY)
         except Exception as extra:
             raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
-        self.assertEqual(self._run(True, 0), NAME_CAMUS)
-        self.assertEqual(self._run(True, 1), NAME_ZEKE)
-        self.assertEqual(self._run(True, 2), NAME_SIRIUS)
+        # Harness stubs every trampoline to 1, so NextRN_N yields Zeke.
+        self.assertEqual(self._run(True), NAME_ZEKE)
 
     def test_no_skill_keeps_character_name(self):
         try:
@@ -605,34 +642,28 @@ class IdentityNameExecutionTests(unittest.TestCase):
         text = IDENTITY.read_text(encoding='utf-8')
         self.assertIn('IdentityName_18CD4, 0x08018CE9', text)
         self.assertNotIn('0x08018CDD', text)
+        self.assertIn('IdentityName_85134, 0x0808513D, r8', text)
+        self.assertIn('IdentityName_86CB4, 0x08086CBD, r4', text)
 
-    def test_skill_uses_index_past_three(self):
+    def test_same_frame_keeps_combo(self):
         try:
             assemble(IDENTITY)
         except Exception as extra:
             raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
-        raw = assemble(IDENTITY)
-        off = symbol_offsets(IDENTITY)
-        h = Harness(raw, skill_present=True)
-        pool = off['SkillTester']
-        names = 0x02000400
-        extra = 0x0D50
-        h.seed(CODE_BASE + pool + 8, struct.pack('<I', RAMBYTE))
-        h.seed(CODE_BASE + pool + 12, struct.pack('<I', names))
-        h.seed(names, struct.pack('<HHHHH', NAME_CAMUS, NAME_ZEKE, NAME_SIRIUS, extra, 0))
-        h.seed(RAMBYTE, bytes([3]))
-        char = bytearray(8)
-        struct.pack_into('<H', char, 0, CHAR_NAME)
-        unit = bytearray(8)
-        struct.pack_into('<I', unit, 0, CHAR)
-        h.seed(CHAR, bytes(char))
-        h.seed(UNIT, bytes(unit))
-        regs = h.run(
-            off['IdentityNameIdDone'],
-            regs={'r0': UNIT},
-            entry_offset=off['IdentityNameId'],
+        self.assertEqual(
+            self._run(True, idx=3, last_unit=UNIT, last_clock=0, clock=0),
+            NAME_SIRIUS,
         )
-        self.assertEqual(regs['r0'], extra)
+
+    def test_new_frame_rerolls(self):
+        try:
+            assemble(IDENTITY)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(
+            self._run(True, idx=3, last_unit=UNIT, last_clock=0, clock=2),
+            NAME_ZEKE,
+        )
 
 
 class SaviorExecutionTests(unittest.TestCase):
@@ -1014,21 +1045,24 @@ class RallyChaosExecutionTests(unittest.TestCase):
 
 
 class IdentityMugExecutionTests(unittest.TestCase):
-    def test_identity_uses_stored_mug(self):
-        try:
-            raw = assemble(PORTRAIT)
-        except Exception as extra:
-            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+    def _run_face(self, testers, entry, mini=0, portrait=0x0042, idx=0,
+                  last_unit=0, last_clock=0, clock=0):
+        raw = assemble(PORTRAIT)
         off = symbol_offsets(PORTRAIT)
-        h = Harness(_patch_testers(raw, [0, 1]))
+        h = Harness(_patch_testers(raw, testers))
         pool = off['SkillTester']
         h.seed(CODE_BASE + pool + 12, struct.pack('<I', RAMBYTE))
-        h.seed(CODE_BASE + pool + 16, struct.pack('<I', TABLE))
+        h.seed(CODE_BASE + pool + 16, struct.pack('<I', MUGS))
         h.seed(CODE_BASE + pool + 20, struct.pack('<I', MUGS))
+        h.seed(CODE_BASE + pool + 24, struct.pack('<I', TABLE))
+        h.seed(CODE_BASE + pool + 28, struct.pack('<I', 3))
         h.seed(MUGS, bytes([0x0C, 0x09, 0x0A, 0x00]))
-        h.seed(RAMBYTE, b'\x01')
-        char = bytearray(8)
-        struct.pack_into('<H', char, 6, 0x0042)
+        h.seed(TABLE, _char_table(*CHAR_POOL))
+        h.seed(RAMBYTE, bytes([idx, 0, 0, 0]) + struct.pack('<II', last_unit, last_clock))
+        h.seed(CLOCK, struct.pack('<I', clock))
+        char = bytearray(12)
+        struct.pack_into('<H', char, 6, portrait)
+        char[8] = mini
         unit = bytearray(8)
         struct.pack_into('<I', unit, 0, CHAR)
         h.seed(CHAR, bytes(char))
@@ -1036,9 +1070,73 @@ class IdentityMugExecutionTests(unittest.TestCase):
         regs = h.run(
             off['SummonPortraitGuard_HaveMug'],
             regs={'r0': UNIT},
-            entry_offset=off['SummonPortraitGuard'],
+            entry_offset=off[entry],
         )
-        self.assertEqual(regs['r0'], 0x09)
+        return regs['r0']
+
+    def test_identity_rolls_mug(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(
+            self._run_face([0, 1, 1], 'SummonPortraitGuard'),
+            0x0C,
+        )
+
+    def _run_mini(self, testers, mini, portrait, idx=1, last_unit=0,
+                  last_clock=0, clock=0):
+        return self._run_face(
+            testers, 'SummonMiniPortraitGuard', mini=mini, portrait=portrait,
+            idx=idx, last_unit=last_unit, last_clock=last_clock, clock=clock,
+        )
+
+    def test_identity_mini_rolls_mug(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run_mini([0, 1, 1], mini=0x06, portrait=0x0042), 0x0C)
+
+    def test_same_frame_keeps_mug(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(
+            self._run_face(
+                [0, 1], 'SummonPortraitGuard', idx=3,
+                last_unit=UNIT, last_clock=0, clock=0,
+            ),
+            0x09,
+        )
+
+    def test_new_frame_rerolls_mug(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(
+            self._run_face(
+                [0, 1, 1], 'SummonPortraitGuard', idx=3,
+                last_unit=UNIT, last_clock=0, clock=2,
+            ),
+            0x0C,
+        )
+
+    def test_no_skill_mini_uses_dedicated_index(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run_mini([0, 0], mini=0x06, portrait=0x0042), 0x7F06)
+
+    def test_no_skill_mini_falls_back_to_portrait(self):
+        try:
+            assemble(PORTRAIT)
+        except Exception as extra:
+            raise unittest.SkipTest(f'thumb harness unavailable: {extra}')
+        self.assertEqual(self._run_mini([0, 0], mini=0, portrait=0x0042), 0x42)
 
 
 class BoonExecutionTests(unittest.TestCase):
@@ -1090,6 +1188,25 @@ class StandaloneRomTests(unittest.TestCase):
         rom = HACK.read_bytes()
         self.assertEqual(rom[0x29028:0x2902C], JUMP)
 
+    def test_livetoserve_extra_round_hooks(self):
+        """Both arms of the plain (non-HPSTEAL) round builder are hooked."""
+        rom = HACK.read_bytes()
+        for off in (0x5314C, 0x531B0):
+            self.assertEqual(rom[off:off + 4], JUMP, f"no hook at {off:X}")
+
+    def test_livetoserve_leaves_the_hpsteal_arms_vanilla(self):
+        """HPSTEAL is unused here, so Nosferatu's drain must stay untouched."""
+        rom = HACK.read_bytes()
+        for off in (0x5304C, 0x53078, 0x530B0, 0x530D8):
+            self.assertNotEqual(rom[off:off + 4], JUMP, f"hook at {off:X}")
+
+    def test_livetoserve_leaves_the_bar_procs_vanilla(self):
+        """The Live tick, its proc-script entry and the bar parent stay stock."""
+        rom = HACK.read_bytes()
+        self.assertNotEqual(rom[0x4DD8C:0x4DD90], JUMP)
+        self.assertNotEqual(rom[0x4D62C:0x4D630], JUMP)
+        self.assertEqual(rom[0xB9AC58:0xB9AC5C], bytes.fromhex("71dd0408"))
+
     def test_shrewd_and_cunning_hooks(self):
         rom = HACK.read_bytes()
         self.assertEqual(rom[0x2CD60:0x2CD64], JUMP)
@@ -1102,10 +1219,352 @@ class StandaloneRomTests(unittest.TestCase):
         self.assertEqual(rom[0x23078:0x2307C], JUMP)
         self.assertEqual(rom[0x7FA98:0x7FA9C], JUMP)
         self.assertEqual(rom[0x94508:0x9450C], JUMP)
+        self.assertEqual(rom[0x18BF4:0x18C04], rom[0x18BD8:0x18BE8])
+        self.assertNotEqual(rom[0x18C04:0x18C08], rom[0x18BE8:0x18BEC])
+        self.assertEqual(rom[0x85134:0x85138], JUMP)
+        self.assertEqual(rom[0x86CB4:0x86CB8], JUMP)
 
     def test_boon_hooks_status_tick_at_18390(self):
         rom = HACK.read_bytes()
         self.assertEqual(rom[0x18390:0x18394], bytes.fromhex("00488746"))
+
+
+GET_UNIT = 0x08018D0D
+ADD_HP = 0x08018C7D
+CUR_HP = 0x08018A71
+MAX_HP = 0x08018AB1
+VANILLA_AFTER = 0x0802C36C
+VANILLA_EPI = 0x0802C38E
+HIT_ITER = 0x0203A50C
+HIT_BUF = 0x0203F000
+ACTION = 0x0203A85C
+HEALER_U = 0x02010000
+TARGET_U = 0x02010048
+LTS_SP = 0x03007F00
+LTS_STOP = 0x08FFFFF0
+HPSTEAL = 0x100
+ABSADD_ABS = (
+    ROOT
+    / "EngineHacks"
+    / "SkillSystem"
+    / "Skills"
+    / "StandaloneSkills"
+    / "LiveToServe"
+    / "LiveToServeHpAbsAdd.s"
+)
+HPBAR_ABS = (
+    ROOT
+    / "EngineHacks"
+    / "SkillSystem"
+    / "Skills"
+    / "StandaloneSkills"
+    / "LiveToServe"
+    / "LiveToServeHpBar.s"
+)
+GET_ANIM = 0x08054679
+DISP_HP = 0x0203E0B8
+LTS_PROC = 0x02001000
+LTS_AIS = 0x02002000
+
+
+STAFF_HEAL_HOOK = 0x0802C360
+STAFF_HEAL_END = 0x0802C38E  # VanillaEpilogue
+UNIT_LOOKUP = 0x08B92EB0
+GET_CUR_HP = 0x08018A70  # repointed by the SkillSystem to its stat getters
+CLASS_ID_GETTER = 0x08016764
+CLASS_HP_GETTER = 0x08016040
+HEALER_U2, TARGET_U2 = 0x02010000, 0x02010100
+HEALER_ID, TARGET_ID = 1, 2
+HEAL_FLAG = 0x0203AA02
+STUB_MAX_HP = 30
+
+
+class LiveToServeExecutionTests(unittest.TestCase):
+    """Run the installed staff-heal hack out of FE7_Hack.gba.
+
+    This executes the ROM's own AddUnitHp rather than a stub, so a wrong
+    function address or a wrong unit-struct offset fails here. GetUnit and
+    AddUnitHp are real; only SkillTester (needs the skill tables),
+    GetUnitCurrentHp (the SkillSystem repoints it at its stat-getter chain)
+    and AddUnitHp's two class-data getters are emulated.
+
+    Per tdd.md this does not test which unit owns the skill -- SkillTester's
+    answer is a parameter here, both ways.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        if not HACK.exists():
+            raise unittest.SkipTest("FE7_Hack.gba not built")
+        try:
+            from unicorn import Uc, UC_ARCH_ARM, UC_HOOK_CODE, UC_MODE_THUMB
+            from unicorn.arm_const import UC_ARM_REG_PC
+        except ImportError as extra:
+            raise unittest.SkipTest(f"unicorn unavailable: {extra}") from extra
+        cls.Uc, cls.UC_ARCH_ARM = Uc, UC_ARCH_ARM
+        cls.UC_HOOK_CODE, cls.UC_MODE_THUMB = UC_HOOK_CODE, UC_MODE_THUMB
+        cls.UC_ARM_REG_PC = UC_ARM_REG_PC
+        cls.rom = HACK.read_bytes()
+        # Follow the jumpToHack POIN at the staff-heal site to the hack, then
+        # take the one expanded-ROM word in its literal pool: SkillTester.
+        # Derived, not hardcoded, so editing LiveToServe.s cannot stale it.
+        hack = struct.unpack_from("<I", cls.rom, STAFF_HEAL_HOOK - 0x08000000 + 4)[0]
+        base = (hack & ~1) - 0x08000000
+        cls.skilltester = None
+        for off in range(base, base + 0x200, 4):
+            word = struct.unpack_from("<I", cls.rom, off)[0]
+            if 0x09000000 <= word < 0x0A000000:
+                cls.skilltester = word & ~1
+                break
+        if cls.skilltester is None:
+            raise AssertionError("no SkillTester pointer in the LiveToServe pool")
+
+    def _run(self, present, heal, t_cur, h_cur):
+        from unicorn import UcError
+        from unicorn.arm_const import (
+            UC_ARM_REG_LR, UC_ARM_REG_R0, UC_ARM_REG_R4, UC_ARM_REG_R5,
+            UC_ARM_REG_R6, UC_ARM_REG_SP,
+        )
+
+        uc = self.Uc(self.UC_ARCH_ARM, self.UC_MODE_THUMB)
+        uc.mem_map(0x08000000, (len(self.rom) + 0xFFF) & ~0xFFF)
+        uc.mem_write(0x08000000, self.rom)
+        uc.mem_map(0x02000000, 0x80000)
+        uc.mem_map(0x03000000, 0x10000)
+
+        uc.mem_write(CLASS_ID_GETTER, bytes.fromhex("00207047"))
+        uc.mem_write(CLASS_HP_GETTER, bytes([STUB_MAX_HP, 0x20, 0x70, 0x47]))
+
+        for base, cur in ((HEALER_U2, h_cur), (TARGET_U2, t_cur)):
+            u = bytearray(0x48)
+            u[0x12] = 0      # max-HP bonus; STUB_MAX_HP supplies the rest
+            u[0x13] = cur
+            uc.mem_write(base, bytes(u))
+        uc.mem_write(UNIT_LOOKUP + HEALER_ID * 4, struct.pack("<I", HEALER_U2))
+        uc.mem_write(UNIT_LOOKUP + TARGET_ID * 4, struct.pack("<I", TARGET_U2))
+
+        # BattleInitItemEffect(Target) snapshots both units before the heal.
+        uc.mem_write(ATTACKER, bytes(0x80))
+        uc.mem_write(DEFENDER, bytes(0x80))
+        uc.mem_write(ATTACKER + 0x13, bytes([h_cur]))
+        uc.mem_write(DEFENDER + 0x13, bytes([t_cur]))
+
+        act = bytearray(0x20)
+        act[0x0C] = HEALER_ID
+        act[0x0D] = TARGET_ID
+        uc.mem_write(ACTION, bytes(act))
+        uc.mem_write(HIT_ITER, struct.pack("<I", HIT_BUF))
+        uc.mem_write(HIT_BUF, b"\x00" * 8)
+
+        skill = 1 if present else 0
+
+        def on_code(uc_, addr, _size, _ud):
+            if addr == GET_CUR_HP:
+                unit = uc_.reg_read(UC_ARM_REG_R0)
+                uc_.reg_write(UC_ARM_REG_R0, uc_.mem_read(unit + 0x13, 1)[0])
+                uc_.reg_write(self.UC_ARM_REG_PC, uc_.reg_read(UC_ARM_REG_LR) | 1)
+                return
+            if addr == self.skilltester:
+                uc_.reg_write(UC_ARM_REG_R0, skill)
+                uc_.reg_write(self.UC_ARM_REG_PC, uc_.reg_read(UC_ARM_REG_LR) | 1)
+                return
+            # `.short 0xf800` is the repo's blh trampoline: a lone BL low half,
+            # so PC = LR. Unicorn decodes it as 32-bit Thumb-2, so do it here.
+            if struct.unpack("<H", bytes(uc_.mem_read(addr, 2)))[0] == 0xF800:
+                dest = uc_.reg_read(UC_ARM_REG_LR) | 1
+                uc_.reg_write(UC_ARM_REG_LR, (addr + 2) | 1)
+                uc_.reg_write(self.UC_ARM_REG_PC, dest)
+
+        uc.hook_add(self.UC_HOOK_CODE, on_code)
+        uc.reg_write(UC_ARM_REG_SP, LTS_SP)
+        uc.reg_write(UC_ARM_REG_LR, LTS_STOP | 1)
+        uc.reg_write(UC_ARM_REG_R4, ACTION)
+        uc.reg_write(UC_ARM_REG_R5, heal)
+        uc.reg_write(UC_ARM_REG_R6, 0xAABBCCDD)
+        try:
+            uc.emu_start(STAFF_HEAL_HOOK | 1, STAFF_HEAL_END,
+                         timeout=10_000_000, count=2_000_000)
+        except UcError as extra:
+            pc = uc.reg_read(self.UC_ARM_REG_PC)
+            raise AssertionError(f"Unicorn fault at {pc:08X}: {extra}") from extra
+        hit = bytes(uc.mem_read(HIT_BUF, 8))
+        return {
+            "healer": uc.mem_read(HEALER_U2 + 0x13, 1)[0],
+            "target": uc.mem_read(TARGET_U2 + 0x13, 1)[0],
+            "actor_hp": uc.mem_read(ATTACKER + 0x13, 1)[0],
+            "target_hp": uc.mem_read(DEFENDER + 0x13, 1)[0],
+            "hp_change": struct.unpack("b", hit[3:4])[0],
+            "next_byte": hit[5],
+            "attrs": struct.unpack("<I", hit[:4])[0],
+            "flag": uc.mem_read(HEAL_FLAG, 1)[0],
+            "r6": uc.reg_read(UC_ARM_REG_R6),
+            "pc": uc.reg_read(self.UC_ARM_REG_PC) & ~1,
+        }
+
+    def test_eliwood_6_sain_9_heal_10(self):
+        got = self._run(True, 10, t_cur=9, h_cur=6)
+        self.assertEqual(got["target"], 19)
+        self.assertEqual(got["healer"], 16)
+        self.assertEqual(got["hp_change"], -10)
+        self.assertEqual(got["flag"], 10)
+        self.assertEqual(got["actor_hp"], 16)
+        self.assertEqual(got["target_hp"], 19)
+        self.assertEqual(got["attrs"] & HPSTEAL, 0, "HPSTEAL drains real HP")
+        self.assertEqual(got["next_byte"], 0, "FE7 hits are 4 bytes")
+        self.assertEqual(got["r6"], 0xAABBCCDD, "r6 must reach the epilogue")
+
+    def test_no_skill_heals_target_only(self):
+        got = self._run(False, 10, t_cur=9, h_cur=6)
+        self.assertEqual(got["target"], 19)
+        self.assertEqual(got["healer"], 6)
+        self.assertEqual(got["hp_change"], -10)
+        self.assertEqual(got["flag"], 0)
+
+    def test_overheal_is_clamped_by_add_unit_hp(self):
+        """The heal is not pre-capped; AddUnitHp clamps each unit itself."""
+        got = self._run(True, 10, t_cur=28, h_cur=25)
+        self.assertEqual(got["target"], STUB_MAX_HP)
+        self.assertEqual(got["healer"], STUB_MAX_HP)
+        self.assertEqual(got["hp_change"], -2, "hpChange is the real delta")
+        self.assertEqual(got["flag"], 5, "the healer's own real gain")
+
+    def test_healer_never_loses_hp(self):
+        for heal in (1, 5, 10, 30):
+            with self.subTest(heal=heal):
+                got = self._run(True, heal, t_cur=9, h_cur=6)
+                self.assertGreaterEqual(got["healer"], 6)
+                self.assertGreaterEqual(got["target"], 9)
+
+
+ROUND_PATH_A = 0x0805311C  # recipient is position 1, so the healer is position 0
+ROUND_PATH_B = 0x0805318C  # recipient is position 0, so the healer is position 1
+ROUND_END = 0x080531E6
+HEAL_FLAG = 0x0203AA02
+# The LUT base is read out of the ROM, not hardcoded: the build relocates it
+# from vanilla 0x0203E062 to make room for more rounds.
+LUT_POOL = 0x53350  # GetHpRound's own literal pool
+MAX_HP_POOL = 0x530A4  # the max-HP pair the stealer cap loads
+SCRATCH = 0x02030000
+
+
+class LiveToServeHpRoundTests(unittest.TestCase):
+    """Run FE7_Hack's own HP-round builder and read the HP-round LUT back.
+
+    The battle-anim HP bars are driven by the LUT at `LUT_POOL`'s address:
+    the bar ctor 0x0804D5A4 spawns a bar for a position only when that
+    position's round and round+1 differ, and the tick then walks
+    0x0203E0B8[position] between them. A staff heal writes a single hit, so
+    vanilla appends a round for the recipient only and the healer's bar can
+    never move. LiveToServe appends the healer's round here.
+
+    These tests execute the ROM bytes at 0x0805311C / 0x0805318C, including
+    the two hooks, so they cover the wiring and the arithmetic together.
+    Which position the engine gives the recipient is not modelled -- both
+    assignments are asserted instead.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        if not HACK.exists():
+            raise unittest.SkipTest("FE7_Hack.gba not built")
+        try:
+            from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB
+            from unicorn.arm_const import UC_ARM_REG_PC
+        except ImportError as extra:
+            raise unittest.SkipTest(f"unicorn unavailable: {extra}") from extra
+        cls.Uc = Uc
+        cls.UC_ARCH_ARM = UC_ARCH_ARM
+        cls.UC_MODE_THUMB = UC_MODE_THUMB
+        cls.UC_ARM_REG_PC = UC_ARM_REG_PC
+        cls.rom = HACK.read_bytes()
+        cls.lut = struct.unpack_from("<I", cls.rom, LUT_POOL)[0]
+        cls.max_hp = struct.unpack_from("<I", cls.rom, MAX_HP_POOL)[0]
+        for name, addr in (("LUT", cls.lut), ("max HP", cls.max_hp)):
+            if not 0x02000000 <= addr < 0x02040000:
+                raise AssertionError(f"{name} pool holds {addr:08X}, not EWRAM")
+
+    def _rounds(self, start, heal, pos0, pos1, max0, max1, flag=None):
+        """Return round 1 of the LUT as (position 0 HP, position 1 HP)."""
+        from unicorn import UcError
+        from unicorn.arm_const import (
+            UC_ARM_REG_R4,
+            UC_ARM_REG_R5,
+            UC_ARM_REG_R7,
+            UC_ARM_REG_R8,
+            UC_ARM_REG_R9,
+            UC_ARM_REG_SP,
+        )
+
+        uc = self.Uc(self.UC_ARCH_ARM, self.UC_MODE_THUMB)
+        uc.mem_map(0x08000000, (len(self.rom) + 0xFFF) & ~0xFFF)
+        uc.mem_write(0x08000000, self.rom)
+        uc.mem_map(0x02000000, 0x40000)
+        uc.mem_map(0x03000000, 0x10000)
+
+        # A plain staff-heal hit: no attributes, signed hpChange -heal at +3.
+        uc.mem_write(HIT_BUF, struct.pack("<HBb", 0x0000, 0x00, -heal))
+        # Round 0 is seeded from the on-screen HP by the builder's prologue.
+        uc.mem_write(self.lut, struct.pack("<HH", pos0, pos1))
+        uc.mem_write(self.max_hp, struct.pack("<HH", max0, max1))
+        uc.mem_write(HEAL_FLAG, bytes([heal if flag is None else flag]))
+
+        uc.reg_write(UC_ARM_REG_SP, LTS_SP)
+        uc.reg_write(UC_ARM_REG_R4, SCRATCH)
+        uc.reg_write(UC_ARM_REG_R5, SCRATCH + 4)
+        uc.reg_write(UC_ARM_REG_R7, 0)  # position 0 round counter
+        uc.reg_write(UC_ARM_REG_R8, 0)  # position 1 round counter
+        uc.reg_write(UC_ARM_REG_R9, HIT_BUF)
+        try:
+            uc.emu_start(start | 1, ROUND_END, timeout=10_000_000, count=200_000)
+        except UcError as extra:
+            pc = uc.reg_read(self.UC_ARM_REG_PC)
+            raise AssertionError(f"Unicorn fault at {pc:08X}: {extra}") from extra
+        lut = bytes(uc.mem_read(self.lut, 8))
+        self.flag_after = uc.mem_read(HEAL_FLAG, 1)[0]
+        # halfword[round * 2 + position], masked the way GetHpRound masks it.
+        return (
+            struct.unpack_from("<H", lut, 4)[0] & 0xFFF,
+            struct.unpack_from("<H", lut, 6)[0] & 0xFFF,
+        )
+
+    def test_eliwood_6_sain_9_heal_10_both_sides_get_a_round(self):
+        # path A: recipient Sain at position 1, healer Eliwood at position 0
+        got = self._rounds(ROUND_PATH_A, 10, pos0=6, pos1=9, max0=18, max1=19)
+        self.assertEqual(got, (16, 19))
+        # path B: the same pair with the positions swapped
+        got = self._rounds(ROUND_PATH_B, 10, pos0=9, pos1=6, max0=19, max1=18)
+        self.assertEqual(got, (19, 16))
+
+    def test_the_flag_is_consumed(self):
+        self._rounds(ROUND_PATH_A, 10, pos0=6, pos1=9, max0=18, max1=19)
+        self.assertEqual(self.flag_after, 0)
+
+    def test_no_skill_leaves_the_healer_without_a_round(self):
+        """flag 0 is what LiveToServe writes when the healer lacks the skill."""
+        got = self._rounds(
+            ROUND_PATH_A, 10, pos0=6, pos1=9, max0=18, max1=19, flag=0
+        )
+        self.assertEqual(got, (0, 19))  # only the recipient's round is written
+        got = self._rounds(
+            ROUND_PATH_B, 10, pos0=9, pos1=6, max0=19, max1=18, flag=0
+        )
+        self.assertEqual(got, (19, 0))
+
+    def test_healer_round_is_capped_at_max_hp(self):
+        got = self._rounds(ROUND_PATH_A, 10, pos0=15, pos1=9, max0=18, max1=19)
+        self.assertEqual(got, (18, 19))
+        got = self._rounds(ROUND_PATH_B, 10, pos0=9, pos1=15, max0=19, max1=18)
+        self.assertEqual(got, (19, 18))
+
+    def test_healer_never_drains(self):
+        for start, heal in ((ROUND_PATH_A, h) for h in (1, 5, 10, 30)):
+            with self.subTest(path="A", heal=heal):
+                p0, _ = self._rounds(start, heal, 6, 9, 18, 19)
+                self.assertGreaterEqual(p0, 6)
+        for start, heal in ((ROUND_PATH_B, h) for h in (1, 5, 10, 30)):
+            with self.subTest(path="B", heal=heal):
+                _, p1 = self._rounds(start, heal, 9, 6, 19, 18)
+                self.assertGreaterEqual(p1, 6)
 
 
 if __name__ == '__main__':

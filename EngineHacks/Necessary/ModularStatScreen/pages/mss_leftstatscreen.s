@@ -55,3 +55,21 @@ RestoreVanillaLeftWindow:
   bx r0
   .align
   .ltorg
+
+@ Identity Problems: name ID then GetStringFromIndex. Slot filled after include.
+.global MssIdentityName
+.type MssIdentityName, %function
+MssIdentityName:
+  push {lr}
+  ldr r3, IdentityNameId_Ptr
+  mov lr, r3
+  .short 0xf800
+  ldr r3, =0x08012C61
+  mov lr, r3
+  .short 0xf800
+  pop {r1}
+  bx r1
+  .align
+  .ltorg
+IdentityNameId_Ptr:
+@POIN IdentityNameId

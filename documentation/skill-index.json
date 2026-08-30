@@ -6872,6 +6872,12 @@
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServe.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpAbsAdd.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBar.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarInvert.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarParent.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarRound.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarSteal.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],

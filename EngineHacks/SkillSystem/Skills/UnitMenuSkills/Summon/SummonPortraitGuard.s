@@ -41,6 +41,8 @@
 .equ IdentityRamByte, IdentityProblemsID+4
 .equ IdentityMugs, IdentityRamByte+4
 .equ IdentityProblemsMugs, IdentityMugs+4
+.equ CharacterTable, IdentityProblemsMugs+4
+.equ IdentityCharMax, CharacterTable+4
 
 .global SummonPortraitGuard
 .type SummonPortraitGuard, %function
@@ -75,7 +77,7 @@ SummonPortraitGuard_Out:
 	@ r0 = portrait, r2 = Unit* (or 0)
 	cmp r2,#0
 	beq SummonPortraitGuard_Return
-	push {r4,r5,lr}
+	push {r4,r5,r6,r7,lr}
 	mov r4,r2
 	mov r5,r0
 	ldr r0,SkillTester
@@ -92,28 +94,17 @@ SummonPortraitGuard_Out:
 	.short 0xf800
 	cmp r0,#0
 	beq SummonPortraitGuard_Keep
-	ldr r0,IdentityProblemsMugs
-	bl CountMugs
+	bl IdentityPickChar
 	cmp r0,#0
 	beq SummonPortraitGuard_Keep
-	mov r1,r0
-	ldr r2,IdentityRamByte
-	ldrb r0,[r2]
-	cmp r0,r1
-	blo SummonPortraitGuard_IdMug
-	mov r0,r1
-	ldr r3,=NextRN_N
-	mov lr,r3
-	nop
-	nop
-	nop
-	nop
-	.short 0xf800
-	ldr r2,IdentityRamByte
-	strb r0,[r2]
-SummonPortraitGuard_IdMug:
-	ldr r1,IdentityProblemsMugs
-	ldrb r5,[r1,r0]
+	ldr r1,CharacterTable
+	mov r2,#0x34
+	mul r2,r0
+	add r1,r2
+	ldrh r5,[r1,#6]
+	cmp r5,#0
+	bne SummonPortraitGuard_Keep
+	mov r5,#FallbackPortrait
 	b SummonPortraitGuard_Keep
 
 SummonPortraitGuard_Quantum:
@@ -134,12 +125,52 @@ SummonPortraitGuard_Quantum:
 SummonPortraitGuard_Keep:
 	mov r0,r5
 SummonPortraitGuard_HaveMug:
-	pop {r4,r5}
+	pop {r4,r5,r6,r7}
 	pop {r1}
 	bx r1
 
 SummonPortraitGuard_Return:
 	bx lr
+
+@ ============================================================================
+@ GetUnitMiniPortraitId (0x08018BF4).  Minimug box, trade, and the status
+@ face all call this instead of GetUnitPortraitId.  Vanilla inlines the
+@ portrait read from character+0x06 when miniPortrait is 0, so the hook
+@ above never sees those draws.
+@ ============================================================================
+.global SummonMiniPortraitGuard
+.type SummonMiniPortraitGuard, %function
+SummonMiniPortraitGuard:
+	mov r2,r0
+	cmp r2,#0
+	beq SummonMiniPortraitGuard_Fallback
+	ldr r1,[r2,#0x0]
+	cmp r1,#0
+	beq SummonMiniPortraitGuard_Class
+	ldrb r0,[r1,#0x8]
+	cmp r0,#0
+	beq SummonMiniPortraitGuard_Portrait
+	mov r3,#0xFE
+	lsl r3,r3,#7
+	orr r0,r3
+	b SummonPortraitGuard_Out
+
+SummonMiniPortraitGuard_Portrait:
+	ldrh r0,[r1,#0x6]
+	cmp r0,#0
+	bne SummonPortraitGuard_Out
+
+SummonMiniPortraitGuard_Class:
+	ldr r1,[r2,#0x4]
+	cmp r1,#0
+	beq SummonMiniPortraitGuard_Fallback
+	ldrh r0,[r1,#0x8]
+	cmp r0,#0
+	bne SummonPortraitGuard_Out
+
+SummonMiniPortraitGuard_Fallback:
+	mov r0,#FallbackPortrait
+	b SummonPortraitGuard_Out
 
 @ r0 = byte list. Returns entry count (stops at 0).
 CountMugs:
@@ -154,6 +185,93 @@ CountMugsLoop:
 CountMugsDone:
 	bx lr
 
+@ in r4 = Unit*. out r0 = character id, or 0.
+IdentityPickChar:
+	push {r5, r6, r7, lr}
+	ldr r7, IdentityCharMax
+	cmp r7, #0
+	beq IdentityPickFail
+	ldr r1, IdentityRamByte
+	ldr r2, [r1, #4]
+	cmp r2, r4
+	bne IdentityPickCount
+	ldr r2, =0x03000010
+	ldr r2, [r2]
+	ldr r3, [r1, #8]
+	sub r2, r3
+	cmp r2, #1
+	bhi IdentityPickCount
+	ldr r2, =0x03000010
+	ldr r2, [r2]
+	str r2, [r1, #8]
+	ldrb r0, [r1]
+	cmp r0, #0
+	beq IdentityPickCount
+	cmp r0, r7
+	bls IdentityPickDone
+IdentityPickCount:
+	mov r5, #0
+	mov r6, #1
+IdentityPickCountLoop:
+	ldr r1, CharacterTable
+	mov r2, #0x34
+	mul r2, r6
+	add r1, r2
+	ldrh r2, [r1]
+	cmp r2, #0
+	beq IdentityPickCountNext
+	ldrh r2, [r1, #6]
+	cmp r2, #0
+	beq IdentityPickCountNext
+	add r5, #1
+IdentityPickCountNext:
+	add r6, #1
+	cmp r6, r7
+	bls IdentityPickCountLoop
+	cmp r5, #0
+	beq IdentityPickFail
+	mov r0, r5
+	ldr r3, =NextRN_N
+	mov lr, r3
+	nop
+	.short 0xf800
+	mov r5, r0
+	mov r6, #1
+IdentityPickWalk:
+	cmp r6, r7
+	bhi IdentityPickFail
+	ldr r1, CharacterTable
+	mov r2, #0x34
+	mul r2, r6
+	add r1, r2
+	ldrh r2, [r1]
+	cmp r2, #0
+	beq IdentityPickWalkNext
+	ldrh r2, [r1, #6]
+	cmp r2, #0
+	beq IdentityPickWalkNext
+	cmp r5, #0
+	beq IdentityPickFound
+	sub r5, #1
+IdentityPickWalkNext:
+	add r6, #1
+	b IdentityPickWalk
+IdentityPickFound:
+	mov r0, r6
+	ldr r1, IdentityRamByte
+	strb r0, [r1]
+	str r4, [r1, #4]
+	ldr r2, =0x03000010
+	ldr r2, [r2]
+	str r2, [r1, #8]
+	b IdentityPickDone
+IdentityPickFail:
+	mov r0, #0
+IdentityPickDone:
+	pop {r5, r6, r7}
+	pop {r1}
+	bx r1
+
 .align
 .ltorg
 SkillTester:
@@ -163,3 +281,5 @@ SkillTester:
 @WORD IdentityRamByte
 @POIN IdentityMugList
 @POIN IdentityProblemsMugs
+@POIN CharacterTable
+@WORD IdentityCharMax

@@ -12,6 +12,15 @@ callHack_r3(Discipline)
 ORG $2C360
 jumpToHack(LiveToServe)
 
+// Live to Serve: HP-round LUT builder (0x8052DE4). A staff heal writes one
+// hit, so only the recipient gets a round and only the recipient's bar can
+// animate. Append a second round for the healer. Display only -- HPSTEAL
+// would do this too, but it also drains the healer's real HP.
+ORG $5314C
+jumpToHack(LiveToServeRoundA)
+ORG $531B0
+jumpToHack(LiveToServeRoundB)
+
 // LockTouch / Cunning: FE7 GetUnitKeyItemSlotForTerrain. Return 0xFF = open, no item.
 ORG $18524
 jumpToHack(LockTouch)
@@ -65,6 +74,9 @@ POIN SkillTester
 WORD LiveToServeID
 
 ALIGN 4
+#include "LiveToServe/LiveToServeHpBarRound.lyn.event"
+
+ALIGN 4
 LockTouch:
 #include "Locktouch/LockTouch.lyn.event"
 POIN SkillTester
@@ -102,7 +114,6 @@ WORD ShrewdPotentialID
 WORD 1
 
 ALIGN 4
-CunningFog:
 #include "Locktouch/CunningFog.lyn.event"
 POIN SkillTester
 WORD CunningID

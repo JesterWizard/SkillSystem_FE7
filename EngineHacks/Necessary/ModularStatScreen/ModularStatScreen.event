@@ -157,6 +157,7 @@
   #include "pages/mss_page3_original.lyn.event"
   #endif
   #include "pages/mss_leftstatscreen.lyn.event"
+  POIN (IdentityNameId|1)
   
   ALIGN 4
   DontBlinkLeft:

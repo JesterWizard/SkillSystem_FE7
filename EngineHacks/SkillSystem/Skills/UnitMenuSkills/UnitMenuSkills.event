@@ -164,7 +164,6 @@ BYTE 0x00
 ALIGN 4
 
 ALIGN 4
-SummonPortraitGuard:
 #include "Summon/SummonPortraitGuard.lyn.event"
 POIN SkillTester
 WORD RandomMugID
@@ -172,6 +171,8 @@ WORD IdentityProblemsID
 WORD IdentityRamByte
 POIN IdentityMugList
 POIN IdentityProblemsMugs
+WORD (CharacterTable+0x08000000)
+WORD 0xFE
 
 ALIGN 4
 RandomMug3:
@@ -187,11 +188,14 @@ POIN IdentityProblemsMugs
 POIN SkillTester
 WORD IdentityProblemsID
 WORD IdentityRamByte
-POIN IdentityProblemsNames
+WORD (CharacterTable+0x08000000)
+WORD 0xFE
 
 PUSH
 ORG $18BD8
 replaceWithHack(SummonPortraitGuard)
+ORG $18BF4
+replaceWithHack(SummonMiniPortraitGuard)
 ORG $A8AC
 jumpToHack(IdentityNamePopup)
 ORG $23078
@@ -220,6 +224,12 @@ ORG $96410
 jumpToHack(IdentityName_96410)
 ORG $97984
 jumpToHack(IdentityName_97984)
+ORG $85134
+jumpToHack(IdentityName_85134)
+ORG $86CB4
+jumpToHack(IdentityName_86CB4)
+ORG $8530C
+jumpToHack(IdentityName_8530C)
 POP
 
 // The sprite face proc loads its graphics from portraitEntry+0x00, which is

@@ -1414,9 +1414,7 @@
 
 .macro draw_character_name_at, tile_x, tile_y
   ldr     r0, [r7, #0xC]    @load unit's pointer
-  ldr     r0, [r0]            @load character pointer
-  ldrh    r0, [r0]        @load name
-  blh     String_GetFromIndex
+  bl      MssIdentityName
   mov     r5, r0
   mov     r0, #0x38         @ vanilla FE7U: 7-tile name box (8*7)
   mov     r1, r5

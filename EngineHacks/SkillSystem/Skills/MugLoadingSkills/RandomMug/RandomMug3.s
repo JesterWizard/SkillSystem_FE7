@@ -68,17 +68,8 @@ ldr	r0,IdentityProblemsMugs
 bl	CountMugList
 cmp	r0,#0
 beq	End
-mov	r5,r0
-ldr	r1,IdentityRamByte
-ldrb	r0,[r1]
-cmp	r0,r5
-blo	HaveIdMug
-mov	r0,r5
 ldr	r3,=NextRN_N
 mov	lr,r3
-nop
-nop
-nop
 nop
 .short	0xF800
 ldr	r1,IdentityRamByte
