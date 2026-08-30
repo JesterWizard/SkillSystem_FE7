@@ -28,6 +28,7 @@ mov r0, r4
 
 
 ApplySeals:
+bl Synchronize
 
 @check if either one of us are dead
 ldrb r0,[r5,#0x13]

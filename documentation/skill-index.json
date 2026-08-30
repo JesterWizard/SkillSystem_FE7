@@ -647,8 +647,8 @@
     {
       "skill": "UpWithArch",
       "macro": "UpWithArchID",
-      "id": "38",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/UpWithArch/UpWithArch.s",
@@ -761,8 +761,8 @@
     {
       "skill": "RallyChaos",
       "macro": "RallyChaosID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "142",
+      "off": "no",
       "category": "TurnSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
@@ -777,7 +777,9 @@
         "EngineHacks/SkillSystem/Skills/TurnSkills/RallyChaos.s",
         "EngineHacks/SkillSystem/Skills/TurnSkills/SoulSap.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "HoardersBane",
@@ -1119,8 +1121,8 @@
     {
       "skill": "StrongInit",
       "macro": "StrongInitID",
-      "id": "200",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "BuffSkills",
       "live": "yes",
       "source": "",
@@ -1374,8 +1376,8 @@
     {
       "skill": "RouseMov",
       "macro": "RouseMovID",
-      "id": "41",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "BuffSkills",
       "live": "yes",
       "source": "",
@@ -2107,8 +2109,8 @@
     {
       "skill": "RandomMug",
       "macro": "RandomMugID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "129",
+      "off": "no",
       "category": "MugLoadingSkills",
       "live": "no",
       "source": "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/IdentityProblems1.s",
@@ -2148,15 +2150,19 @@
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug6.s",
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug7.s",
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug8.s",
-        "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug9.s"
+        "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug9.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonPortraitGuard.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "IdentityProblems",
       "macro": "IdentityProblemsID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "119",
+      "off": "no",
       "category": "Mug-LoadingSkills",
       "live": "no",
       "source": "",
@@ -2194,9 +2200,14 @@
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug6.s",
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug7.s",
         "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug8.s",
-        "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug9.s"
+        "EngineHacks/SkillSystem/Skills/MugLoadingSkills/RandomMug/RandomMug9.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/IdentityProblemsName.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonPortraitGuard.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "BreathOfLife",
@@ -2331,8 +2342,8 @@
     {
       "skill": "FailGale",
       "macro": "FailGaleID",
-      "id": "129",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PostBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PostBattleSkills/FailGale/FailGale.s",
@@ -2422,8 +2433,8 @@
     {
       "skill": "ReMove",
       "macro": "ReMoveID",
-      "id": "119",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PostBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PostBattleSkills/ReMove/remove.s",
@@ -3270,8 +3281,8 @@
     {
       "skill": "ForeignPrincess",
       "macro": "ForeignPrincessID",
-      "id": "68",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/ForeignPrincess/ForeignPrincess.s",
@@ -3636,8 +3647,8 @@
     {
       "skill": "QuickBurn",
       "macro": "QuickBurnID",
-      "id": "142",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/QuickBurn/QuickBurn.s",
@@ -3933,8 +3944,8 @@
     {
       "skill": "Thunderstorm",
       "macro": "ThunderstormID",
-      "id": "182",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/Thunderstorm/Thunderstorm.s",
@@ -4005,8 +4016,8 @@
     {
       "skill": "Vanity",
       "macro": "VanityID",
-      "id": "183",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/Vanity/Vanity.s",
@@ -4023,8 +4034,8 @@
     {
       "skill": "Vigilance",
       "macro": "VigilanceID",
-      "id": "186",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/Vigilance/Vigilance.s",
@@ -4041,8 +4052,8 @@
     {
       "skill": "WindDisciple",
       "macro": "WindDiscipleID",
-      "id": "184",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/WindDisciple/Winddisciple.s",
@@ -4132,8 +4143,8 @@
     {
       "skill": "DoubleLion",
       "macro": "DoubleLionID",
-      "id": "55",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/DoubleLion/DoubleLion.s",
@@ -4170,8 +4181,8 @@
     {
       "skill": "Thotslayer",
       "macro": "ThotslayerID",
-      "id": "164",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/Thotslayer/Thotslayer.s",
@@ -4228,8 +4239,8 @@
     {
       "skill": "DancingBlade",
       "macro": "DancingBladeID",
-      "id": "185",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "PreBattleSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/PreBattleSkills/DancingBlade/DancingBlade.s",
@@ -5266,6 +5277,7 @@
         "EngineHacks/SkillSystem/Skills/RangeSkills/PointBlank/PointBlank.s"
       ],
       "tests": [
+        "tests/test_misc_standalone_skills.py",
         "tests/test_range_skills_dec93.py"
       ]
     },
@@ -5889,8 +5901,8 @@
     {
       "skill": "PushLck",
       "macro": "PushLckID",
-      "id": "111",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -5904,8 +5916,8 @@
     {
       "skill": "PushMov",
       "macro": "PushMovID",
-      "id": "113",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -5919,8 +5931,8 @@
     {
       "skill": "PushSpectrum",
       "macro": "PushSpectrumID",
-      "id": "130",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -6036,8 +6048,8 @@
     {
       "skill": "LullRes",
       "macro": "LullResID",
-      "id": "96",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -6070,8 +6082,8 @@
     {
       "skill": "LullMov",
       "macro": "LullMovID",
-      "id": "95",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -6426,12 +6438,13 @@
       "off": "no",
       "category": "UnitMenuSkills",
       "live": "yes",
-      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
+      "source": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/IdentityProblemsName.s",
       "folder": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon",
       "installer": "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/IdentityProblemsName.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/NewSummonUsability.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonAction.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Summon/SummonClassCardFace.s",
@@ -6734,8 +6747,8 @@
     {
       "skill": "Savior",
       "macro": "SaviorID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "164",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -6744,43 +6757,51 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Discipline",
       "macro": "DisciplineID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "95",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Discipline/Discipline.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Discipline",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Discipline/Discipline.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Vantage",
       "macro": "VantageID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "185",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Vantage/vantage.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Vantage",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Vantage/vantage.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "CatchEmAll",
@@ -6802,8 +6823,8 @@
     {
       "skill": "VantagePlus",
       "macro": "VantagePlusID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "186",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -6812,10 +6833,13 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Vantage/vantage.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Nihil",
@@ -6837,39 +6861,46 @@
     {
       "skill": "LiveToServe",
       "macro": "LiveToServeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "130",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServe.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServe.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "LockTouch",
       "macro": "LockTouchID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "96",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/LockTouch.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/CunningFog.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/LockTouch.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/StandaloneVersion/doubleRogueSkillFE8.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Expertise",
@@ -6907,8 +6938,8 @@
     {
       "skill": "DragonsBlood",
       "macro": "DragonsBloodID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "113",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -6917,7 +6948,9 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Hero",
@@ -7036,22 +7069,26 @@
     {
       "skill": "VigorDance",
       "macro": "VigorDanceID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "200",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/VigorDance/vigordancecheck.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/VigorDance",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/VigorDance/vigordancecheck.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/VigorDance/vigordancereset.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/VigorDance/vigordanceskill.s",
-        "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/UnitMenuSkills.event",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/Dance/DanceAction.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "LiquidOoze",
@@ -7121,8 +7158,8 @@
     {
       "skill": "DisciplinePlus",
       "macro": "DisciplinePlusID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "111",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -7131,15 +7168,18 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Watchful",
       "macro": "WatchfulID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "254",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -7153,43 +7193,51 @@
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/FE8-Rogue_Robbery.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Boon",
       "macro": "BoonID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "55",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Boon/Boon.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Boon",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Boon/Boon.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Synchronize",
       "macro": "SynchronizeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "183",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Synchronize/Synchronize.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/Synchronize",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/Synchronize/Synchronize.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Bargain",
@@ -7254,44 +7302,50 @@
     {
       "skill": "TriangleAttack",
       "macro": "TriangleAttackID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "184",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/TriangleAttack/TriangleAttack.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/TriangleAttack",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/TriangleAttack/TriangleAttack.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "ShrewdPotential",
       "macro": "ShrewdPotentialID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "182",
+      "off": "no",
       "category": "StandaloneSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StandaloneSkills/ShrewdPotential/ShrewdPotential.s",
       "folder": "EngineHacks/SkillSystem/Skills/StandaloneSkills/ShrewdPotential",
-      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event",
+      "installer": "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/ShrewdPotential/ShrewdPotential.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "Tempest",
       "macro": "TempestID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "38",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -7299,16 +7353,20 @@
       "installer": "",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
-      "sources": [],
+      "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/Biorhythm/Biorhythm.s"
+      ],
       "tests": [
+        "tests/test_misc_standalone_skills.py",
         "tests/test_prebattle_skills_dec103.py"
       ]
     },
     {
       "skill": "Serenity",
       "macro": "SerenityID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "41",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -7316,16 +7374,20 @@
       "installer": "",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
-      "sources": [],
+      "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/Biorhythm/Biorhythm.s"
+      ],
       "tests": [
+        "tests/test_misc_standalone_skills.py",
         "tests/test_prebattle_skills_dec103.py"
       ]
     },
     {
       "skill": "Cunning",
       "macro": "CunningID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "68",
+      "off": "no",
       "category": "Display-OnlySkills",
       "live": "no",
       "source": "",
@@ -7333,8 +7395,16 @@
       "installer": "",
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
-      "sources": [],
-      "tests": []
+      "sources": [
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/CunningFog.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/Locktouch/LockTouch.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/Can_Unit_Steal.s",
+        "EngineHacks/SkillSystem/Skills/UnitMenuSkills/StealPlus/StealPlus/StealPlus.event"
+      ],
+      "tests": [
+        "tests/test_misc_standalone_skills.py"
+      ]
     },
     {
       "skill": "NiceThighs",

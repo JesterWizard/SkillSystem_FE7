@@ -47,6 +47,9 @@ POIN Gamble
 POIN Demoiselle Gentilhomme MaleficAura Intimidate Inspiration DivinelyInspiring Charm Charisma VoiceOfPeace Tantivy Focus Anathema Hex LilysPoise UpWithArch Solidarity Daunt BloodTide WhitePool NightTide Infiltrator Armorboost Horseguard Skyguard
 POIN SpurStr SpurMag SpurSpd SpurDef SpurRes SpurSkl SpurLuk
 POIN DriveStr DriveMag DriveSpd DriveDef DriveRes DriveSkl DriveLuk
+#ifdef BIORHYTHM
+POIN BiorhythmFunc
+#endif
 POIN 0
 
 #define AuraSkillEntry(skillID) "PUSH; ORG AuraSkillTable + skillID; BYTE 0x1; POP"

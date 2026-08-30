@@ -71,6 +71,15 @@
 
 #define DOES_BARGAIN_STACK False
 
+// VigorDance / Inspiring Tune: +2 Pow/Def on the refreshed unit until next turn.
+#define MSG_HAS_VIGOR_DANCE
+
+// Rally command FX + RallyChaos start-of-turn (must be set before CalcLoops).
+#define MSG_HAS_RALLY_FX
+
+// Biorhythm hit/avo table; Tempest doubles, Serenity halves.
+#define BIORHYTHM
+
 #define ALSO_USE_VANILLA_DANCE_CHECK False
 // False while SupplyID is enabled: convoy is skill/adjacent-skill only.
 // Merlinus's transporter class does not open Supply by itself.

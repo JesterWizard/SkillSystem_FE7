@@ -178,7 +178,7 @@ StartOfTurnBuffFunctionEntry(OddFootedID, IsOddFootedApplicable, OddFooted)
 StartOfTurnBuffFunctionEntry(EvenFootedID, IsEvenFootedApplicable, EvenFooted)
 #endif
 
-// RallyChaosID is SKILL_OFF; indexing the 256-slot table at 255 is unused.
+StartOfTurnBuffFunctionEntry(RallyChaosID, IsRallyApplicable, RallyChaosFunc)
 
 #include "StartOfTurn_CalcLoop.lyn.event" 
 

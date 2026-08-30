@@ -22,6 +22,8 @@ POP
 ALIGN 4
 DanceAction:
 #include "Dance/DanceAction.lyn.event"
+POIN SkillTester
+WORD VigorDanceID
 
 PUSH
 ORG $2F4C4
@@ -134,13 +136,54 @@ POP
 // graphics pointer, hanging the weapon-select popup.  Of every id tested
 // (0x00-0x0F, 0xBE-0xE3) that is the only one that faults.  The guard returns
 // the generic class card 0xDE instead of 0.
+#ifndef IdentityRamByte
+  #define IdentityRamByte 0x0203AA00
+#endif
+
+ALIGN 4
+IdentityProblemsMugs:
+BYTE 0x0C 0x09 0x0A
+ALIGN 2
+IdentityProblemsNames:
+SHORT nameCamus nameZeke nameSirius
+ALIGN 4
+
 ALIGN 4
 SummonPortraitGuard:
 #include "Summon/SummonPortraitGuard.lyn.event"
+POIN SkillTester
+WORD RandomMugID
+WORD IdentityProblemsID
+WORD IdentityRamByte
+POIN IdentityMugList
+POIN IdentityProblemsMugs
+
+ALIGN 4
+IdentityMugList:
+BYTE 0x01 0x02 0x03 0x09 0x0A 0x0C 0x22 0x23
+ALIGN 4
+
+#include "Summon/IdentityProblemsName.lyn.event"
+POIN SkillTester
+WORD IdentityProblemsID
+WORD IdentityRamByte
+POIN IdentityProblemsNames
 
 PUSH
 ORG $18BD8
 replaceWithHack(SummonPortraitGuard)
+ORG $A8AC
+jumpToHack(IdentityNamePopup)
+ORG $23078
+jumpToHack(IdentityNameStat1)
+ORG $23094
+jumpToHack(IdentityNameStat2)
+ORG $2AC36
+SHORT 0x46C0
+jumpToHack(IdentityNameBattle1)
+ORG $2AC62
+SHORT 0x46C0
+jumpToHack(IdentityNameBattle2)
 POP
 
 // The sprite face proc loads its graphics from portraitEntry+0x00, which is

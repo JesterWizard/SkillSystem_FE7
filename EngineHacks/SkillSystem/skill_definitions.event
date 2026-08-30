@@ -52,7 +52,7 @@
 #define SpurDefID 30
 #define SpurResID 32
 #define TantivyID 37
-#define UpWithArchID 38
+#define UpWithArchID SKILL_OFF
 #define VoiceOfPeaceID 39
 #define WhitePoolID 40
 #define SkyguardID 28
@@ -61,7 +61,7 @@
 #define ArmorBoostID ArmorboostID
 
 // Turn Skills
-#define RallyChaosID SKILL_OFF
+#define RallyChaosID 142
 #define HoardersBaneID 209
 #define DarkBargainID 208
 #define SoulSapID 210
@@ -85,7 +85,7 @@
 #define NimbleInitID SKILL_OFF
 #define QuickInitID SKILL_OFF
 #define SpectrumInitID SKILL_OFF
-#define StrongInitID 200
+#define StrongInitID SKILL_OFF
 #define SturdyInitID SKILL_OFF
 #define DefOathID SKILL_OFF
 #define LukOathID SKILL_OFF
@@ -102,7 +102,7 @@
 #define RouseDefID SKILL_OFF
 #define RouseResID SKILL_OFF
 #define RouseLukID SKILL_OFF
-#define RouseMovID 41
+#define RouseMovID SKILL_OFF
 #define DefTakerID SKILL_OFF
 #define LukTakerID SKILL_OFF
 #define MagTakerID SKILL_OFF
@@ -156,8 +156,8 @@
 #define NatureRushID 212
 
 //Mug-Loading Skills
-#define RandomMugID SKILL_OFF
-#define IdentityProblemsID SKILL_OFF
+#define RandomMugID 129
+#define IdentityProblemsID 119
 
 //Post-Battle Skills
 #define BreathOfLifeID 123
@@ -166,12 +166,12 @@
 #define DespoilID 122
 #define FuryID 128
 #define GaleforceID 117
-#define FailGaleID 129
+#define FailGaleID SKILL_OFF
 #define LifetakerID 124
 #define PoisonStrikeID 126
 #define GrislyWoundID 127
 #define PowerstaffID 118
-#define ReMoveID 119
+#define ReMoveID SKILL_OFF
 #define SavageBlowID 143
 #define CulturedID SKILL_OFF
 #define GridmasterID SKILL_OFF
@@ -222,7 +222,7 @@
 #define DarkfaireID 64
 #define LightfaireID 65
 #define FieryBloodID 67
-#define ForeignPrincessID 68
+#define ForeignPrincessID SKILL_OFF
 #define FortuneID 69
 #define FrenzyID 79
 #define EyesOfHawkID 80
@@ -242,7 +242,7 @@
 #define PrescienceID 106
 #define PuissanceID 107
 #define QuickRiposteID 224
-#define QuickBurnID 142
+#define QuickBurnID SKILL_OFF
 #define SlowBurnID 147
 #define ShortShieldID 178
 #define SilentPrideID 181
@@ -259,23 +259,23 @@
 #define SpectrumStanceID 158
 #define AlertStanceID 148
 #define AlertStancePlusID 149
-#define ThunderstormID 182
+#define ThunderstormID SKILL_OFF
 #define TowerShieldID 179
 #define TowerShieldPlusID 180
 #define TrampleID 173
-#define VanityID 183
-#define VigilanceID 186
-#define WindDiscipleID 184
+#define VanityID SKILL_OFF
+#define VigilanceID SKILL_OFF
+#define WindDiscipleID SKILL_OFF
 #define WrathID 150
 #define QuickDrawID SKILL_OFF
 #define ArcaneBladeID SKILL_OFF
 #define BlueFlameID SKILL_OFF
-#define DoubleLionID 55
+#define DoubleLionID SKILL_OFF
 #define ThighdeologyID SKILL_OFF
-#define ThotslayerID 164
+#define ThotslayerID SKILL_OFF
 #define HurricaneID SKILL_OFF
 #define HeavyBladeID SKILL_OFF
-#define DancingBladeID 185
+#define DancingBladeID SKILL_OFF
 #define FireBoostID 59
 #define WindBoostID 62
 #define EarthBoostID 58
@@ -375,18 +375,18 @@
 #define PushSpdID 132
 #define PushDefID 108
 #define PushResID 120
-#define PushLckID 111
-#define PushMovID 113
-#define PushSpectrumID 130
+#define PushLckID SKILL_OFF
+#define PushMovID SKILL_OFF
+#define PushSpectrumID SKILL_OFF
 #define LullStrID 99
 #define LullMagID 93
 #define LullSklID 97
 #define LullSpdID 98
 #define LullLckID 92
 #define LullDefID 90
-#define LullResID 96
+#define LullResID SKILL_OFF
 #define LullSpectrumID 155
-#define LullMovID 95
+#define LullMovID SKILL_OFF
 #define GutsID 2
 #define StrongConstitutionID 11
 
@@ -421,18 +421,18 @@
 #define ReciprocalAidID 251
 
 //Miscellaneous Skills
-#define SaviorID SKILL_OFF
-#define DisciplineID SKILL_OFF
-#define VantageID SKILL_OFF
+#define SaviorID 164
+#define DisciplineID 95
+#define VantageID 185
 #define CatchEmAllID SKILL_OFF
-#define VantagePlusID SKILL_OFF
+#define VantagePlusID 186
 #define NihilID 114
-#define LiveToServeID SKILL_OFF
-#define LockTouchID SKILL_OFF
+#define LiveToServeID 130
+#define LockTouchID 96
 #define LocktouchID LockTouchID
 #define ExpertiseID SKILL_OFF
 #define CelerityID SKILL_OFF
-#define DragonsBloodID SKILL_OFF
+#define DragonsBloodID 113
 #define HeroID SKILL_OFF
 #define RightfulKingID SKILL_OFF
 #define RightfulGodID SKILL_OFF
@@ -441,25 +441,25 @@
 #define TriangleAdeptID TriAdeptID
 #define TriAdeptPlusID 110
 #define TriangleAdeptPlusID TriAdeptPlusID
-#define VigorDanceID SKILL_OFF
+#define VigorDanceID 200
 #define InspiringTuneID VigorDanceID
 #define LiquidOozeID SKILL_OFF
 #define ShadowgiftID 197
 #define LuminaID 198
-#define DisciplinePlusID SKILL_OFF
-#define WatchfulID SKILL_OFF
-#define BoonID SKILL_OFF
-#define SynchronizeID SKILL_OFF
+#define DisciplinePlusID 111
+#define WatchfulID 254
+#define BoonID 55
+#define SynchronizeID 183
 #define BargainID 94
 #define PoiseID 144
 #define AmischeID 199
-#define TriangleAttackID SKILL_OFF
-#define ShrewdPotentialID SKILL_OFF
-#define TempestID SKILL_OFF
-#define SerenityID SKILL_OFF
+#define TriangleAttackID 184
+#define ShrewdPotentialID 182
+#define TempestID 38
+#define SerenityID 41
 
 //Display-Only Skills
-#define CunningID SKILL_OFF // ID-only stub, never implemented; slot 4 reused by Hurricane
+#define CunningID 68
 #define NiceThighsID 115
 #define PersonalityID 116
 

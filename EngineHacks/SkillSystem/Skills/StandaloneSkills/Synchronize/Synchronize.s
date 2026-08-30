@@ -1,101 +1,74 @@
 .thumb
 .align
 
-
 .global Synchronize
 .type Synchronize, %function
 
-.equ SetUnitNewStatus,0x80178D8
-.equ ReturnPoint,0x802C221
-.equ AttackerUnit,0x203a3f0
-.equ DefenderUnit,0x203a470
+@ Called from ApplySeals while r6 = defender unit, r7 = attacker unit.
+@ If a unit with Synchronize just received a status, copy it onto the other
+@ unit when that unit has none.
 
-Synchronize:            @r3 hook at 2C214
-@status ID in r0, unit in r4, attacker or defender ptr in r5
+Synchronize:
+push {r4-r7, lr}
 
-@if the unit here is the attacker 
-@  if the attacker has Synchronize
-@    if the attacker has a status to write back
-@      if the defender does not have a status to write back
-@        set defender status to write back to attacker's status
-@  if the defender has Synchronize
-@    if the defender has a status to write back
-@      if the attacker does not already have a status to write back
-@        set attacker status to write back to defender's status
+mov r4, r6
+mov r5, r7
+cmp r4, #0
+beq SynchEnd
+cmp r5, #0
+beq SynchEnd
 
-push {r4-r7}
-mov r6,r0
-
-ldr r1,=AttackerUnit
-cmp r1,r5
-bne VanillaStatusApplyCheck
-
-@does the attacker have Synchronize?
-ldr r0,=SkillTester
-mov r14,r0
-mov r0,r4
-ldr r1,=SynchronizeIDLink
-ldrb r1,[r1]
+@ Attacker has Synchronize and a status, defender does not -> copy to defender.
+ldr r0, =SkillTester
+mov r14, r0
+mov r0, r5
+ldr r1, =SynchronizeIDLink
+ldrb r1, [r1]
 .short 0xF800
-cmp r0,#0
+cmp r0, #0
 beq CheckDefender
 
-@does attacker have status to write back?
-cmp r6,#0
-blt CheckDefender
-
-@does defender have status to write back?
-ldr r1,=DefenderUnit
-add r1,#0x6F
-ldrb r0,[r1]
-cmp r0,#0
+mov r3, #0x30
+ldrb r0, [r5, r3]
+mov r1, #0xF
+and r0, r1
+cmp r0, #0
+beq CheckDefender
+ldrb r1, [r4, r3]
+mov r2, #0xF
+and r1, r2
+cmp r1, #0
 bne CheckDefender
-
-@set defender status to attacker status
-strb r6,[r1]
-b SynchChecksEnd
+ldrb r0, [r5, r3]
+strb r0, [r4, r3]
 
 CheckDefender:
-@does defender have Synchronize?
-ldr r0,=SkillTester
-mov r14,r0
-ldr r0,=DefenderUnit
-ldr r1,=SynchronizeIDLink
-ldrb r1,[r1]
+ldr r0, =SkillTester
+mov r14, r0
+mov r0, r4
+ldr r1, =SynchronizeIDLink
+ldrb r1, [r1]
 .short 0xF800
-cmp r0,#0
-beq SynchChecksEnd
+cmp r0, #0
+beq SynchEnd
 
-@does defender have status to write back?
-ldr r1,=DefenderUnit
-add r1,#0x6F
-ldrb r0,[r1]
-cmp r0,#0
-blt SynchChecksEnd
+mov r3, #0x30
+ldrb r0, [r4, r3]
+mov r1, #0xF
+and r0, r1
+cmp r0, #0
+beq SynchEnd
+ldrb r1, [r5, r3]
+mov r2, #0xF
+and r1, r2
+cmp r1, #0
+bne SynchEnd
+ldrb r0, [r4, r3]
+strb r0, [r5, r3]
 
-@does attacker have status to write back?
-cmp r6,#0
-bge SynchChecksEnd
-
-@write defender status to attacker
-mov r6,r0
-
-SynchChecksEnd:
-mov r0,r6
-
-VanillaStatusApplyCheck:
-cmp r0,#0
-ble GoBack
-
-mov r1,r0
-ldr r0,=SetUnitNewStatus
-mov r14,r0
-mov r0,r4
-.short 0xF800
-
-GoBack:
+SynchEnd:
 pop {r4-r7}
-ldr r0,=ReturnPoint
+pop {r0}
 bx r0
 
 .ltorg

@@ -1,0 +1,123 @@
+PUSH
+
+// Vantage / Vantage+: FE7 BattleGetBattleUnitOrder (stores actor/target pointers).
+ORG $29028
+jumpToHack(Vantage)
+
+// Discipline / Discipline+: FE7 GetBattleUnitUpdatedWeaponExp (ldrb wexpGain * mul).
+ORG $29B88
+callHack_r3(Discipline)
+
+// Live to Serve: FE7 staff heal. r4 = gActionData, r5 = heal amount.
+ORG $2C360
+jumpToHack(LiveToServe)
+
+// LockTouch / Cunning: FE7 GetUnitKeyItemSlotForTerrain. Return 0xFF = open, no item.
+ORG $18524
+jumpToHack(LockTouch)
+
+#ifndef VANILLA_TRIANGLE_ATTACK
+// Actor CA_TRIANGLE bit -> skill. Continue 0802933E / fail 0802938C.
+ORG $29334
+jumpToHack(TriangleAttackSkill1)
+// Partner CA_TRIANGLE bit -> skill. 0x291E2 is 2-mod-4 so jumpToHack
+// (POIN) cannot land there. 0x291E0 overwrites orr/and/cmp/beq.
+ORG $291E0
+jumpToHack(TriangleAttackSkill2)
+#endif
+
+// Shrewd Potential: extra +1 on each non-zero stat booster, incl. mag +0x47.
+ORG $2CD60
+jumpToHack(ShrewdPotentialApply)
+ORG $27594
+jumpToHack(ShrewdPotentialPreview)
+
+// Cunning: +5 fog vision (same as FE7 CA_STEAL 0x08).
+ORG $175BC
+jumpToHack(CunningFog)
+
+// Boon: FE7 TickActiveFactionTurn status duration (unit+0x30).
+// ldr r0 / mov pc: jumpToHack is ldr r3 / bx r3 and r3 is &status.
+ORG $18390
+BYTE 0x00 0x48 0x87 0x46
+POIN (Boon|1)
+
+POP
+
+ALIGN 4
+Vantage:
+#include "Vantage/vantage.lyn.event"
+POIN SkillTester
+WORD VantageID
+WORD VantagePlusID
+
+ALIGN 4
+Discipline:
+#include "Discipline/Discipline.lyn.event"
+POIN SkillTester
+WORD DisciplineID
+WORD DisciplinePlusID
+
+ALIGN 4
+LiveToServe:
+#include "LiveToServe/LiveToServe.lyn.event"
+POIN SkillTester
+WORD LiveToServeID
+
+ALIGN 4
+LockTouch:
+#include "Locktouch/LockTouch.lyn.event"
+POIN SkillTester
+WORD LockTouchID
+WORD CunningID
+
+#include "TriangleAttack/TriangleAttack.lyn.event"
+ALIGN 4
+TriangleAttackIDLink:
+BYTE TriangleAttackID
+
+ALIGN 4
+Boon:
+#include "Boon/Boon.lyn.event"
+POIN SkillTester
+WORD BoonID
+
+ALIGN 4
+VigorDanceCheck:
+#include "VigorDance/vigordancecheck.lyn.event"
+
+ALIGN 4
+VigorDanceReset:
+#include "VigorDance/vigordancereset.lyn.event"
+
+#include "Synchronize/Synchronize.lyn.event"
+ALIGN 4
+SynchronizeIDLink:
+BYTE SynchronizeID
+
+ALIGN 4
+#include "ShrewdPotential/ShrewdPotential.lyn.event"
+POIN SkillTester
+WORD ShrewdPotentialID
+WORD 1
+
+ALIGN 4
+CunningFog:
+#include "Locktouch/CunningFog.lyn.event"
+POIN SkillTester
+WORD CunningID
+
+#ifdef BIORHYTHM
+ALIGN 4
+BiorhythmFunc:
+#include "Biorhythm/Biorhythm.lyn.event"
+POIN SkillTester
+WORD TempestID
+WORD SerenityID
+POIN BiorhythmTable
+
+ALIGN 4
+BiorhythmTable:
+// 256 characters * {start, amp*4}. 0,0 defaults to start 0 / amp 4 (turn % 12).
+FILL(512)
+#endif

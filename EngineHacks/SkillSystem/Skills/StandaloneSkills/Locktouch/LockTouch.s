@@ -1,42 +1,48 @@
 .thumb
 
 .equ LockTouchID, SkillTester+4
+.equ CunningID, LockTouchID+4
+.equ VanillaCont, 0x0801852D
 
-@Check for TouchLock Skill 
+@ FE7 GetUnitKeyItemSlotForTerrain (08018524). jumpToHack overwrites the
+@ push {r4-r6,lr} / mov r4,r0 / mov r5,r1 / mov r6,#0 prologue.
+@ Return 0xFF = open without consuming a key/pick.
 
-push {r2}               @The vanilla routine we jump back to needs this value
+.thumb
+push {r4-r6, lr}
+mov r4, r0
+mov r5, r1
+mov r6, #0
 
-	ldr r0, SkillTester
-	mov lr, r0
-	mov r0, r2
-	ldr r1, LockTouchID
-	
-	.short 0xf800
-	
-	cmp r0, #0
-		beq NoPickSkill
-	mov r2, r5
-	
-pop {r2}
+ldr r0, SkillTester
+mov lr, r0
+mov r0, r4
+ldr r1, LockTouchID
+.short 0xf800
+cmp r0, #0
+bne HasLocktouch
 
-	ldr r3, PickSkillBranch
-	bx r3
-		
-	NoPickSkill:
-		pop {r2}
-		ldr r3, NoPickSkillBranch
-			bx r3
+ldr r0, SkillTester
+mov lr, r0
+mov r0, r4
+ldr r1, CunningID
+.short 0xf800
+cmp r0, #0
+bne HasLocktouch
+
+ldr r0, =VanillaCont
+bx r0
+
+HasLocktouch:
+mov r0, #0xFF
+LockTouchDone:
+pop {r4-r6}
+pop {r1}
+bx r1
 
 .align
-
-	PickSkillBranch:
-.long 0x8023E9D
-
-	NoPickSkillBranch:
-.long 0x8023E95
-
 .ltorg
-
-	SkillTester:
-		@POIN SkillTester
-		@WORD LockTouchID
+SkillTester:
+@POIN SkillTester
+@WORD LockTouchID
+@WORD CunningID

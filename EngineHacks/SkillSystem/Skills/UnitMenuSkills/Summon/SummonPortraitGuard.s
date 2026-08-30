@@ -35,6 +35,12 @@
 @ ============================================================================
 
 .equ FallbackPortrait, 0xDE     @ the generic class card
+.equ NextRN_N, 0x08000E31
+.equ RandomMugID, SkillTester+4
+.equ IdentityProblemsID, RandomMugID+4
+.equ IdentityRamByte, IdentityProblemsID+4
+.equ IdentityMugs, IdentityRamByte+4
+.equ IdentityProblemsMugs, IdentityMugs+4
 
 .global SummonPortraitGuard
 .type SummonPortraitGuard, %function
@@ -66,7 +72,67 @@ SummonPortraitGuard_Fallback:
 	mov r0,#FallbackPortrait
 
 SummonPortraitGuard_Out:
+	@ r0 = portrait, r2 = Unit* (or 0)
+	cmp r2,#0
+	beq SummonPortraitGuard_Return
+	push {r4,r5,lr}
+	mov r4,r2
+	mov r5,r0
+	ldr r0,SkillTester
+	mov lr,r0
+	mov r0,r4
+	ldr r1,RandomMugID
+	.short 0xf800
+	cmp r0,#0
+	bne SummonPortraitGuard_Quantum
+	ldr r0,SkillTester
+	mov lr,r0
+	mov r0,r4
+	ldr r1,IdentityProblemsID
+	.short 0xf800
+	cmp r0,#0
+	beq SummonPortraitGuard_Keep
+	ldr r1,IdentityRamByte
+	ldrb r0,[r1]
+	cmp r0,#3
+	blo SummonPortraitGuard_IdMug
+	mov r0,#3
+	ldr r3,=NextRN_N
+	mov lr,r3
+	mov r1,r1
+	.short 0xf800
+	ldr r1,IdentityRamByte
+	strb r0,[r1]
+SummonPortraitGuard_IdMug:
+	ldr r1,IdentityProblemsMugs
+	ldrb r5,[r1,r0]
+	b SummonPortraitGuard_Keep
+
+SummonPortraitGuard_Quantum:
+	mov r0,#8
+	ldr r3,=NextRN_N
+	mov lr,r3
+	mov r1,r1
+	.short 0xf800
+	ldr r1,IdentityMugs
+	ldrb r5,[r1,r0]
+
+SummonPortraitGuard_Keep:
+	mov r0,r5
+SummonPortraitGuard_HaveMug:
+	pop {r4,r5}
+	pop {r1}
+	bx r1
+
+SummonPortraitGuard_Return:
 	bx lr
 
 .align
 .ltorg
+SkillTester:
+@POIN SkillTester
+@WORD RandomMugID
+@WORD IdentityProblemsID
+@WORD IdentityRamByte
+@POIN IdentityMugList
+@POIN IdentityProblemsMugs

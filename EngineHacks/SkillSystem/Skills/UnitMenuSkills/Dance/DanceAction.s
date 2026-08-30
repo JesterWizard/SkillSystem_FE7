@@ -8,6 +8,7 @@
 .equ BattleInitItemEffectTarget,0x0802A561
 .equ ApplyDanceBattleAction,0x0802A5D1
 .equ BeginBattleAnimations,0x0802A3B1
+.equ VigorDanceID, SkillTester+4
 
 .macro blh to, reg=r3
 	ldr \reg, =\to
@@ -40,6 +41,24 @@ mov r4,#1
 DanceAction_Original:
 ldrb r0,[r5,#0xD]
 blh GetUnit,r3
+mov r6,r0
+
+ldrb r0,[r5,#0xC]
+blh GetUnit,r3
+ldr r1,SkillTester
+mov lr,r1
+ldr r1,VigorDanceID
+.short 0xf800
+cmp r0,#0
+beq DanceAction_ClearState
+mov r0,r6
+bl GetUnitDebuffEntry
+ldr r1,=VigorDanceBitOffset_Link
+ldr r1,[r1]
+bl SetBit
+
+DanceAction_ClearState:
+mov r0,r6
 ldr r1,[r0,#0xC]
 ldr r2,=0xFFFFFBBD
 and r1,r2
@@ -74,3 +93,7 @@ pop {r1}
 bx r1
 
 .ltorg
+.align
+SkillTester:
+@POIN SkillTester
+@WORD VigorDanceID

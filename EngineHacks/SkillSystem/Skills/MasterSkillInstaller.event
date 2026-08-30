@@ -32,7 +32,8 @@ POP
 #include "ProcSkills/ProcSkills.event"
 #include "RangeSkills/RangeSkills.event"
 #include "RoundsSkills/RoundsSkills.event"
-//#include "StandaloneSkills/StandaloneSkills.event"
+// StandaloneSkills.event keeps FE8 ORGs; do not include it.
+#include "StandaloneSkills/FE7Standalone.event"
 #include "StandaloneSkills/Bargain/Bargain.event"
 #include "StandaloneSkills/Lunge/Lunge.event"
 #include "StatModifierSkills/StatModifierSkills.event"

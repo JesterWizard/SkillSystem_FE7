@@ -1,6 +1,8 @@
 #ifndef HAX_RALLIES
 #define HAX_RALLIES
+#ifndef MSG_HAS_RALLY_FX
 #define MSG_HAS_RALLY_FX
+#endif
 
 // Rally based on debuffs by crazycolorz5
 // Rally skills by circleseverywhere (?)

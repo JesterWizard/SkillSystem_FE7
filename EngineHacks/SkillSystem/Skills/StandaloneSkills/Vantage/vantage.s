@@ -74,6 +74,7 @@ strh r0, [r4,r1]
 Normal:
 str r4, [r6]
 str r5, [r7]
+VantageDone:
 
 pop {r4-r7,r15}
 

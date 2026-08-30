@@ -53,6 +53,7 @@ POIN($23118+1)
 	POIN SkillTester
 	WORD StealID
 	WORD StealPlusID
+	WORD CunningID
 	WORD ALSO_USE_VANILLA_STEAL_CHECK
 
 #endif

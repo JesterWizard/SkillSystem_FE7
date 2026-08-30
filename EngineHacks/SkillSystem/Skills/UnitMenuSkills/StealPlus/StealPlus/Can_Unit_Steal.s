@@ -6,7 +6,8 @@
 
 .equ StealID, SkillTester+4
 .equ StealPlusID, StealID+4
-.equ AlsoUseVanillaCheck, StealPlusID+4
+.equ CunningID, StealPlusID+4
+.equ AlsoUseVanillaCheck, CunningID+4
 
 .equ gActiveUnit, 0x03004690
 .equ MakeTargetListForSteal, 0x08024505
@@ -33,6 +34,14 @@ ldr		r0, [r4]
 ldr		r1, SkillTester
 mov		lr, r1
 ldr		r1, StealPlusID
+.short	0xF800
+cmp		r0, #0
+bne		CheckStatus
+
+ldr		r0, [r4]
+ldr		r1, SkillTester
+mov		lr, r1
+ldr		r1, CunningID
 .short	0xF800
 cmp		r0, #0
 bne		CheckStatus
