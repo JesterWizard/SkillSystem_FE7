@@ -324,7 +324,7 @@
 #define MiracleID 100
 #define MoonbowID 19
 #define PaviseID SKILL_OFF
-#define PetrifyID 20
+#define PetrifyID SKILL_OFF // Need to add the stone status to FE7 later, right now the status effect is not implemented
 #define SolID SKILL_OFF
 #define SureShotID SKILL_OFF
 #define CorrosionID 6

@@ -43,8 +43,22 @@ mov r0, #0xF
 and r0, r2
 orr r0, r1
 strb r0, [r3]
+cmp r1, #0
+bne BoonDone
+mov r0, #0xF
+and r0, r2
+cmp r0, #0xB
+beq VanillaClearPetrify
+cmp r0, #0xD
+bne BoonDone
+VanillaClearPetrify:
+ldr r0, [r4, #0xC]
+mov r1, #2
+bic r0, r1
+str r0, [r4, #0xC]
 
 BoonDone:
+ldrb r0, [r3]
 ldr r1, =0x0801839F
 bx r1
 

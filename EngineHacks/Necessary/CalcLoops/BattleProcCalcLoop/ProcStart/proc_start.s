@@ -31,6 +31,12 @@ ldr r0, =#0x203A3F0
 strb r1, [r0, r2]
 ldr r0, =#0x203A470
 strb r1, [r0, r2]
+@ statusOut = -1 so Petrify / BlackMagic / Deadeye see no pending status
+mov r1, #0xFF
+mov r2, #0x6F
+strb r1, [r0, r2]
+ldr r0, =#0x203A3F0
+strb r1, [r0, r2]
 NotFirstRound:
 
 ldr     r0,[r6]           		@r0 = battle buffer                @ 0802B40A 6800     

@@ -4,7 +4,7 @@ POIN ProcLoop_Start	//start
 POIN Proc_Hurricane	//turns the round into a miss; must precede damage skills
 POIN Proc_Eclipse	//skills that do damage and all that
 POIN DownWithArch
-POIN Proc_BlackMagic Proc_Enrage
+POIN Proc_BlackMagic Proc_Enrage Proc_Petrify
 POIN Proc_Adept Proc_DragonFang 
 POIN Proc_Glacies Proc_Ignis Proc_Luna Proc_Corona Proc_Corrosion Proc_Moonbow Proc_Sol Proc_Aether
 POIN Proc_Colossus 

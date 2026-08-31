@@ -5134,7 +5134,9 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/Deadeye/proc_deadeye.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Enrage/proc_enrage.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_petrify_execution.py"
+      ]
     },
     {
       "skill": "Sol",

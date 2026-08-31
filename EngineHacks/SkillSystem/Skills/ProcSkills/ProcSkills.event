@@ -203,7 +203,6 @@ Proc_Flare:
 POIN SkillTester
 WORD FlareID
 
-// Petrify note: Can't port until stone status is added to FE7
 ALIGN 4
 Proc_Petrify:
 #include "Petrify/proc_petrify.lyn.event"

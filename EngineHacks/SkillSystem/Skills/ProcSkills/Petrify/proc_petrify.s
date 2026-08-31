@@ -62,9 +62,16 @@ strb  r0, [r6,#4]
 
 
 WriteStatus:
-mov             r0,#0x3B    @petrify ID
-mov		r1,#0x6F
-strb	r0,[r5,r1]
+@ FE7 packed status: duration 3, PetrifyStatusID 13 (not FE8 0x3B).
+mov     r0, #0x3D
+mov     r1, #0x6F
+strb    r0, [r5, r1]
+mov     r1, #0x30
+strb    r0, [r5, r1]
+ldr     r0, [r5, #0xC]
+mov     r1, #0x2            @ US_UNSELECTABLE
+orr     r0, r1
+str     r0, [r5, #0xC]
 
 End:
 pop		{r4-r7}
