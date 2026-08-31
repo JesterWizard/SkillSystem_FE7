@@ -369,6 +369,64 @@ class EffectiveIconFlagTests(unittest.TestCase):
         )
 
 
+class Fe7ReworkDataTests(unittest.TestCase):
+    """ItemEffectivenessPtr uses ExpandedItemTable (after SkillScrolls
+    redefines ItemTable). Comments were FE8 IDs: Fire 0x37 got
+    FlierEffectiveness, and brigand class+0x50 is a leftover pointer
+    (0x08BE467F) whose low half looks like every type bit."""
+
+    CLASS_TABLE = 0xBE015C
+    CLASS_SIZE = 0x54
+    GET_ITEM_DATA = 0x16060
+    BRIGAND = 0x39
+    FIRE = 0x37
+    KILLER_BALLISTA = 0x36
+    HORSESLAYER = 0x1B
+    JAVELIN = 0x1C
+
+    @classmethod
+    def setUpClass(cls):
+        if not HACK.exists():
+            raise unittest.SkipTest("FE7_Hack.gba missing")
+        cls.rom = HACK.read_bytes()
+
+    def _item_table(self) -> int:
+        return struct.unpack_from("<I", self.rom, self.GET_ITEM_DATA)[0] & 0x01FFFFFF
+
+    def _item_eff(self, item: int) -> int:
+        return struct.unpack_from(
+            "<I", self.rom, self._item_table() + 0x24 * item + 0x10
+        )[0]
+
+    def _eff_types(self, item: int) -> int:
+        ptr = self._item_eff(item)
+        if ptr == 0:
+            return 0
+        off = ptr & 0x01FFFFFF
+        _zero, _coeff, types = struct.unpack_from("<BBH", self.rom, off)
+        return types
+
+    def _class_type(self, class_id: int) -> int:
+        return struct.unpack_from(
+            "<H", self.rom, self.CLASS_TABLE + self.CLASS_SIZE * class_id + 0x50
+        )[0]
+
+    def test_brigand_has_no_class_type(self):
+        self.assertEqual(self._class_type(self.BRIGAND), 0)
+
+    def test_fire_has_no_effectiveness(self):
+        self.assertEqual(self._item_eff(self.FIRE), 0)
+
+    def test_killer_ballista_is_flier_type(self):
+        self.assertEqual(self._eff_types(self.KILLER_BALLISTA), FLIER)
+
+    def test_horseslayer_is_horse_type(self):
+        self.assertEqual(self._eff_types(self.HORSESLAYER), 0x02)
+
+    def test_javelin_has_no_effectiveness(self):
+        self.assertEqual(self._item_eff(self.JAVELIN), 0)
+
+
 class WiringTests(unittest.TestCase):
     def test_skill_ids_are_live(self):
         text = DEFS.read_text(encoding="utf-8")

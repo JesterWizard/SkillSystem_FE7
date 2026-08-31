@@ -6,16 +6,17 @@
 @ for a position only when its round and round+1 differ, then the tick walks
 @ 0x0203E0B8[position] between them. So a side with no round never animates.
 @
-@ A staff heal writes ONE hit, which appends a round for the recipient only.
-@ HPSTEAL (0x100) is the only vanilla shape that appends a round for both
-@ sides, but setting it also hands the healer to the engine's HP-drain
-@ semantics and costs real HP -- it broke the heal with animations OFF, where
-@ this LUT is never even built. So the second round is appended here instead:
-@ display only, nothing the engine reads back as HP.
+@ The LUT always applies hit.hpChange to the RECIPIENT (HP - hpChange).
+@ Staff heals store negative hpChange, so the target bar rises. Combat
+@ Counter must not use that field -- it would tick the Counter unit.
 @
-@ LiveToServe stores the capped heal in LiveToServeHealFlag on every staff
-@ heal (0 when the healer lacks the skill), so a stale value cannot survive
-@ into the next heal. This consumes and clears it.
+@ This hook appends a round for the OTHER position from a signed flag:
+@   +N  Live to Serve healer gain (display only)
+@   -N  Counter / CounterMagic drain on the inflicter (display only)
+@ Real HP is written elsewhere; HPSTEAL is not used.
+@
+@ The flag is consumed here so a stale value cannot survive into the next
+@ combat. 0 means neither skill published a delta.
 @
 @ At both hook sites r1 already holds the LUT base (the build relocates it,
 @ so it must not be hardcoded) and r7 / r8 are the position 0 / position 1
@@ -38,7 +39,8 @@ LiveToServeRoundA:
     strh    r2, [r0]
 
     ldr     r3, =LiveToServeHealFlag
-    ldrb    r2, [r3]
+    mov     r2, #0
+    ldrsb   r2, [r3, r2]
     cmp     r2, #0
     beq     RoundADone
     mov     r0, #0
@@ -50,7 +52,11 @@ LiveToServeRoundA:
     ldrh    r0, [r0]
     ldr     r3, =HpRoundMask
     and     r0, r3
-    add     r0, r0, r2              @ current HP + heal
+    add     r0, r0, r2              @ signed: +heal / -drain
+    cmp     r0, #0
+    bge     RoundAFloor
+    mov     r0, #0
+RoundAFloor:
     ldr     r3, =HpRoundMax
     ldrh    r3, [r3]
     cmp     r0, r3
@@ -79,7 +85,8 @@ LiveToServeRoundB:
     strh    r2, [r0]
 
     ldr     r3, =LiveToServeHealFlag
-    ldrb    r2, [r3]
+    mov     r2, #0
+    ldrsb   r2, [r3, r2]
     cmp     r2, #0
     beq     RoundBDone
     mov     r0, #0
@@ -94,6 +101,10 @@ LiveToServeRoundB:
     ldr     r3, =HpRoundMask
     and     r0, r3
     add     r0, r0, r2
+    cmp     r0, #0
+    bge     RoundBFloor
+    mov     r0, #0
+RoundBFloor:
     ldr     r3, =HpRoundMax
     ldrh    r3, [r3, #2]
     cmp     r0, r3

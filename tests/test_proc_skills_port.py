@@ -31,12 +31,14 @@ class ProcSkillsPortTests(unittest.TestCase):
 
     def test_counter_and_countermagic_attacker_hp_update(self):
         counter_src = (PROC_DIR / "Counter" / "proc_counter.s").read_text(encoding="utf-8")
-        self.assertIn("strb r0, [r4, #0x13]", counter_src)
-        self.assertIn("strb r2, [r6, #3]", counter_src)
+        self.assertIn("strb r1, [r4, #0x13]", counter_src)
+        self.assertIn("#0x80", counter_src)
+        self.assertNotIn("0x0203AA02", counter_src)
 
         countermagic_src = (PROC_DIR / "Countermagic" / "proc_countermagic.s").read_text(encoding="utf-8")
-        self.assertIn("strb r0, [r4, #0x13]", countermagic_src)
-        self.assertIn("strb r2, [r6, #3]", countermagic_src)
+        self.assertIn("strb r1, [r4, #0x13]", countermagic_src)
+        self.assertIn("#0x80", countermagic_src)
+        self.assertNotIn("0x0203AA02", countermagic_src)
 
     def test_corona_activation_check(self):
         corona_src = (PROC_DIR / "Corona" / "proc_corona.s").read_text(encoding="utf-8")

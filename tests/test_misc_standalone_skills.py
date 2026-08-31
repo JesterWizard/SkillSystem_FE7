@@ -1483,7 +1483,7 @@ class LiveToServeHpRoundTests(unittest.TestCase):
             if not 0x02000000 <= addr < 0x02040000:
                 raise AssertionError(f"{name} pool holds {addr:08X}, not EWRAM")
 
-    def _rounds(self, start, heal, pos0, pos1, max0, max1, flag=None):
+    def _rounds(self, start, heal, pos0, pos1, max0, max1, flag=None, hp_change=None):
         """Return round 1 of the LUT as (position 0 HP, position 1 HP)."""
         from unicorn import UcError
         from unicorn.arm_const import (
@@ -1501,12 +1501,14 @@ class LiveToServeHpRoundTests(unittest.TestCase):
         uc.mem_map(0x02000000, 0x40000)
         uc.mem_map(0x03000000, 0x10000)
 
-        # A plain staff-heal hit: no attributes, signed hpChange -heal at +3.
-        uc.mem_write(HIT_BUF, struct.pack("<HBb", 0x0000, 0x00, -heal))
+        # Default: staff-heal hit with signed hpChange -heal at +3.
+        change = -heal if hp_change is None else hp_change
+        uc.mem_write(HIT_BUF, struct.pack("<HBb", 0x0000, 0x00, change))
         # Round 0 is seeded from the on-screen HP by the builder's prologue.
         uc.mem_write(self.lut, struct.pack("<HH", pos0, pos1))
         uc.mem_write(self.max_hp, struct.pack("<HH", max0, max1))
-        uc.mem_write(HEAL_FLAG, bytes([heal if flag is None else flag]))
+        delta = heal if flag is None else flag
+        uc.mem_write(HEAL_FLAG, struct.pack("b", delta))
 
         uc.reg_write(UC_ARM_REG_SP, LTS_SP)
         uc.reg_write(UC_ARM_REG_R4, SCRATCH)
@@ -1555,6 +1557,29 @@ class LiveToServeHpRoundTests(unittest.TestCase):
         self.assertEqual(got, (18, 19))
         got = self._rounds(ROUND_PATH_B, 10, pos0=9, pos1=15, max0=19, max1=18)
         self.assertEqual(got, (19, 18))
+
+    def test_negative_flag_drains_the_other_side_not_the_recipient(self):
+        """Counter's inverse of Live to Serve: signed flag -10 is a drain on
+        the other position. The hit's own hpChange stays 0 so the recipient
+        (the Counter unit) does not play that drain.
+        """
+        got = self._rounds(
+            ROUND_PATH_A, 0, pos0=40, pos1=20, max0=40, max1=20,
+            flag=-10, hp_change=0,
+        )
+        self.assertEqual(got, (30, 20))
+        got = self._rounds(
+            ROUND_PATH_B, 0, pos0=20, pos1=40, max0=20, max1=40,
+            flag=-10, hp_change=0,
+        )
+        self.assertEqual(got, (20, 30))
+
+    def test_drain_is_floored_at_zero(self):
+        got = self._rounds(
+            ROUND_PATH_A, 0, pos0=6, pos1=20, max0=18, max1=20,
+            flag=-10, hp_change=0,
+        )
+        self.assertEqual(got[0], 0)
 
     def test_healer_never_drains(self):
         for start, heal in ((ROUND_PATH_A, h) for h in (1, 5, 10, 30)):

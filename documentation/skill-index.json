@@ -4758,7 +4758,9 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/CmbArtHpCost/CmbArtHpCost.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Eclipse/proc_eclipse.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_counter_execution.py"
+      ]
     },
     {
       "skill": "CounterMagic",
@@ -4778,7 +4780,9 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/Bane/proc_bane.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Eclipse/proc_eclipse.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_countermagic_execution.py"
+      ]
     },
     {
       "skill": "Deadeye",

@@ -27,7 +27,6 @@ BarricadePlusIDLink:
 BYTE BarricadePlusID
 
 ALIGN 4
-Proc_Finish:
 #include "ProcFinish/proc_finish.lyn.event"
 
 PUSH

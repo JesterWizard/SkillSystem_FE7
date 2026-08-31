@@ -24,10 +24,15 @@ mov r1, #0x82               @devil flag OR miss
 tst r0, r1
 bne End
 
-@only when attacker initiates
+@ Proc loop hardcodes r1 = gBattleTarget. Hit-taker is the other battle unit.
 ldr r0, =0x203a3f0
 cmp r4, r0
-bne End
+bne HitTakerIsActor
+ldr r5, =0x203a470
+b HaveHitTaker
+HitTakerIsActor:
+mov r5, r0
+HaveHitTaker:
 
 @make sure attacker has non-magic weapon
 mov r0, r4
@@ -62,52 +67,34 @@ cmp r0, #0
 beq End
 @passive skill, no proc
 
-@check if defender will die
-ldrh r2, [r7, #4]           @final damage
-mov r0, #0x13
-ldrb r0, [r5, r0]           @remaining hp
-cmp r2, r0
-bge End                     @gonna kill, so don't activate
-
-@if we proc, set the hp update flag
-ldr     r2,[r6]    
+@ Devil-style reversal: the Counter unit does not take this hit.
+@ Flag 0x80 sends the round's damage to the inflicter (same as Devil Axe).
+ldr     r2,[r6]
 lsl     r1,r2,#0xD
 lsr     r1,r1,#0xD
-mov     r0, #0x1
-lsl     r0, #8              @0x100, hp drain/update
+mov     r0, #0x80
+lsl     r0, #8              @0x8000, defender skill
+add     r0, #0x80           @+ devil
 orr     r1, r0
-
 ldr     r0,=#0xFFF80000
 and     r0,r2
 orr     r0,r1
 str     r0,[r6]
 
-@grab damage dealt
-ldrh r2, [r7, #4]           @final damage
-
-@subtract damage from attacker's HP in unit struct (skip if simulation)
+@subtract damage from attacker's HP (skip if simulation)
 ldrh r0, [r7]
 mov r1, #2
 tst r0, r1
-bne SkipHpWrite
-
-ldrb r0, [r4, #0x13]        @attacker's current HP
-cmp r0, r2
-bgt NotDead
-mov r0, #0
-b StoreAttackerHP
-NotDead:
-sub r0, r2
+bne End
+mov r0, #4
+ldrsh r0, [r7, r0]
+ldrb r1, [r4, #0x13]
+sub r1, r0
+cmp r1, #0x7F
+blo StoreAttackerHP
+mov r1, #0
 StoreAttackerHP:
-strb r0, [r4, #0x13]
-
-SkipHpWrite:
-@set hpChange in round buffer
-neg r2, r2                  @damage to attacker
-mov r0, #3
-ldsb r0, [r6, r0]           @current hp change
-add r2, r0
-strb r2, [r6, #3]           @set damage
+strb r1, [r4, #0x13]
 
 End:
 pop {r4-r7}

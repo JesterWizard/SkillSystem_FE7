@@ -1,6 +1,6 @@
 If ENABLE_SLAYER_AND_EFFECTIVENESS_REWORK is commented out (in Config.event), vanilla effectiveness is unchanged.
 
-If enabled, class weaknesses are a bitfield at class+0x50 (ArmorType, HorseType, FlierType, DragonType, MonsterType, SwordType in Tables/TableDefinitions.event).
+If enabled, class weaknesses are a bitfield at class+0x50 (ArmorType, HorseType, FlierType, DragonType, MonsterType, SwordType in Tables/TableDefinitions.event). FE7 stores leftover pointers there on some classes (brigand, pirate, monk); those must be zeroed or every type bit looks set. ItemEffectivenessPtr IDs are FE7 (Fire 0x37, not FE8 Killer Ballista).
 
 Weapon effectiveness pointers (+0x10) list {BYTE 0, coeff*2; SHORT types} terminated by WORD 0. Delphi Shield uses the same pointer with SetProtection(FlierType) and item ability 0x4000.
 

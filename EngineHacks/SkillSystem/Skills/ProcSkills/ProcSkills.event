@@ -28,13 +28,11 @@ POIN SkillTester
 WORD ColossusID
 
 ALIGN 4
-Proc_Counter:
 #include "Counter/proc_counter.lyn.event"
 POIN SkillTester
 WORD CounterID
 
 ALIGN 4
-Proc_CounterMagic:
 #include "Countermagic/proc_countermagic.lyn.event"
 POIN SkillTester
 WORD CounterMagicID
@@ -103,7 +101,6 @@ Proc_Mercy:
 #include "Mercy/proc_mercy.lyn.event"
 
 ALIGN 4
-Proc_Devil:
 #include "Devil/proc_devil.lyn.event"
 POIN SkillTester
 WORD DevilsLuckID
@@ -129,7 +126,6 @@ POIN SkillTester
 WORD PaviseID
 
 ALIGN 4
-Proc_Sol:
 #include "Sol/proc_sol.lyn.event"
 POIN SkillTester
 WORD SolID
@@ -142,7 +138,6 @@ POIN SkillTester
 WORD LunaID
 
 ALIGN 4
-Proc_Aether:
 #include "Aether/proc_aether.lyn.event"
 POIN SkillTester
 WORD AetherID
@@ -167,7 +162,6 @@ POIN SkillTester
 WORD IgnisID
 
 ALIGN 4
-Proc_Moonbow:
 #ifndef DISABLE_CHARGE
 #include "Moonbow/proc_moonbow.lyn.event"
 #else
@@ -177,7 +171,7 @@ POIN SkillTester
 WORD MoonbowID
 
 ALIGN 4
-DownWithArch: //lethality if the enemy's name starts with "Arch"
+//lethality if the enemy's name starts with "Arch"
 #include "DownWithArch/proc_downwitharch.lyn.event"
 POIN SkillTester
 WORD DownWithArchID
@@ -199,7 +193,6 @@ BYTE 3 25 //sleep
 BYTE 4 25 //berserk
 
 ALIGN 4
-Proc_Corona:
 #include "Corona/proc_corona.lyn.event"
 POIN SkillTester
 WORD CoronaID

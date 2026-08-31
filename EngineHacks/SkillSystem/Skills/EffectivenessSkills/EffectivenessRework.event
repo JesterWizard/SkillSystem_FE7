@@ -1,11 +1,14 @@
 // FE7 class-type effectiveness lists and Delphi Shield protection.
-// Class type halfword is class+0x50 (unused in vanilla). Coeff is *2 (6 => 3x).
+// Class type is class+0x50. FE7 leftover pointers live there on some classes
+// (brigand 0x08BE467F etc.); WORD writes so those bits cannot look like types.
+// Item IDs are FE7 (Fire is 0x37; FE8 Killer Ballista 0x37 must not be used).
+// Coeff is *2 (6 => 3x).
 
 #define SlayerTableEntry(class_id, type_list, coefficient_times_2) "BYTE class_id coefficient_times_2; SHORT type_list"
 #define SetWeaponEffectiveness(type_list, coefficient_times_2) "BYTE 0 coefficient_times_2; SHORT type_list"
 #define SetProtection(type_list) "SHORT 0 type_list"
 #define ItemEffectivenessPtr(item_id, label) "PUSH; ORG ItemTable + 0x24*(item_id) + 0x10; POIN label; POP"
-#define SetClassType(class_id, types) "PUSH; ORG ClassTable + 0x54*(class_id) + 0x50; SHORT types; POP"
+#define SetClassType(class_id, types) "PUSH; ORG ClassTable + 0x54*(class_id) + 0x50; WORD types; POP"
 
 ALIGN 4
 SlayerTable:
@@ -13,29 +16,36 @@ WORD 0
 
 ItemEffectivenessPtr(0x09, LordWeaponEffectiveness)   // Rapier
 ItemEffectivenessPtr(0x0A, LordWeaponEffectiveness)   // Mani Katti
-ItemEffectivenessPtr(0x8D, LordWeaponEffectiveness)   // Sol Katti
-ItemEffectivenessPtr(0x8E, ArmorEffectiveness)        // Wolf Beil
+ItemEffectivenessPtr(0x8D, LordWeaponEffectiveness)   // Wolf Beil
 ItemEffectivenessPtr(0x0E, ArmorEffectiveness)        // Armorslayer
-ItemEffectivenessPtr(0x27, ArmorEffectiveness)        // Hammer
-ItemEffectivenessPtr(0x95, ArmorEffectiveness)        // Heavy Spear
-ItemEffectivenessPtr(0x1C, HorseEffectiveness)        // Horseslayer
-ItemEffectivenessPtr(0x26, HorseEffectiveness)        // Halberd
+ItemEffectivenessPtr(0x26, ArmorEffectiveness)        // Hammer
+ItemEffectivenessPtr(0x94, ArmorEffectiveness)        // Heavy Spear
+ItemEffectivenessPtr(0x13, HorseEffectiveness)        // Long Sword (vanilla horse list)
+ItemEffectivenessPtr(0x1B, HorseEffectiveness)        // Horseslayer
+ItemEffectivenessPtr(0x25, HorseEffectiveness)        // Halberd
 ItemEffectivenessPtr(0x0F, DragonEffectiveness)       // Wyrmslayer
-ItemEffectivenessPtr(0x5A, DragonEffectiveness)       // Dragon Axe
-ItemEffectivenessPtr(0x2C, SwordEffectiveness)        // Swordslayer
-ItemEffectivenessPtr(0x2D, FlierEffectiveness)        // Iron Bow
-ItemEffectivenessPtr(0x2E, FlierEffectiveness)        // Steel Bow
-ItemEffectivenessPtr(0x2F, FlierEffectiveness)        // Silver Bow
-ItemEffectivenessPtr(0x30, FlierEffectiveness)        // Poison Bow
-ItemEffectivenessPtr(0x31, FlierEffectiveness)        // Killer Bow
-ItemEffectivenessPtr(0x32, FlierEffectiveness)        // Brave Bow
-ItemEffectivenessPtr(0x33, FlierEffectiveness)        // Short Bow
-ItemEffectivenessPtr(0x34, FlierEffectiveness)        // Longbow
-ItemEffectivenessPtr(0x35, FlierEffectiveness)        // Ballista
-ItemEffectivenessPtr(0x36, FlierEffectiveness)        // Iron Ballista
-ItemEffectivenessPtr(0x37, FlierEffectiveness)        // Killer Ballista
+ItemEffectivenessPtr(0x3C, DragonEffectiveness)       // Forblaze
+ItemEffectivenessPtr(0x59, DragonEffectiveness)       // Dragon Axe
+ItemEffectivenessPtr(0x84, DragonEffectiveness)       // Durandal
+ItemEffectivenessPtr(0x85, DragonEffectiveness)       // Armads
+ItemEffectivenessPtr(0x86, DragonEffectiveness)       // Aureola
+ItemEffectivenessPtr(0x8C, DragonEffectiveness)       // Sol Katti
+ItemEffectivenessPtr(0x2B, SwordEffectiveness)        // Swordslayer
+ItemEffectivenessPtr(0x2C, FlierEffectiveness)        // Iron Bow
+ItemEffectivenessPtr(0x2D, FlierEffectiveness)        // Steel Bow
+ItemEffectivenessPtr(0x2E, FlierEffectiveness)        // Silver Bow
+ItemEffectivenessPtr(0x2F, FlierEffectiveness)        // Poison Bow
+ItemEffectivenessPtr(0x30, FlierEffectiveness)        // Killer Bow
+ItemEffectivenessPtr(0x31, FlierEffectiveness)        // Brave Bow
+ItemEffectivenessPtr(0x32, FlierEffectiveness)        // Short Bow
+ItemEffectivenessPtr(0x33, FlierEffectiveness)        // Longbow
+ItemEffectivenessPtr(0x34, FlierEffectiveness)        // Ballista
+ItemEffectivenessPtr(0x35, FlierEffectiveness)        // Iron Ballista
+ItemEffectivenessPtr(0x36, FlierEffectiveness)        // Killer Ballista
 ItemEffectivenessPtr(0x83, FlierEffectiveness)        // Emblem Bow
-ItemEffectivenessPtr(0x71, FlierProtection)           // Delphi Shield
+ItemEffectivenessPtr(0x93, FlierEffectiveness)        // Rienfleche
+ItemEffectivenessPtr(0x99, FlierEffectiveness)        // Wind Sword
+ItemEffectivenessPtr(0x70, FlierProtection)           // Delphi Shield
 
 LordWeaponEffectiveness:
 SetWeaponEffectiveness(ArmorType|HorseType, 6)
@@ -58,6 +68,16 @@ WORD 0
 FlierProtection:
 SetProtection(FlierType)
 
+// Leftover FE7 pointers at +0x50 (monk/cleric/brigand/pirate/berserker/corsair).
+SetClassType(0x1C, 0)
+SetClassType(0x1D, 0)
+SetClassType(0x1E, 0)
+SetClassType(0x1F, 0)
+SetClassType(0x39, 0)
+SetClassType(0x3A, 0)
+SetClassType(0x3B, 0)
+SetClassType(0x50, 0)
+
 SetClassType(0x14, ArmorType)
 SetClassType(0x15, ArmorType)
 SetClassType(0x16, ArmorType)
@@ -77,10 +97,10 @@ SetClassType(0x31, HorseType)
 SetClassType(0x59, HorseType)
 SetClassType(0x32, FlierType)
 SetClassType(0x33, FlierType)
-SetClassType(0x34, FlierType)
-SetClassType(0x35, FlierType)
-SetClassType(0x36, FlierType)
-SetClassType(0x37, FlierType)
+SetClassType(0x34, FlierType|DragonType)
+SetClassType(0x35, FlierType|DragonType)
+SetClassType(0x36, FlierType|DragonType)
+SetClassType(0x37, FlierType|DragonType)
 SetClassType(0x46, DragonType)
 SetClassType(0x55, DragonType|MonsterType)
 SetClassType(0x52, MonsterType)
