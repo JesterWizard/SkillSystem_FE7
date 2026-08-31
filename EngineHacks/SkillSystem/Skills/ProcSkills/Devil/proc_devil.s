@@ -8,7 +8,12 @@
 .equ DevilsPactID, DevilsLuckID+4
 .equ DevilsWhimID, DevilsPactID+4
 .equ d100Result, 0x802857c
+
+.global Proc_Devil
+.type Proc_Devil, %function
+
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+Proc_Devil:
 push {r4-r7,lr}
 mov r4, r0                  @attacker
 mov r5, r1                  @defender
@@ -109,12 +114,10 @@ cmp     r0,#31              @check if luck is over cap, just in case
 bhi	End
 mov     r1,#31              @devil chance
 sub     r0,r1,r0            @devil chance - luck
-ldr     r1,=#0x8000E60      @roll 1rn
-mov	lr,r1
-.short	0xF800
-lsl	r0,#0x18
-cmp	r0,#0
-beq     End                 @if the roll fails we are safe
+mov     r1, r4              @skill user
+blh     d100Result
+cmp     r0, #1
+bne     End                 @if the roll fails we are safe
 
 @if we proc, set the offensive skill flag
 ldr     r2,[r6]    
@@ -129,25 +132,24 @@ and     r0,r2               @ 0802B436 4010
 orr     r0,r1               @ 0802B438 4308     
 str     r0,[r6]             @ 0802B43A 6018 
 
-mov     r0,#0xFF            @no animation!
-strb	r0,[r6,#4]
-
 @check for draining weapon
 mov	r0,#0x4A
 ldrh    r0,[r4,r0]          @equipped item
-mov	r1,#0xFF
-and     r0,r1               @only item id
-mov     r1,#36              @size of entry
-mul	r0,r1
-add     r0,#31              @offset of weapon effect byte
-ldr     r1,=0x080177C0      @has table pointer
-ldr	r1,[r1]
-ldrb    r0,[r1,r0]          @weapon effect
+ldr     r1,=#0x8017424      @GetItemEffect
+mov	lr,r1
+.short	0xF800
 cmp     r0,#2               @steal hp effect
 beq	NoDamage 
 
 mov r0, #4
 ldrsh r0, [r7, r0]          @damage being dealt
+
+@subtract damage from attacker's HP in unit struct (skip if simulation)
+ldrh r1, [r7]
+mov r2, #2
+tst r1, r2
+bne End
+
 ldrb r1, [r4, #0x13]        @update hp
 sub	r1,r0
 cmp	r1,#0x7F
@@ -174,18 +176,9 @@ and     r0,r2               @ 0802B436 4010
 orr     r0,r1               @ 0802B438 4308     
 str     r0,[r6]             @ 0802B43A 6018
 
-@mov	r0,#0x13
-@ldsb	r0,[r4,r0]	@remaining hp
-@mov	r2,#4
-@ldsb	r2,[r7,r2]	@damage
-@add	r0,r2
-@strb	r0,[r4,#0x13]	@remaining hp
 mov	r0,#0
 strb	r0,[r7,#4]
 strb	r0,[r7,#5]
-
-mov     r0,#0xFF            @no animation!
-strb	r0,[r6,#4]
 b	End
 
 .align

@@ -6,7 +6,12 @@
 .endm
 .equ proc_truehit, 0x80285A8 //FE8 -> 0x802A558
 .equ d100Result, 0x802857C //FE8 -> 0x802a52c
+
+.global Proc_Finish
+.type Proc_Finish, %function
+
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+Proc_Finish:
 push {r4-r7,lr}
 mov r4, r0 @attacker
 mov r5, r1 @defender
@@ -24,7 +29,7 @@ cmp r0, #0
 bge OverDMGFloor
 mov r0, #0
 strh r0, [r7,r1] @damage is floored at 0
-strb r0, [r6, #5] @set hp change to 0 too
+strb r0, [r6, #3] @set hp change to 0 too (FE7: offset 3)
 ldr r1, [r6]
 mov r0, #0x80 @and unset the hp drain flag
 lsl r0, #1
@@ -54,7 +59,7 @@ mov r0, #1
 strb r0, [r1] @set hit flag 
 
 CapHealingOrDamage:
-mov   r1, #0x5
+mov   r1, #0x3              @ FE7: hpChange is at [r6, #3]
 ldsb  r0, [r6, r1]          @ r0 = hp change for attacker
 cmp   r0, #0x0
 beq   End                   @ if not healing or taking damage, skip this
@@ -82,9 +87,8 @@ beq   End                   @ if not healing or taking damage, skip this
   StoreVal:
   ldrb  r0, [r4, #0x13]     @ attacker cur HP
   sub   r0, r2, r0
-  strb  r0, [r6, #0x5]      @ HP change.
+  strb  r0, [r6, #0x3]      @ HP change.
   strb  r2, [r4, #0x13]     @ attacker cur HP
-
 
 End:
 pop {r4-r7}

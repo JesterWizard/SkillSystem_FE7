@@ -3,15 +3,18 @@ ProcLoopParent:
 POIN ProcLoop_Start	//start
 POIN Proc_Hurricane	//turns the round into a miss; must precede damage skills
 POIN Proc_Eclipse	//skills that do damage and all that
-POIN /*Proc_BlackMagic*/ /*Proc_Petrify*/ Proc_Enrage /*Proc_Deadeye*/ //skills that apply a status effect
+POIN DownWithArch
+POIN Proc_BlackMagic Proc_Enrage
 POIN Proc_Adept Proc_DragonFang 
-POIN Proc_Glacies
+POIN Proc_Glacies Proc_Ignis Proc_Luna Proc_Corona Proc_Corrosion Proc_Moonbow Proc_Sol Proc_Aether
 POIN Proc_Colossus 
 POIN Proc_Astra	//astra last before skills that set damage
 POIN Proc_Lethality Proc_Bane	//skills that set damage to max
 POIN Proc_Mercy			//leave the target at 1 HP
+POIN Proc_Foresight
 POIN Proc_Aegis
-POIN /*Proc_Counter*/ Proc_CounterMagic	//counters are last
+POIN Proc_Devil
+POIN Proc_Counter Proc_CounterMagic	//counters are last
 POIN Proc_Finish 0	//end
 
 ALIGN 4
@@ -25,7 +28,7 @@ BYTE BarricadePlusID
 
 ALIGN 4
 Proc_Finish:
-#incbin "ProcFinish/proc_finish.dmp"
+#include "ProcFinish/proc_finish.lyn.event"
 
 PUSH
 ORG $29264 //FE8 -> $2b3ec

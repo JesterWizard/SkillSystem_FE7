@@ -6,13 +6,15 @@
 .endm
 .equ AdeptID, SkillTester+4
 .equ AstraID, SkillTester+8
+.equ AetherID, SkillTester+12
 .equ BattleCheckBraveEffect, 0x8029129
 .equ d100Result, 0x802857C
 
 @ r0 = attacker. BattleUnit+0x7F (pad):
 @ bit7 = Astra owns this swing, low 4 bits = remaining hits.
+@ bit6 = Aether owns this swing, low 4 bits = remaining hits.
 @ Do not use +0x7E (hasItemEffectTarget).
-@ Astra rolls once per swing (doubles can proc twice).
+@ Astra/Aether rolls once per swing (doubles can proc twice).
 GetBattleUnitHitCount_Adept:
 push {r4-r5, lr}
 mov r4, r0
@@ -26,25 +28,49 @@ lsl r5, r0
 
 ldr r1, AstraID
 cmp r1, #255
-beq CheckAdept
+beq CheckAether
 ldr r0, SkillTester
 mov lr, r0
 mov r0, r4
 ldr r1, AstraID
 .short 0xf800
 cmp r0, #0
-beq CheckAdept
+beq CheckAether
 @if user has Astra, check for proc rate (also in proc_astra.s)
 ldrb r0, [r4, #0x15]    @skill stat as activation rate
-@mov r0, #100
+mov r1, r4              @skill user
+blh d100Result
+cmp r0, #1
+bne CheckAether
+mov r5, #5              @5 consecutive attacks this swing
+mov r0, r4
+add r0, #0x7F
+mov r1, #0x85           @5 | this-swing (Astra bit 7)
+strb r1, [r0]
+b Return
+
+CheckAether:
+ldr r1, AetherID
+cmp r1, #255
+beq CheckAdept
+ldr r0, SkillTester
+mov lr, r0
+mov r0, r4
+ldr r1, AetherID
+.short 0xf800
+cmp r0, #0
+beq CheckAdept
+@if user has Aether, check for proc rate (Skill/2 %)
+ldrb r0, [r4, #0x15]    @skill stat as activation rate
+lsr r0, r0, #1          @Skill/2 %
 mov r1, r4              @skill user
 blh d100Result
 cmp r0, #1
 bne CheckAdept
-mov r5, #5              @5 consecutive attacks this swing
+mov r5, #2              @2 consecutive attacks this swing
 mov r0, r4
 add r0, #0x7F
-mov r1, #0x85           @5 | this-swing
+mov r1, #0x42           @2 | this-swing (Aether bit 6)
 strb r1, [r0]
 b Return
 
@@ -84,3 +110,4 @@ SkillTester:
 @POIN SkillTester
 @WORD AdeptID
 @WORD AstraID
+@WORD AetherID

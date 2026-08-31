@@ -7,7 +7,12 @@
 .equ SolID, SkillTester+4
 .equ LiquidOozeID, SolID+4
 .equ d100Result, 0x802857c
+
+.global Proc_Sol
+.type Proc_Sol, %function
+
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+Proc_Sol:
 push {r4-r7,lr}
 mov r4, r0              @attacker
 mov r5, r1              @defender
@@ -51,9 +56,6 @@ and     r0,r2           @ 0802B436 4010
 orr     r0,r1           @ 0802B438 4308     
 str     r0,[r6]         @ 0802B43A 6018  
 
-ldrb  r0, SolID
-strb  r0, [r6,#4]
-
 @check liquid ooze
 mov	r0,r5
 ldr	r1,LiquidOozeID
@@ -71,11 +73,10 @@ cmp	r0,#0
 beq	noOoze
   neg   r1, r1
 noOoze:
-mov   r2, #0x5
-ldsb    r2,[r6,r2]      @hp change
+mov   r2, #0x3
+ldsb  r2,[r6,r2]      @hp change
 add   r2, r1
-strb    r2,[r6,#5]      @hp change
-
+strb  r2,[r6,#3]      @hp change
 
 End:
 pop {r4-r7}

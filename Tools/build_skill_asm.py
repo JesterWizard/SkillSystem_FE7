@@ -53,6 +53,13 @@ DEBUFF_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "SetDebuffs.s",
     ROOT / "EngineHacks" / "Necessary" / "Debuffs" / "asm" / "SetUnitDebuffASMC.s",
 ]
+PROC_LOOP_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "ProcStart" / "proc_start.s",
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "LifeSteal" / "proc_stealhp.s",
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "ProcFinish" / "proc_finish.s",
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "CapDamage" / "proc_capdamage.s",
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "SkillActivationChanceCalcLoop" / "SkillActivationChanceCalcLoop.s",
+]
 SUPPORT_POST_BATTLE_ASM = [
     ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "PostBattleSupports.s",
     ROOT / "EngineHacks" / "ExternalHacks" / "SupportPostBattle" / "MapEmoticon" / "Show_map_emotion_by_params.s",
@@ -292,7 +299,8 @@ def main() -> int:
     turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
     stat_getter = [p for p in STAT_GETTER_ASM if p.is_file()]
     debuffs = [p for p in DEBUFF_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + [
+    proc_loop = [p for p in PROC_LOOP_ASM if p.is_file()]
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]
     if args.force:
@@ -324,7 +332,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + [
+    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]:
         try:

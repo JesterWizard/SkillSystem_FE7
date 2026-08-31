@@ -25,14 +25,9 @@ beq	End
 @check for draining weapon
 mov	r0,#0x4A
 ldrh	r0,[r4,r0]	@equipped item
-mov	r1,#0xFF
-and	r0,r1		@only item id
-mov	r1,#36		@size of entry
-mul	r0,r1
-add	r0,#31		@offset of weapon effect byte
-ldr	r1,=0x080177C0	@has table pointer
-ldr	r1,[r1]
-ldrb	r0,[r1,r0]	@weapon effect
+ldr	r1,=#0x8017424	@GetItemEffect
+mov	lr,r1
+.short	0xf800
 cmp	r0,#2		@steal hp effect
 bne	End
 
@@ -81,10 +76,10 @@ cmp r0, #0
 beq noOoze
   neg   r1, r1
 noOoze:
-mov   r2, #0x5
+mov   r2, #0x3
 ldsb	r2,[r6,r2]	@hp change
 add   r2, r1
-strb	r2,[r6,#5]	@hp change
+strb	r2,[r6,#3]	@hp change
 
 End:
 pop {r4-r7}

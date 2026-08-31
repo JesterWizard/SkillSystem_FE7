@@ -215,8 +215,8 @@
     {
       "skill": "DriveSkl",
       "macro": "DriveSklID",
-      "id": "12",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/DriveSkills/DriveSkl/DriveSkl.s",
@@ -233,8 +233,8 @@
     {
       "skill": "DriveSpd",
       "macro": "DriveSpdID",
-      "id": "13",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/DriveSkills/DriveSpd/DriveSpd.s",
@@ -251,8 +251,8 @@
     {
       "skill": "DriveLuk",
       "macro": "DriveLukID",
-      "id": "14",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/DriveSkills/DriveLuk/DriveLuk.s",
@@ -269,8 +269,8 @@
     {
       "skill": "DriveDef",
       "macro": "DriveDefID",
-      "id": "15",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/DriveSkills/DriveDef/DriveDef.s",
@@ -287,8 +287,8 @@
     {
       "skill": "DriveRes",
       "macro": "DriveResID",
-      "id": "16",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/DriveSkills/DriveRes/DriveRes.s",
@@ -305,8 +305,8 @@
     {
       "skill": "Focus",
       "macro": "FocusID",
-      "id": "17",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Focus/Focus.s",
@@ -323,8 +323,8 @@
     {
       "skill": "Gentilhomme",
       "macro": "GentilhommeID",
-      "id": "18",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Gentilhomme/Gentilhomme.s",
@@ -341,8 +341,8 @@
     {
       "skill": "Hex",
       "macro": "HexID",
-      "id": "19",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Hex/Hex.s",
@@ -359,8 +359,8 @@
     {
       "skill": "Infiltrator",
       "macro": "InfiltratorID",
-      "id": "21",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Infiltrator/Infiltrator.s",
@@ -377,8 +377,8 @@
     {
       "skill": "Inspiration",
       "macro": "InspirationID",
-      "id": "22",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Inspiration/Inspiration.s",
@@ -413,8 +413,8 @@
     {
       "skill": "Intimidate",
       "macro": "IntimidateID",
-      "id": "23",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/Intimidate/Intimidate.s",
@@ -721,8 +721,8 @@
     {
       "skill": "Horseguard",
       "macro": "HorseguardID",
-      "id": "20",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "AuraSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/AuraSkills/ClassTypeSkills/Horseguard.s",
@@ -853,8 +853,8 @@
     {
       "skill": "EternalVanity",
       "macro": "EternalVanityID",
-      "id": "1",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "BuffSkills",
       "live": "yes",
       "source": "",
@@ -863,9 +863,7 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": [
-        "tests/test_skill_definitions.py"
-      ]
+      "tests": []
     },
     {
       "skill": "EvenFooted",
@@ -1551,8 +1549,8 @@
     {
       "skill": "SealStr",
       "macro": "SealStrID",
-      "id": "10",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1568,8 +1566,8 @@
     {
       "skill": "SealSkl",
       "macro": "SealSklID",
-      "id": "8",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1585,8 +1583,8 @@
     {
       "skill": "SealSpd",
       "macro": "SealSpdID",
-      "id": "9",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1602,8 +1600,8 @@
     {
       "skill": "SealLuk",
       "macro": "SealLukID",
-      "id": "5",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1619,8 +1617,8 @@
     {
       "skill": "SealDef",
       "macro": "SealDefID",
-      "id": "4",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1631,15 +1629,13 @@
       "sources": [
         "EngineHacks/SkillSystem/Skills/DebuffSkills/DebuffSkills.event"
       ],
-      "tests": [
-        "tests/test_skill_definitions.py"
-      ]
+      "tests": []
     },
     {
       "skill": "SealRes",
       "macro": "SealResID",
-      "id": "7",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -1655,8 +1651,8 @@
     {
       "skill": "SealMag",
       "macro": "SealMagID",
-      "id": "6",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "DebuffSkills",
       "live": "yes",
       "source": "",
@@ -4584,8 +4580,8 @@
     {
       "skill": "Aether",
       "macro": "AetherID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "1",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Aether/proc_aether.s",
@@ -4599,11 +4595,15 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/Aether/proc_aetherheal.s",
         "EngineHacks/SkillSystem/Skills/PreBattleSkills/Roll12/Roll12.event",
         "EngineHacks/SkillSystem/Skills/ProcSkills/ProcSkills.event",
+        "EngineHacks/SkillSystem/Skills/ProcSkills/Adept/get_battle_unit_hit_count.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/CombatArtProcSkills.event",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/Aether/proc_aetherdamage.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/CombatArts/CombatArts.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_proc_skills_port.py",
+        "tests/test_skill_definitions.py"
+      ]
     },
     {
       "skill": "Astra",
@@ -4649,8 +4649,8 @@
     {
       "skill": "Barricade",
       "macro": "BarricadeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "2",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "",
@@ -4659,13 +4659,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_skill_definitions.py"
+      ]
     },
     {
       "skill": "BarricadePlus",
       "macro": "BarricadePlusID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "3",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "",
@@ -4674,13 +4676,15 @@
       "id_file": "EngineHacks/SkillSystem/skill_definitions.event",
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [],
-      "tests": []
+      "tests": [
+        "tests/test_skill_definitions.py"
+      ]
     },
     {
       "skill": "BlackMagic",
       "macro": "BlackMagicID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "4",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/BlackMagic/BlackMagic_AnimsOff.s",
@@ -4693,7 +4697,9 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/BlackMagic/proc_blackmagic.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/ProcSkills.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_skill_definitions.py"
+      ]
     },
     {
       "skill": "Colossus",
@@ -4717,8 +4723,8 @@
     {
       "skill": "Corona",
       "macro": "CoronaID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "5",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Corona/proc_corona.s",
@@ -4736,8 +4742,8 @@
     {
       "skill": "Counter",
       "macro": "CounterID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "7",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Counter/proc_counter.s",
@@ -4757,8 +4763,8 @@
     {
       "skill": "CounterMagic",
       "macro": "CounterMagicID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "8",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Countermagic/proc_countermagic.s",
@@ -4796,8 +4802,8 @@
     {
       "skill": "DevilsLuck",
       "macro": "DevilsLuckID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "9",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "",
@@ -4814,8 +4820,8 @@
     {
       "skill": "DevilsPact",
       "macro": "DevilsPactID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "10",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "",
@@ -4832,8 +4838,8 @@
     {
       "skill": "DevilsWhim",
       "macro": "DevilsWhimID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "11",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "",
@@ -4850,8 +4856,8 @@
     {
       "skill": "DownWithArch",
       "macro": "DownWithArchID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "12",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/DownWithArch/proc_downwitharch.s",
@@ -4943,8 +4949,8 @@
     {
       "skill": "Foresight",
       "macro": "ForesightID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "14",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Foresight/proc_foresight.s",
@@ -4961,8 +4967,8 @@
     {
       "skill": "Ignis",
       "macro": "IgnisID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "16",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Ignis/proc_ignis.s",
@@ -5026,8 +5032,8 @@
     {
       "skill": "Luna",
       "macro": "LunaID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "18",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Luna/Luna.s",
@@ -5042,7 +5048,6 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/ProcSkills.event",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/CombatArtProcSkills.event",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/Luna/proc_luna.s",
-        "EngineHacks/SkillSystem/Skills/ProcSkills/Moonbow/proc_moonbow.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Moonbow/proc_moonbowNoCharge.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/CombatArts/CombatArts.event"
       ],
@@ -5069,8 +5074,8 @@
     {
       "skill": "Moonbow",
       "macro": "MoonbowID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "19",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Moonbow/proc_moonbow.s",
@@ -5108,8 +5113,8 @@
     {
       "skill": "Petrify",
       "macro": "PetrifyID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "20",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Petrify/proc_petrify.s",
@@ -5172,8 +5177,8 @@
     {
       "skill": "Corrosion",
       "macro": "CorrosionID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "6",
+      "off": "no",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Corrosion/proc_corrosion.s",
@@ -5730,8 +5735,8 @@
     {
       "skill": "Resolve",
       "macro": "ResolveID",
-      "id": "3",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StatModifierSkills/Resolve/Resolve.s",
@@ -5743,9 +5748,7 @@
         "EngineHacks/SkillSystem/Skills/StatModifierSkills/Resolve/Resolve.s",
         "EngineHacks/SkillSystem/Skills/StatModifierSkills/StatModifierSkills.event"
       ],
-      "tests": [
-        "tests/test_skill_definitions.py"
-      ]
+      "tests": []
     },
     {
       "skill": "FortressDefense",
@@ -6097,8 +6100,8 @@
     {
       "skill": "Guts",
       "macro": "GutsID",
-      "id": "2",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/StatModifierSkills/Guts/Guts.s",
@@ -6110,15 +6113,13 @@
         "EngineHacks/SkillSystem/Skills/StatModifierSkills/Guts/Guts.s",
         "EngineHacks/SkillSystem/Skills/StatModifierSkills/StatModifierSkills.event"
       ],
-      "tests": [
-        "tests/test_skill_definitions.py"
-      ]
+      "tests": []
     },
     {
       "skill": "StrongConstitution",
       "macro": "StrongConstitutionID",
-      "id": "11",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "StatModifierSkills",
       "live": "yes",
       "source": "",
@@ -6911,8 +6912,8 @@
     {
       "skill": "Expertise",
       "macro": "ExpertiseID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "13",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -6961,10 +6962,10 @@
     {
       "skill": "Hero",
       "macro": "HeroID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "15",
+      "off": "no",
       "category": "ActivationRateSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/Hero/Hero.s",
       "folder": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/Hero",
       "installer": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/ActivationRateSkills.event",
@@ -6980,10 +6981,10 @@
     {
       "skill": "RightfulKing",
       "macro": "RightfulKingID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "23",
+      "off": "no",
       "category": "ActivationRateSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulKing/RightfulKing.s",
       "folder": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulKing",
       "installer": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/ActivationRateSkills.event",
@@ -6999,10 +7000,10 @@
     {
       "skill": "RightfulGod",
       "macro": "RightfulGodID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "22",
+      "off": "no",
       "category": "ActivationRateSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulGod/RightfulGod.s",
       "folder": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulGod",
       "installer": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/ActivationRateSkills.event",
@@ -7018,10 +7019,10 @@
     {
       "skill": "RightfulArch",
       "macro": "RightfulArchID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "21",
+      "off": "no",
       "category": "ActivationRateSkills",
-      "live": "no",
+      "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulArch/RightfulArch.s",
       "folder": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/RightfulArch",
       "installer": "EngineHacks/SkillSystem/Skills/ActivationRateSkills/ActivationRateSkills.event",
@@ -7099,8 +7100,8 @@
     {
       "skill": "LiquidOoze",
       "macro": "LiquidOozeID",
-      "id": "OFF",
-      "off": "yes",
+      "id": "17",
+      "off": "no",
       "category": "MiscellaneousSkills",
       "live": "no",
       "source": "",
@@ -7110,12 +7111,15 @@
       "master_installer": "EngineHacks/SkillSystem/Skills/MasterSkillInstaller.event",
       "sources": [
         "EngineHacks/SkillSystem/Skills/ProcSkills/ProcSkills.event",
+        "EngineHacks/SkillSystem/Skills/ProcSkills/Aether/proc_aether.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Aether/proc_aetherheal.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/CombatArtProcSkills.event",
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/Sol/proc_sol.s",
         "EngineHacks/SkillSystem/Skills/ProcSkills/Sol/proc_sol.s"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_proc_skills_port.py"
+      ]
     },
     {
       "skill": "Shadowgift",

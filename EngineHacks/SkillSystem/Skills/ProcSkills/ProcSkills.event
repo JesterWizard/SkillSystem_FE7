@@ -21,13 +21,20 @@ WORD CounterID
 WORD CounterMagicID
 WORD BaneID
 
+ALIGN 4
 Proc_Colossus:
 #include "Colossus/proc_colossus.lyn.event"
 POIN SkillTester
 WORD ColossusID
 
+ALIGN 4
+Proc_Counter:
+#include "Counter/proc_counter.lyn.event"
+POIN SkillTester
+WORD CounterID
+
+ALIGN 4
 Proc_CounterMagic:
-// #incbin "proc_distantcounter.dmp"
 #include "Countermagic/proc_countermagic.lyn.event"
 POIN SkillTester
 WORD CounterMagicID
@@ -50,7 +57,7 @@ Proc_Eclipse:
 POIN SkillTester
 WORD EclipseID
 WORD CounterID
-WORD CountermagicID
+WORD CounterMagicID
 
 ALIGN 4
 Proc_Glacies:
@@ -71,6 +78,7 @@ GetBattleUnitHitCount_Adept:
 POIN SkillTester
 WORD AdeptID
 WORD AstraID
+WORD AetherID
 
 ALIGN 4
 Proc_Adept:
@@ -95,9 +103,6 @@ Proc_Mercy:
 #include "Mercy/proc_mercy.lyn.event"
 
 ALIGN 4
-
-/*
-ALIGN 4
 Proc_Devil:
 #include "Devil/proc_devil.lyn.event"
 POIN SkillTester
@@ -105,85 +110,63 @@ WORD DevilsLuckID
 WORD DevilsPactID
 WORD DevilsWhimID
 
+ALIGN 4
 Proc_Foresight:
 #include "Foresight/proc_foresight.lyn.event"
 POIN SkillTester
 WORD ForesightID
 
+ALIGN 4
 Proc_Sureshot:
 #include "SureShot/proc_sureshot.lyn.event"
 POIN SkillTester
 WORD SureShotID
 
-Proc_Adept:
-#include "Adept/proc_adept.lyn.event"
-POIN SkillTester
-WORD AdeptID
-
-Proc_Astra:
-#include "Astra/proc_astra.lyn.event"
-POIN SkillTester
-WORD AstraID
-
+ALIGN 4
 Proc_Pavise:
 #include "Pavise/proc_pavise.lyn.event"
 POIN SkillTester
 WORD PaviseID
 
+ALIGN 4
 Proc_Sol:
 #include "Sol/proc_sol.lyn.event"
 POIN SkillTester
 WORD SolID
 WORD LiquidOozeID
 
+ALIGN 4
 Proc_Luna:
 #include "Luna/proc_luna.lyn.event"
 POIN SkillTester
 WORD LunaID
 
-Proc_Lethality:
-#include "Lethality/proc_lethality.lyn.event"
-POIN SkillTester
-WORD LethalityID
-
-Proc_AetherHeal:
-#include "Aether/proc_aetherheal.lyn.event"
+ALIGN 4
+Proc_Aether:
+#include "Aether/proc_aether.lyn.event"
 POIN SkillTester
 WORD AetherID
 WORD LiquidOozeID
 
-Proc_AetherDamage:
-#include "Aether/proc_aetherdamage.lyn.event"
-POIN SkillTester
-WORD AetherID
-
-Proc_Counter:
-// #incbin "proc_closecounter.dmp"
-#include "Counter/proc_counter.lyn.event"
-POIN SkillTester
-WORD CounterID
-
-Proc_CounterMagic:
-// #incbin "proc_distantcounter.dmp"
-#include "Countermagic/proc_countermagic.lyn.event"
-POIN SkillTester
-WORD CounterMagicID
-
+ALIGN 4
 Proc_Miracle:
 #include "Miracle/proc_miracle.lyn.event"
 POIN SkillTester
 WORD MiracleID
 
+ALIGN 4
 Proc_Impale:
 #include "Impale/proc_impale.lyn.event"
 POIN SkillTester
 WORD ImpaleID
 
+ALIGN 4
 Proc_Ignis:
 #include "Ignis/proc_ignis.lyn.event"
 POIN SkillTester
 WORD IgnisID
 
+ALIGN 4
 Proc_Moonbow:
 #ifndef DISABLE_CHARGE
 #include "Moonbow/proc_moonbow.lyn.event"
@@ -193,18 +176,13 @@ Proc_Moonbow:
 POIN SkillTester
 WORD MoonbowID
 
-Proc_Bane: //Proc_Bane should always come after Proc_Lethality
-#include "Bane/proc_bane.lyn.event" //bane does not proc against counter because it was giving problems
-POIN SkillTester
-WORD CounterID
-WORD CounterMagicID
-WORD BaneID
-
-DownWithArch: //lethality if the enemies name starts with "Arch"
+ALIGN 4
+DownWithArch: //lethality if the enemy's name starts with "Arch"
 #include "DownWithArch/proc_downwitharch.lyn.event"
 POIN SkillTester
 WORD DownWithArchID
 
+ALIGN 4
 Proc_BlackMagic:
 #include "BlackMagic/proc_blackmagic.lyn.event"
 POIN SkillTester
@@ -213,22 +191,12 @@ POIN BlackMagicTable
 
 //Bytes are status id, percent chance
 //MAKE SURE THE PERCENTAGES SUM UP TO 100%
+ALIGN 4
 BlackMagicTable:
 BYTE 1 25 //poison
 BYTE 2 25 //silence
 BYTE 3 25 //sleep
 BYTE 4 25 //berserk
-//BYTE 0xB 20 //petrify NOTE: As is, Petrify seems hardcoded to not double and will stop combat if it works. Which is neat and all, but if you're expecting to double and don't, that might piss people off instead
-
-//Poison blob only plays when poison effect is done (animations off)
-PUSH
-ORG $7A918
-callHack_r3(BlackMagic_AnimsOff)
-SHORT 0x2800 0xD005 //cmp r0,#0; beq End
-POP
-ALIGN 4
-BlackMagic_AnimsOff:
-#include "BlackMagic/BlackMagic_AnimsOff.lyn.event"
 
 ALIGN 4
 Proc_Corona:
@@ -242,17 +210,12 @@ Proc_Flare:
 POIN SkillTester
 WORD FlareID
 
+// Petrify note: Can't port until stone status is added to FE7
 ALIGN 4
 Proc_Petrify:
 #include "Petrify/proc_petrify.lyn.event"
 POIN SkillTester
 WORD PetrifyID
-
-ALIGN 4
-Proc_Enrage:
-#include "Enrage/proc_enrage.lyn.event"
-POIN SkillTester
-WORD EnrageID
 
 ALIGN 4
 Proc_Deadeye:
@@ -261,30 +224,10 @@ POIN SkillTester
 WORD DeadeyeID
 
 ALIGN 4
-Proc_DragonFang:
-#include "DragonFang/proc_dragonfang.lyn.event"
-POIN SkillTester
-WORD DragonFangID
-
-ALIGN 4
-Proc_Eclipse:
-#include "Eclipse/proc_eclipse.lyn.event"
-POIN SkillTester
-WORD EclipseID
-WORD CounterID
-WORD CountermagicID
-
-ALIGN 4
 Proc_Corrosion:
 #include "Corrosion/proc_corrosion.lyn.event"
 POIN SkillTester
 WORD CorrosionID
-
-ALIGN 4
-Proc_Glacies:
-#include "Glacies/proc_glacies.lyn.event"
-POIN SkillTester
-WORD GlaciesID
 
 ALIGN 4
 Proc_GreatShield:
@@ -304,12 +247,4 @@ ALIGN 4
 Proc_CmbArtHpCost:
 #include "CmbArtHpCost/CmbArtHpCost.lyn.event"
 
-
-//When animations are on, do the fancy palette swapping thing (pink for poison, etc) CURRENTLY DOESN'T WORK
-//PUSH
-//ORG $58EB8
-//BYTE 0x8 //not exactly sure what this is, but it makes berserk palette only last for one round, rather than throughout, and this fixes it
-//Note to self: if poison bit is set in rounds data, 0x2000 is set at...somewhere, and that's later checked at 55342. 55350 = mov r1,#1; replace 1 with status id
-
 #include "_Animations/SkillAnimations.event"
-*/

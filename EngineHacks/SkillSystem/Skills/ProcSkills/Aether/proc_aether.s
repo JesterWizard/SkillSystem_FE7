@@ -5,35 +5,28 @@
   .short 0xf800
 .endm
 .equ AetherID, SkillTester+4
-.equ d100Result, 0x802857c
-.equ recurse_round, 0x802b83c
+.equ LiquidOozeID, AetherID+4
+.equ d100Result, 0x802857C
+
+.global Proc_Aether
+.type Proc_Aether, %function
 
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+Proc_Aether:
 push {r4-r7,lr}
 mov r4, r0                  @attacker
 mov r5, r1                  @defender
 mov r6, r2                  @battle buffer
 mov r7, r3                  @battle data
-ldr     r0,[r2]             @r0 = battle buffer                @ 0802B40A 6800     
-lsl     r0,r0,#0xD          @ 0802B40C 0340     
-lsr     r0,r0,#0xD          @Without damage data                @ 0802B40E 0B40     
-mov r1, #0xC0               @skill flag
-lsl r1, #8                  @0xC000
-add r1, #2                  @miss @@@@OR BRAVE??????
-tst r0, r1
-bne End
-@if another skill already activated, don't do anything
 
-@check if we're already in aether
-ldrb r0, [r2, #4]           @active skill
-@make sure no other skill is active
-ldr r1, AetherID
-cmp r0, r1
-beq SecondHit
-cmp r0, #0
-bne End
+mov r0, r4
+add r0, #0x7F
+ldrb r1, [r0]
+mov r2, #0x40               @Aether bit
+tst r1, r2
+bne AetherSwing
 
-@check for Aether proc
+@check for Aether proc if not set via hit counter
 ldr r0, SkillTester
 mov lr, r0
 mov r0, r4                  @attacker data
@@ -42,74 +35,106 @@ ldr r1, AetherID
 cmp r0, #0
 beq End
 @if user has Aether, check for proc rate
-
 ldrb r0, [r4, #0x15]        @skill/2 stat as activation rate
 lsr r0, #1
 mov r1, r4                  @skill user
 blh d100Result
 cmp r0, #1
 bne End
+mov r0, #1                  @first hit (Sol)
+mov r8, r0
+b CheckMiss
 
-@if we proc, set the brave effect flag for the NEXT hit
-ldrb r1, AetherID           @first mark Aether active
-strb r1, [r6,#4]
-@set the offensive skill flag
+AetherSwing:
+mov r3, #0x0F
+and r3, r1                  @remaining this swing (2 or 1)
+cmp r3, #2
+beq FirstHit
+mov r2, #0                  @second hit (Luna)
+mov r8, r2
+b DecRemain
+
+FirstHit:
+mov r2, #1                  @first hit (Sol)
+mov r8, r2
+
+DecRemain:
+sub r3, #1
+mov r2, #0x0F
+bic r1, r2
+orr r1, r3
+cmp r3, #0
+bne StoreRemain
+mov r2, #0x40
+bic r1, r2
+StoreRemain:
+strb r1, [r0]
+
+CheckMiss:
+ldr r0,[r6]
+lsl r0,r0,#0xD
+lsr r0,r0,#0xD
+mov r1, #0xC0
+lsl r1, #8
+add r1, #2
+tst r0, r1
+bne End
+
+mov r0, r8
+cmp r0, #1
+bne LunaHit
+
+@ First Hit: Sol hit (absorb HP)
+@ set attacker skill activated and hp draining flag (0x4100)
 ldr     r2,[r6]    
-lsl     r1,r2,#0xD          @ 0802B42C 0351     
-lsr     r1,r1,#0xD          @ 0802B42E 0B49     
+lsl     r1,r2,#0xD
+lsr     r1,r1,#0xD
 mov     r0, #0x41
-lsl     r0, #8              @0x4100, attacker skill activated and hp draining
+lsl     r0, #8              @0x4100
 orr     r1, r0
-ldr     r0,=#0xFFF80000     @ 0802B434 4804     
-and     r0,r2               @ 0802B436 4010     
-orr     r0,r1               @ 0802B438 4308     
-str     r0,[r6]             @ 0802B43A 6018 
+ldr     r0,=#0xFFF80000
+and     r0,r2
+orr     r0,r1
+str     r0,[r6]
 
-@and recalculate damage with healing
-mov r0, #4
-ldrsh r0, [r7, r0]
-cmp r0, #0
-ble End                     @0 dmg
-mov r1, #5
-ldsb r1, [r6, r1]           @existing hp change
-add r0, r1
-
-@now r0 is total HP change - is this higher than the max HP?
-mov r2, #0x13
-ldrsb r2, [r4,r2]           @curr hp
-mov r1, #0x12
-ldrsb r1, [r4,r1]           @max hp
-sub r1, r2                  @damage taken
-cmp r1, r0
-bge NoCap
-  @if hp will cap, set r0 to damage taken
-  mov r0, r1
-NoCap:
-strb r0, [r6, #5]           @write hp change
-mov r2, #0x13
-ldrsb r2, [r4,r2]           @curr hp
-add r0, r2                  @new hp
-strb r0, [r4, #0x13]
-
-@adding the next round
-add     r6, #8              @double width battle buffer   
-@ mov     r0, #0x40
-@ lsl     r0, #8  
-@ str     r0,[r6]                @ 0802B43A 6018  
-ldrb r0, AetherID
-strb r0, [r6,#4]            @save the skill ID at byte #4
-
-@now add the number of rounds - 
-mov r1, #0x38
-mov r2, sp
-ldr r0, [r2,r1]             @location of number of rounds on the stack... hopefully
-add r0, #1
-str r0, [r2,r1]
+@ check Liquid Ooze on defender
+mov   r0, r5
+ldr   r1, LiquidOozeID
+ldr   r3, SkillTester
+mov   lr, r3
+.short 0xF800
+mov   r1, #4
+ldsh  r1, [r7, r1]          @ damage
+ldrb  r2, [r5, #0x13]       @ defender curr hp
+cmp   r1, r2
+ble   defLives
+mov   r1, r2                @ can't exceed damage dealt to defender
+defLives:
+cmp   r0, #0
+beq   noOoze
+neg   r1, r1
+noOoze:
+mov   r2, #3
+ldsb  r0, [r6, r2]          @ existing hp change in FE7 (offset 3)
+add   r0, r1
+strb  r0, [r6, #3]
 b End
 
-SecondHit:
-//this is the Luna hit.
-@recalculate damage with def=0
+LunaHit:
+@ Second Hit: Luna hit (negate defense)
+@ set attacker skill activated flag (0x4000)
+ldr     r2,[r6]    
+lsl     r1,r2,#0xD
+lsr     r1,r1,#0xD
+mov     r0, #0x40
+lsl     r0, #8              @0x4000
+orr     r1, r0
+ldr     r0,=#0xFFF80000
+and     r0,r2
+orr     r0,r1
+str     r0,[r6]
+
+@ recalculate damage with def=0
 ldrh r0, [r7, #6]           @final mt
 ldr r2, [r6]
 mov r1, #1
@@ -135,3 +160,4 @@ pop {r15}
 SkillTester:
 @POIN SkillTester
 @WORD AetherID
+@WORD LiquidOozeID

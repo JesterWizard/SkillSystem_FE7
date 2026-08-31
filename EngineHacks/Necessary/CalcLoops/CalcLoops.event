@@ -8,4 +8,5 @@
 #include "WTACalcLoop/WTACalcLoop.event"
 #include "RangeCalcLoop/RangeCalcLoop.event"
 #include "WeaponUsabilityCalcLoop/WeaponUsabilityCalcLoop.event"
+#include "SkillActivationChanceCalcLoop/SkillActivationChanceCalcLoop.event"
 #include "TurnLoop/Installer.event"

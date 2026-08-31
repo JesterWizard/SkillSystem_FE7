@@ -16,6 +16,20 @@ mov r5, r1 @defender
 mov r6, r2 @battle buffer
 mov r7, r3 @battle data
 
+@ First round of this combat: forget leftover Barricade hit counts.
+@ Counts live in BattleUnit+0x7F because r11 is clobbered by proc_truehit
+@ at the start of every round.
+ldr r0, =#0x203A5EC
+cmp r6, r0
+bne NotFirstRound
+mov r1, #0
+mov r2, #0x7F
+ldr r0, =#0x203A3F0
+strb r1, [r0, r2]
+ldr r0, =#0x203A470
+strb r1, [r0, r2]
+NotFirstRound:
+
 ldr     r0,[r6]           		@r0 = battle buffer                @ 0802B40A 6800     
 lsl     r0,r0,#0xD              @ 0802B40C 0340     
 lsr     r0,r0,#0xD        		@Without damage data                @ 0802B40E 0B40     
@@ -45,6 +59,17 @@ EndLadder:
 b End
 
 SuccessfulHit:
+@ The proc loop hardcodes r1 = gBattleTarget. The unit taking this hit is
+@ the other battle struct from r4 (the inflicter).
+ldr r0, =#0x203A3F0
+cmp r4, r0
+bne HitTakerIsActor
+ldr r5, =#0x203A470
+b HaveHitTaker
+HitTakerIsActor:
+mov r5, r0
+HaveHitTaker:
+
 @now calculate normal damage
 ldrh r0, [r7, #6] @final mt
 lsl r0, #0x10
@@ -54,9 +79,9 @@ lsl r1, #0x10
 asr r1, #0x10
 sub r0, r1
 
-@ Cool. Time to check for BarricadePlus. r0 has the damage to write. r9 has a counter of times struck this combat. r4 = inflicter of this strike, r5 = defender of this strike.
+@ BarricadePlus, then Barricade. r0 = damage, r5 = unit taking this hit.
 cmp r0, #0x00
-beq StoreDamage2 @ We don't want any of this shit if the damage is 0.
+beq StoreDamage2
 push { r0 }
 mov r0, r5
 ldr r1, =BarricadePlusIDLink
@@ -65,48 +90,15 @@ blh SkillTester, r3
 cmp r0, #0x00
 pop { r0 }
 beq SkipBarricadePlus
-@ Okay in case both units have this skill, the counter will use the first byte of r11 for 0x0203A3F0 and the second byte for 0x0203A470.
-@ I mean it really doesn't matter which it is as long as it's consistent.
 
-mov r1, r11
-ldr r2, =#0x203A470
-cmp r2, r4
-beq Attacker
-	@ Defender
-	lsl r1, r1, #0x10
-	lsr r1, r1, #0x18
-	@ lsr r0, r0, r1 @ r0 has corrected damage.
-	cmp r0, #0x00
-	bne NotZero1
-	@ mov r0, #0x01
-	NotZero1:
-	
-	add r1, r1, #1 @ r1 has the counter to write (to be corrected to the second byte)
-	lsl r1, r1, #0x08 @ Shifted to the second byte
-	mov r2, r11	@ r2 has the previous counter (including all bytes)
-	ldr r3, =#0xFFFF00FF
-	and r2, r2, r3 @ Eliminates previous counter
-	orr r1, r1, r2
-	mov r11, r1 @ Store new counter to r11
-	b StoreDamage2
-Attacker:
-	lsl r1, r1, #0x18
-	lsr r1, r1, #0x18 @ r1 has isolated first byte
-	@ lsr r0, r0, r1 @ r0 has corrected damage.
-	cmp r0, #0x00
-	bne NotZero2
-	@ mov r0, #0x01
-	NotZero2:
-	
-	add r1, r1, #1 @ r1 has the counter to write (in the first byte)
-	mov r2, r11 @ r2 has the previous counter (including all bytes)
-	ldr r3, =#0xFFFFFF00
-	and r2, r2, r3 @ Eliminates previous counter.
-	orr r1, r1, r2
-	mov r11, r1 @ Store new counter to r11
-	b StoreDamage2
+mov r2, #0x7F
+ldrb r1, [r5, r2]
+lsr r0, r0, r1 @ r0 has corrected damage.
+add r1, r1, #1
+strb r1, [r5, r2]
+b StoreDamage2
 
-SkipBarricadePlus: @ Well now I need to check for regular barricade. Let's use the third byte of r11 as a boolean for the attacker on whether do use it and the fourth for the defender.
+SkipBarricadePlus:
 push { r0 }
 mov r0, r5
 ldr r1, =BarricadeIDLink
@@ -116,40 +108,14 @@ cmp r0, #0x00
 pop { r0 }
 beq StoreDamage2
 
-mov r1, r11
-ldr r2, =#0x203A470
-cmp r2, r4
-beq Attacker2
-	@ Defender2
-	lsr r1, r1, #0x18
-	cmp r1, #0x00
-	beq SkipDefenderDamage
-	@ lsr r0, r0, #0x01 @ r0 has the corrected damage.
-	cmp r0, #0x00
-	bne SkipDefenderDamage @ In case the damage has been reduced to 0
-	@ mov r0, #0x01
-	SkipDefenderDamage:
-	mov r1, #0x01
-	lsl r1, r1, #0x18
-	mov r2, r11
-	orr r1, r1, r2
-	mov r11, r1
-	b StoreDamage2
-Attacker2:
-	lsl r1, r1, #0x08
-	lsr r1, r1, #0x18
-	cmp r1, #0x00
-	beq SkipAttackerDamage
-	@ lsr r0, r0, #0x01 @ r0 has the corrected damage.
-	cmp r0, #0x00
-	bne SkipAttackerDamage @ In case the damage has been reduced to 0
-	mov r0, #0x01
-	SkipAttackerDamage:
-	mov r1, #0x01
-	lsl r1, r1, #0x10
-	mov r2, r11
-	orr r1, r1, r2
-	mov r11, r1
+mov r2, #0x7F
+ldrb r1, [r5, r2]
+cmp r1, #0x00
+beq BarricadeFirstHit
+lsr r0, r0, #0x01 @ r0 has the corrected damage.
+BarricadeFirstHit:
+mov r1, #0x01
+strb r1, [r5, r2]
 
 StoreDamage2:
 strh r0, [r7, #4] @final damage
@@ -193,7 +159,5 @@ End:
 pop {r4-r7}
 pop {r15}
 
-@.equ ExpertiseID, SkillTester+4
-@.ltorg
-@SkillTester:
-@
+.align 2
+.ltorg
