@@ -15,8 +15,7 @@
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
 Proc_Devil:
 push {r4-r7,lr}
-mov r4, r0                  @attacker
-mov r5, r1                  @defender
+mov r4, r0                  @this round's attacker
 mov r6, r2                  @battle buffer
 mov r7, r3                  @battle data
 ldr     r0,[r2]             @r0 = battle buffer                @ 0802B40A 6800     
@@ -31,6 +30,16 @@ mov r0, #4
 ldrsh r0, [r7, r0]
 cmp r0, #0
 ble End
+
+@ Proc loop hardcodes r1 = gBattleTarget. Hit-taker is the other battle unit.
+ldr r0, =0x203a3f0
+cmp r4, r0
+bne DefenderIsActor
+ldr r5, =0x203a470
+b HaveSides
+DefenderIsActor:
+mov r5, r0
+HaveSides:
 
 @if the unit has DevilsLuck or DevilsPact, no devil effect
 mov	r0,r4

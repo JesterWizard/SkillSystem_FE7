@@ -26,7 +26,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
-from unicorn import Uc, UcError, UC_ARCH_ARM, UC_MODE_THUMB
+from unicorn import Uc, UcError, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE
 from unicorn.arm_const import (
     UC_ARM_REG_R0,
     UC_ARM_REG_R1,
@@ -189,17 +189,64 @@ def _patch_skilltester_trampoline(code: bytes, skill_present: bool) -> bytes:
     return bytes(patched) if found else code
 
 
+def _patch_f800_to_nop(code: bytes) -> tuple[bytes, list[int]]:
+    """Replace each trampoline `.short 0xf800` with NOP; leave the ldr/mov setup.
+
+    Used when the test needs the original r0/r1/lr at the call site (multi-skill
+    routines, vanilla helpers via `blh`) so a Unicorn hook can dispatch.
+    """
+    patched = bytearray(code)
+    sites: list[int] = []
+    idx = -1
+    while True:
+        idx = code.find(SKILLTESTER_CALL, idx + 1)
+        if idx == -1:
+            break
+        if not _is_trampoline_at(code, idx):
+            continue
+        patched[idx: idx + 2] = NOP.to_bytes(2, "little")
+        sites.append(idx)
+    return bytes(patched), sites
+
+
 class Harness:
     """Executes assembled Thumb code against caller-seeded struct memory."""
 
-    def __init__(self, code: bytes, skill_present: bool = True):
-        code = _patch_skilltester_trampoline(code, skill_present)
+    def __init__(self, code: bytes, skill_present: bool = True, intercept_calls=None):
+        self._intercept = intercept_calls
+        if intercept_calls is not None:
+            code, sites = _patch_f800_to_nop(code)
+            if not sites:
+                raise ValueError("intercept_calls set but no 0xf800 trampolines found")
+        else:
+            code = _patch_skilltester_trampoline(code, skill_present)
+            sites = []
         self.uc = Uc(UC_ARCH_ARM, UC_MODE_THUMB)
         code_size = ((len(code) + PAGE - 1) // PAGE) * PAGE or PAGE
         self.uc.mem_map(CODE_BASE, code_size)
         self.uc.mem_write(CODE_BASE, code)
         self.uc.mem_map(STACK_BASE, STACK_SIZE)
         self.uc.reg_write(UC_ARM_REG_SP, STACK_BASE + STACK_SIZE - 0x100)
+        self._call_addrs = {CODE_BASE + off for off in sites}
+        if self._call_addrs:
+            # Per-site [addr, addr+2] fires twice on Thumb (NOP then the next
+            # halfword). Filter by exact call-site PC instead.
+            self.uc.hook_add(
+                UC_HOOK_CODE,
+                self._on_intercepted_call,
+                begin=CODE_BASE,
+                end=CODE_BASE + code_size,
+            )
+
+    def _on_intercepted_call(self, uc, address, size, user_data):
+        if (address & ~1) not in self._call_addrs:
+            return
+        result = self._intercept(
+            uc.reg_read(UC_ARM_REG_LR),
+            uc.reg_read(UC_ARM_REG_R0),
+            uc.reg_read(UC_ARM_REG_R1),
+        )
+        uc.reg_write(UC_ARM_REG_R0, result & 0xFFFFFFFF)
 
     def map_page(self, addr: int, size: int = 4):
         base = addr & ~(PAGE - 1)
