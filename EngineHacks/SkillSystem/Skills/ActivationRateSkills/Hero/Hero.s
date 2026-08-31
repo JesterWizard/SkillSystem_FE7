@@ -28,6 +28,7 @@ add     r4,#30          @add 30
 
 GoBack:
 mov r0,r4
+GotResult:
 pop {r4-r5}
 pop {r1}
 bx r1

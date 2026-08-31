@@ -4988,7 +4988,9 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/CombatArts/Ignis/proc_ignis.s",
         "EngineHacks/SkillSystem/Skills/UnitMenuSkills/CombatArts/CombatArts.event"
       ],
-      "tests": []
+      "tests": [
+        "tests/test_hero_ignis_rom.py"
+      ]
     },
     {
       "skill": "Impale",
