@@ -50,8 +50,7 @@ and     r0,r2               @ 0802B436 4010
 orr     r0,r1               @ 0802B438 4308     
 str     r0,[r6]             @ 0802B43A 6018  
 
-ldrb  r0, LunaID
-strb  r0, [r6,#4] 
+@ FE7 rounds are 4 bytes; do not write a skill id at [r6,#4]
 
 @and recalculate damage with def=0
 ldrh r0, [r7, #6]           @final mt
@@ -70,6 +69,7 @@ ble NotCap
 mov r0, #0x7f
 NotCap:
 strh r0, [r7, #4]           @final damage
+strb r0, [r6, #3]           @FE7 hit.hpChange: HP bar / AnimNumbers
 
 End:
 pop {r4-r7}

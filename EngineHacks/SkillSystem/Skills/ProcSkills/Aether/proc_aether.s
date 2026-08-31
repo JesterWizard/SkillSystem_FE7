@@ -165,6 +165,7 @@ ble NotCap
 mov r0, #0x7f
 NotCap:
 strh r0, [r7, #4]           @final damage
+strb r0, [r6, #3]           @FE7 hit.hpChange: HP bar / AnimNumbers
 
 End:
 pop {r4-r7}

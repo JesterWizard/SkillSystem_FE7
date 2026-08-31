@@ -25,7 +25,12 @@ KeepHpChange:
     ldr     r3, =0x0203AA01
     ldrb    r3, [r3]
     cmp     r3, #0
+    beq     KeepCheckSteal
+    mov     r3, #0x1
+    lsl     r3, #8                  @ leftover Ooze flag: steal hits only
+    tst     r2, r3
     bne     KeepSkip
+KeepCheckSteal:
     mov     r3, #0x1
     lsl     r3, #8                  @ 0x100
     tst     r2, r3

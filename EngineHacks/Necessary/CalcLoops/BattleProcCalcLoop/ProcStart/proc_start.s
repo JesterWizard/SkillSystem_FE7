@@ -20,7 +20,7 @@ mov r7, r3 @battle data
 @ and the Liquid Ooze bar flag (must survive until the HP anim).
 @ Counts live in BattleUnit+0x7F because r11 is clobbered by proc_truehit
 @ at the start of every round.
-ldr r0, =#0x203A5EC
+ldr r0, =#0x0203F000        @ FE7BattleHits (relocated; not FE8 0x203A5EC)
 cmp r6, r0
 bne NotFirstRound
 mov r1, #0

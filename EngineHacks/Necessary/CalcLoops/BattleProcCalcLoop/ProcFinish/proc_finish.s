@@ -63,6 +63,19 @@ mov   r1, #0x3              @ FE7: hpChange is at [r6, #3]
 ldsb  r0, [r6, r1]          @ r0 = hp change for attacker
 cmp   r0, #0x0
 beq   End                   @ if not healing or taking damage, skip this
+  @ Luna (and other damage procs) write defender hpChange for the anim LUT.
+  @ Only drain / devil / ooze should move the attacker's current HP here.
+  ldr   r1, [r6]
+  lsl   r1, #0xD
+  lsr   r1, #0xD
+  mov   r2, #0x80            @ devil
+  lsl   r3, r2, #1           @ 0x100 hpsteal
+  orr   r2, r3
+  mov   r3, #0x10
+  lsl   r3, #8               @ 0x1000 ooze
+  orr   r2, r3
+  tst   r1, r2
+  beq   End
   ldr   r1, [r6]
   mov   r2, #0x80
   mov   r3, #0x1            @ Min HP if no devil effect.
