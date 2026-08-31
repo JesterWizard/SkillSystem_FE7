@@ -21,6 +21,33 @@ jumpToHack(LiveToServeRoundA)
 ORG $531B0
 jumpToHack(LiveToServeRoundB)
 
+// Liquid Ooze: HPSTEAL both bars; 0x1000 drains |hpChange| on both sides.
+ORG $5304C
+jumpToHack(LiveToServeTakeA)
+ORG $53078
+jumpToHack(LiveToServeStealA)
+ORG $530B0
+jumpToHack(LiveToServeTakeB)
+ORG $530D8
+jumpToHack(LiveToServeStealB)
+
+// Holder bar on hit (loop 1). Caster bar at spell end (loop 2) if LUT drains.
+// Freeze loop 2/3 only when that LUT is still a heal.
+ORG $4D6A8
+jumpToHack(LiveToServeHpBarTickMain)
+ORG $4D970
+jumpToHack(LiveToServeHpBarTickResire)
+ORG $4DA78
+jumpToHack(LiveToServeHpBarResireHealSetup)
+ORG $4DB00
+jumpToHack(LiveToServeHpBarTickResireSteal)
+
+// Anims-off steal numbers: skip the negate so both map HP ticks go down.
+ORG $6C610
+jumpToHack(MapHpSkipNegA)
+ORG $6C6E0
+jumpToHack(MapHpSkipNegB)
+
 // LockTouch / Cunning: FE7 GetUnitKeyItemSlotForTerrain. Return 0xFF = open, no item.
 ORG $18524
 jumpToHack(LockTouch)
@@ -75,6 +102,8 @@ WORD LiveToServeID
 
 ALIGN 4
 #include "LiveToServe/LiveToServeHpBarRound.lyn.event"
+#include "LiveToServe/LiveToServeHpBarSteal.lyn.event"
+#include "LiveToServe/LiveToServeHpBarTick.lyn.event"
 
 ALIGN 4
 LockTouch:

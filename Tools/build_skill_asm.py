@@ -56,6 +56,7 @@ DEBUFF_ASM = [
 PROC_LOOP_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "ProcStart" / "proc_start.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "LifeSteal" / "proc_stealhp.s",
+    ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "LifeSteal" / "keep_hpchange.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "ProcFinish" / "proc_finish.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "BattleProcCalcLoop" / "CapDamage" / "proc_capdamage.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "SkillActivationChanceCalcLoop" / "SkillActivationChanceCalcLoop.s",

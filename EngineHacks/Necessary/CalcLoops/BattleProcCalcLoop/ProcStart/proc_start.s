@@ -16,13 +16,16 @@ mov r5, r1 @defender
 mov r6, r2 @battle buffer
 mov r7, r3 @battle data
 
-@ First round of this combat: forget leftover Barricade hit counts.
+@ First round of this combat: forget leftover Barricade hit counts
+@ and the Liquid Ooze bar flag (must survive until the HP anim).
 @ Counts live in BattleUnit+0x7F because r11 is clobbered by proc_truehit
 @ at the start of every round.
 ldr r0, =#0x203A5EC
 cmp r6, r0
 bne NotFirstRound
 mov r1, #0
+ldr r0, =#0x0203AA01
+strb r1, [r0]
 mov r2, #0x7F
 ldr r0, =#0x203A3F0
 strb r1, [r0, r2]

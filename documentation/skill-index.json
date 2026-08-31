@@ -6885,6 +6885,7 @@
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarParent.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarRound.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarSteal.s",
+        "EngineHacks/SkillSystem/Skills/StandaloneSkills/LiveToServe/LiveToServeHpBarTick.s",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/FE7Standalone.event",
         "EngineHacks/SkillSystem/Skills/StandaloneSkills/StandaloneSkills.event"
       ],
@@ -7124,6 +7125,7 @@
         "EngineHacks/SkillSystem/Skills/ProcSkills/Sol/proc_sol.s"
       ],
       "tests": [
+        "tests/test_liquid_ooze_execution.py",
         "tests/test_proc_skills_port.py"
       ]
     },

@@ -15,6 +15,7 @@ POIN Proc_Foresight
 POIN Proc_Aegis
 POIN Proc_Devil
 POIN Proc_Counter Proc_CounterMagic	//counters are last
+POIN Proc_StealHP			//Nosferatu / steal-HP weapons; after Counter so 0x80 skips steal
 POIN Proc_Finish 0	//end
 
 ALIGN 4
@@ -27,9 +28,27 @@ BarricadePlusIDLink:
 BYTE BarricadePlusID
 
 ALIGN 4
+#include "LifeSteal/proc_stealhp.lyn.event"
+POIN SkillTester
+WORD LiquidOozeID
+
+ALIGN 4
+#include "LifeSteal/keep_hpchange.lyn.event"
+
+ALIGN 4
 #include "ProcFinish/proc_finish.lyn.event"
 
 PUSH
 ORG $29264 //FE8 -> $2b3ec
 jumpToHack(ProcLoopParent)
+
+// BattleGenerateHitEffects (0x2939C) still runs after the proc loop and
+// applies vanilla steal-HP (effect 2) directly to current HP, which
+// overwrites Liquid Ooze. Skip that block; Proc_StealHP owns drain.
+ORG $29466
+SHORT 0xE012 // b past steal (was bne 0xD112)
+
+// FE8 keeps signed hpChange; FE7 0x29496 strb damage onto hit+3. Skip for Ooze.
+ORG $29490
+jumpToHack(KeepHpChange)
 POP

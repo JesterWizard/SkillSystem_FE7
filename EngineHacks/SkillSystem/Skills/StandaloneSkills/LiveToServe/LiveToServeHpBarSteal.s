@@ -10,6 +10,9 @@
 @ round, which is why it is the only thing that ever moved two bars at once:
 @     taker    newHP = max(HP - hpChange, 0)          no upper cap
 @     stealer  newHP = min(HP + hpChange, maxHP[pos]) no lower cap
+@ Liquid Ooze (0x1000) keeps that dual-round shape so both bars tick.
+@ Both sides use HP - |hpChange| (same direction). Finish may have left
+@ hpChange negative; abs so the holder is not healed (HP - -N).
 @
 @ LiveToServe writes a NEGATIVE hpChange (-heal), so the taker already gains
 @ (HP - -heal) but can overshoot max, and the stealer loses. Both are fixed
@@ -24,7 +27,8 @@
 @ That makes the result independent of which unit the engine calls the
 @ attacker for a staff hit.
 
-.equ HitMaxHp,  0x0203E0BC
+    .equ HitMaxHp,           0x0203E0BC
+    .equ LiquidOozeBarFlag,  0x0203AA01
 
     .global LiveToServeTakeA
     .global LiveToServeStealA
@@ -37,7 +41,30 @@
 @ Resume 0x08053055 (lsrs r2,r0,#16).
     .thumb_func
 LiveToServeTakeA:
+    ldr     r3, =LiquidOozeBarFlag
+    ldrb    r3, [r3]
+    cmp     r3, #0
+    bne     TakeAOozeAbs
     mov     r2, r9
+    ldrh    r3, [r2]
+    mov     r1, #0x10
+    lsl     r1, #8                  @ 0x1000 Liquid Ooze
+    tst     r3, r1
+    beq     TakeALive
+TakeAOozeAbs:
+    mov     r2, r9
+    mov     r1, #3
+    ldrsb   r1, [r2, r1]
+    cmp     r1, #0
+    bge     TakeAOozeSub
+    neg     r1, r1
+TakeAOozeSub:
+    sub     r0, r0, r1              @ both bars: drain |hpChange|
+    cmp     r0, #0
+    bge     TakeADone
+    mov     r0, #0
+    b       TakeADone
+TakeALive:
     mov     r1, #3
     ldrsb   r1, [r2, r1]
     sub     r0, r0, r1
@@ -59,7 +86,30 @@ TakeADone:
 @ Resume 0x08053081 (lsls r0,r0,#16); the vanilla max cap follows there.
     .thumb_func
 LiveToServeStealA:
+    ldr     r3, =LiquidOozeBarFlag
+    ldrb    r3, [r3]
+    cmp     r3, #0
+    bne     StealAOozeAbs
     mov     r2, r9
+    ldrh    r3, [r2]
+    mov     r1, #0x10
+    lsl     r1, #8                  @ 0x1000 Liquid Ooze
+    tst     r3, r1
+    beq     StealALive
+StealAOozeAbs:
+    mov     r2, r9
+    mov     r1, #3
+    ldrsb   r1, [r2, r1]
+    cmp     r1, #0
+    bge     StealAOozeSub
+    neg     r1, r1
+StealAOozeSub:
+    sub     r0, r0, r1              @ drain |hpChange|, same as taker
+    cmp     r0, #0
+    bge     StealAOut
+    mov     r0, #0
+    b       StealAOut
+StealALive:
     mov     r1, #3
     ldrsb   r1, [r2, r1]
     cmp     r1, #0
@@ -67,6 +117,7 @@ LiveToServeStealA:
     neg     r1, r1
 StealAAdd:
     add     r0, r0, r1
+StealAOut:
     ldr     r3, =0x08053081
     bx      r3
 
@@ -76,7 +127,30 @@ StealAAdd:
 @ Resume 0x080530B9 (lsrs r2,r0,#16).
     .thumb_func
 LiveToServeTakeB:
+    ldr     r3, =LiquidOozeBarFlag
+    ldrb    r3, [r3]
+    cmp     r3, #0
+    bne     TakeBOozeAbs
     mov     r2, r9
+    ldrh    r3, [r2]
+    mov     r1, #0x10
+    lsl     r1, #8
+    tst     r3, r1
+    beq     TakeBLive
+TakeBOozeAbs:
+    mov     r2, r9
+    mov     r1, #3
+    ldrsb   r1, [r2, r1]
+    cmp     r1, #0
+    bge     TakeBOozeSub
+    neg     r1, r1
+TakeBOozeSub:
+    sub     r0, r0, r1
+    cmp     r0, #0
+    bge     TakeBDone
+    mov     r0, #0
+    b       TakeBDone
+TakeBLive:
     mov     r1, #3
     ldrsb   r1, [r2, r1]
     sub     r0, r0, r1
@@ -97,7 +171,30 @@ TakeBDone:
 @ Resume 0x080530E1 (lsls r0,r0,#16); the vanilla max cap follows there.
     .thumb_func
 LiveToServeStealB:
+    ldr     r3, =LiquidOozeBarFlag
+    ldrb    r3, [r3]
+    cmp     r3, #0
+    bne     StealBOozeAbs
     mov     r2, r9
+    ldrh    r3, [r2]
+    mov     r1, #0x10
+    lsl     r1, #8                  @ 0x1000 Liquid Ooze
+    tst     r3, r1
+    beq     StealBLive
+StealBOozeAbs:
+    mov     r2, r9
+    mov     r1, #3
+    ldrsb   r1, [r2, r1]
+    cmp     r1, #0
+    bge     StealBOozeSub
+    neg     r1, r1
+StealBOozeSub:
+    sub     r0, r0, r1
+    cmp     r0, #0
+    bge     StealBOut
+    mov     r0, #0
+    b       StealBOut
+StealBLive:
     mov     r1, #3
     ldrsb   r1, [r2, r1]
     cmp     r1, #0
@@ -105,6 +202,7 @@ LiveToServeStealB:
     neg     r1, r1
 StealBAdd:
     add     r0, r0, r1
+StealBOut:
     ldr     r3, =0x080530E1
     bx      r3
 

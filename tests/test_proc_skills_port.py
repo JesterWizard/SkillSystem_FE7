@@ -77,6 +77,10 @@ class ProcSkillsPortTests(unittest.TestCase):
         self.assertIn("Proc_Devil", proc_parent)
         self.assertIn("Proc_Counter", proc_parent)
         self.assertIn("Proc_Foresight", proc_parent)
+        self.assertIn("Proc_StealHP", proc_parent)
+        steal_at = proc_parent.index("Proc_StealHP")
+        finish_at = proc_parent.index("Proc_Finish")
+        self.assertLess(steal_at, finish_at, "HP steal must run before Finish applies hpChange")
 
 
 if __name__ == "__main__":

@@ -1194,11 +1194,11 @@ class StandaloneRomTests(unittest.TestCase):
         for off in (0x5314C, 0x531B0):
             self.assertEqual(rom[off:off + 4], JUMP, f"no hook at {off:X}")
 
-    def test_livetoserve_leaves_the_hpsteal_arms_vanilla(self):
-        """HPSTEAL is unused here, so Nosferatu's drain must stay untouched."""
+    def test_livetoserve_hpsteal_both_arms_hooked_for_ooze(self):
+        """Taker and stealer both drain |hpChange| when hit bit 0x1000 is set."""
         rom = HACK.read_bytes()
         for off in (0x5304C, 0x53078, 0x530B0, 0x530D8):
-            self.assertNotEqual(rom[off:off + 4], JUMP, f"hook at {off:X}")
+            self.assertEqual(rom[off:off + 4], JUMP, f"no hook at {off:X}")
 
     def test_livetoserve_leaves_the_bar_procs_vanilla(self):
         """The Live tick, its proc-script entry and the bar parent stay stock."""
@@ -1206,6 +1206,12 @@ class StandaloneRomTests(unittest.TestCase):
         self.assertNotEqual(rom[0x4DD8C:0x4DD90], JUMP)
         self.assertNotEqual(rom[0x4D62C:0x4D630], JUMP)
         self.assertEqual(rom[0xB9AC58:0xB9AC5C], bytes.fromhex("71dd0408"))
+
+    def test_ooze_hp_bar_ticks_both_displays(self):
+        """Resire/hit apply, KeepHpChange, and anims-off skip-neg."""
+        rom = HACK.read_bytes()
+        for off in (0x4D6A8, 0x4D970, 0x4DA78, 0x4DB00, 0x29490, 0x6C610, 0x6C6E0):
+            self.assertEqual(rom[off:off + 4], JUMP, f"no tick hook at {off:X}")
 
     def test_shrewd_and_cunning_hooks(self):
         rom = HACK.read_bytes()

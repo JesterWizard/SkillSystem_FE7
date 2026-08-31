@@ -72,6 +72,22 @@ defLives:
 cmp	r0,#0
 beq	noOoze
   neg   r1, r1
+  @ Keep 0x100 (both bars). 0x1000 inverts the caster's steal to a drain.
+  ldr     r2, [r6]
+  lsl     r3, r2, #0xD
+  lsr     r3, r3, #0xD
+  mov     r0, #0x80
+  bic     r3, r0
+  mov     r0, #0x10
+  lsl     r0, #8
+  orr     r3, r0
+  ldr     r0, =0xFFF80000
+  and     r0, r2
+  orr     r0, r3
+  str     r0, [r6]
+  mov     r0, #1
+  ldr     r3, =0x0203AA01
+  strb    r0, [r3]
 noOoze:
 mov   r2, #0x3
 ldsb  r2,[r6,r2]      @hp change

@@ -36,6 +36,8 @@ from unicorn.arm_const import (
     UC_ARM_REG_R5,
     UC_ARM_REG_R6,
     UC_ARM_REG_R7,
+    UC_ARM_REG_R8,
+    UC_ARM_REG_R9,
     UC_ARM_REG_LR,
     UC_ARM_REG_SP,
 )
@@ -54,6 +56,8 @@ REG_MAP = {
     "r5": UC_ARM_REG_R5,
     "r6": UC_ARM_REG_R6,
     "r7": UC_ARM_REG_R7,
+    "r8": UC_ARM_REG_R8,
+    "r9": UC_ARM_REG_R9,
     "lr": UC_ARM_REG_LR,
     "sp": UC_ARM_REG_SP,
 }

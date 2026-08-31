@@ -77,6 +77,18 @@ defLives:
 cmp	r0,#0
 beq	noOoze
   neg   r1, r1
+  ldr     r2, [r6]
+  lsl     r3, r2, #0xD
+  lsr     r3, r3, #0xD
+  mov     r0, #0x80
+  bic     r3, r0
+  mov     r0, #0x10
+  lsl     r0, #8
+  orr     r3, r0
+  ldr     r0, =#0xFFF80000
+  and     r0, r2
+  orr     r0, r3
+  str     r0, [r6]
 noOoze:
 mov   r2, #0x5
 ldsb    r2,[r6,r2]          @hp change

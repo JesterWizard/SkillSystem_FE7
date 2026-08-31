@@ -6,17 +6,31 @@
 .endm
 .equ LiquidOozeID, SkillTester+4
 .equ d100Result, 0x802857c
+
+.global Proc_StealHP
+.type Proc_StealHP, %function
+
 @ r0 is attacker, r1 is defender, r2 is current buffer, r3 is battle data
+Proc_StealHP:
 push {r4-r7,lr}
-mov r4, r0 @attacker
-mov r5, r1 @defender
-mov r6, r2 @battle buffer
-mov r7, r3 @battle data
+mov r4, r0 @ inflicter
+mov r6, r2 @ battle buffer
+mov r7, r3 @ battle data
+
+@ Proc loop hardcodes r1 = gBattleTarget. Victim is the other battle unit.
+ldr r0, =0x203A3F0
+cmp r4, r0
+bne VictimIsActor
+ldr r5, =0x203A470
+b HaveSides
+VictimIsActor:
+mov r5, r0
+HaveSides:
 
 @check for miss
-ldr     r0,[r2]           @r0 = battle buffer                @ 0802B40A 6800     
-lsl     r0,r0,#0xD                @ 0802B40C 0340     
-lsr     r0,r0,#0xD        @Without damage data                @ 0802B40E 0B40     
+ldr     r0,[r6]
+lsl     r0,r0,#0xD
+lsr     r0,r0,#0xD
 mov	r1,#0x82 @miss + devil
 and	r0,r1
 cmp	r0,#2
@@ -37,32 +51,32 @@ ldrsh	r0,[r7,r0]
 cmp	r0,#0
 ble	End
 
-@check for devil
-ldr     r0,[r2]           @r0 = battle buffer                @ 0802B40A 6800     
-lsl     r0,r0,#0xD                @ 0802B40C 0340     
-lsr     r0,r0,#0xD        @Without damage data                @ 0802B40E 0B40     
-mov	r1,#0x82 @miss + devil
-and	r0,r1
-cmp	r0,#0x80
-beq	noDamage
+@ Devil / Counter already reversed this hit: do not steal, and do not
+@ clear their 0x80 flag or zero the damage they just set.
+ldr     r0,[r6]
+lsl     r0,r0,#0xD
+lsr     r0,r0,#0xD
+mov	r1,#0x80
+tst	r0,r1
+bne	End
 
 @if we proc, set the hp update flag
-ldr     r2,[r6]    
-lsl     r1,r2,#0xD                @ 0802B42C 0351     
-lsr     r1,r1,#0xD                @ 0802B42E 0B49     
+ldr     r2,[r6]
+lsl     r1,r2,#0xD
+lsr     r1,r1,#0xD
 mov     r0, #0x1
 lsl     r0, #8           @0x100, hp drain/update
 orr     r1, r0
 
-ldr     r0,=#0xFFF80000                @ 0802B434 4804     
-and     r0,r2                @ 0802B436 4010     
-orr     r0,r1                @ 0802B438 4308     
-str     r0,[r6]                @ 0802B43A 6018
+ldr     r0,=#0xFFF80000
+and     r0,r2
+orr     r0,r1
+str     r0,[r6]
 
-@check for liquid ooze
+@check for liquid ooze on the hit-taker
 ldr r0, SkillTester
 mov lr, r0
-mov r0, r5 @defender data
+mov r0, r5
 ldr r1, LiquidOozeID
 .short 0xf800
 mov	  r1, #4
@@ -75,6 +89,23 @@ defLives:
 cmp r0, #0
 beq noOoze
   neg   r1, r1
+  @ Keep 0x100 so both bars get a LUT round (vanilla simultaneous tick).
+  @ 0x1000: stealer arithmetic subtracts instead of heals. No 0x80.
+  ldr     r2, [r6]
+  lsl     r3, r2, #0xD
+  lsr     r3, r3, #0xD
+  mov     r0, #0x80
+  bic     r3, r0
+  mov     r0, #0x10
+  lsl     r0, #8
+  orr     r3, r0
+  ldr     r0, =#0xFFF80000
+  and     r0, r2
+  orr     r0, r3
+  str     r0, [r6]
+  mov     r0, #1
+  ldr     r3, =#0x0203AA01
+  strb    r0, [r3]
 noOoze:
 mov   r2, #0x3
 ldsb	r2,[r6,r2]	@hp change
@@ -84,35 +115,6 @@ strb	r2,[r6,#3]	@hp change
 End:
 pop {r4-r7}
 pop {r15}
-
-noDamage:
-@unset reversal
-ldr     r2,[r6]    
-lsl     r1,r2,#0xD                @ 0802B42C 0351     
-lsr     r1,r1,#0xD                @ 0802B42E 0B49     
-mov     r0,#0x80
-mvn	r0,r0
-and     r1,r0
-
-ldr     r0,=#0xFFF80000                @ 0802B434 4804     
-and     r0,r2                @ 0802B436 4010     
-orr     r0,r1                @ 0802B438 4308     
-str     r0,[r6]                @ 0802B43A 6018
-
-@mov	r0,#0x13
-@ldsb	r0,[r4,r0]	@remaining hp
-@mov	r2,#4
-@ldsb	r2,[r7,r2]	@damage
-@add	r0,r2
-@strb	r0,[r4,#0x13]	@remaining hp
-mov	r0,#0
-strb	r0,[r7,#4]
-strb	r0,[r7,#5]
-
-mov	r0,#0xFF	@no animation!
-strb	r0,[r6,#4]
-
-b	End
 
 .align
 .ltorg

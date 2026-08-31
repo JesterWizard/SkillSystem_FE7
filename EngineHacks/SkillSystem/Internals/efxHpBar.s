@@ -1,5 +1,6 @@
 .thumb
 .equ IsRightToLeft, 0x805A16C
+.equ FE7BattleHits, 0x0203F000
 
 .macro blh to, reg=r3
   ldr \reg, =\to
@@ -56,15 +57,12 @@ bne     loc_0x805244E                @ 08052412 D11C
       ldr     r0,[r5,#0x5c]                @ 08052368 6E30     
       ldrh    r0, [r0, #0xE]            @ Next round index
       sub     r0, #0x1
-      ldr     r1, =0x802b90a
-      ldrb    r1, [r1] @ battle buffer width.
-      mul     r0, r1
-      ldr     r1, =0x802aec4
-      ldr     r1, [r1] @ r1 is battle buffer 203aac0
+      lsl     r0, r0, #2            @ FE7 BattleHit is 4 bytes
+      ldr     r1, =FE7BattleHits    @ 0x0203F000
       add     r0, r1
       ldr     r0, [r0]
-      mov r1, #0x10
-      lsl r1, #4 @0x100 is drain hp
+      mov r1, #0x8C
+      lsl r1, #5                    @ 0x1180: devil | hpsteal | ooze 0x1000
       and r1, r0
       cmp r1, #0
       bne NextCheck
@@ -194,15 +192,12 @@ bne     loc2_0x80524F0                @ 08052452 D14D
     ldr     r0,[r5,#0x5c]                @ 08052368 6E30     
     ldrh    r0, [r0, #0xE]            @ Next round index
     sub     r0, #0x1
-    ldr     r1, =0x802b90a
-    ldrb    r1, [r1] @ battle buffer width.
-    mul     r0, r1
-    ldr     r1, =0x802aec4
-    ldr     r1, [r1] @ r1 is battle buffer 203aac0
+    lsl     r0, r0, #2            @ FE7 BattleHit is 4 bytes
+    ldr     r1, =FE7BattleHits    @ 0x0203F000
     add     r0, r1
     ldr     r0, [r0]
-    mov r1, #0x10
-    lsl r1, #4 @0x100 is drain hp
+    mov r1, #0x8C
+    lsl r1, #5                    @ 0x1180: devil | hpsteal | ooze 0x1000
     and r1, r0
     cmp r1, #0
     beq End

@@ -12,8 +12,8 @@
 @
 @ This hook appends a round for the OTHER position from a signed flag:
 @   +N  Live to Serve healer gain (display only)
-@   -N  Counter / CounterMagic drain on the inflicter (display only)
-@ Real HP is written elsewhere; HPSTEAL is not used.
+@ Real HP is written elsewhere; HPSTEAL is not used. Liquid Ooze dual-bar
+@ drain is the HPSTEAL path (LiveToServeHpBarSteal), not this extra round.
 @
 @ The flag is consumed here so a stale value cannot survive into the next
 @ combat. 0 means neither skill published a delta.
