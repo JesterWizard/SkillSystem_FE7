@@ -1,0 +1,14 @@
+#define _C2EA_IER_StatboosterText(arg000,arg001,arg002) "SHORT arg000 arg001 ;WORD arg002 "
+
+PUSH
+ORG 0xd00000
+_C2EA_IER_StatboosterText(0xffff,0xffff,0x10000000)
+_C2EA_IER_StatboosterText(0xffff,0xffff,0x0)
+_C2EA_IER_StatboosterText(0xffff,0xbfff,0x0)
+_C2EA_IER_StatboosterText(0xffdf,0xfff7,0x0)
+_C2EA_IER_StatboosterText(0xffff,0xfffd,0x400000)
+_C2EA_IER_StatboosterText(0xffff,0xffff,0x0)
+_C2EA_IER_StatboosterText(0xffff,0xfff9,0x0)
+_C2EA_IER_StatboosterText(0xffff,0xffbf,0x0)
+_C2EA_IER_StatboosterText(0xdffb,0xffff,0x0)
+POP

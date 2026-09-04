@@ -185,12 +185,13 @@
 // Skill catalog (CantoID, SKILL_OFF, ...). Use these names in:
 //   PersonalSkillEditor.event, ClassSkillEditor.event, ItemTable "Item Skill"
 // Level-up tables take a list label. Define lists in LevelUpSkillLists.event:
-//   ALIGN 4
-//   LynTutorialSkillList:
-//   LevelUpSkill(1, CantoID)
-//   LevelUpSkillListEnd
 #define LevelUpSkill(level, skillID) "BYTE level skillID"
 #define LevelUpSkillListEnd "BYTE 0 0"
+
+// ALIGN 4
+// LynTutorialSkillList:
+// LevelUpSkill(1, CantoID_Link)
+// LevelUpSkillListEnd
 
 #include "../EngineHacks/SkillSystem/skill_definitions.event"
 #include "LevelUpSkillLists.event"

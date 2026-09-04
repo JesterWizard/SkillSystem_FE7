@@ -1,0 +1,260 @@
+// Class magic base, growth, cap, promo bonus.
+// Caps: unpromoted 20; physical promoted 21-30; magical classes keep usual Mag caps.
+ALIGN 4
+MagClassTable:
+BYTE 0 0 20 0 // 0x00 None
+BYTE 0 0 20 0 // 0x01 Eliwood Lord
+BYTE 0 0 20 0 // 0x02 Lyn Lord
+BYTE 0 0 20 0 // 0x03 Hector Lord
+BYTE 0 0 26 3 // 0x04 Eliwood Lord Knight (only by class name)
+BYTE 0 0 27 3 // 0x05 Lyn Blade Lord (only by class name)
+BYTE 0 0 21 1 // 0x06 Hector Great Lord (only by class name)
+BYTE 0 0 26 3 // 0x07 Eliwood Lord Knight
+BYTE 0 0 27 3 // 0x08 Lyn Blade Lord
+BYTE 0 0 21 1 // 0x09 Hector Great Lord
+BYTE 0 0 20 0 // 0x0A Mercenary
+BYTE 0 0 20 0 // 0x0B Mercenary
+BYTE 0 0 23 2 // 0x0C Hero
+BYTE 0 0 23 2 // 0x0D Hero
+BYTE 0 0 20 0 // 0x0E Myrmidon
+BYTE 0 0 20 0 // 0x0F Myrmidon
+BYTE 0 0 24 2 // 0x10 Swordmaster
+BYTE 0 0 24 2 // 0x11 Swordmaster
+BYTE 0 0 20 0 // 0x12 Fighter
+BYTE 0 0 21 1 // 0x13 Warrior
+BYTE 0 0 20 0 // 0x14 Knight
+BYTE 0 0 20 0 // 0x15 Knight
+BYTE 0 0 22 1 // 0x16 General
+BYTE 0 0 22 1 // 0x17 General
+BYTE 0 0 20 0 // 0x18 Archer
+BYTE 0 0 20 0 // 0x19 Archer
+BYTE 0 0 24 2 // 0x1A Sniper
+BYTE 0 0 24 2 // 0x1B Sniper
+BYTE 1 30 20 0 // 0x1C Monk
+BYTE 1 40 20 0 // 0x1D Cleric
+BYTE 3 30 25 3 // 0x1E Bishop
+BYTE 3 35 25 3 // 0x1F Bishop
+BYTE 1 30 20 0 // 0x20 Mage
+BYTE 1 30 20 0 // 0x21 Mage
+BYTE 5 30 28 4 // 0x22 Sage
+BYTE 5 30 28 4 // 0x23 Sage
+BYTE 2 30 20 0 // 0x24 Shaman
+BYTE 2 30 20 0 // 0x25 Shaman
+BYTE 5 35 29 4 // 0x26 Druid
+BYTE 5 35 29 4 // 0x27 Druid
+BYTE 0 0 20 0 // 0x28 Cavalier
+BYTE 0 0 20 0 // 0x29 Cavalier
+BYTE 0 0 26 3 // 0x2A Paladin
+BYTE 0 0 26 3 // 0x2B Paladin
+BYTE 1 40 20 0 // 0x2C Troubadour
+BYTE 4 30 25 3 // 0x2D Valkyrie
+BYTE 0 0 20 0 // 0x2E Nomad
+BYTE 0 0 20 0 // 0x2F Nomad
+BYTE 0 0 25 2 // 0x30 Nomad Trooper
+BYTE 0 0 25 2 // 0x31 Nomad Trooper
+BYTE 0 0 20 0 // 0x32 Pegasus Knight
+BYTE 0 0 27 3 // 0x33 Falcon Knight
+BYTE 0 0 20 0 // 0x34 Wyvern Knight
+BYTE 0 0 20 0 // 0x35 Wyvern Knight
+BYTE 0 0 22 1 // 0x36 Wyvern Lord
+BYTE 0 0 22 1 // 0x37 Wyvern Lord
+BYTE 0 0 20 0 // 0x38 Soldier
+BYTE 0 0 20 0 // 0x39 Brigand
+BYTE 0 0 20 0 // 0x3A Pirate
+BYTE 0 0 21 1 // 0x3B Berserker
+BYTE 0 0 20 0 // 0x3C Thief
+BYTE 0 0 20 0 // 0x3D Thief
+BYTE 0 0 25 2 // 0x3E Assassin
+BYTE 0 0 20 0 // 0x3F Civilian
+BYTE 0 0 20 0 // 0x40 Dancer
+BYTE 0 0 20 0 // 0x41 Bard
+BYTE 8 30 30 0 // 0x42 Archsage
+BYTE 0 0 30 0 // 0x43 Magic Seal
+BYTE 0 0 20 0 // 0x44 Transporter
+BYTE 0 0 20 0 // 0x45 Transporter
+BYTE 0 0 30 0 // 0x46 Fire Dragon
+BYTE 0 0 20 0 // 0x47 Civilian
+BYTE 0 0 20 0 // 0x48 Civilian (F)
+BYTE 0 0 20 0 // 0x49 Child
+BYTE 8 30 30 0 // 0x4A Brammimond
+BYTE 0 0 20 0 // 0x4B Peer
+BYTE 0 0 20 0 // 0x4C Peer (F)
+BYTE 0 0 20 0 // 0x4D Prince
+BYTE 0 0 25 2 // 0x4E Queen
+BYTE 0 0 20 0 // 0x4F Hung Leila
+BYTE 0 0 20 0 // 0x50 Corsair
+BYTE 0 0 20 0 // 0x51 Prince (Tactician)
+BYTE 0 0 25 2 // 0x52 Fallen Prince
+BYTE 0 0 20 0 // 0x53 Prince facing upward
+BYTE 5 30 28 0 // 0x54 Fallen Ninian
+BYTE 0 0 30 0 // 0x55 Fallen Ice Dragon
+BYTE 0 0 21 1 // 0x56 Fallen Warrior
+BYTE 0 0 20 0 // 0x57 Child
+BYTE 0 0 20 0 // 0x58 Child (F)
+BYTE 0 0 20 0 // 0x59 Transporter w/ Horse
+BYTE 8 30 30 0 // 0x5A Uber Sage
+BYTE 0 0 20 0 // 0x5B Archer in Ballista
+BYTE 0 0 20 0 // 0x5C Archer in Iron Ballista
+BYTE 0 0 20 0 // 0x5D Archer in Killer Ballista
+BYTE 0 0 20 0 // 0x5E Empty Ballista
+BYTE 0 0 20 0 // 0x5F Empty Iron Ballista
+BYTE 0 0 20 0 // 0x60 Empty Killer Ballista
+BYTE 0 0 20 0 // 0x61 Empty (Make a custom class!)
+BYTE 0 0 20 0 // 0x62 Empty (Make a custom class!)
+BYTE 0 0 20 0 // 0x63 Empty (Make a custom class!)
+BYTE 0 0 20 0 // 0x64
+BYTE 0 0 20 0 // 0x65
+BYTE 0 0 20 0 // 0x66
+BYTE 0 0 20 0 // 0x67
+BYTE 0 0 20 0 // 0x68
+BYTE 0 0 20 0 // 0x69
+BYTE 0 0 20 0 // 0x6a
+BYTE 0 0 20 0 // 0x6b
+BYTE 0 0 20 0 // 0x6c
+BYTE 0 0 20 0 // 0x6d
+BYTE 0 0 20 0 // 0x6e
+BYTE 0 0 20 0 // 0x6f
+BYTE 0 0 20 0 // 0x70
+BYTE 0 0 20 0 // 0x71
+BYTE 0 0 20 0 // 0x72
+BYTE 0 0 20 0 // 0x73
+BYTE 0 0 20 0 // 0x74
+BYTE 0 0 20 0 // 0x75
+BYTE 0 0 20 0 // 0x76
+BYTE 0 0 20 0 // 0x77
+BYTE 0 0 20 0 // 0x78
+BYTE 0 0 20 0 // 0x79
+BYTE 0 0 20 0 // 0x7a
+BYTE 0 0 20 0 // 0x7b
+BYTE 0 0 20 0 // 0x7c
+BYTE 0 0 20 0 // 0x7d
+BYTE 0 0 20 0 // 0x7e
+BYTE 0 0 20 0 // 0x7f
+BYTE 0 0 20 0 // 0x80
+BYTE 0 0 20 0 // 0x81
+BYTE 0 0 20 0 // 0x82
+BYTE 0 0 20 0 // 0x83
+BYTE 0 0 20 0 // 0x84
+BYTE 0 0 20 0 // 0x85
+BYTE 0 0 20 0 // 0x86
+BYTE 0 0 20 0 // 0x87
+BYTE 0 0 20 0 // 0x88
+BYTE 0 0 20 0 // 0x89
+BYTE 0 0 20 0 // 0x8a
+BYTE 0 0 20 0 // 0x8b
+BYTE 0 0 20 0 // 0x8c
+BYTE 0 0 20 0 // 0x8d
+BYTE 0 0 20 0 // 0x8e
+BYTE 0 0 20 0 // 0x8f
+BYTE 0 0 20 0 // 0x90
+BYTE 0 0 20 0 // 0x91
+BYTE 0 0 20 0 // 0x92
+BYTE 0 0 20 0 // 0x93
+BYTE 0 0 20 0 // 0x94
+BYTE 0 0 20 0 // 0x95
+BYTE 0 0 20 0 // 0x96
+BYTE 0 0 20 0 // 0x97
+BYTE 0 0 20 0 // 0x98
+BYTE 0 0 20 0 // 0x99
+BYTE 0 0 20 0 // 0x9a
+BYTE 0 0 20 0 // 0x9b
+BYTE 0 0 20 0 // 0x9c
+BYTE 0 0 20 0 // 0x9d
+BYTE 0 0 20 0 // 0x9e
+BYTE 0 0 20 0 // 0x9f
+BYTE 0 0 20 0 // 0xa0
+BYTE 0 0 20 0 // 0xa1
+BYTE 0 0 20 0 // 0xa2
+BYTE 0 0 20 0 // 0xa3
+BYTE 0 0 20 0 // 0xa4
+BYTE 0 0 20 0 // 0xa5
+BYTE 0 0 20 0 // 0xa6
+BYTE 0 0 20 0 // 0xa7
+BYTE 0 0 20 0 // 0xa8
+BYTE 0 0 20 0 // 0xa9
+BYTE 0 0 20 0 // 0xaa
+BYTE 0 0 20 0 // 0xab
+BYTE 0 0 20 0 // 0xac
+BYTE 0 0 20 0 // 0xad
+BYTE 0 0 20 0 // 0xae
+BYTE 0 0 20 0 // 0xaf
+BYTE 0 0 20 0 // 0xb0
+BYTE 0 0 20 0 // 0xb1
+BYTE 0 0 20 0 // 0xb2
+BYTE 0 0 20 0 // 0xb3
+BYTE 0 0 20 0 // 0xb4
+BYTE 0 0 20 0 // 0xb5
+BYTE 0 0 20 0 // 0xb6
+BYTE 0 0 20 0 // 0xb7
+BYTE 0 0 20 0 // 0xb8
+BYTE 0 0 20 0 // 0xb9
+BYTE 0 0 20 0 // 0xba
+BYTE 0 0 20 0 // 0xbb
+BYTE 0 0 20 0 // 0xbc
+BYTE 0 0 20 0 // 0xbd
+BYTE 0 0 20 0 // 0xbe
+BYTE 0 0 20 0 // 0xbf
+BYTE 0 0 20 0 // 0xc0
+BYTE 0 0 20 0 // 0xc1
+BYTE 0 0 20 0 // 0xc2
+BYTE 0 0 20 0 // 0xc3
+BYTE 0 0 20 0 // 0xc4
+BYTE 0 0 20 0 // 0xc5
+BYTE 0 0 20 0 // 0xc6
+BYTE 0 0 20 0 // 0xc7
+BYTE 0 0 20 0 // 0xc8
+BYTE 0 0 20 0 // 0xc9
+BYTE 0 0 20 0 // 0xca
+BYTE 0 0 20 0 // 0xcb
+BYTE 0 0 20 0 // 0xcc
+BYTE 0 0 20 0 // 0xcd
+BYTE 0 0 20 0 // 0xce
+BYTE 0 0 20 0 // 0xcf
+BYTE 0 0 20 0 // 0xd0
+BYTE 0 0 20 0 // 0xd1
+BYTE 0 0 20 0 // 0xd2
+BYTE 0 0 20 0 // 0xd3
+BYTE 0 0 20 0 // 0xd4
+BYTE 0 0 20 0 // 0xd5
+BYTE 0 0 20 0 // 0xd6
+BYTE 0 0 20 0 // 0xd7
+BYTE 0 0 20 0 // 0xd8
+BYTE 0 0 20 0 // 0xd9
+BYTE 0 0 20 0 // 0xda
+BYTE 0 0 20 0 // 0xdb
+BYTE 0 0 20 0 // 0xdc
+BYTE 0 0 20 0 // 0xdd
+BYTE 0 0 20 0 // 0xde
+BYTE 0 0 20 0 // 0xdf
+BYTE 0 0 20 0 // 0xe0
+BYTE 0 0 20 0 // 0xe1
+BYTE 0 0 20 0 // 0xe2
+BYTE 0 0 20 0 // 0xe3
+BYTE 0 0 20 0 // 0xe4
+BYTE 0 0 20 0 // 0xe5
+BYTE 0 0 20 0 // 0xe6
+BYTE 0 0 20 0 // 0xe7
+BYTE 0 0 20 0 // 0xe8
+BYTE 0 0 20 0 // 0xe9
+BYTE 0 0 20 0 // 0xea
+BYTE 0 0 20 0 // 0xeb
+BYTE 0 0 20 0 // 0xec
+BYTE 0 0 20 0 // 0xed
+BYTE 0 0 20 0 // 0xee
+BYTE 0 0 20 0 // 0xef
+BYTE 0 0 20 0 // 0xf0
+BYTE 0 0 20 0 // 0xf1
+BYTE 0 0 20 0 // 0xf2
+BYTE 0 0 20 0 // 0xf3
+BYTE 0 0 20 0 // 0xf4
+BYTE 0 0 20 0 // 0xf5
+BYTE 0 0 20 0 // 0xf6
+BYTE 0 0 20 0 // 0xf7
+BYTE 0 0 20 0 // 0xf8
+BYTE 0 0 20 0 // 0xf9
+BYTE 0 0 20 0 // 0xfa
+BYTE 0 0 20 0 // 0xfb
+BYTE 0 0 20 0 // 0xfc
+BYTE 0 0 20 0 // 0xfd
+BYTE 0 0 20 0 // 0xfe
+BYTE 0 0 20 0 // 0xff

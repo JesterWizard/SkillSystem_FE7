@@ -5119,8 +5119,8 @@
     {
       "skill": "Petrify",
       "macro": "PetrifyID",
-      "id": "20",
-      "off": "no",
+      "id": "OFF",
+      "off": "yes",
       "category": "ProcSkills",
       "live": "yes",
       "source": "EngineHacks/SkillSystem/Skills/ProcSkills/Petrify/proc_petrify.s",
