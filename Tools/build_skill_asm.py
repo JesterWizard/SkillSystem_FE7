@@ -30,6 +30,9 @@ WEAPON_USABILITY_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "WeaponUsabilityCalcLoop" / "CanUnitWieldWeapon.s",
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "WeaponUsabilityCalcLoop" / "DoesUnitHaveWRank.s",
 ]
+UNIT_MENU_ASM = [
+    ROOT / "EngineHacks" / "Necessary" / "UnitMenu" / "asm" / "TalkCommandUsability.s",
+]
 HP_RESTORATION_ASM = [
     ROOT / "EngineHacks" / "Necessary" / "CalcLoops" / "HPRestorationCalcLoop" / "HPRestorationCalcLoop.s",
 ]
@@ -296,12 +299,13 @@ def main() -> int:
     post_loop = [p for p in POST_LOOP_ASM if p.is_file()]
     durability = [p for p in DURABILITY_ASM if p.is_file()]
     weapon_usability = [p for p in WEAPON_USABILITY_ASM if p.is_file()]
+    unit_menu = [p for p in UNIT_MENU_ASM if p.is_file()]
     hp_restoration = [p for p in HP_RESTORATION_ASM if p.is_file()]
     turn_loop = [p for p in TURN_LOOP_ASM if p.is_file()]
     stat_getter = [p for p in STAT_GETTER_ASM if p.is_file()]
     debuffs = [p for p in DEBUFF_ASM if p.is_file()]
     proc_loop = [p for p in PROC_LOOP_ASM if p.is_file()]
-    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
+    extra = mss_pages + range_loop + post_loop + durability + weapon_usability + unit_menu + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]
     if args.force:
@@ -313,7 +317,7 @@ def main() -> int:
         f"Building {len(sources)} skill asm files, {len(mss_pages)} stat screen pages, "
         f"{len(range_loop)} range-loop files, {len(post_loop)} post-loop files, "
         f"{len(durability)} durability files, {len(weapon_usability)} weapon-usability files, "
-        f"{len(c_sources)} C sources"
+        f"{len(unit_menu)} unit-menu files, {len(c_sources)} C sources"
     )
     errors = []
     for src in c_sources:
@@ -333,7 +337,7 @@ def main() -> int:
         except subprocess.CalledProcessError as exc:
             errors.append((src, exc))
             print(f"[FAIL] {src.relative_to(ROOT)}", file=sys.stderr)
-    for src in range_loop + post_loop + durability + weapon_usability + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
+    for src in range_loop + post_loop + durability + weapon_usability + unit_menu + hp_restoration + turn_loop + stat_getter + debuffs + proc_loop + [
         p for p in SUPPORT_POST_BATTLE_ASM if p.is_file()
     ]:
         try:

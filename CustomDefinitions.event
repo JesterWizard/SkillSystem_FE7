@@ -4,8 +4,8 @@
 #define FreeSpaceEnd 0x2000000 // 32MB ceiling
 #define FreeSpaceBLRange 0x100000 //FE7
 
-#define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0xC9A200 + (148* chapter) + 4; SHORT object; BYTE palette config; POP"
-#define ChapterTileAnims(chapter, anim1, anim2) "PUSH; ORG 0xC9A200 + (148* chapter) + 9; BYTE anim1 anim2; POP"
+#define ChapterTileset(chapter, object, palette, config) "PUSH; ORG 0xC9A200 + (152* chapter) + 4; SHORT object; BYTE palette config; POP"
+#define ChapterTileAnims(chapter, anim1, anim2) "PUSH; ORG 0xC9A200 + (152* chapter) + 9; BYTE anim1 anim2; POP"
 
 // Vanilla ItemTable @ 0x8BE222C. SkillScrolls.event redefines this to
 // ExpandedItemTable so item 0x9F does not overwrite movement-cost data.
@@ -20,7 +20,7 @@
 
 #ifndef ChapterDataTable
   #define ChapterDataTable 0xC9A200 //FE7  -> FE8 0x8B0890
-  #define ChapterDataTableEntSize 148
+  #define ChapterDataTableEntSize 152
 #endif
 
 //#define LunarBrace MoonBracelet

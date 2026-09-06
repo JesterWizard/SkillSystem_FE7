@@ -44,6 +44,8 @@ UnitMenuTable:
 #endif
 
   UM_Steal
+  // FE7 unit-to-unit Talk (text 0x10D0, MakeTalkTargetList @ 08022B35).
+  UM_Summon
   UM_Summon_DK
 
   UM_Talk

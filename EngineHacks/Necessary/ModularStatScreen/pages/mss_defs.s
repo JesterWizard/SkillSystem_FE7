@@ -33,6 +33,7 @@
 .equ MountedIconHelper, 0x08018578 //FE8 0x08018578
 .equ MagCheck, 0x080184DC //FE8 -> 0x8018A58  this is the same as UnitHasMagicRank, I guess whoever set it up missed that?
 .equ AidCheck, 0x08018450 //FE8 -> 0x080189B8
+.equ GetCharacterData, 0x08018D39
 .equ CurHPGetter, 0x08018A70 //FE8 -> 0x08019150
 .equ MaxHPGetter, 0x08018AB0 //FE8 -> 0x08019190       
 .equ StrGetter, 0x08018AD0 //FE8 -> 0x080191b0
@@ -817,12 +818,10 @@
   str     r1, [r0]
   b       TextBuffered
   FoundAPerson:
-  mov     r1, #0x34
-  mul     r0, r1
-  ldr     r1, =0x8017890 //FE8 -> 0x8017d64 @pointer to character table (in case repointed)
-  ldr     r1, [r1]  @actual character table
-  add     r0, r1
-  ldrh    r0, [r0]
+  ldr     r3, =GetCharacterData
+  mov     lr, r3
+  .short  0xF800
+  ldrh    r0, [r0, #0]
   ldr     r1, =String_GetFromIndex
   mov     r14, r1
   .short  0xF800
