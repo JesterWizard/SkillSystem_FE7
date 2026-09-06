@@ -1,7 +1,7 @@
 
 # FE7 Skill System
 
-[Main discussion on Fire Emblem Universe](https://feuniverse.us/t/fe7-skill-system-wip/23148/)
+[Main discussion on Fire Emblem Universe](https://feuniverse.us/t/fe7-skill-system/23148/)
 
 ## What is this?
 
@@ -36,14 +36,3 @@ Special thanks go to:
   - Primefusion, for the test map.
   - Kirb, for implementing the Str/Mag split into FE8 based off Tequila's original FE7 version.
   - Jester, for beginning the FE7 port of the skill system
-
-## WARNINGS
-
-- Currently only half of the FE8 skills have been ported. You can check which ones work in this list:
-https://docs.google.com/spreadsheets/d/1hlkGIUFIDyFyyWMwDWQPyMOO3CJFKaAXz4ZUXC9G1bA/edit?hl=en&pli=1#gid=1259938747
-
-- The ModularStatScreen and IconRework gave me too much trouble, so I couldn't continue with them. Many of the offsets for these two hacks have been changed (with the originals listed beside for comparison), but I can't gurantee they're all correct. 
-
-- Without the above two hacks, you'll have to keep track of what skills your units have using the build file, as they won't show up in game.
-
-- Things like skills scrolls and adding/removing skills in-game aren't currently supported for similar reasons as above.
